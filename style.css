@@ -232,6 +232,9 @@ body {
 }
 .nav-links a:hover { color: var(--charcoal); }
 .nav-links a:hover::after { width: 100%; }
+.nav-links .nav-github { display: flex; align-items: center; opacity: 0.8; }
+.nav-links .nav-github:hover { opacity: 1; }
+.nav-links .nav-github::after { display: none; }
 
 /* ============================
    SEARCH SECTION
