@@ -4,17 +4,7 @@
 
 ## 🌐 เข้าชมเว็บไซต์
 
-**GitHub Pages URL:** `https://<your-username>.github.io/<repo-name>/`
-
-## 🚀 วิธี Deploy บน GitHub Pages
-
-1. สร้าง repository ใหม่บน GitHub
-2. Upload ไฟล์ทั้ง 3 ไฟล์นี้:
-   - `index.html`
-   - `style.css`
-   - `app.js`
-3. ไปที่ **Settings → Pages → Source: Deploy from a branch → main / root**
-4. รอประมาณ 1-2 นาที แล้วเว็บจะออนไลน์
+**GitHub Pages URL:** `https://Plub-Supanut.github.io/elective-guide/`
 
 ## 📂 ไฟล์
 
