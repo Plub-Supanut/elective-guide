@@ -4,7 +4,7 @@
 
 ## 🌐 เข้าชมเว็บไซต์
 
-**GitHub Pages URL:** `https://Plub-Supanut.github.io/elective-guide/`
+**GitHub Pages URL:** [Visit Website](https://Plub-Supanut.github.io/elective-guide/)
 
 ## 📂 ไฟล์
 
