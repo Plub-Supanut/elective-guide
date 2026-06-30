@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>คู่มือ Elective · จุฬาแพทย์</title>
+  <meta name="description" content="คู่มือข้อมูลการติดต่อและที่พักสถาบัน/โรงพยาบาลสำหรับนิสิตแพทย์จุฬาฯ เพื่อการเลือกวิชา Elective" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-breath-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content fade-up">
+      <p class="hero-eyebrow">คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย</p>
+      <h1 class="hero-title">คู่มือ Elective<br /><em>สำหรับนิสิตแพทย์</em></h1>
+      <p class="hero-sub">ข้อมูลติดต่อครบถ้วน · ที่พัก · ค่าใช้จ่าย<br />ทุกสถาบันในหนึ่งหน้า</p>
+      <div class="hero-cta-row">
+        <a href="#search" class="btn-primary">ค้นหาสถาบัน</a>
+        <a href="#institutions" class="btn-ghost">ดูทั้งหมด</a>
+        <a href="https://docs.google.com/forms/d/10MmEj9L_zBfZ-vFX4IkEbARIFToITw4I9rcYhMeB-9Y/viewform?edit_requested=true" target="_blank" class="btn-ghost">📝 ต้นฉบับ (Google Form)</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span></span>
+    </div>
+  </section>
+
+  <!-- STICKY NAV -->
+  <nav class="sticky-nav" id="stickyNav">
+    <div class="nav-inner">
+      <span class="nav-logo">Elective Guide</span>
+      <div class="nav-links">
+        <a href="#search">ค้นหา</a>
+        <a href="#institutions">สถาบัน</a>
+        <a href="#chula">ภาควิชาจุฬา</a>
+        <a href="#tips">คำแนะนำ</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SEARCH BAR -->
+  <section class="search-section" id="search">
+    <div class="container">
+      <h2 class="section-title fade-up">ค้นหาสถาบัน / ภาควิชา</h2>
+      <p class="section-sub fade-up">พิมพ์ชื่อโรงพยาบาล ภาควิชา ผู้ประสานงาน หรือเบอร์โทรศัพท์</p>
+      <div class="search-wrapper fade-up">
+        <input type="text" id="searchInput" class="search-input" placeholder="เช่น ศิริราช, อายุรศาสตร์, เชียงใหม่…" autocomplete="off" />
+        <button class="search-clear" id="searchClear" aria-label="Clear">✕</button>
+      </div>
+      <div class="filter-row fade-up">
+        <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+        <button class="filter-btn" data-filter="chula">จุฬา (ภาควิชา)</button>
+        <button class="filter-btn" data-filter="university">มหาวิทยาลัย</button>
+        <button class="filter-btn" data-filter="hospital">โรงพยาบาล/ศูนย์</button>
+        <button class="filter-btn" data-filter="regional">ภูมิภาค</button>
+        <button class="filter-btn" data-filter="dormitory">มีที่พัก</button>
+      </div>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </section>
+
+  <!-- QUICK STATS -->
+  <section class="stats-section fade-up">
+    <div class="container stats-grid">
+      <div class="stat-card">
+        <span class="stat-num">80+</span>
+        <span class="stat-label">สถาบัน / ภาควิชา</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">5</span>
+        <span class="stat-label">ภูมิภาคทั่วประเทศ</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">สถาบันที่มีที่พัก</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">20+</span>
+        <span class="stat-label">ภาควิชาจุฬาฯ</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN INSTITUTIONS -->
+  <main id="institutions">
+
+    <!-- ===== SECTION: NETWORK HOSPITALS ===== -->
+    <section class="inst-section" data-category="hospital">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">📌</span>
+          <h2 class="section-title">โรงพยาบาลเครือข่ายหลัก</h2>
+          <p class="section-sub">พระปกเกล้า / ชลบุรี</p>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="hospital พระปกเกล้า ต้อม dormitory">
+            <div class="card-header">
+              <h3 class="card-title">โรงพยาบาลพระปกเกล้า</h3>
+              <span class="badge badge-dormitory">มีที่พัก</span>
+            </div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span><strong>ผู้ประสานงาน:</strong> คุณต้อม</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:039324861">039-324-861</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:cmec.ppk@gmail.com">cmec.ppk@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://form.jotform.com/251261629100446" target="_blank">ระบบ Jotform</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 รายละเอียดที่พัก</h4>
+              <ul>
+                <li>พักห้องละ 2 คน (หอพักนิสิตแพทย์ 1) อยู่ร่วมกับนิสิตจุฬาฯ</li>
+                <li>ค่าไฟ 150 บาท/สัปดาห์ · ค่าน้ำ <strong>ฟรี</strong></li>
+                <li>ค่าประกันกุญแจ 300 บาท + คีย์การ์ด 300 บาท</li>
+                <li>เข้าพักได้ 1 วันก่อนเริ่มงาน · รับกุญแจได้ 24 ชม.</li>
+                <li>เตียง 3.5 ฟุต · ต้องเตรียมหมอนและผ้าปูที่นอนมาเอง</li>
+              </ul>
+              <a href="https://drive.google.com/file/d/19GCUb_jXvfZHjEzfez6WOgXpxFlutopK/view?usp=sharing" target="_blank" class="detail-link">📄 รายละเอียดเพิ่มเติม (Google Drive)</a>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital ชลบุรี แอน เอ๋">
+            <div class="card-header">
+              <h3 class="card-title">โรงพยาบาลชลบุรี</h3>
+            </div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณแอน (ปี 6) / คุณเอ๋ (ปี 5)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:038931670">038-931-670</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:mec_chon@hotmail.com">mec_chon@hotmail.com</a></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: CHULA DEPARTMENTS ===== -->
+    <section class="inst-section bg-sand" id="chula" data-category="chula">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏛️</span>
+          <h2 class="section-title">คณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย</h2>
+          <p class="section-sub">แยกตามภาควิชา</p>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="chula กายวิภาค anatomy">
+            <div class="card-header"><h3 class="card-title">ภาควิชากายวิภาคศาสตร์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564281">02-256-4281</a> / <a href="tel:022564751">02-256-4751</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:anatomy_tan@hotmail.com">anatomy_tan@hotmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula กุมารเวชศาสตร์ pediatrics กบ แหม่ม">
+            <div class="card-header"><h3 class="card-title">ภาควิชากุมารเวชศาสตร์</h3><span class="badge badge-loc">ตึก สก ชั้น 11</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณกบ (อุทัย อ่อนสิงห์) / คุณแหม่ม</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564971">02-256-4971</a> / <a href="tel:022564951">02-256-4951</a> / <a href="tel:022564990">02-256-4990</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:utai.o@chula.ac.th">utai.o@chula.ac.th</a> / <a href="mailto:jeerawan_suk@yahoo.co.th">jeerawan_suk@yahoo.co.th</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula จักษุวิทยา ophthalmology วรินทร">
+            <div class="card-header"><h3 class="card-title">ภาควิชาจักษุวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>วรินทร เยื้อนหนูวงศ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 61634</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:warinthon.y@gmail.com">warinthon.y@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula จุลชีววิทยา microbiology Pattaraporn Fah">
+            <div class="card-header"><h3 class="card-title">ภาควิชาจุลชีววิทยา</h3><span class="badge badge-loc">อปร. 16</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>Pattaraporn S. (Fah)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564470">02-256-4470-4472</a> ต่อ 109</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:mspatta.s@gmail.com">mspatta.s@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">📍</span><span>Aor Por Ror 16, Dept. of Microbiology</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ชีวเคมี biochemistry พนินธรณ์">
+            <div class="card-header"><h3 class="card-title">ภาควิชาชีวเคมี</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.พนินธรณ์ ประทุมเพ็ชร</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:6622564482">+662 256-4482</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:panintorn.pt@gmail.com">panintorn.pt@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">📍</span><span>Dept. of Biochemistry, Rama 4 Rd. Bangkok 10330</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula นิติเวช forensic ธัญญารัตน์">
+            <div class="card-header"><h3 class="card-title">ภาควิชานิติเวชศาสตร์</h3><span class="badge badge-loc">อาคารมงกุฎ-เพชรรัตน์</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>ธัญญารัตน์ สอนวิทย์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 72604</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:forensic.medcu@gmail.com">forensic.medcu@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula จิตเวช psychiatry นิสายชล ชุตาภรณ์">
+            <div class="card-header"><h3 class="card-title">ภาควิชาจิตเวชศาสตร์</h3><span class="badge badge-loc">รัตนวิทยาพัฒน์ ชั้น 15B ห้อง 1512</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณนิสายชล ดวนใหญ่ / คุณชุตาภรณ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564298">02-256-4298</a> / <a href="tel:022564346">02-256-4346</a> / ต่อ 61502, 61511</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:nisaichon_d@hotmail.com">nisaichon_d@hotmail.com</a> / <a href="mailto:chutarporn.m@gmail.com">chutarporn.m@gmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ปรสิตวิทยา parasitology น้ำ">
+            <div class="card-header"><h3 class="card-title">ภาควิชาปรสิตวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณน้ำ</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula พยาธิวิทยา pathology อริยาภรณ์">
+            <div class="card-header"><h3 class="card-title">ภาควิชาพยาธิวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>อริยาภรณ์ ประคองวงษ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564235">02-256-4235</a> / ต่อ 306</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:nan.patho@gmail.com">nan.patho@gmail.com</a> / <a href="mailto:ariya2509@hotmail.com">ariya2509@hotmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula เภสัชวิทยา pharmacology">
+            <div class="card-header"><h3 class="card-title">ภาควิชาเภสัชวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564481">02-256-4481</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula รังสีวิทยา radiology นู radiochula">
+            <div class="card-header"><h3 class="card-title">ภาควิชารังสีวิทยา</h3><span class="badge badge-loc">รัตนวิทยพัฒน์ ชั้น 8A / ภูมิสิริฯ ชั้น 3</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณนู</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 60849</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:darika.t@chula.ac.th">darika.t@chula.ac.th</a> / <a href="mailto:radiochula@outlook.com">radiochula@outlook.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula วิสัญญี anesthesia Anchalee">
+            <div class="card-header"><h3 class="card-title">ภาควิชาวิสัญญีวิทยา</h3><span class="badge badge-loc">ภูมิสิริฯ ชั้น 15</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>Anchalee Kaweekijboriboon</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 81517, 81515</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:ankaweekij@gmail.com">ankaweekij@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula เวชศาสตร์ชันสูตร laboratory สิรภัทร คุณากร">
+            <div class="card-header"><h3 class="card-title">ภาควิชาเวชศาสตร์ชันสูตร</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022527788">02-252-7788</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>สิรภัทร สุริยะ — ต่อ 60573 (<a href="mailto:sirapatsuriya@gmail.com">sirapatsuriya@gmail.com</a>)</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>คุณากร เอกชยางกูร (ก๊อต) — ต่อ 60569 (<a href="mailto:gotdebsirin@gmail.com">gotdebsirin@gmail.com</a>)</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula เวชศาสตร์ป้องกัน preventive social ปริญญา ภาวิตา">
+            <div class="card-header"><h3 class="card-title">ภาควิชาเวชศาสตร์ป้องกันและสังคม</h3><span class="badge badge-loc">อปร. ชั้น 19</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>นายปริญญา กิติดำรงสุข</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564000">02-256-4000 ต่อ 3701</a> / <a href="tel:022527864">02-252-7864</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:parinya.ki@chula.ac.th">parinya.ki@chula.ac.th</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ภาวิตา ดอนแก</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:pavita1522@gmail.com">pavita1522@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ศัลยศาสตร์ surgery สุพรรณี Trauma CVT Neuro Plastic Uro">
+            <div class="card-header"><h3 class="card-title">ภาควิชาศัลยศาสตร์</h3><span class="badge badge-loc">รัตนวิทยาพัฒน์ ชั้น 13 ห้อง 1302</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณสุพรรณี สีแดง</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 61435</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:seedang12@yahoo.com">seedang12@yahoo.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>📋 หมายเหตุ</h4>
+              <p>รายงานตัววันแรกที่ ห้อง 1302 ชั้น 13 อาคารรัตนวิทยาพัฒน์</p>
+              <h4>☎️ เบอร์ภายในย่อย</h4>
+              <ul class="sub-list">
+                <li>Trauma: <a href="tel:022564117">02-256-4117</a> กด 29</li>
+                <li>Cardio CVT: <a href="tel:022564944">02-256-4944</a></li>
+                <li>Neuro: <a href="tel:022564105">02-256-4105</a></li>
+                <li>Plastic: <a href="tel:022564120">02-256-4120</a></li>
+                <li>Uro: <a href="tel:022564515">02-256-4515</a> / ต่อ 61337</li>
+                <li>Ped: <a href="tel:022564979">02-256-4979</a></li>
+                <li>G1: ต่อ 61331</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ออร์โธ orthopedics">
+            <div class="card-header"><h3 class="card-title">ภาควิชาออร์โธปิดิกส์</h3><span class="badge badge-loc">รัตนวิทยาพัฒน์ ชั้น 12</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564230">02-256-4230</a> / <a href="tel:022564510">02-256-4510</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula สรีรวิทยา physiology">
+            <div class="card-header"><h3 class="card-title">ภาควิชาสรีรวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564267">02-256-4267</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:sureepan.k@gmail.com">sureepan.k@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula สูติ นรีเวช OB GYN วรัญญา">
+            <div class="card-header"><h3 class="card-title">ภาควิชาสูติศาสตร์-นรีเวชวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณวรัญญา</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 2113</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:undergrad@outlook.co.th">undergrad@outlook.co.th</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula โสต ศอ นาสิก ENT เกศแก้ว">
+            <div class="card-header"><h3 class="card-title">ภาควิชาโสต ศอ นาสิกวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>เกศแก้ว เกตุมณี</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022564000">02-256-4000 ต่อ 61724</a> / <a href="tel:022564103">02-256-4103</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:katkaew.ent@gmail.com">katkaew.ent@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula อายุรศาสตร์ internal medicine วรรณี ดวงนภา cardiology nephrology GI pulmonary">
+            <div class="card-header"><h3 class="card-title">ภาควิชาอายุรศาสตร์</h3><span class="badge badge-loc">รัตนฯ ชั้น 18</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 61827</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>คุณวรรณี / ดวงนภา — ต่อ 61823</span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ สาขาวิชา/หน่วยย่อย</h4>
+              <ul class="sub-list">
+                <li>โรคติดเชื้อ: <a href="tel:022564930">02-256-4930</a></li>
+                <li>โรคทางเดินอาหาร (GI): ติดต่อหทัยรัตน์ ต่อ 80236-7</li>
+                <li>โรคไต: คุณทิพย์วัลย์ <a href="tel:022564251">02-256-4251 ต่อ 114</a></li>
+                <li>โรคปอด: ต่อ 80741-2</li>
+                <li>รูมาโต: ต่อ 80650</li>
+                <li>Basic Stroke: <a href="mailto:pimpicthta@outlook.co.th">pimpicthta@outlook.co.th</a></li>
+                <li>ตจวิทยา (ผิวหนัง): <a href="tel:022564253">02-256-4253 ต่อ 100</a> / ต่อ 80501-5</li>
+                <li>อายุรศาสตร์หัวใจ: <a href="tel:022564184">02-256-4184 ต่อ 0</a> / <a href="mailto:supawan.chulacardio@gmail.com">supawan.chulacardio@gmail.com</a></li>
+              </ul>
+              <h4>🏥 Adult Noninvasive Cardiology (ภูมิสิริฯ ชั้น 4 โซน A)</h4>
+              <div class="contact-row"><span class="icon">👤</span><span>นางสาวพราวพิรุณ ศรีรัตนพิทักษ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 กด 80430</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:prawpirun.sri@chulahospital.org">prawpirun.sri@chulahospital.org</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula เวชศาสตร์ฟื้นฟู rehabilitation จิณณ์ณิชา พรพิมล">
+            <div class="card-header"><h3 class="card-title">ภาควิชาเวชศาสตร์ฟื้นฟู</h3><span class="badge badge-loc">รัตนวิทยาพัฒน์ ชั้น 6</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณจิณณ์ณิชา — ต่อ 60603 (<a href="mailto:pim.love.prea@gmail.com">pim.love.prea@gmail.com</a>)</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>พรพิมล ชูบุญ — ต่อ 60602 (<a href="mailto:Pornpimon.C@chula.ac.th">Pornpimon.C@chula.ac.th</a>)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula เวชศาสตร์ฉุกเฉิน emergency">
+            <div class="card-header"><h3 class="card-title">ภาควิชาเวชศาสตร์ฉุกเฉิน</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:emergency1873@gmail.com">emergency1873@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ชีวาภิบาล palliative care 3000610">
+            <div class="card-header"><h3 class="card-title">ศูนย์ชีวาภิบาล</h3><span class="badge badge-loc">ภูมิสิริฯ ชั้น 14D</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📖</span><span>วิชา 3000610 Basic Palliative Care</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564000">02-256-4000 ต่อ 81420</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:cheewabhibaln@gmail.com">cheewabhibaln@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">📍</span><span>ภูมิสิริมังคลานุสรณ์ ชั้น 14D 1873 ถ.พระราม 4</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula ฝ่ายวางแผน สัญญาชดใช้ทุน อรสา">
+            <div class="card-header"><h3 class="card-title">ฝ่ายวางแผนและพัฒนา</h3><span class="badge badge-loc">อานันทมหิดล ชั้น 6</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📋</span><span>เรื่อง: <strong>สัญญาชดใช้ทุน</strong></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>คุณอรสา เอี่ยมสะอาด</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022564451">02-256-4451 ต่อ 14</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:orasa.iam@gmail.com">orasa.iam@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="chula สนับสนุน HR การเงิน อาคาร International Affairs">
+            <div class="card-header"><h3 class="card-title">ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span>งานสารบรรณ/เลขา: ต่อ 61958</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>HR โรงพยาบาล: ต่อ 5086</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>การเงิน: <a href="tel:022564457">02-256-4457 ต่อ 29 / 23</a> (พี่ป้อม)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>งานอาคาร: ต่อ 4458</span></div>
+              <div class="contact-row"><span class="icon">🌐</span><span>Division of International Affairs — Mr. Watcharapol Malaiwong<br/>Room 104, 1F Anandamahidol Building · ต่อ 3404</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: UNIVERSITIES 101-113 ===== -->
+    <section class="inst-section" id="universities" data-category="university">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏥</span>
+          <h2 class="section-title">กลุ่มสถาบันแพทยศาสตร์และมหาวิทยาลัย</h2>
+          <p class="section-sub">รหัส 101 – 113</p>
+        </div>
+        <div class="cards-grid">
+
+          <!-- NEW CARD:  โรงพยาบาลภูมิพลอดุลยเดช กรมแพทย์ทหารอากาศ -->
+<div class="card fade-up" data-tags="hospital ภูมิพล Bhumibol airforce">
+  <div class="card-header"><h3 class="card-title">รพ.ภูมิพลอดุลยเดช กรมแพทย์ทหารอากาศ</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>กองแพทยศาสตร์ศึกษา — <a href="tel:025347411">02-534-7411</a> / <a href="tel:025347684">02-534-7684</a> / <a href="tel:025347465">02-534-7465</a> / <a href="mailto:patcharada09@gmail.com">patcharada09@gmail.com</a></span></div>
+  </div>
+  <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>จักษุวิทยา: <a href="tel:025347349">02-534-7349</a></li>
+              </ul>
+              <h4>🏠 ที่พัก</h4>
+              <ul>
+                <li>ด้านที่พัก (แจ้งฝ่ายวิชาการ พี่แจ๊ค): <a href="tel:025347463">02-534-7463</a>–5</li>
+                <li>ค่ามัดจำกุญแจ: 300 บาท/คน</li>
+                <li>ค่ามัดจำคีย์การ์ด: 300 บาท/คน</li>
+                <li>ค่าที่พัก: สัปดาห์ละ 200 บาท/คน</li>
+              </ul>
+  </div>
+</div>
+
+          <!-- 101 KKU -->
+          <div class="card fade-up" data-tags="university 101 ขอนแก่น KKU เฟียต ปุ้ย">
+            <div class="card-header"><h3 class="card-title"><span class="code">101</span> ม.ขอนแก่น</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>ฝ่ายวิชาการ: คุณเฟียต — <a href="tel:043348888">043-348-888 ต่อ 67663</a> / <a href="mailto:thanhom@kku.ac.th">thanhom@kku.ac.th</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: คุณปุ้ย <a href="tel:043363665">043-363-665</a> / <a href="mailto:tanyph@kku.ac.th">tanyph@kku.ac.th</a></li>
+                <li>ศัลยศาสตร์: คุณจตุพร น้อยสุวรรณ <a href="tel:043363252">043-363-252</a> / <a href="mailto:indirectnew@gmail.com">indirectnew@gmail.com</a></li>
+                <li>ออร์โธปิดิกส์: คุณศรินญา <a href="tel:043348398">043-348-398</a> / <a href="tel:0885519528">088-551-9528</a> / <a href="mailto:ortho.kku@gmail.com">ortho.kku@gmail.com</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: <a href="tel:043366869">043-366-869</a> / <a href="mailto:chotmo@kku.ac.th">chotmo@kku.ac.th</a></li>
+                <li>เวชศาสตร์ครอบครัว: <a href="tel:043364123">043-364-123</a></li>
+                <li>วิสัญญีวิทยา: คุณจุรีรัตน์ <a href="tel:0897105503">089-710-5503</a> / <a href="mailto:jureph@kku.ac.th">jureph@kku.ac.th</a></li>
+                <li>นิติเวชศาสตร์: <a href="tel:043202859">043-202-859</a></li>
+                <li>จักษุวิทยา: คุณจินตนา (จิ๋ว) <a href="tel:043348383">043-348-383</a> / <a href="mailto:jintsi@kku.ac.th">jintsi@kku.ac.th</a> <span class="note">⚠️ ไม่สะดวก พ.ค.–ก.ค.</span></li>
+                <li>โสต ศอ นาสิก: คุณน้ำทิพย์ <a href="tel:043363563">043-363-563</a> / <a href="mailto:namtpa@kku.ac.th">namtpa@kku.ac.th</a></li>
+                <li>จิตเวชศาสตร์: <a href="tel:043363027">043-363-027</a> / <a href="mailto:sinsja@kku.ac.th">sinsja@kku.ac.th</a></li>
+                <li>รังสีวิทยา: Sukanya B. <a href="tel:0875041130">087-504-1130</a> / <a href="mailto:sukabo@kku.ac.th">sukabo@kku.ac.th</a></li>
+                <li>เวชศาสตร์ฟื้นฟู: <a href="mailto:darubo@kku.ac.th">darubo@kku.ac.th</a></li>
+                <li>สูติ-นรีเวช: <a href="tel:043363030">043-363-030</a> / <a href="mailto:jamjkr@kku.ac.th">jamjkr@kku.ac.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 102 CMU -->
+          <div class="card fade-up" data-tags="university 102 เชียงใหม่ CMU จีระนันท์ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">102</span> ม.เชียงใหม่</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>ฝ่ายวิชาการ: คุณจีระนันท์ (หนิง)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:053935262">053-935-262</a>–3</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:jeeranun.j@cmu.ac.th">jeeranun.j@cmu.ac.th</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: คุณเกสร <a href="tel:053935483">053-935-483</a> / <a href="mailto:kanom_tangmo@hotmail.com">kanom_tangmo@hotmail.com</a> / <a href="mailto:cmumedicine@gmail.com">cmumedicine@gmail.com</a></li>
+                <li>กุมารเวชศาสตร์: คุณรัตน์ติกา <a href="tel:053936462">053-936-462</a> / <a href="mailto:ratti050@gmail.com">ratti050@gmail.com</a></li>
+                <li>ศัลยศาสตร์: คุณพรทิพา <a href="tel:053935533">053-935-533 ต่อ 104</a></li>
+                <li>สูติ-นรีเวช: คุณสุรพร <a href="tel:0817467187">081-746-7187</a> / <a href="mailto:suraporn.p@cmu.ac.th">suraporn.p@cmu.ac.th</a></li>
+                <li>ออร์โธปิดิกส์: คุณศิริเพ็ญ <a href="tel:053935545">053-935-545</a> / <a href="mailto:siripenkhorboon@gmail.com">siripenkhorboon@gmail.com</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: <a href="tel:053938796">053-938-796</a> / <a href="mailto:emergencycmu@cmu.ac.th">emergencycmu@cmu.ac.th</a> / <a href="https://docs.google.com/forms/d/e/1FAIpQLSfyKgMB3PKOfg_KLTeBR3ZdqGZqEJkVEb-q0poirK8oRPbuyQ/viewform" target="_blank">📝 ใบสมัคร</a></li>
+                <li>เวชศาสตร์ครอบครัว: คุณนฤมล <a href="tel:053935462">053-935-462</a> / <a href="mailto:n.arumon.c198@gmail.com">n.arumon.c198@gmail.com</a></li>
+                <li>วิสัญญี: คุณกรรณิการ์ <a href="tel:053935526">053-935-526</a> / <a href="mailto:departmentanes@gmail.com">departmentanes@gmail.com</a></li>
+                <li>นิติเวช: <a href="tel:053935432">053-935-432</a> / <a href="mailto:forensic-med@cmu.ac.th">forensic-med@cmu.ac.th</a></li>
+                <li>จักษุวิทยา: น.ส.นภัทรทิตา <a href="tel:053935512">053-935-512</a> / <a href="mailto:napattita20@gmail.com">napattita20@gmail.com</a></li>
+                <li>โสต ศอ นาสิก: คุณบัณฑิต <a href="tel:053935569">053-935-569</a> / <a href="mailto:bandit.j1111@gmail.com">bandit.j1111@gmail.com</a> / <a href="https://docs.google.com/forms/d/1F3vZUT_YnNwuXeE1CiFdROEJ2jagkWczKUbQcb-TXaM/viewform?edit_requested=true" target="_blank">📝 ใบสมัคร</a> <span class="note">ตอบกลับ 3 วันทำการ</span></li>
+                <li>จิตเวช: คุณวีรพงศ์ <a href="tel:0846154614">084-615-4614</a> / <a href="mailto:weerapong.n@cmu.ac.th">weerapong.n@cmu.ac.th</a></li>
+                <li>รังสีวิทยา: คุณแพร <a href="tel:053935466">053-935-466</a> / <a href="mailto:parepilan307@gmail.com">parepilan307@gmail.com</a></li>
+                <li>พยาธิวิทยา: <a href="tel:053935442">053-935-442</a></li>
+                <li>เวชศาสตร์ฟื้นฟู: น.ส.สุจิตรา <a href="tel:053936322">053-936-322</a> / <a href="mailto:suhundee@gmail.com">suhundee@gmail.com</a></li>
+                <li>เวชศาสตร์ชุมชน: อมรรัตน์ <a href="tel:053935472">053-935-472</a>–4 ต่อ 117 / <a href="mailto:amornrat.t56@gmail.com">amornrat.t56@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 103 TU -->
+          <div class="card fade-up" data-tags="university 103 ธรรมศาสตร์ TU MANOW dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">103</span> ม.ธรรมศาสตร์</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>MANOW SUPARAT — <a href="mailto:nv_snow@hotmail.com">nv_snow@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:029269696">02-926-9696</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ฝ่ายนักวิชาการ: น.ส.ดวงเดือน จรัสจินดา <a href="tel:029269678">02-926-9678</a>–9 / <a href="mailto:kikunonea@hotmail.com">kikunonea@hotmail.com</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก (ติดต่อคุณยุ้ย)</h4>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:0982505350">098-250-5350</a> / <a href="tel:029269701">02-926-9701</a></span></div>
+              <ul>
+                <li>2 สัปดาห์: 1,000 บาท</li>
+                <li>ค่าน้ำ: 75 บาท/ครึ่งเดือน</li>
+                <li>ค่าไฟ: 5 บาท/ยูนิต</li>
+              </ul>
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>กุมารฯ: น.ส.กาญจนา <a href="tel:029269678">02-926-9678</a> / <a href="mailto:Pedialric_bk@hotmail.com">Pedialric_bk@hotmail.com</a></li>
+                <li>ศัลยศาสตร์: <a href="tel:029269523">02-926-9523</a> / <a href="mailto:Auw_11@yahoo.com">Auw_11@yahoo.com</a> / คุณบูม <a href="tel:029269698">02-926-9698</a></li>
+                <li>อายุรศาสตร์: <a href="tel:029269793">02-926-9793</a> / <a href="mailto:pbubpha@hotmail.com">pbubpha@hotmail.com</a></li>
+                <li>สูติ-นรีเวช: <a href="tel:029269678">02-926-9678</a></li>
+                <li>ออร์โธปิดิกส์: <a href="tel:029269775">02-926-9775</a> / <a href="mailto:inoonune.kp@gmail.com">inoonune.kp@gmail.com</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: คุณบุษรัตน์ <a href="tel:029269678">02-926-9678</a> / <a href="mailto:bsaaruut@hotmail.com">bsaaruut@hotmail.com</a> / คุณดรีม <a href="mailto:dreamwaa@gmail.com">dreamwaa@gmail.com</a></li>
+                <li>จักษุวิทยา: คุณดวงเดือน <a href="tel:029269678">02-926-9678</a> / <a href="mailto:kikunonea@hotmail.com">kikunonea@hotmail.com</a></li>
+                <li>รังสีวิทยา: น.ส.นธิญา <a href="tel:029269678">02-926-9678</a> / <a href="mailto:Wrnpt02@gmail.com">Wrnpt02@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 104 NU -->
+          <div class="card fade-up" data-tags="university 104 นเรศวร NU ธเนศ มาโนชญ์">
+            <div class="card-header"><h3 class="card-title"><span class="code">104</span> ม.นเรศวร</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span>หน่วยบริหารการศึกษา: <a href="tel:055967957">055-967-957</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>กุมารฯ: นายธเนศ ขำคล้าย <a href="tel:055967959">055-967-959</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>จักษุฯ: มาโนชญ์ สอดแกะ <a href="tel:055967951">055-967-951</a> / <a href="mailto:manods@nu.ac.th">manods@nu.ac.th</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>ศัลยศาสตร์: <a href="tel:055965018">055-965-018</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>ออร์โธปิดิกส์: <a href="tel:055965560">055-965-560</a></span></div>
+            </div>
+          </div>
+
+          <!-- 105 PSU -->
+          <div class="card fade-up" data-tags="university 105 สงขลานครินทร์ PSU ลัดดาวัลย์ ปาจรีย์">
+            <div class="card-header"><h3 class="card-title"><span class="code">105</span> ม.สงขลานครินทร์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณลัดดาวัลย์ (พี่แอ๊ด) — <a href="tel:074451540">074-451-540</a> / <a href="mailto:laddawan.c@psu.ac.th">laddawan.c@psu.ac.th</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>กิจการนักศึกษา: คุณปาจรีย์ — <a href="tel:074451545">074-451-545</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: คุณเจริญพร <a href="tel:074451451">074-451-451</a> / <a href="mailto:kjarernp@medicine.psu.ac.th">kjarernp@medicine.psu.ac.th</a> <span class="note">โทรติดต่อโดยตรง</span></li>
+                <li>ศัลยศาสตร์: คุณปิยะพร <a href="tel:074451405">074-451-405</a> / <a href="mailto:kpiyapor@gmail.com">kpiyapor@gmail.com</a></li>
+                <li>ออร์โธปิดิกส์: คุณจงดี <a href="tel:074451603">074-451-603</a> / <a href="tel:0810983155">081-098-3155</a> / <a href="mailto:sjongdee@medicine.psu.ac.th">sjongdee@medicine.psu.ac.th</a> <span class="note">โทรติดต่อโดยตรง</span></li>
+                <li>จักษุฯ: คุณพนิดา <a href="tel:074451380">074-451-380</a>–1 / <a href="mailto:ppanida@medicine.psu.ac.th">ppanida@medicine.psu.ac.th</a> <span class="note">ไม่เกิน 2 สัปดาห์</span></li>
+                <li>รังสีวิทยา: คุณธนพร <a href="tel:074451508">074-451-508</a> / Line: tap_fine / <a href="mailto:ptanapor@medicine.psu.ac.th">ptanapor@medicine.psu.ac.th</a></li>
+                <li>วิสัญญี: <a href="tel:074451655">074-451-655</a></li>
+                <li>เวชศาสตร์ฟื้นฟู: <a href="tel:074451601">074-451-601</a> / <a href="mailto:pattawadee.d@email.psu.ac.th">pattawadee.d@email.psu.ac.th</a></li>
+                <li>โสต ศอ นาสิก: คุณสาวิกา <a href="tel:074451393">074-451-393</a> / <a href="mailto:savika.v@psu.ac.th">savika.v@psu.ac.th</a></li>
+                <li>จิตเวช: คุณศุภวรรณ <a href="tel:074451351">074-451-351</a> / <a href="mailto:jeebpy@hotmail.com">jeebpy@hotmail.com</a></li>
+                              <li><a href="tel:074338100">074338100</a> ต่อ 5000 / <a href="tel:0819638861">0819638861</a></li>
+                <li><a href="mailto:meded.sk@gmail.com">meded.sk@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <!-- 106 Ramathibodi -->
+          <div class="card fade-up" data-tags="university 106 รามาธิบดี Rama มหิดล มินต์ ติ๊ก dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">106</span> รามาธิบดี (มหิดล)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022011060">02-201-1060</a> / <a href="tel:022012268">02-201-2268</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:elective.rama63@gmail.com">elective.rama63@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ทำบัตร: คุณติ๊ก <a href="tel:022012268">02-201-2268</a> / <a href="mailto:natthaya.tha@mahidol.ac.th">natthaya.tha@mahidol.ac.th</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: คุณมินต์ <a href="tel:022011391">02-201-1391</a> / <a href="mailto:sp.sirinit@gmail.com">sp.sirinit@gmail.com</a></li>
+                <li>โรคไต: <a href="tel:022011400">02-201-1400</a> / <a href="mailto:nephroramathibodi@gmail.com">nephroramathibodi@gmail.com</a></li>
+                <li>โรคหัวใจ: <a href="tel:022012426">02-201-2426</a> / <a href="mailto:cardio52@gmail.com">cardio52@gmail.com</a></li>
+                <li>กุมารฯ: คุณศิริราช <a href="tel:022011815">02-201-1815</a></li>
+                <li>ศัลยศาสตร์: คุณติ๋ว <a href="tel:022011315">02-201-1315</a> / <a href="mailto:sopana.nook@gmail.com">sopana.nook@gmail.com</a></li>
+                <li>ออร์โธปิดิกส์: คุณพิณนภา <a href="tel:022012632">02-201-2632</a> / <a href="mailto:pentitle28@gmail.com">pentitle28@gmail.com</a> <span class="note">มี 5 สาย: hand, sport, spine, trauma, pediatrics</span></li>
+                <li>จักษุฯ: <a href="tel:022011533">02-201-1533</a></li>
+                <li>วิสัญญี: คุณแป๋ม <a href="tel:022011513">02-201-1513</a> <span class="note">เลือก: ICU หรือ ระบบหายใจ</span></li>
+                <li>เวชศาสตร์ฟื้นฟู: คุณแจง <a href="tel:022011154">02-201-1154</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: <a href="tel:022011484">02-201-1484</a> / <a href="https://form.jotform.com/213037892567060" target="_blank">📝 ลงทะเบียน Jotform</a></li>
+                <li>จิตเวช: อาคาร 3 ชั้น 7 <a href="tel:022011478">02-201-1478 ต่อ 221</a> / จิตเวชเด็ก ต่อ 230</li>
+                <li>รังสีวิทยา: <a href="tel:022011259">02-201-1259 ต่อ 107</a></li>
+                <li>Radiation Oncology: Khwanruean.K <a href="tel:022012295">02-201-2295</a> / <a href="mailto:khwanruean.kan@gmail.com">khwanruean.kan@gmail.com</a></li>
+                <li>สูติ-นรีเวช: <a href="tel:022010793">02-201-0793</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 107 Vajira -->
+          <div class="card fade-up" data-tags="university 107 วชิรพยาบาล Vajira NMU">
+            <div class="card-header"><h3 class="card-title"><span class="code">107</span> วชิรพยาบาล (NMU)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span>ธุรการคณะ: <a href="tel:022443000">02-244-3000 ต่อ 3026</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>งานการศึกษาคลินิก: <a href="tel:022443151">02-244-3151</a>–2</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:arada@nmu.ac.th">arada@nmu.ac.th</a> / <a href="mailto:jaruporn@nmu.ac.th">jaruporn@nmu.ac.th</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>โสต ศอ นาสิก: น.ส.วรรัตน์ <a href="tel:022443397">02-244-3397</a> / <a href="mailto:oto@nmu.ac.th">oto@nmu.ac.th</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: น.ส.รัตนวดี <a href="tel:022443189">02-244-3189</a> / <a href="mailto:emm@nmu.ac.th">emm@nmu.ac.th</a></li>
+                <li>ศัลยศาสตร์: <a href="tel:022443282">02-244-3282</a> / <a href="mailto:saraban-vajira-sur@nmu.ac.th">saraban-vajira-sur@nmu.ac.th</a></li>
+                <li>จิตเวชศาสตร์: น.ส.ณัฎธิณี <a href="tel:022443667">02-244-3667</a> / <a href="mailto:saraban-vajira-psy@nmu.ac.th">saraban-vajira-psy@nmu.ac.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 108 Siriraj -->
+          <div class="card fade-up" data-tags="university 108 ศิริราช Siriraj มหิดล เกด dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">108</span> ศิริราชพยาบาล (มหิดล)</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณเกด (ณัฏฐ์ภัทร์ ศรสงวน)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:024196500">02-419-6500</a> / <a href="tel:024199500">02-419-9500</a></div>
+              <div class="contact-row"><span class="icon">📱</span><span>085-222-1600 · LINE: kead222</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:elective.si.mahidol@gmail.com">elective.si.mahidol@gmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 หอพัก (หอเจ้าพระยา)</h4>
+              <ul>
+                <li>ค่ามัดจำกุญแจ 100 บาท + ค่าทำความสะอาด 100 บาท = <strong>200 บาท</strong></li>
+                <li><strong>⚠️ ชำระเงินสดเท่านั้น</strong> (ไม่รับโอน)</li>
+              </ul>
+              <h4>☎️ ติดต่อแยกส่วนงาน</h4>
+              <ul class="sub-list">
+                <li>สูติ-นรีเวช: <a href="tel:024194636">02-419-4636</a>–8 / เมธยา <a href="mailto:maytaya9730@gmail.com">maytaya9730@gmail.com</a></li>
+                <li>ตจวิทยา (ผิวหนัง): คุณรุ่งนภา <a href="tel:024194337">02-419-4337</a> / <a href="mailto:rungnapa.tho@mahidol.ac.th">rungnapa.tho@mahidol.ac.th</a></li>
+                <li>ศัลยศาสตร์ (ทรวงอก): <a href="tel:024197998">02-419-7998</a></li>
+                <li>ศัลยศาสตร์ทั่วไป: <a href="tel:024196450">02-419-6450</a></li>
+                <li>อายุรศาสตร์ (ประสาทวิทยา): <a href="tel:024197101">02-419-7101</a></li>
+                <li>อายุรศาสตร์ (หทัยวิทยา): <a href="tel:024196102">02-419-6102</a></li>
+                <li>อายุรศาสตร์ (Hematology): <a href="tel:024194448">02-419-4448</a></li>
+                <li>จักษุฯ: คุณอนันต์ <a href="tel:024196449">02-419-6449</a> <span class="note">มีเวร · ที่พัก 14 วัน 750 บาท</span></li>
+                <li>เวชศาสตร์ฟื้นฟู: ตึกศรีสังวาลย์ ชั้น 9 · <a href="tel:024197508">02-419-7508 ต่อ 103</a> / <a href="mailto:undergraduate.pmr@gmail.com">undergraduate.pmr@gmail.com</a></li>
+                <li>วิสัญญี: <a href="tel:024197990">02-419-7990</a></li>
+                <li>อายุรกรรมปัจฉิมวัย: <a href="tel:024197196">02-419-7196</a></li>
+                <li>จิตเวช: คุณประภาพรรณ <a href="tel:0860059264">086-005-9264</a> / <a href="mailto:prapapan.pum@mahidol.ac.th">prapapan.pum@mahidol.ac.th</a></li>
+                <li>แพทย์แผนไทยประยุกต์: ตึกอดุลยเดชวิกรม ชั้น 13 <a href="tel:024198826">02-419-8826</a>–7 / <a href="mailto:edu.thaimed07@gmail.com">edu.thaimed07@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 109 Rajavithi -->
+          <div class="card fade-up" data-tags="hospital 109 ราชวิถี Rajavithi">
+            <div class="card-header"><h3 class="card-title"><span class="code">109</span> โรงพยาบาลราชวิถี</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022062900">02-206-2900 ต่อ 60118</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:tdif_2011@hotmail.com">tdif_2011@hotmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์ GI: ต่อ 31032 / <a href="mailto:natte-060@hotmail.com">natte-060@hotmail.com</a></li>
+                <li>อายุรศาสตร์ Nephro: ต่อ 10991 / <a href="mailto:nephro.rj@gmail.com">nephro.rj@gmail.com</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: คุณสุมิตรา <a href="tel:026446818">026-446-818</a> / <a href="mailto:sumitraer@gmail.com">sumitraer@gmail.com</a></li>
+                <li>โสต ศอ นาสิก: คุณประณิตา ต่อ 21101 / <a href="mailto:entrj2@gmail.com">entrj2@gmail.com</a></li>
+                <li>ศัลยศาสตร์ทั่วไป: ต่อ 60902/31102/31103 / <a href="mailto:general.surgery.rajavithi@gmail.com">general.surgery.rajavithi@gmail.com</a></li>
+                <li>โรคหัวใจ: <a href="mailto:tam_sutthisa@hotmail.co.th">tam_sutthisa@hotmail.co.th</a></li>
+                <li>สูตินรีเวช: ต่อ 30213 / <a href="mailto:backoffice.gyn.ob@gmail.com">backoffice.gyn.ob@gmail.com</a></li>
+                <li>เวชศาสตร์ครอบครัว: <a href="tel:0836013688">083-601-3688</a> / <a href="mailto:backoffice.FMRJ@gmail.com">backoffice.FMRJ@gmail.com</a></li>
+                <li>โรคผิวหนัง: วงเดือน ต่อ 10200 / <a href="mailto:rajavithiskin@gmail.com">rajavithiskin@gmail.com</a></li>
+                <li>ออร์โธปิดิกส์: ต่อ 11406-7 / <a href="mailto:orthorajavithi@gmail.com">orthorajavithi@gmail.com</a></li>
+                <li>ยูโรวิทยา: <a href="mailto:uro3140@gmail.com">uro3140@gmail.com</a></li>
+                <li>จักษุวิทยา (SCORa): คุณประไพ/คุณนฤชา ต่อ 11400 / <a href="mailto:eyeoffice2221@gmail.com">eyeoffice2221@gmail.com</a></li>
+              </ul>
+              <div class="special-box">
+                <h4>⭐ โครงการ SCORa (จักษุวิทยา)</h4>
+                <p>ปรับเป็นคอร์สระยะสั้น (เริ่ม 1 พ.ค. 2567) รับปี 4-6 และแพทย์ใช้ทุน</p>
+                <ul>
+                  <li>ค่าบริการ 3,000 บาท/สัปดาห์ (ไม่เกิน 2 สัปดาห์)</li>
+                  <li>โอน SCB เลขที่ 051-2-16322-1 Note: "กองทุนจักษุวิทยา"</li>
+                  <li>แจ้ง Line มูลนิธิ: <a href="http://line.me/R/ti/p/@utm2518w" target="_blank">@utm2518w</a></li>
+                  <li>อยู่เวร ≥ 1 วัน/สัปดาห์ (16:00–20:00 น.)</li>
+                  <li><a href="https://docs.google.com/spreadsheets/d/1QIYa2W7X21HzdG7dYickWx0BGaxfxCSp/edit?usp=sharing" target="_blank">📅 ตรวจสอบตาราง</a></li>
+                </ul>
+              
+              <h4>📋 ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="tel:022062900">022062900</a> ต่อ 21804</li>
+                <li><a href="mailto:petch.chan@gmail.com">petch.chan@gmail.com</a></li>
+                <li><a href="tel:022062900">022062900</a> ต่อ 21101, 21102</li>
+                <li><a href="mailto:anesthesia.rajavithi@gmail.com">anesthesia.rajavithi@gmail.com</a></li>
+                <li><a href="tel:022062900">022062900</a> ต่อ 10321</li>
+                <li><a href="mailto:somsak.s@cpird.in.th">somsak.s@cpird.in.th</a></li>
+                <li><a href="tel:022062900">022062900</a> ต่อ 21101</li>
+                <li>เบอร์โทร. <a href="tel:022062900">02-206-2900</a> ext. 60902, 31102, 31103</li>
+                <li><a href="mailto:laddawan3008@gmail.com">laddawan3008@gmail.com</a></li>
+                <li>โทร. <a href="tel:022062900">022062900</a> ต่อ 10200</li>
+              </ul></div>
+            </div>
+          </div>
+
+          <!-- 110 PMK -->
+          <div class="card fade-up" data-tags="university 110 พระมงกุฎเกล้า PMK อำไพ เก่ง กุ้ง">
+            <div class="card-header"><h3 class="card-title"><span class="code">110</span> วพม. (พระมงกุฎเกล้า)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>กองการศึกษา: คุณอำไพ ศรีประสงค์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:023547757">02-354-7757</a> / <a href="tel:0875673637">087-567-3637</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:am_lek@windowslive.com">am_lek@windowslive.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>จักษุฯ: <a href="tel:027633233">02-763-3233</a> / <a href="mailto:ja651727@gmail.com">ja651727@gmail.com</a></li>
+                <li>อายุรศาสตร์: คุณเก่ง <a href="tel:027633280">02-763-3280</a> / <a href="mailto:auchaya1809@gmail.com">auchaya1809@gmail.com</a></li>
+                <li>Cardiology: คุณปราณี <a href="tel:027633827">02-763-3827</a> / <a href="mailto:cardiology.pmk@hotmail.com">cardiology.pmk@hotmail.com</a></li>
+                <li>Dermatology: <a href="tel:027633034">02-763-3034</a></li>
+                <li>Endocrinology: <a href="tel:027633336">02-763-3336</a></li>
+                <li>โรคติดเชื้อ: คุณชุติรัตน์ <a href="tel:0611629493">061-162-9493</a> / <a href="mailto:chutirat2022@gmail.com">chutirat2022@gmail.com</a></li>
+                <li>ศัลยศาสตร์: คุณกุ้ง <a href="tel:027633133">02-763-3133</a> / <a href="mailto:c_hutamast@hotmail.com">c_hutamast@hotmail.com</a> <span class="note">รายงานตัวชั้น 7</span></li>
+                <li>ออร์โธปิดิกส์: กรรณิการ์ <a href="tel:0870743073">087-074-3073</a> / <a href="mailto:got.pmk@gmail.com">got.pmk@gmail.com</a></li>
+                <li>รังสีวิทยา: <a href="tel:027633812">02-763-3812</a> / <a href="mailto:pmkradiology2014@gmail.com">pmkradiology2014@gmail.com</a></li>
+                <li>โสต ศอ นาสิก: คุณกิ๊ก <a href="tel:027633685">02-763-3685</a></li>
+                <li>เวชศาสตร์ฟื้นฟู: <a href="tel:027633642">02-763-3642</a> / <a href="mailto:oattay@gmail.com">oattay@gmail.com</a></li>
+                <li>กุมารฯ: <a href="tel:027634162">02-763-4162</a>–3</li>
+                <li>จิตเวช/ประสาทวิทยา: <a href="tel:027633188">02-763-3188</a> / <a href="mailto:rtanc_@hotmail.com">rtanc_@hotmail.com</a></li>
+                              <li>โทร.<a href="tel:027633812"><a href="tel:027633812">02-763-3812</a></a>  หรือ 93812  โทรสาร.<a href="tel:027633812"><a href="tel:027633812">02-763-3812</a></a></li>
+                <li><a href="mailto:oattay@gmail.com">oattay@gmail.com</a> / <a href="mailto:pcmpmr6@gmail.com">pcmpmr6@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <!-- 111 SWU -->
+          <div class="card fade-up" data-tags="university 111 ศรีนครินทรวิโรฒ SWU สุรีย์รัตน์ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">111</span> ม.ศรีนครินทรวิโรฒ (SWU)</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:037395451">037-395-451 ต่อ 60435</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>สุรีย์รัตน์ เรืองศรี — <a href="tel:0860187344">086-018-7344</a> / <a href="mailto:sureeratru@g.swu.ac.th">sureeratru@g.swu.ac.th</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>จิตเวช: น.ส.ทิภาพร <a href="tel:0896001646">089-600-1646</a> / <a href="mailto:tipapornn2559@gmail.com">tipapornn2559@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>วิสัญญี: คุณทองสุข <a href="tel:0924621999">092-462-1999</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <ul><li>3,000 บาท/2 สัปดาห์ + ค่าไฟ 6 บาท/ยูนิต</li></ul>
+            </div>
+          </div>
+
+          <!-- 112 PCMC -->
+          <div class="card fade-up" data-tags="university 112 ปัญญานันทภิกขุ ชลประทาน PCMC SWU dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">112</span> ศูนย์การแพทย์ปัญญานันทภิกขุ ชลประทาน</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.พันธ์ธิดา จันทรรักษ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:025022322">02-502-2322</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:electivepcmc@gmail.com">electivepcmc@gmail.com</a> / <a href="mailto:punthida@g.swu.ac.th">punthida@g.swu.ac.th</a></span></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://forms.gle/CyeEgfJcKG47ZvXRA" target="_blank">ลิงก์ยืนยัน</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>💉 เกณฑ์วัคซีน (สำหรับบุคคลภายนอก)</h4>
+              <ul>
+                <li>MMR ≥ 2 ครั้ง</li>
+                <li>Varicella ≥ 2 ครั้ง</li>
+                <li>Hepatitis B ≥ 3 ครั้ง (แนบหลักฐาน)</li>
+                <li>Td/Tdap ภายใน 10 ปี</li>
+                <li>ไข้หวัดใหญ่ภายใน 1 ปี</li>
+                <li>Chest X-ray ปกติภายใน 6 เดือน</li>
+                <li>วัคซีน COVID-19 (ระบุชนิดและวันที่)</li>
+                              <li>0 2502 2345 ต่อ 3707</li>
+</ul>
+              <h4>🏠 หอพัก</h4>
+              <ul>
+                <li>ติดต่อ: สนง.นิติบุคคลหอพัก ชั้น 1 อาคาร C — <a href="tel:0628065905">062-806-5905</a></li>
+                <li>ค่าห้อง: 3,000 บาท/เดือน (เหมา แม้ไม่ถึง 1 เดือน)</li>
+                <li>ค่าประกัน: 3,000 บาท/คน</li>
+                <li>คีย์การ์ด 150 บาท + กุญแจ 50 บาท</li>
+                <li>ค่าน้ำ 20 บาท/ยูนิต · ค่าไฟ 6 บาท/ยูนิต</li>
+                <li>เอกสาร: แบบฟอร์ม + บัตรประชาชน + รูป 1 นิ้ว + สมุดบัญชีกรุงไทย</li>
+              </ul>
+              <h4>☎️ ติดต่อแยกส่วนงาน (02-502-2345)</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: นางไพลิน ต่อ 3604 / <a href="mailto:phailin@g.swu.ac.th">phailin@g.swu.ac.th</a></li>
+                <li>กุมารฯ: น.ส.ฤทัย ต่อ 3602 / <a href="mailto:ruethai@g.swu.ac.th">ruethai@g.swu.ac.th</a></li>
+                <li>ศัลยกรรม: นางธิดารัตน์ ต่อ 3706 / <a href="mailto:tidaratk@g.swu.ac.th">tidaratk@g.swu.ac.th</a></li>
+                <li>ออร์โธปิดิกส์: นางนันทวัน ต่อ 3708 / <a href="mailto:nuntawand@g.swu.ac.th">nuntawand@g.swu.ac.th</a></li>
+                <li>เวชศาสตร์ฉุกเฉิน: น.ส.ทัศนีย์ ต่อ 3707 / <a href="mailto:tassaneer@g.swu.ac.th">tassaneer@g.swu.ac.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 113 Somdej Sriraj -->
+          <div class="card fade-up" data-tags="hospital 113 สมเด็จพระบรมราชเทวี ศรีราชา dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">113</span> รพ.สมเด็จพระบรมราชเทวี ณ ศรีราชา</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>อรรัมภา กัลปากรณ์ชัย (นักวิชาการศึกษา)</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:038320200">038-320-200 ต่อ 66127</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:onrumpa@somdej-mec.or.th">onrumpa@somdej-mec.or.th</a></div>
+              <div class="contact-row"><span class="icon">💬</span><a href="https://lin.ee/wFMldjw" target="_blank">Line Official</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ค่าบำรุงหอพัก (ปรับปรุง พ.ศ. 2566)</h4>
+              <table class="mini-table">
+                <tr><th>ระยะเวลา</th><th>ราคา</th></tr>
+                <tr><td>1–7 วัน</td><td>800 บาท/คน</td></tr>
+                <tr><td>8–14 วัน</td><td>1,600 บาท/คน</td></tr>
+                <tr><td>15–21 วัน</td><td>2,400 บาท/คน</td></tr>
+                <tr><td>22–31 วัน</td><td>3,200 บาท/คน</td></tr>
+                <tr><td>รายปี</td><td>2,500 บาท/คน/เดือน</td></tr>
+              </table>
+              <ul>
+                <li>ค่าประกัน: 1,000 บาท/คน · กุญแจหาย 100 บาท · คีย์การ์ดหาย 200 บาท</li>
+                <li>พักขั้นต่ำ 2 คน/ห้อง</li>
+              </ul>
+            </div>
+          </div>
+
+      
+
+          <!-- NEW CARD:  110 วิทยาลัยแพทยศาสตร์และการสาธารณสุข มหาวิทยาลัยอุบลราชธานี -->
+<div class="card fade-up" data-tags="university 110 อุบลราชธานี Ubon UBU">
+  <div class="card-header"><h3 class="card-title"><span class="code">110</span> ม.อุบลราชธานี</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>งานสนับสนุนวิชาการ — <a href="tel:045353909">045-353-909</a> / <a href="tel:0848293993">084-829-3993</a> / <a href="mailto:chutiya.m@ubu.ac.th">chutiya.m@ubu.ac.th</a></span></div>
+  </div>
+            <div class="card-detail">
+              <h4>📋 ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="mailto:am_lek@windowslive.com">am_lek@windowslive.com</a></li>
+                <li><a href="mailto:ja651727@gmail.com">ja651727@gmail.com</a></li>
+                <li><a href="mailto:auchaya1809@gmail.com">auchaya1809@gmail.com</a></li>
+                <li><a href="mailto:cardiology.pmk@hotmail.com">cardiology.pmk@hotmail.com</a></li>
+                <li><a href="mailto:chutirat2022@gmail.com">chutirat2022@gmail.com</a></li>
+                <li><a href="mailto:c_hutamast@hotmail.com">c_hutamast@hotmail.com</a></li>
+                <li><a href="mailto:got.pmk@gmail.com">got.pmk@gmail.com</a></li>
+                <li>โทร.<a href="tel:027633812"><a href="tel:027633812">02-763-3812</a></a>  หรือ 93812  โทรสาร.<a href="tel:027633812"><a href="tel:027633812">02-763-3812</a></a></li>
+                <li><a href="mailto:pmkradiology2014@gmail.com">pmkradiology2014@gmail.com</a></li>
+                <li><a href="mailto:oattay@gmail.com">oattay@gmail.com</a> / <a href="mailto:pcmpmr6@gmail.com">pcmpmr6@gmail.com</a></li>
+                <li><a href="mailto:rtanc_@hotmail.com">rtanc_@hotmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- NEW CARD:  113 สำนักวิชาแพทยศาสตร์ มหาวิทยาลัยเทคโนโลยีสุรนารี -->
+<div class="card fade-up" data-tags="university Suranaree SUT สุรนารี โบว์">
+  <div class="card-header"><h3 class="card-title"><span class="code">113</span> ม.เทคโนโลยีสุรนารี</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณโบว์ (ฝ่ายวิชาการ) — <a href="tel:044223975">044-223-975</a> / <a href="mailto:mso.sut@gmail.com">mso.sut@gmail.com</a> / <a href="mailto:mso.sut@sut.ac.th">mso.sut@sut.ac.th</a></span></div>
+  </div>
+            <div class="card-detail">
+              <h4>📋 ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>Email: <a href="mailto:onrumpa@somdej-mec.or.th">onrumpa@somdej-mec.or.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- NEW CARD:  114 สำนักวิชาแพทยศาสตร์ มหาวิทยาลัยวลัยลักษณ์ -->
+<div class="card fade-up" data-tags="university Walailak WU วลัยลักษณ์ แป้ง">
+  <div class="card-header"><h3 class="card-title"><span class="code">114</span> ม.วลัยลักษณ์</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณแป้ง (ฝ่ายการศึกษาศึกษา) — <a href="tel:075672806">075-672-806</a> / <a href="mailto:wu.med.academic@gmail.com">wu.med.academic@gmail.com</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  119 คณะแพทยศาสตร์ มหาวิทยาลัยนราธิวาสราชนครินทร์ -->
+<div class="card fade-up" data-tags="university 119 นราธิวาส ยะลา Yala MEC ก้อย">
+  <div class="card-header"><h3 class="card-title"><span class="code">119</span> ม.นราธิวาสราชนครินทร์</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณก้อย — <a href="tel:073541400">073-541-400</a> / <a href="tel:0808737380">080-873-7380</a> / <a href="mailto:med.yala.narathiwat@gmail.com">med.yala.narathiwat@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">📍</span><span>ศูนย์แพทยศาสตรศึกษาชั้นคลินิก โรงพยาบาลยะลา</span></div>
+  </div>
+            <div class="card-detail">
+              <h4>📋 ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="tel:073510613">073510613</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- NEW CARD:  120 คณะแพทยศาสตร์ มหาวิทยาลัยพะเยา -->
+<div class="card fade-up" data-tags="university 120 พะเยา Phayao จ๊ะเอ๋">
+  <div class="card-header"><h3 class="card-title"><span class="code">120</span> ม.พะเยา</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณจ๊ะเอ๋ (ศูนย์แพทย์) — <a href="tel:054466666">054-466-666 ต่อ 7006</a> / <a href="tel:0815310614">081-531-0614</a> / <a href="mailto:upmed.academic@gmail.com">upmed.academic@gmail.com</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  123 สำนักวิชาแพทยศาสตร์ มหาวิทยาลัยแม่ฟ้าหลวง -->
+<div class="card fade-up" data-tags="university 123 แม่ฟ้าหลวง MFU แก้ว">
+  <div class="card-header"><h3 class="card-title"><span class="code">123</span> ม.แม่ฟ้าหลวง</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.อรกช คำอินทร์ (แก้ว) — <a href="tel:053916568">053-916-568</a> / <a href="tel:0801211158">080-121-1158</a> / <a href="mailto:orrakot.kam@mfu.ac.th">orrakot.kam@mfu.ac.th</a> / <a href="mailto:academic.medicine@mfu.ac.th">academic.medicine@mfu.ac.th</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  124 คณะแพทยศาสตร์ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง -->
+<div class="card fade-up" data-tags="university 124 ลาดกระบัง KMITL ปอ แจง">
+  <div class="card-header"><h3 class="card-title"><span class="code">124</span> สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ปิยะมาศ สมอไทย (ปอ) — <a href="tel:023298000">02-329-8000 ต่อ 2919</a> / <a href="mailto:piyamas.sa@kmitl.ac.th">piyamas.sa@kmitl.ac.th</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ปทุมมา สาสุข (แจง) — <a href="tel:023298000">02-329-8000 ต่อ 2919</a> / <a href="mailto:patumma.sa@kmitl.ac.th">patumma.sa@kmitl.ac.th</a></span></div>
+  </div>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: SPECIALIZED HOSPITALS 201-309 ===== -->
+    <section class="inst-section bg-sand" data-category="hospital">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏢</span>
+          <h2 class="section-title">กลุ่มโรงพยาบาลและศูนย์การแพทย์เฉพาะทาง</h2>
+          <p class="section-sub">รหัส 201 – 309</p>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="hospital 201 เจริญกรุง ประชารักษ์ พิณรัตน์ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">201</span> รพ.เจริญกรุงประชารักษ์</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.พิณรัตน์ โพธะศรี</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:022892214">02-289-2214</a> / <a href="tel:0826691222">082-669-1222</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:phinnarat096@hotmail.com">phinnarat096@hotmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พักและค่าใช้จ่าย</h4>
+              <p>ติดต่อ: นางชญาดา ศิริจารุพฤกษ์ — <a href="tel:0809214072">080-921-4072</a></p>
+              <ul>
+                <li>ค่าฝึกงาน: <strong>200 บาท/วัน</strong></li>
+                <li>ค่าที่พัก: <strong>50 บาท/วัน</strong></li>
+                <li>เอกสาร: บัตรประชาชน + บัตรนักศึกษา + ทะเบียนบ้าน + รูปถ่าย</li>
+                              <li><a href="mailto:j.chayada27@gmail.com">j.chayada27@gmail.com</a></li>
+</ul>
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>ศัลยศาสตร์: <a href="tel:022897499">02-289-7499</a> / <a href="mailto:jogalaxy99@gmail.com">jogalaxy99@gmail.com</a></li>
+                <li>ออร์โธปิดิกส์: น.ส.วาสนา <a href="tel:022897496">02-289-7496</a> / <a href="mailto:vasanajim2518@gmail.com">vasanajim2518@gmail.com</a></li>
+                <li>เวชฉุกเฉิน/นิติเวช: น.ส.วันวิสาข์ <a href="tel:022897494">02-289-7494</a> / <a href="mailto:modjunk2525@gmail.com">modjunk2525@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 202 ตากสิน อัตพล">
+            <div class="card-header"><h3 class="card-title"><span class="code">202</span> รพ.ตากสิน</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณอัตพล อุบลบาน</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:0868147808">086-814-7808</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:attaponau1100@gmail.com">attaponau1100@gmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>💰 ค่าใช้จ่าย</h4>
+              <ul>
+                <li>ค่าบริการวิชาการ: <strong>400 บาท/คน/วัน</strong></li>
+                <li>อาหารว่าง: 25 บาท/คน/มื้อ</li>
+                <li>อาหารกลางวัน: 100 บาท/คน/มื้อ</li>
+                <li>อาหารเย็น: 100 บาท/คน/มื้อ</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 203 ตำรวจ Police มะปราง dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">203</span> รพ.ตำรวจ</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>ศูนย์แพทย์: คุณมะปราง</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022076000">02-207-6000 กด 6767</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:education.pghdoctor@gmail.com">education.pghdoctor@gmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <p>ว่าที่ พ.ต.ต. ศุขภฒ สุนนท์ชัย — ต่อ 6660 · จัดห้องชาย 1 / หญิง 1</p>
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>สถาบันนิติเวช: <a href="tel:022076108">02-207-6108 ต่อ 4301</a> / <a href="mailto:ifm.police@gmail.com">ifm.police@gmail.com</a></li>
+                <li>หู คอ จมูก: น.ส.พิมพ์วิไล ต่อ 10761 / <a href="mailto:chanikarn.ns@gmail.com">chanikarn.ns@gmail.com</a></li>
+                <li>กุมารฯ: ต่อ 6404</li>
+                <li>อายุรกรรม: <a href="tel:022076327">02-207-6327</a></li>
+                <li>ออร์โธปิดิกส์: ดต.สุนทร <a href="tel:0949365495">094-936-5495</a> / <a href="mailto:officeopdmk6@gmail.com">officeopdmk6@gmail.com</a></li>
+                <li>วิสัญญี: ว่าที่ ร.ต.ท.ปวริศ <a href="tel:0991561915">099-156-1915</a> / <a href="mailto:nongpcm35@hotmail.com">nongpcm35@hotmail.com</a></li>
+                <li>วิสัญญี: ว่าที่ ร.ต.ต.หญิงเบญจลักษณ์ เจริญพร <a href="tel:0807091155">080-709-1155</a> / <a href="mailto:benjalak.c@psu.ac.th">benjalak.c@psu.ac.th</a></li>
+                              <li><a href="tel:022076000">022076000</a> ต่อ 6404</li>
+                <li><a href="tel:022076000">022076000</a> ต่อ 6660</li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 204 นพรัตน์ นพรัตนราชธานี อาชีวเวช">
+            <div class="card-header"><h3 class="card-title"><span class="code">204</span> รพ.นพรัตนราชธานี</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:025481000">02-548-1000 ต่อ 2660</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>อาชีวเวชศาสตร์: <a href="tel:025174333">02-517-4333</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:occenvtraining@gmail.com">occenvtraining@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 205 เลิดสิน Lerdsin ออร์โธ">
+            <div class="card-header"><h3 class="card-title"><span class="code">205</span> รพ.เลิดสิน</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:023539734">02-353-9734</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:training.lerdsin2015@gmail.com">training.lerdsin2015@gmail.com</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>💰 ค่าธรรมเนียม</h4>
+              <p>100 บาท/2 สัปดาห์ โอน KTB สาขาสีลม ชื่อ "โรงพยาบาลเลิดสิน" เลขที่ 022-1-06454-0</p>
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>ออร์โธปิดิกส์: นาวสาวธารทิพย์ <a href="tel:023539844">02-353-9844</a> / <a href="mailto:ying_barbe@hotmail.com">ying_barbe@hotmail.com</a></li>
+                <li>กุมารฯ: น.ส.สุทธิลักษณ์ <a href="tel:0840724195">084-072-4195</a> / <a href="mailto:lerdsinped@gmail.com">lerdsinped@gmail.com</a></li>
+                <li>โสต ศอ นาสิก: น.ส.กัลยวรรณ <a href="tel:0966326353">096-632-6353</a></li>
+                <li>ศัลยศาสตร์ตกแต่ง: คุณวราญกร <a href="tel:023539712">02-353-9712</a> / <a href="mailto:surgerylerdsin@gmail.com">surgerylerdsin@gmail.com</a></li>
+                <li>เวชฉุกเฉิน: น.ส.กันต์สินี <a href="tel:023539603">02-353-9603</a> / <a href="mailto:lerdsin.er@gmail.com">lerdsin.er@gmail.com</a></li>
+                              <li><a href="mailto:academic.lerdsin@gmail.com">academic.lerdsin@gmail.com</a></li>
+                <li>Tel: <a href="tel:023539844">02-353-9844</a>/<a href="tel:0878080828">087-808-0828</a></li>
+                <li><a href="mailto:yingja66@gmail.com">yingja66@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 206 พระปิ่นเกล้า Pinklao Navy dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">206</span> รพ.พระปิ่นเกล้า</h3><span class="badge badge-dormitory">ที่พักฟรี</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:024600000">02-460-0000 ต่อ 41277</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:kornbr219@gmail.com">kornbr219@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ศูนย์แพทยศาสตร์: นาวาเอกหญิงศิริพรรณ <a href="tel:0815500967">081-550-0967</a> / <a href="mailto:siripun_k@yahoo.com">siripun_k@yahoo.com</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <p>จัดสรรให้โดยไม่มีค่าใช้จ่าย · รายงานตัว 8.00 น.</p>
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>ศัลยกรรม: น.ท.หญิงวีรวัลย์ <a href="tel:024752751">02-475-2751</a> / <a href="mailto:surgeonpinklao@gmail.com">surgeonpinklao@gmail.com</a></li>
+                <li>โสต ศอ นาสิก: <a href="mailto:entpinklao@gmail.com">entpinklao@gmail.com</a></li>
+                              <li><a href="mailto:hr.pk0107@gmail.com">hr.pk0107@gmail.com</a></li>
+                <li><a href="mailto:navymedicaleducation@gmail.com">navymedicaleducation@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 207 สิรินธร Sirindhorn dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">207</span> รพ.สิรินธร</h3><span class="badge badge-dormitory">ที่พักฟรี</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.สำราญ ใจหนักแน่น</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:023286900">02-328-6900</a>–19 ต่อ 11462 / <a href="tel:0927439980">092-743-9980</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:mededu.srt@gmail.com">mededu.srt@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">💰</span><span>ค่าธรรมเนียม: 250 บาท/วัน · <strong>ที่พักฟรี</strong></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="mailto:mededu.srt02@gmail.com">mededu.srt02@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 301 เมตตา วัดไร่ขิง จักษุ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">301</span> รพ.เมตตาประชารักษ์ (วัดไร่ขิง)</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📋</span><span>ศูนย์จักษุวิทยา</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>นางวิไลพร — <a href="tel:034388700">034-388-700 ต่อ 9937</a> / <a href="mailto:vanessalerdwilai@gmail.com">vanessalerdwilai@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ที่พัก: คุณภิชญาภา — <a href="tel:034388700">034-388-700 ต่อ 9937</a> / <a href="mailto:rose.stung@gmail.com">rose.stung@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">💰</span><span>2 สัปดาห์: 2,500 บาท</span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="tel:034388700">034388700</a>-10 ต่อ 9937</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 302 สมเด็จเจ้าพระยา จิตเวช psychiatry วศินี">
+            <div class="card-header"><h3 class="card-title"><span class="code">302</span> สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.วศินี เดชสุวรรณ</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:024422500">02-442-2500 ต่อ 59111</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:wasinee.somdej@gmail.com">wasinee.somdej@gmail.com</a> / <a href="mailto:psychiatrist.ma.somdet@gmail.com">psychiatrist.ma.somdet@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">📍</span><span>รายงานตัว 8.30 น. ตึกราชสาทิส ชั้น 7</span></div>
+            </div>
+            <div class="card-detail">
+              <h4>💰 ค่าธรรมเนียม</h4>
+              <ul>
+                <li>ค่าปฏิบัติงาน: 100 บาท/สัปดาห์</li>
+                <li>อาหารว่าง: 25 บาท/คน/มื้อ · อาหารกลางวัน: 80 บาท/คน/มื้อ</li>
+                <li>โอน KTB สาขาท่าดินแดง ชื่อ "เงินบำรุงสถาบันจิตเวชสมเด็จเจ้าพระยา" เลขที่ 044-1-10586-6</li>
+              </ul>
+              <h4>🏠 ที่พัก</h4>
+              <p>❌ ไม่มีที่พักในสถาบัน แนะนำ: Baan Jeen Mansion คลองสาน — <a href="tel:021174050">02-117-4050</a></p>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 303 ประสาทวิทยา neurology ปัทมรัศม์">
+            <div class="card-header"><h3 class="card-title"><span class="code">303</span> สถาบันประสาทวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณปัทมรัศม์ พงษ์ธนายุพรรณ</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:023069813">02-306-9813</a> / <a href="tel:0942924414">094-292-4414</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:rachaknight@gmail.com">rachaknight@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พัก</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 304 ยุวประสาทไวทโยปถัมภ์ จิตเวชเด็ก ก้อยกมล">
+            <div class="card-header"><h3 class="card-title"><span class="code">304</span> รพ.ยุวประสาทไวทโยปถัมภ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ก้อยกมล อาจเนียม</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:023843381">02-384-3381</a>–3 ต่อ 72609 / <a href="tel:0814524907">081-452-4907</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:medyuwa2@gmail.com">medyuwa2@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พัก</span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="mailto:happymiw@hotmail.com">happymiw@hotmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 305 โรคทรวงอก chest Chest Institute ณัฏฐนันท์">
+            <div class="card-header"><h3 class="card-title"><span class="code">305</span> สถาบันโรคทรวงอก</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span>สารบรรณ: <a href="tel:025470999">02-547-0999 ต่อ 30051</a>–2</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:saraban@ccit.mail.go.th">saraban@ccit.mail.go.th</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>ศัลยศาสตร์: บุปผาวรรณ ต่อ 30941 / น.ส.ณัฏฐนันท์ <a href="tel:025470919">02-547-0919</a> / <a href="mailto:secretarycvt3@gmail.com">secretarycvt3@gmail.com</a></li>
+                <li>อายุรศาสตร์หัวใจ: น.ส.อรัญญา <a href="tel:025470920">02-547-0920</a> / <a href="mailto:cardiocc02@gmail.com">cardiocc02@gmail.com</a> ❌ ไม่มีที่พัก</li>
+                              <li>โทร 0 25470999 ต่อ 30051,30052</li>
+                <li><a href="tel:025470999">025470999</a> ต่อ 30941 พี่บุปผาวรรณ หน้าห้องหัวหน้ากลุ่มงานศัลยศาสตร์</li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 307 สุขภาพเด็ก รพ.เด็ก children ปัด dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">307</span> สถาบันสุขภาพเด็กแห่งชาติฯ (รพ.เด็ก)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>กุมารฯ: คุณปัด — <a href="tel:0847661441">084-766-1441</a> / <a href="mailto:idin_1987@yahoo.com">idin_1987@yahoo.com</a></span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>1415 ต่อ 61938</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>จิตเวชเด็ก: ต่อ 61438 / <a href="mailto:pangponnon@hotmail.com">pangponnon@hotmail.com</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>💉 เอกสารทางการแพทย์ที่ต้องแสดง</h4>
+              <ul>
+                <li>Chest X-ray + วัคซีน: Hepatitis B, MMR, Varicella, DTP, Influenza, Tuberculosis, Covid-19</li>
+                              <li><a href="mailto:idin.1987@gmail.com">idin.1987@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 308 ระบาดวิทยา epidemiology ณัฐปราง">
+            <div class="card-header"><h3 class="card-title"><span class="code">308</span> สำนักระบาดวิทยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ณัฐปราง นิตยสุทธิ์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:025903894">02-590-3894</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:n.natthaprang@gmail.com">n.natthaprang@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">📍</span><span>ชั้น 3 อาคาร 10 กรมควบคุมโรค นนทบุรี 11000</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>พัฒนานักระบาดฯ: น.ส.พัฒน์ธนัชพร <a href="tel:0957039211">095-703-9211</a> / <a href="mailto:pattanaporn.wip@gmail.com">pattanaporn.wip@gmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital 309 เวชศาสตร์เขตร้อน Tropical Medicine มหิดล อิจจิมา dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">309</span> คณะเวชศาสตร์เขตร้อน (มหิดล)</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>อิจจิมา ทรัพย์สุนทร</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:023069168">02-306-9168</a> / <a href="tel:023549168">02-354-9168</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:augjima.kas@mahidol.ac.th">augjima.kas@mahidol.ac.th</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกหน่วย</h4>
+              <ul class="sub-list">
+                <li>เวชศาสตร์แผนจีน (ฝังเข็ม): คุณรุ่งทิพย์ <a href="tel:0800897898">080-089-7898</a></li>
+                <li>คลินิกท่องเที่ยว: คุณจุฑามาศ/เสกสรรค์ <a href="tel:023069145">02-306-9145</a> / <a href="mailto:info@thaitravelclinic.com">info@thaitravelclinic.com</a></li>
+                <li>หอพัก (อาคารศรชัย): <a href="tel:0884903711">088-490-3711</a> / <a href="tel:023069116">02-306-9116</a></li>
+                              <li><a href="mailto:jutarmas@thaitravelclinic.com">jutarmas@thaitravelclinic.com</a></li>
+</ul>
+            </div>
+          </div>
+
+      
+
+          <!-- NEW CARD:  สถาบันกัลยาณ์ราชนครินทร์ -->
+<div class="card fade-up" data-tags="hospital จิตเวช กัลยาณ์ กัลยาณ์ราชนครินทร์ นงลักษณ์">
+  <div class="card-header"><h3 class="card-title">สถาบันกัลยาณ์ราชนครินทร์</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณนงลักษณ์ — <a href="tel:024416100">02-441-6100 ต่อ 62024</a> / <a href="mailto:nonglak.galya@gmail.com">nonglak.galya@gmail.com</a></span></div>
+  </div>
+  <div class="card-detail">
+              <h4>📋 การรายงานตัว</h4>
+              <ul>
+                <li>รายงานตัววันแรก: เวลา 08:30 น. ณ ตึกสิรินธรราชธานี ชั้น 2 กลุ่มงานพัฒนาบุคลากร</li>
+                <li>เอกสารประกอบ:</li>
+                <li>1. สำเนาบัตรประชาชน 1 ใบ</li>
+                <li>2. รูปถ่าย 1 นิ้ว 1 รูป (สำหรับทำบัตร)</li>
+                <li>3. ใบรับรองการฉีดวัคซีน Covid-19 อย่างน้อย 2 เข็ม</li>
+                <li>4. ผลตรวจ ATK ภายใน 24 ชม. (ถ่ายรูปคู่บัตรประชาชนมาแสดง)</li>
+              </ul>
+  </div>
+</div>
+
+          <!-- NEW CARD:  สถาบันโรคผิวหนัง -->
+<div class="card fade-up" data-tags="hospital ผิวหนัง โรคผิวหนัง นันท์นภัส พี่นก">
+  <div class="card-header"><h3 class="card-title">สถาบันโรคผิวหนัง</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณนันท์นภัส (พี่นก) / คุณอรกัญญา (พี่อ้น) — <a href="tel:023545290">02-354-5290 ต่อ 40226</a> / <a href="mailto:inderm_edu@hotmail.com">inderm_edu@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีหอพักบริการ</span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  โรงพยาบาลสงฆ์ -->
+<div class="card fade-up" data-tags="hospital สงฆ์ โรงพยาบาลสงฆ์">
+  <div class="card-header"><h3 class="card-title">โรงพยาบาลสงฆ์</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>ฝ่ายการแพทย์ — <a href="tel:026409537">02-640-9537 ต่อ 2302</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  สถาบันบำราศนราดูร -->
+<div class="card fade-up" data-tags="hospital บำราศ บำราศนราดูร ติดเชื้อ">
+  <div class="card-header"><h3 class="card-title">สถาบันบำราศนราดูร</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>กลุ่มงานวิชาการและฝึกอบรม — <a href="tel:025903423">02-590-3423</a> / <a href="mailto:saraban.bamras@gmail.com">saraban.bamras@gmail.com</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  สถาบันพยาธิวิทยา -->
+<div class="card fade-up" data-tags="hospital พยาธิวิทยา สถาบันพยาธิวิทยา วิลาย">
+  <div class="card-header"><h3 class="card-title">สถาบันพยาธิวิทยา</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณวิไล — <a href="tel:023548208">02-354-8208 ต่อ 229</a></span></div>
+  </div>
+</div>
+
+          <!-- NEW CARD:  สถาบันระบาดวิทยา กรมควบคุมโรค -->
+<div class="card fade-up" data-tags="hospital ระบาดวิทยา กรมควบคุมโรค ณัฐปราง">
+  <div class="card-header"><h3 class="card-title">สถาบันระบาดวิทยา กรมควบคุมโรค</h3></div>
+  <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณณัฐปราง นิตยสุทธิ์ — <a href="tel:025903894">02-590-3894</a> / <a href="mailto:n.natthaprang@gmail.com">n.natthaprang@gmail.com</a></span></div>
+  </div>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: REGIONAL HOSPITALS 402-428 ===== -->
+    <section class="inst-section" id="regional" data-category="regional">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏔️</span>
+          <h2 class="section-title">ศูนย์แพทยศาสตรศึกษาและโรงพยาบาลภูมิภาค</h2>
+          <p class="section-sub">รหัส 402 – 428</p>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="regional 402 ขอนแก่น KKH CPIRD dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">402</span> ศพช. รพ.ขอนแก่น</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>นายพรพินิต ภู่หนู — <a href="tel:043009900">043-009-900 ต่อ 1601</a> / <a href="mailto:pornphinit.poo@cpird.in.th">pornphinit.poo@cpird.in.th</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <ul>
+                <li>หอชาย: นางบุญญารินทร์ สุริฉาย — <a href="tel:0833351208">083-335-1208</a> / <a href="mailto:boonyarin.sur@cpird.in.th">boonyarin.sur@cpird.in.th</a></li>
+                <li>หอหญิง: น.ส.ปิติภัทร สีหาโมก — <a href="tel:0849572984">084-957-2984</a> / <a href="mailto:pitiphat.see@cpird.in.th">pitiphat.see@cpird.in.th</a></li>
+                <li>ติดต่อที่พัก: <a href="tel:043009900">043-009-900</a> ต่อ 1603</li>
+                <li>ค่าน้ำ-ไฟ: 50 บาท/คน/วัน (เหมา)</li>
+                <li>ติดต่อล่วงหน้า ≥ 1 สัปดาห์</li>
+                <li>โรงแรมใกล้เคียง: Bliss Hotel / Family Hotel — <a href="tel:043224245">043-224-245</a> / <a href="tel:0615952459">061-595-2459</a></li>
+              </ul>
+              <h4>🦠 ประสานงานมาตรการป้องกันโรค</h4>
+              <ul class="sub-list">
+                <li>นายพรพินิต ภู่หนู / น.ส.มุกดา สุขเกษม — <a href="tel:043009900">043-009-900</a> ต่อ 1604, 1605</li>
+                <li><a href="mailto:kkecstaff56@cpird.in.th">kkecstaff56@cpird.in.th</a></li>
+                <li><a href="mailto:kkecstaff28@cpird.in.th">kkecstaff28@cpird.in.th</a></li>
+              </ul>
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>กุมารฯ: น.ส.ปิติพร เพชรไพรินทร์ — <a href="tel:0827433722">082-743-3722</a> / <a href="mailto:kkecstaff20@cpird.in.th">kkecstaff20@cpird.in.th</a></li>
+                <li>อายุรกรรม: ต่อ 1186 / <a href="mailto:chirada.sut@cpird.in.th">chirada.sut@cpird.in.th</a></li>
+                <li>ศัลยกรรม: น.ส.นิดานุช นาคเมืองปักษ์ — ต่อ 1220 / <a href="mailto:nidanuch.nak@cpird.in.th">nidanuch.nak@cpird.in.th</a></li>
+                <li>สูติ-นรีเวช: น.ส.จิราภรณ์ แปลยาว — <a href="tel:0942606670">094-260-6670</a> / <a href="mailto:jiraporn.pla@cpird.in.th">jiraporn.pla@cpird.in.th</a></li>
+                <li>ออร์โธปิดิกส์: คุณเพลินจิตต์ หาญลา — ต่อ 1226 / <a href="mailto:ploenchit.han@cpird.in.th">ploenchit.han@cpird.in.th</a></li>
+                <li>เวชฉุกเฉิน: คุณสาคร ศรีลาวงค์ — ต่อ 3805 / <a href="tel:0619562424">061-956-2424</a> / <a href="mailto:s.srilawong@gmail.com">s.srilawong@gmail.com</a></li>
+                <li>วิสัญญี: คุณดลนภา เหง้าจำปา — ต่อ 2524 / <a href="mailto:donnapa.nga@cpird.in.th">donnapa.nga@cpird.in.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 403 ชุมพร Chumphon คุณแบงค์">
+            <div class="card-header"><h3 class="card-title"><span class="code">403</span> รพ.ชุมพรเขตรอุดมศักดิ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณแบงค์ — <a href="tel:0831074497">083-107-4497</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ. แนะนำ: บำรุงสุข <a href="tel:077510900">077-510-900</a> / Ritzy <a href="tel:077506655">077-506-655</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า">
+            <div class="card-header"><h3 class="card-title"><span class="code">404</span> ศพช. รพ.เชียงรายประชานุเคราะห์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณโต — <a href="tel:0819894079">081-989-4079</a> / <a href="mailto:to_t148@hotmail.com">to_t148@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ. ติดต่อคุณน้อยหน่า <a href="tel:053756765">053-756-765</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: คุณมัณฑิตา <a href="tel:0869201590">086-920-1590</a></li>
+                <li>กุมารฯ: คุณอัจฉรี <a href="tel:0896969750">089-696-9750</a></li>
+                <li>ศัลยกรรม: คุณกัลยาณี <a href="tel:0871741160">087-174-1160</a></li>
+                <li>เวชฉุกเฉิน: คุณมณีรัตน์ <a href="tel:0844866465">084-486-6465</a></li>
+                              <li><a href="mailto:ausharee.nes@gmail.com">ausharee.nes@gmail.com</a></li>
+                <li>กลุ่มงาน <a href="tel:0918591040">0918591040</a> <a href="mailto:kampa.k@hotmail.com">kampa.k@hotmail.com</a></li>
+                <li><a href="mailto:sanooker_15@hotmail.com">sanooker_15@hotmail.com</a></li>
+                <li>1. พลับทอง <a href="tel:0918546464">0918546464</a></li>
+                <li>2. หอพักประสิทธิ์นรกาญจน์ <a href="tel:0896323883">0896323883</a></li>
+                <li>6. The Unique <a href="tel:0882532964">0882532964</a>, <a href="tel:0850319519">0850319519</a>, <a href="tel:0840477237">0840477237</a>7</li>
+</ul>
+              <h4>🏨 หอพักภายนอกแนะนำ</h4>
+              <ul class="sub-list">
+                <li>พลับทอง: <a href="tel:0918546464">091-854-6464</a></li>
+                <li>หอพักประสิทธิ์นรกาญจน์: <a href="tel:0896323883">089-632-3883</a></li>
+                <li>ลาลีต์ อพาร์ทเม้น: <a href="tel:053756525">053-756-525</a> / <a href="tel:0856279481">085-627-9481</a></li>
+                <li>โรงแรมอยู่สุข: <a href="tel:053711913">053-711-913</a> / <a href="tel:053711946">053-711-946</a></li>
+                <li>โรงแรมบ้านศิลป์: <a href="tel:053756335">053-756-335</a>–7 / <a href="tel:0897559398">089-755-9398</a></li>
+                <li>The Unique: <a href="tel:0882532964">088-253-2964</a> / <a href="tel:0850319519">085-031-9519</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 405 ตรัง Trang จารุวรรณ">
+            <div class="card-header"><h3 class="card-title"><span class="code">405</span> ศพช. รพ.ตรัง</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณจารุวรรณ — <a href="tel:075201500">075-201-500</a> / <a href="tel:0887653775">088-765-3775</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:cpird.trang@gmail.com">cpird.trang@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ.</span></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://docs.google.com/forms/d/e/1FAIpQLScZhmriM6Op4p9OmqkCtp6Q9Tj4HAF3vid7Phdi8-0d-6hR7g/viewform" target="_blank">📝 ระบบสมัคร</a></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>**นิสิตสมัครเรียนออนไลน์ที่ https://docs.google.com/forms/d/e/1FAIpQLScZhmriM6Op4p9OmqkCtp6Q9Tj4HAF3vid7Phdi8-0d-6hR7g/viewform?fbclid=IwAR3WO98PTXpJ9RbEnmRiOj9NQseGJtKAlQ6gf2piUuBrPwqnBnPdL2HYrzE</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา">
+            <div class="card-header"><h3 class="card-title"><span class="code">406</span> รพ.บุรีรัมย์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:tud_nach2554@hotmail.com">tud_nach2554@hotmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกแผนก</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: คุณวารินธร <a href="tel:0883376423">088-337-6423</a></li>
+                <li>กุมารฯ: คุณชลลดา <a href="tel:0848337585">084-833-7585</a></li>
+                <li>ศัลยกรรม: คุณชมทิมา <a href="tel:0846059064">084-605-9064</a></li>
+                <li>ออร์โธปิดิกส์: คุณบัณฑิตา <a href="tel:0846070007">084-607-0007</a></li>
+                              <li><a href="mailto:tonfern898@hotmail.com">tonfern898@hotmail.com</a></li>
+                <li>chollada@<a href="mailto:telewiz@hotmail.com">telewiz@hotmail.com</a></li>
+                <li><a href="mailto:chomtima_2524@hotmail.com">chomtima_2524@hotmail.com</a></li>
+                <li><a href="mailto:banthita_pra@hotmail.com">banthita_pra@hotmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 407 พิจิตร Phichit คคนัมพร ยะนะ">
+            <div class="card-header"><h3 class="card-title"><span class="code">407</span> รพ.พิจิตร</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คคนัมพร ธรสุทธิสกุล — <a href="tel:056613526">056-613-526 ต่อ 6321</a> / <a href="mailto:kakanamporn.thorn@gmail.com">kakanamporn.thorn@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ.</span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกส่วนงาน</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: น.ส.ชุติภรณ์ ต่อ 6321/6322 / <a href="mailto:bube_bebe@hotmail.com">bube_bebe@hotmail.com</a></li>
+                <li>กุมารฯ: น.ส.ปารมี ต่อ 6321/6322 / <a href="mailto:parameez@nu.ac.th">parameez@nu.ac.th</a></li>
+                <li>ศัลยกรรม: น.ส.เบญจมาศ ต่อ 6321/6322 / <a href="mailto:benjamas.siri06@gmail.com">benjamas.siri06@gmail.com</a></li>
+                              <li>เบอร์ติดต่อ :056 613 526 ต่อ 6321,6322 / 082 771 5116</li>
+                <li><a href="tel:056611355">056611355</a> ต่อ 6321, 6322</li>
+                <li><a href="mailto:babapo1989@hotmail.com">babapo1989@hotmail.com</a></li>
+                <li><a href="tel:056611355">056611355</a> ต่อ 6321, 6322</li>
+                <li><a href="tel:056611355">056611355</a> ต่อ 6321, 6322</li>
+                <li><a href="tel:056611355">056611355</a> ต่อ 6321, 6322</li>
+                <li><a href="tel:056611355">056611355</a> ต่อ 6321, 6322</li>
+                <li><a href="mailto:kakanampornt59@nu.ac.th">kakanampornt59@nu.ac.th</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">408</span> รพ.พุทธชินราช</h3><span class="badge badge-dormitory">ที่พักฟรี</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.น้ำผึ้ง ดี — <a href="tel:055270300">055-270-300 ต่อ 21609</a> / <a href="mailto:saraban@budhosp.go.th">saraban@budhosp.go.th</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:elective.budc@cpird.in.th">elective.budc@cpird.in.th</a></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://docs.google.com/forms/d/e/1FAIpQLSf2N8_DfNFMmZIzX7tzWeNL96TX1M5bo1LbBt46NDWJrHHUHQ/viewform" target="_blank">📝 แบบฟอร์มข้อมูลนิสิต</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก (จัดสรรฟรี)</h4>
+              <p>ชาย/หญิง ห้องละ 4 คน สูงสุด 2 ห้อง/เพศ</p>
+              <p>ติดต่อ: นางเปมิกา ทองดอนคำ ต่อ 21602 / <a href="mailto:mec_bud@budhosp.go.th">mec_bud@budhosp.go.th</a></p>
+              <h4>☎️ ติดต่อแยกแผนก</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: น.ส.ดรุณี ต่อ 17901</li>
+                <li>ศัลยกรรม: น.ส.ทิพยวรรณ ต่อ 19501</li>
+                <li>กุมารฯ: น.ส.ปนัดดา ต่อ 16202</li>
+                <li>ออร์โธปิดิกส์: น.ส.พจนา ต่อ 21611</li>
+                <li>เวชกรรมสังคม: นายวัชระ ต่อ 21609</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 409 แพร่ Phrae กุมาร อุบัติเหตุ">
+            <div class="card-header"><h3 class="card-title"><span class="code">409</span> รพ.แพร่</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:0545335000">054-533-5000 ต่อ 2608</a></div>
+              <div class="contact-row"><span class="icon">👤</span><span>กุมารฯ: นายจรัญชัย <a href="tel:0882280028">088-228-0028</a> / <a href="mailto:mecphrae@gmail.com">mecphrae@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>อุบัติเหตุฉุกเฉิน: นายจาตุรงค์ <a href="tel:0875435341">087-543-5341</a></span></div>
+              <div class="contact-row"><span class="icon">📍</span><span>รายงานตัว 8.30 น. อาคารวิทยบริการ ชั้น 2</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 410 มหาราชนครราชสีมา Korat CPIRD dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">410</span> ศพช. รพ.มหาราชนครราชสีมา</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📍</span><span>49 ถ.ช้างเผือก ในเมือง นครราชสีมา 30000</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:044295614">044-295-614</a> / <a href="tel:044235222">044-235-222</a>–3</span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>วันแรก: คุณตุ๊ก <a href="tel:0644636325">064-463-6325</a> / <a href="mailto:mec.korat@cpird.in.th">mec.korat@cpird.in.th</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 มัดจำที่พัก</h4>
+              <ul>
+                <li>กุญแจ 200 บาท + คีย์การ์ด 100 บาท</li>
+                <li>Check-in ก่อน 16.00 น.</li>
+                              <li>โทร 044-295614 / <a href="tel:044235222">044235222</a>-3 Fax 044-295615</li>
+                <li>คุณตุ๊ก <a href="tel:044235223">044235223</a> / <a href="tel:0644636325">0644636325</a> <a href="mailto:mec.korat@cpird.in.th">mec.korat@cpird.in.th</a></li>
+                <li><a href="mailto:sasikarn.korat@cpird.in.th">sasikarn.korat@cpird.in.th</a></li>
+                <li>คุณวันวิสา สาริบุตร <a href="tel:0623423549">0623423549</a> <a href="mailto:wanvisa.korat@cpird.in.th">wanvisa.korat@cpird.in.th</a></li>
+</ul>
+              <h4>☎️ ติดต่อแยกภาควิชา</h4>
+              <ul class="sub-list">
+                <li>อายุรศาสตร์: <a href="tel:044235870">044-235-870</a></li>
+                <li>ศัลยศาสตร์: <a href="tel:044235565">044-235-565</a></li>
+                <li>ออร์โธปิดิกส์: <a href="tel:044235529">044-235-529</a> / <a href="mailto:orthokorat.mhr@gmail.com">orthokorat.mhr@gmail.com</a></li>
+                <li>เวชศาสตร์ฟื้นฟู: คุณก้อย <a href="tel:044235136">044-235-136</a></li>
+                <li>วิสัญญี: <a href="tel:044235040">044-235-040</a> / <a href="mailto:namol.khoo@gmail.com">namol.khoo@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา">
+            <div class="card-header"><h3 class="card-title"><span class="code">411</span> ศพช. รพ.มหาราชนครศรีธรรมราช</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.กุสุมา มาลาเวช — <a href="tel:0945934750">094-593-4750</a> / <a href="mailto:malawet.k@hotmail.com">malawet.k@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ศัลยกรรม: คุณหนึ่ง <a href="tel:0817296644">081-729-6644</a></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="tel:0817296644">0817296644</a> / <a href="tel:075340250">075340250</a> ต่อ 7641</li>
+              </ul>
+            
+              <h4>📋 ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="tel:0817296644">0817296644</a> / <a href="tel:075340250">075340250</a> ต่อ 7641</li>
+              </ul></div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 412 พุทธโสธร Buddhasothon CPIRD dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">412</span> ศพช. รพ.พุทธโสธร</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:038514488">038-514-488</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:wirawan_sk@cpird.in.th">wirawan_sk@cpird.in.th</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ค่าใช้จ่ายหอพัก</h4>
+              <ul>
+                <li>ค่าห้อง: 800 บาท/คน</li>
+                <li>ค่าน้ำ: 100 บาท/คน (เหมา)</li>
+                <li>ค่าไฟ: ตามจริง</li>
+                <li>ค่าทำความสะอาด: 300 บาท/คน</li>
+                <li>กุญแจ: มัดจำ 200 บาท · คีย์การ์ด: มัดจำ 1,000 บาท</li>
+                <li>⚠️ ต้องเตรียมผ้าปูที่นอน ปลอกหมอน ผ้าห่มมาเอง</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 415 ราชบุรี Ratchaburi คุณมด มัทนา">
+            <div class="card-header"><h3 class="card-title"><span class="code">415</span> ศพช. รพ.ราชบุรี</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณมด — <a href="tel:032338678">032-338-678</a> / <a href="mailto:kajoice12@gmail.com">kajoice12@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.มัทนา อนันตศิริ — <a href="mailto:mattana.fang2001@gmail.com">mattana.fang2001@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ.</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 416 ลำปาง Lampang สุนันทา dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">416</span> ศพช. รพ.ลำปาง</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.สุนันทา อาวรณ์ — <a href="tel:054237400">054-237-400 ต่อ 4312</a> / <a href="mailto:sunanta_ying@cpird.in.th">sunanta_ying@cpird.in.th</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:mec.lampang@cpird.in.th">mec.lampang@cpird.in.th</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกกลุ่มงาน</h4>
+              <ul class="sub-list">
+                <li>กุมารฯ: คุณภัทรภรณ์ ต่อ 4306/8657</li>
+                <li>สูติ-นรีเวช: คุณสุนันทา ต่อ 4312</li>
+                <li>ออร์โธปิดิกส์: คุณจินตนา ต่อ 8264</li>
+                <li>อายุรกรรม: คุณสุมิตรา ต่อ 8754/8757</li>
+                <li>ศัลยกรรม: คุณเบญจมาศ ต่อ 8755/8756 / <a href="mailto:surgerylampang@gmail.com">surgerylampang@gmail.com</a></li>
+                <li>เวชฉุกเฉิน: คุณรัชนี ต่อ 4312 / <a href="tel:0927457299">092-745-7299</a></li>
+                <li>เวชกรรมสังคม: คุณศิรินุช ต่อ 4312</li>
+                              <li>เบอร์โทร 054-237400 ต่อ 4306</li>
+                <li><a href="mailto:SUPALAK.CH@cpird.in.th">SUPALAK.CH@cpird.in.th</a></li>
+                <li><a href="tel:054237400">054237400</a> ต่อ 4306, 8657</li>
+                <li><a href="mailto:supalak.ch@cpird.in.th">supalak.ch@cpird.in.th</a></li>
+                <li><a href="mailto:supalak.ch@cpird.in.th">supalak.ch@cpird.in.th</a></li>
+                <li><a href="mailto:supalak.ch@cpird.in.th">supalak.ch@cpird.in.th</a></li>
+                <li><a href="tel:054237400">054237400</a> ต่อ 8754, 8757</li>
+                <li><a href="mailto:supalak.ch@cpird.in.th">supalak.ch@cpird.in.th</a></li>
+                <li>Tel. 054-273400-4312 Mobile. 092-7457299</li>
+                <li>Email: <a href="mailto:ratchanee.lp@cpird.in.th">ratchanee.lp@cpird.in.th</a></li>
+                <li><a href="mailto:supalak.ch@cpird.in.th">supalak.ch@cpird.in.th</a></li>
+                <li>ข้าวหอมเรสซิเดนซ์ <a href="tel:054221988">054221988</a> / <a href="tel:0863042749">0863042749</a></li>
+</ul>
+              <h4>🏨 หอพักภายนอกแนะนำ</h4>
+              <ul class="sub-list">
+                <li>ข้าวหอมเรสซิเดนซ์: <a href="tel:054221988">054-221-988</a></li>
+                <li>หอพักบนห้างเสรี: <a href="tel:054221808">054-221-808</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 417 วชิระภูเก็ต Phuket CPIRD">
+            <div class="card-header"><h3 class="card-title"><span class="code">417</span> ศพช. รพ.วชิระภูเก็ต</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:076361234">076-361-234 ต่อ 6801</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:cpird-phuket@hotmail.com">cpird-phuket@hotmail.com</a></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ.</span></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://sites.google.com/mail.wu.ac.th/mecphuket/elective" target="_blank">ดาวน์โหลดใบสมัคร</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกแผนก (ต่อ 6801)</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: คุณอารีรัตน์ โกลาซ</li>
+                <li>ศัลยกรรม: คุณสุนิษา เจ๊ะสม้อ</li>
+                <li>เวชฉุกเฉิน: คุณวีรภัทรา วิทยา</li>
+                <li>ออร์โธปิดิกส์: คุณอุทุมพร พฤกษ์อุดม</li>
+                <li>จักษุฯ: คุณสุนิษา หมื่นละม้าย</li>
+                <li>วิสัญญี: คุณประภาภรณ์ จิตรหลัง</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 419 สงขลา Songkhla รัชฎาภรณ์">
+            <div class="card-header"><h3 class="card-title"><span class="code">419</span> รพ.สงขลา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณรัชฎาภรณ์ (เอฟ) — <a href="tel:074338100">074-338-100 ต่อ 5000</a> / <a href="tel:0819638861">081-963-8861</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:meded.sk@gmail.com">meded.sk@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 421 สรรพสิทธิ Sapphasit dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">421</span> รพ.สรรพสิทธิประสงค์</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:045319200">045-319-200 ต่อ 2035</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:kanyaphatpizza28@gmail.com">kanyaphatpizza28@gmail.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกแผนก</h4>
+              <ul class="sub-list">
+                <li>วิสัญญี: ต่อ 1396</li>
+                <li>ศัลยกรรม: ต่อ 1604</li>
+                <li>อายุรกรรม: ต่อ 1450</li>
+                              <li><a href="tel:045319200">045319200</a> ต่อ 1604</li>
+                <li><a href="tel:045319200">045319200</a> ต่อ 1450</li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 422 สระบุรี Saraburi อารีย์ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">422</span> ศพช. รพ.สระบุรี</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณอารีย์ — <a href="tel:036343586">036-343-586</a> / <a href="tel:0817807902">081-780-7902</a></span></div>
+              <div class="contact-row"><span class="icon">💰</span><span>ค่าที่พัก: 500 บาท/2 สัปดาห์</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span>ศัลยศาสตร์: <a href="tel:036343500">036-343-500 ต่อ 2300</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน">
+            <div class="card-header"><h3 class="card-title"><span class="code">423</span> รพ.สวรรค์ประชารักษ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">🌐</span><a href="https://sprmec.go.th/" target="_blank">sprmec.go.th</a> (Smart MEC → งานการศึกษา → Elective)</div>
+              <div class="contact-row"><span class="icon">👤</span><span>คุณเกวลิน วรุณโสภณ (ดาว) — <a href="tel:056219870">056-219-870 ต่อ 204</a> / <a href="mailto:kuestrella1978@gmail.com">kuestrella1978@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://docs.google.com/document/d/1kZypMVZVOdK4SkZEPgmJTxU35WZVfWkHQ8cQBZ_kO_o/edit" target="_blank">📄 เอกสารรวม</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกแผนก (056-219-888)</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม ปี 4-5: คุณวัชราภรณ์ (มิ้นท์) ต่อ 11506/11517</li>
+                <li>อายุรกรรม ปี 6: คุณศศิภา (ซิ้ม) / คุณปวริศ ต่อ 11506/11517</li>
+                <li>กุมารฯ: คุณโทนี่ <a href="tel:0918298618">091-829-8618</a> / คุณบี ต่อ 11232</li>
+                <li>ศัลยศาสตร์/ออร์โธปิดิกส์: คุณมะปราง ต่อ 11410/11405</li>
+                <li>สูติ-นรีเวช: คุณเกวริน/คุณมิ้งค์ ต่อ 11306</li>
+                <li>วิสัญญี: คุณอ๋อย ต่อ 11701</li>
+                <li>เวชฉุกเฉิน: คุณแอ๋ม ต่อ 12104</li>
+                <li>เวชกรรมสังคม: คุณโรส <a href="tel:0615196619">061-519-6619</a></li>
+                <li>จิตเวช: คุณจารุณี (น้อง) ต่อ 15208</li>
+                <li>นิติเวช: คุณไอซ์ <a href="tel:0829452500">082-945-2500</a></li>
+                <li>โสต ศอ นาสิก: นางพยอม ต่อ 11634 / <a href="mailto:effudessang@yahoo.com">effudessang@yahoo.com</a></li>
+                              <li>คุณรัชนีกร  ดีอ่ำ  (คุณบี) เบอร์โทรศัพท์ <a href="tel:0869302180">0869302180</a> / 056 - 219888 * 11232</li>
+                <li>นางนิตยากร โพธิ์งาม <a href="tel:056219888">056219888</a> ต่อ 11111 <a href="mailto:meimayjung@gmail.com">meimayjung@gmail.com</a></li>
+                <li>นางณัฐพัชร์ เทศนีย์ <a href="tel:056219888">056219888</a> ต่อ 11405 / <a href="tel:0864419155">0864419155</a> <a href="mailto:ma_pang_whan@hotmail.com">ma_pang_whan@hotmail.com</a></li>
+                <li>คุณไอลดา ฤทธิ์เรืองเดช (คุณมิ้งค์) เบอร์โทรศัพท์ <a href="tel:0955588101">0955588101</a> / 056 - 219888 * 113</li>
+                <li>นางพยอม ภุมรินทร์ <a href="tel:056219888">056219888</a> ต่อ 11634 <a href="mailto:effudessang@yahoo.com">effudessang@yahoo.com</a></li>
+                <li>คุณปวริศ ด้วงมา น้องต้อม เบอร์โทรศัพท์ 094-8428818 / 056 - 219888 * 11506 / 11517</li>
+                <li>คุณณัฐพัชร เทศนีย์ <a href="tel:056219870">056219870</a> ต่อ 1405 <a href="mailto:ma_pang_whan@hotmail.com">ma_pang_whan@hotmail.com</a></li>
+                <li>คุณวัชราภรณ์ (มิ้นท์) เลขา Med 064-9859465 / 056 - 219888 *11506, 11517</li>
+                <li>คุณศศิภา (ซิ้ม) เลขา Med  097 - 0098854 / 056 - 219888 *11506, 11517</li>
+                <li>นายกมลจิตร  บูรณะพันธ์ คุณโทนี่  ตำแหน่งเจ้าหนักงานธุรการ เบอร์ 091-8298618  อีเมล์ <a href="mailto:kamonjit00@gmail.com">kamonjit00@gmail.com</a></li>
+                <li>คุณณัฐพัชร์ (มะปราง) 056 - 219888 * 11410, 11405 / 086-4419155</li>
+                <li>คุณเกวริน (นิว)  080 - 0287183 / 056 - 219888 * 11306</li>
+                <li>คุณลัดดาวัลย์  (อ๋อย)  087 - 2114934  /  056 - 219888 * 11701</li>
+                <li>คุณรสสุคนธ์ (โรส) 061 - 5196619 / 056 - 219870</li>
+                <li>คุณจารุณี (น้อง) 091 - 8417192 / 056 - 219888 * 15208</li>
+                <li>คุณปณิกา (ไอซ์) 082 - 9452500 / 056 - 219870</li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์">
+            <div class="card-header"><h3 class="card-title"><span class="code">424</span> รพ.สุราษฎร์ธานี</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>จิรนันท์ ภูมิไชยา — <a href="tel:0864793152">086-479-3152</a> / <a href="mailto:jiranan-bee@hotmail.com">jiranan-bee@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่สามารถจัดที่พักให้ได้</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 425 สุรินทร์ Surin">
+            <div class="card-header"><h3 class="card-title"><span class="code">425</span> รพ.สุรินทร์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:044518937">044-518-937</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:med_edsurin@hotmail.com">med_edsurin@hotmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 426 หาดใหญ่ Hat Yai CPIRD dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">426</span> ศพช. รพ.หาดใหญ่</h3><span class="badge badge-dormitory">มีที่พัก</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.อรอนงค์ — <a href="tel:0835191739">083-519-1739</a> / <a href="mailto:on-anong.so@cpird.in.th">on-anong.so@cpird.in.th</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.อังคณา (ปุ๊กกี้) — <a href="tel:074239380">074-239-380</a> / <a href="tel:0620606523">062-060-6523</a></span></div>
+              <div class="contact-row"><span class="icon">💰</span><span>ค่าที่พัก 400 บาท/2 สัปดาห์ + ประกัน 1,000 บาท + กุญแจ 200 บาท</span></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกส่วนงาน</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: คุณระนอง <a href="tel:0948043783">094-804-3783</a></li>
+                <li>กุมารฯ: คุณสุภา <a href="tel:0872920618">087-292-0618</a></li>
+                <li>ศัลยกรรม: คุณภัสชา <a href="tel:0954383895">095-438-3895</a></li>
+                <li>ออร์โธปิดิกส์: คุณเพลินพิศ <a href="tel:0864886881">086-488-6881</a></li>
+                <li>เวชฉุกเฉิน: คุณณัฐกานต์ <a href="tel:0887880039">088-788-0039</a></li>
+                <li>วิสัญญี: น.ส.จุฑาทิพย์ <a href="tel:0914615370">091-461-5370</a></li>
+                              <li>นายพศวีร์ ประทุมพร หน่วยงาน ศูนย์แพทยศาสตรศึกษาชั้นคลินิก โรงพยาบาลหาดใหญ่ โทร 093-7946776 <a href="mailto:pasavee.pra@cpird.in.th">pasavee.pra@cpird.in.th</a></li>
+                <li>นางสาวอังคณา ชูดำ (ปุ๊กกี้) นักวิชาการศึกษา ศูนย์แพทยศาสตรศึกษาชั้นคลินิก โรงพยาบาลหาดใหญ่ โทร. 074-239 380 / 062-0606523 / ไอดีไลน์ pukkeetiti <a href="mailto:angkana40.pukkee@gmail.com">angkana40.pukkee@gmail.com</a></li>
+                <li>คุณภัสชา นิลสมปภากร <a href="tel:0954383895">0954383895</a> <a href="mailto:aungsumalin9999@hotmail.com">aungsumalin9999@hotmail.com</a></li>
+                <li>น.ส.จุฑาทิพย์ จินนุกูล <a href="tel:0914615370">0914615370</a> <a href="mailto:ningtises24@gmail.com">ningtises24@gmail.com</a></li>
+                <li>คุณยงยุทธ อินทสุวรรณ <a href="tel:0818973878">0818973878</a> <a href="mailto:robbeyuth@gmail.com">robbeyuth@gmail.com</a></li>
+                <li>นางสาวอังคณา ชูดำ <a href="tel:0620606523">0620606523</a> <a href="mailto:angkana40.pukkee@gmail.com">angkana40.pukkee@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 427 อุดรธานี Udon Thani บัญชร dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">427</span> รพ.อุดรธานี</h3><span class="badge badge-dormitory">ที่พักฟรี</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.บัญชร ทาสีลา (พิม) — <a href="tel:042211880">042-211-880</a> / <a href="mailto:banchorn4847@gmail.com">banchorn4847@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ศัลยกรรม: จิรดา (พี่หนึ่ง) — <a href="tel:0805524921">080-552-4921</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>อาจารย์อายุรศาสตร์: พญ.อิญชญา <a href="tel:0815442252">081-544-2252</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <p>ติดต่อ: น.ส.นฤมล อุตทะบุตร <a href="tel:042211880">042-211-880</a> / <a href="mailto:narumemonic@gmail.com">narumemonic@gmail.com</a></p>
+              <ul><li>ฟรี · จำกัด ≤ 2 คน/ครั้ง · เพศเดียวกันเท่านั้น</li>                <li>น.ส. บัญชร  ทาสีลา (พิม) นักวิชาการศึกษา (อายุรกรรม) <a href="tel:042211880">042211880</a> / <a href="tel:0810484847">0810484847</a> <a href="mailto:banchorn4847@gmail.com">banchorn4847@gmail.com</a></li>
+                <li>พญ.อิญชญา แสนศักดิ์ <a href="tel:0815442252">0815442252</a> <a href="mailto:isansak@gmail.com">isansak@gmail.com</a></li>
+                <li>น.ส.นฤมล อุตทะบุตร <a href="tel:042211880">042211880</a> <a href="mailto:naruemonic@gmail.com">naruemonic@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์">
+            <div class="card-header"><h3 class="card-title"><span class="code">428</span> รพ.อุตรดิตถ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:055832601">055-832-601</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>☎️ ติดต่อแยกแผนก</h4>
+              <ul class="sub-list">
+                <li>อายุรกรรม: คุณจิราภรณ์ ต่อ 2149 / <a href="mailto:bananaple@hotmail.com">bananaple@hotmail.com</a></li>
+                <li>กุมารฯ: คุณกานดา ต่อ 2149 / <a href="mailto:kndthiennak@hotmail.com">kndthiennak@hotmail.com</a></li>
+                <li>ศัลยกรรม: คุณปัญจรัศม์ ต่อ 2149 / <a href="mailto:p2up2unaja@gmail.com">p2up2unaja@gmail.com</a></li>
+                              <li>คุณปัญจรัศม์ แสงรอด <a href="tel:055832601">055832601</a> ต่อ 2149 <a href="mailto:p2up2unaja@gmail.com">p2up2unaja@gmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: GENERAL HOSPITALS 501-522 ===== -->
+    <section class="inst-section" data-category="regional">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏔️</span>
+          <h2 class="section-title">กลุ่มโรงพยาบาลทั่วไปและศูนย์การแพทย์ระดับภูมิภาค</h2>
+          <p class="section-sub">รหัส 501 – 522</p>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="regional 501 ตากสินมหาราช สมเด็จเจ้าพระยายมราช ออร์โธ">
+            <div class="card-header"><h3 class="card-title"><span class="code">501</span> รพ.สมเด็จพระเจ้าตากสินมหาราช / เจ้าพระยายมราช</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span>ออร์โธปิดิกส์: <a href="tel:035514999">035-514-999 ต่อ 1924</a></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li><a href="mailto:attaponau1100@gmail.com">attaponau1100@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์">
+            <div class="card-header"><h3 class="card-title"><span class="code">502</span> รพ.เจ้าพระยาอภัยภูเบศร</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณฑิฆัมพร จันทร์แดง — <a href="tel:037211088">037-211-088 ต่อ 7002</a> / <a href="mailto:ticumporn.cha@cpird.in.th">ticumporn.cha@cpird.in.th</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.สุดารัตน์ ผิวอ่อน — <a href="mailto:sudarat.pue@cpird.in.th">sudarat.pue@cpird.in.th</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พัก · แนะนำ: หอพักเพชรพลอย <a href="tel:0972688686">097-268-8686</a></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>ไม่สามารถจัดหอพักให้ได้ แนะนำหอพักเพชรพลอย <a href="tel:0972688686">0972688686</a>, <a href="tel:0917415142">0917415142</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 505 นครปฐม Nakhon Pathom ฉันทนา">
+            <div class="card-header"><h3 class="card-title"><span class="code">505</span> รพ.นครปฐม</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>นางฉันทนา บุญชู — <a href="tel:034240053">034-240-053</a> / <a href="mailto:hrdnkpt@hotmail.com">hrdnkpt@hotmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span>ศัลยกรรม: <a href="mailto:ratsamee.rr@gmail.com">ratsamee.rr@gmail.com</a></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>กลุ่มงานศัลยกรรม รพ.นครปฐม <a href="mailto:ratsamee.rr@gmail.com">ratsamee.rr@gmail.com</a> / <a href="mailto:644466053@webmail.npru.ac.th">644466053@webmail.npru.ac.th</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 506 นครพิงค์ เชียงใหม่ ชลธิดา">
+            <div class="card-header"><h3 class="card-title"><span class="code">506</span> รพ.นครพิงค์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณชลธิดา ปินตา — <a href="tel:053999200">053-999-200 ต่อ 2811</a> / <a href="mailto:chontidanoonam@gmail.com">chontidanoonam@gmail.com</a></span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>คุณชลธิดา ปินตา <a href="tel:053999200">053999200</a> ต่อ 2811 <a href="mailto:chontidanoonam@gmail.com">chontidanoonam@gmail.com</a> / mayrin505</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 507 น่าน Nan มยุรี สุทธินี หทัยรัตน์">
+            <div class="card-header"><h3 class="card-title"><span class="code">507</span> รพ.น่าน</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณมยุรี / สุทธินี / หทัยรัตน์ เรืองอินตา</span></div>
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:054719023">054-719-023</a>–4 / ต่อ 58403</span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:medicalsecretarynanhos@gmail.com">medicalsecretarynanhos@gmail.com</a></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่สามารถจัดที่พักได้</span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>องค์กรแพทย์ โรงพยาบาลน่าน โทร.054-719000 ต่อ 58403 <a href="mailto:medicalsecretarynanhos@gmail.com">medicalsecretarynanhos@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 509 พระนครศรีอยุธยา Ayutthaya">
+            <div class="card-header"><h3 class="card-title"><span class="code">509</span> รพ.พระนครศรีอยุธยา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:035211888">035-211-888 ต่อ 2320</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 510 พระนั่งเกล้า Nonthaburi พรจิตร">
+            <div class="card-header"><h3 class="card-title"><span class="code">510</span> รพ.พระนั่งเกล้า</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณพรจิตร กุลวงศ์ — <a href="tel:025284567">02-528-4567 ต่อ 1710</a> / <a href="mailto:mso.pnk@gmail.com">mso.pnk@gmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 512 แม่สอด Mae Sot Tak ชายแดน">
+            <div class="card-header"><h3 class="card-title"><span class="code">512</span> รพ.แม่สอด</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:055531229">055-531-229 ต่อ 1588/1587/1388</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:pattana2016@outlook.com">pattana2016@outlook.com</a></div>
+            </div>
+            <div class="card-detail">
+              <h4>⚠️ มาตรการป้องกันโรค</h4>
+              <ul>
+                <li>ต้องมีผล CPR ก่อนเดินทาง 3 วัน</li>
+                <li>Swab Day 0 ณ คลินิก ARI รพ.แม่สอด</li>
+                              <li>งานพัฒนาทรัพยากรบุคคล โรงพยาบาลแม่สอด โทร.055 531229 ต่อ 1588,1587,1388 แฟกซ์ 055 533735 <a href="mailto:pattana2016@outlook.com">pattana2016@outlook.com</a></li>
+                <li>swab ครั้งที่ 1 วันเดินทางมาถึง Day 0 ที่คลินิก ARI รพ.แม่สอด (ทำบัตรที่ห้องเวชระเบียน ตึกผู้ป่วยนอกก่อนไปคลินิก ARI) จ-ศ เวลา 8.30-15.30 น. ส อา และวันหยุดราชการ 9.00-11.00 น.</li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 513 ระยอง Rayong เจี๊ยบ">
+            <div class="card-header"><h3 class="card-title"><span class="code">513</span> รพ.ระยอง</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณเจี๊ยบ — <a href="mailto:jeab_pkk@yahoo.com">jeab_pkk@yahoo.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 514 ลำพูน Lamphun ธิดารัตนภรณ์">
+            <div class="card-header"><h3 class="card-title"><span class="code">514</span> รพ.ลำพูน</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณธิดารัตนภรณ์ — <a href="tel:053569100">053-569-100 ต่อ 76155</a> / <a href="mailto:lamphunmso@gmail.com">lamphunmso@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>ศัลยกรรม: น.ส.ประภาพร <a href="tel:0612697970">061-269-7970</a></span></div>
+              <div class="contact-row"><span class="icon">🏠</span><span>❌ ไม่มีที่พักใน รพ.</span></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>น.ส.ประภาพร วงษ์แก้ว <a href="tel:0612697970">0612697970</a> / <a href="tel:053569100">053569100</a> ต่อ 76155</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 516 สมเด็จพระยุพราชสระแก้ว Sa Kaeo สุพัตรา">
+            <div class="card-header"><h3 class="card-title"><span class="code">516</span> รพ.สมเด็จพระยุพราชสระแก้ว</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณสุพัตรา — <a href="tel:037421437">037-421-437</a> / <a href="mailto:somkatoon@hotmail.com">somkatoon@hotmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 521 อุ้มผาง Umphang ชายแดน วัลลีย์ dormitory">
+            <div class="card-header"><h3 class="card-title"><span class="code">521</span> รพ.อุ้มผาง</h3><span class="badge badge-dormitory">ที่พักฟรี</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>นางวัลลีย์ คุณยศยิ่ง — <a href="tel:055561270">055-561-270 ต่อ 170</a> / <a href="tel:0633616242">063-361-6242</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:nikan02@hotmail.com">nikan02@hotmail.com</a> / <a href="mailto:narida2522@gmail.com">narida2522@gmail.com</a></span></div>
+            </div>
+            <div class="card-detail">
+              <h4>🏠 ที่พัก</h4>
+              <p>ติดต่อ: คุณพิรดา มนตรา <a href="tel:0632506753">063-250-6753</a></p>
+              <ul><li>ฟรี · ห้องพักรวม เตียง 2 ชั้น · อาจพักร่วมต่างสถาบัน</li>                <li>นางวัลลีย์ คุณยศยิ่ง <a href="tel:055561270">055561270</a> ต่อ 170 / <a href="tel:0633616242">0633616242</a> <a href="mailto:nikan02@hotmail.com">nikan02@hotmail.com</a> / <a href="mailto:pirada_aiw@hotmail.com">pirada_aiw@hotmail.com</a> / <a href="mailto:dikrue.07@gmail.com">dikrue.07@gmail.com</a></li>
+                <li>ติดต่อ คุณพิรดา มนตรา <a href="tel:0632506753">0632506753</a> <a href="mailto:pirada_aiw@hotmail.com">pirada_aiw@hotmail.com</a></li>
+</ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="regional 522 สมเด็จพระนางเจ้าสิริกิติ์ กรมแพทย์ทหารเรือ ชลบุรี จิตรลดา">
+            <div class="card-header"><h3 class="card-title"><span class="code">522</span> รพ.สมเด็จพระนางเจ้าสิริกิติ์ (กรมแพทย์ทหารเรือ)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณจิตรลดา — <a href="tel:038933900">038-933-900 ต่อ 60944</a></span></div>
+              <div class="contact-row"><span class="icon">✉️</span><span><a href="mailto:meo_srk@yahoo.com">meo_srk@yahoo.com</a> / <a href="mailto:meo.srk.2020@gmail.com">meo.srk.2020@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.กฤษลดา วงศ์มุกดาพร — <a href="tel:038933900">038-933-900 ต่อ 69827</a></span></div>
+              <div class="contact-row"><span class="icon">👤</span><span>น.ต.หญิงนันท์พัสพร สุขสานต์ — <a href="tel:0655059145">065-505-9145</a> / <a href="tel:038245735">038-245-735 ต่อ 69827</a> / <a href="mailto:nanpassapornying@gmail.com">nanpassapornying@gmail.com</a></span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: OTHER HOSPITALS ===== -->
+    <section class="inst-section bg-sand" data-category="hospital">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏥</span>
+          <h2 class="section-title">โรงพยาบาลและสถาบันเครือข่ายอื่นๆ ทั่วประเทศ</h2>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up" data-tags="hospital กุฉินารายณ์ กาฬสินธุ์ ปวีณา">
+            <div class="card-header"><h3 class="card-title">รพ.สมเด็จพระยุพราชกุฉินารายณ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.ปวีณา กางสุพรรณ์ — <a href="tel:0955374862">095-537-4862</a> / <a href="mailto:nooyui.55@gmail.com">nooyui.55@gmail.com</a></span></div>
+              <div class="contact-row"><span class="icon">📍</span><span>193 ม.13 ต.บัวขาว อ.กุฉินารายณ์ จ.กาฬสินธุ์ 46110</span></div>
+              <div class="contact-row"><span class="icon">🔗</span><a href="https://docs.google.com/forms/d/e/1FAIpQLSe9SBKkxYfcYi1z_08USLGvWlRjqIeKen3UXsKk6D9xordpSA/viewform" target="_blank">📝 ระบบสายตรงผู้อำนวยการ</a></div>
+            </div>
+                      <div class="card-detail">
+              <h4>☎️ ข้อมูลติดต่อเพิ่มเติม (Google Form)</h4>
+              <ul class="sub-list">
+                <li>สายตรงผู้อำนวยการโรงพยาบาลสมเด็จพระยุพราชกุฉินารายณ์ https://docs.google.com/forms/d/e/1FAIpQLSe9SBKkxYfcYi1z_08USLGvWlRjqIeKen3UXsKk6D9xordpSA/viewform?c=0&w=1&includes_info_params=true&fbclid=IwAR1iKx30OYqWJ92uXcJAW3I3HY-YJKAVdF-UEMSYlZhQPRf1dG08WN7pVkU</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital ปราสาท สุรินทร์">
+            <div class="card-header"><h3 class="card-title">รพ.ปราสาท</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><span><a href="tel:044551295">044-551-295</a> (ต่อห้ององค์กรแพทย์) / <a href="tel:0910780735">091-078-0735</a> (สายตรง)</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital นราธิวาส Narathiwat CPIRD">
+            <div class="card-header"><h3 class="card-title">ศพช. รพ.นราธิวาสราชนครินทร์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:073510613">073-510-613</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital บูรพา ชลบุรี BUU วิรยา">
+            <div class="card-header"><h3 class="card-title">คณะแพทยศาสตร์ ม.บูรพา</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณวิรยา — <a href="tel:038103153">038-103-153 ต่อ 2315</a> / <a href="tel:0982677734">098-267-7734</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital สถาบันมะเร็ง cancer oncology">
+            <div class="card-header"><h3 class="card-title">สถาบันมะเร็งแห่งชาติ</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:022026800">02-202-6800 ต่อ 2237</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital กระบี่ Krabi">
+            <div class="card-header"><h3 class="card-title">รพ.กระบี่</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:075626700">075-626-700</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:yoau_yoau@hotmail.com">yoau_yoau@hotmail.com</a></div>
+              <div class="contact-row"><span class="icon">💬</span><span>LINE: chicha10738</span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital สวนปรุง จิตเวช เชียงใหม่ กรมสุขภาพจิต">
+            <div class="card-header"><h3 class="card-title">รพ.สวนปรุง (กรมสุขภาพจิต)</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:053908521">053-908-521</a></div>
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:saraban_sp@suanprung.go.th">saraban_sp@suanprung.go.th</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital เกาะสมุย Koh Samui พี่นุ้ย">
+            <div class="card-header"><h3 class="card-title">รพ.เกาะสมุย</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>พี่นุ้ย — <a href="tel:077913200">077-913-200 ต่อ 3012</a> / <a href="mailto:sofea_2694@hotmail.com">sofea_2694@hotmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital ทุ่งสง Thung Song นครศรีธรรมราช">
+            <div class="card-header"><h3 class="card-title">รพ.ทุ่งสง</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">✉️</span><a href="mailto:sasiwimon3747@gmail.com">sasiwimon3747@gmail.com</a></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital สมุทรปราการ Samut Prakan ศุภกิจ">
+            <div class="card-header"><h3 class="card-title">รพ.สมุทรปราการ</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>คุณศุภกิจ — <a href="tel:0953822381">095-382-2381</a> / <a href="mailto:physiciansofficesmpkhos@gmail.com">physiciansofficesmpkhos@gmail.com</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital จุฬาภรณ์ Chulabhorn ธนกร">
+            <div class="card-header"><h3 class="card-title">รพ.จุฬาภรณ์</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>นายธนกร ถนอมสังข์ — <a href="tel:027655705">02-765-5705</a> / <a href="mailto:tanakorn.tan@cra.ac.th">tanakorn.tan@cra.ac.th</a></span></div>
+            </div>
+          </div>
+
+          <div class="card fade-up" data-tags="hospital ชัยภูมิ Chaiyaphum CPIRD พาขวัญ">
+            <div class="card-header"><h3 class="card-title">ศพช. รพ.ชัยภูมิ</h3></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">👤</span><span>น.ส.พาขวัญ พงษ์สวัสดิ์ — <a href="tel:044104610">044-104-610 ต่อ 88120</a> / <a href="mailto:pakwan.cpm@cpird.in.th">pakwan.cpm@cpird.in.th</a></span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECTION: PRIVATE HOSPITAL ===== -->
+    <section class="inst-section" data-category="hospital">
+      <div class="container">
+        <div class="section-header fade-up">
+          <span class="section-badge">🏢</span>
+          <h2 class="section-title">โรงพยาบาลเอกชน</h2>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card fade-up card-premium" data-tags="hospital บำรุงราษฎร์ Bumrungrad เอกชน private">
+            <div class="card-header"><h3 class="card-title">โรงพยาบาลบำรุงราษฎร์</h3><span class="badge badge-special">⭐ พิเศษ</span></div>
+            <div class="card-body">
+              <div class="contact-row"><span class="icon">📞</span><a href="tel:020113137">02-011-3137</a> (Postgraduate Medical Education)</div>
+              <div class="contact-row"><span class="icon">👤</span><span>ลงชื่อกับ พี่แจ๊ค ฝ่ายวิชาการ ทาง MS Teams (Piyapat Manasatitpong)</span></div>
+            </div>
+            <div class="card-detail">
+              <h4>📋 รายละเอียดโปรแกรม</h4>
+              <ul>
+                <li>ระยะเวลา: 2 สัปดาห์</li>
+                <li>ครอบคลุม: รังสีวิทยา, มะเร็งวิทยา, กุมารฯ, ทารกแรกเกิด</li>
+                <li>จำกัด: <strong>2 ท่าน/เดือน</strong> (สลับเดือน) · โควตา 12 ท่าน/ปี</li>
+              </ul>
+              <h4>⚠️ กฎระเบียบ</h4>
+              <ul>
+                <li>ติดต่อคุณศรารัตน์ แสงอรุณ ชั้น 21 อาคาร A วันแรก</li>
+                <li>ต้องเซ็น <strong>Non-disclosure Agreement</strong></li>
+                <li>ต้องติดบัตรชั่วคราวตลอดเวลา</li>
+                <li>แพทย์จะขออนุญาตผู้ป่วยก่อนทุกครั้งก่อนให้นิสิตเข้าสังเกตการณ์</li>
+                <li>แต่งกายสุภาพตลอดเวลา</li>
+                <li>❌ ไม่มีที่พัก</li>
+                <li>ตั้งใจเก็บเกี่ยวความรู้จากอาจารย์แพทย์ให้เต็มที่</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== TIPS SECTION ===== -->
+  <section class="tips-section" id="tips">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-badge">💡</span>
+        <h2 class="section-title">คำแนะนำสำหรับนิสิต</h2>
+      </div>
+      <div class="tips-grid">
+        <div class="tip-card fade-up">
+          <div class="tip-icon">📅</div>
+          <h3>วางแผนล่วงหน้า</h3>
+          <p>ติดต่อสถาบันล่วงหน้าอย่างน้อย 6-12 เดือน บางสถาบันมีโควตาจำกัดและปิดรับในบางช่วง</p>
+        </div>
+        <div class="tip-card fade-up">
+          <div class="tip-icon">💉</div>
+          <h3>เตรียมวัคซีน</h3>
+          <p>หลายสถาบันกำหนดให้มีวัคซีน MMR, Varicella, Hepatitis B, Tdap, Influenza และ COVID-19 พร้อมหลักฐาน</p>
+        </div>
+        <div class="tip-card fade-up">
+          <div class="tip-icon">📄</div>
+          <h3>เตรียมเอกสาร</h3>
+          <p>บัตรประชาชน, บัตรนักศึกษา, รูปถ่าย, ผล Chest X-ray, หลักฐานวัคซีน, และจดหมายรับรองจากมหาวิทยาลัย</p>
+        </div>
+        <div class="tip-card fade-up">
+          <div class="tip-icon">🏠</div>
+          <h3>จองที่พัก</h3>
+          <p>ตรวจสอบว่าสถาบันมีหอพักหรือไม่ หากไม่มี วางแผนจองที่พักภายนอกล่วงหน้า</p>
+        </div>
+        <div class="tip-card fade-up">
+          <div class="tip-icon">💰</div>
+          <h3>เตรียมค่าใช้จ่าย</h3>
+          <p>ค่าธรรมเนียมแตกต่างกันตามสถาบัน (ฟรี - 400 บาท/วัน) เตรียมเงินสดสำหรับค่ามัดจำ</p>
+        </div>
+        <div class="tip-card fade-up">
+          <div class="tip-icon">📞</div>
+          <h3>ยืนยันก่อนไป</h3>
+          <p>โทรยืนยันกับผู้ประสานงานก่อนวันรายงานตัว และตรวจสอบเวลาและสถานที่รายงานตัว</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-title">คู่มือ Elective · นิสิตแพทย์จุฬาลงกรณ์มหาวิทยาลัย</p>
+      <p class="footer-sub">ข้อมูล ณ ปีการศึกษา 2565–2567 · กรุณาตรวจสอบข้อมูลล่าสุดกับสถาบันโดยตรง</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
