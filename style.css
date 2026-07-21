@@ -158,6 +158,35 @@ body {
   background: rgba(245,239,230,0.1);
 }
 
+.hero-cta-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-link {
+  color: rgba(245,239,230,0.6);
+  font-size: 0.82rem;
+  font-weight: 400;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+.btn-link:hover {
+  color: rgba(245,239,230,0.95);
+  text-decoration: underline;
+}
+
+.btn-link-divider {
+  color: rgba(245,239,230,0.3);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+
 .hero-scroll-hint {
   position: absolute;
   bottom: 2rem;
