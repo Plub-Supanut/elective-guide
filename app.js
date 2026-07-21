@@ -190,6 +190,14 @@ document.addEventListener('click', (e) => {
       detail.style.opacity = '1';
     });
   }
+
+  // Update hint text — works for both original cards and search-result clones
+  const hint = card.querySelector('.expand-hint');
+  if (hint) {
+    hint.textContent = card.classList.contains('expanded')
+      ? '▴ ซ่อนรายละเอียด'
+      : '▾ ดูรายละเอียดเพิ่มเติม';
+  }
 });
 
 // Initialize: collapse all card-details
@@ -212,13 +220,7 @@ document.querySelectorAll('.card').forEach(card => {
       font-weight:500;transition:color 0.2s;user-select:none;
     `;
     card.appendChild(hint);
-    card.addEventListener('click', () => {
-      if (card.classList.contains('expanded')) {
-        hint.textContent = '▾ ดูรายละเอียดเพิ่มเติม';
-      } else {
-        hint.textContent = '▴ ซ่อนรายละเอียด';
-      }
-    });
+    // Hint text is updated by the global click handler above (works for clones too)
   }
 });
 
