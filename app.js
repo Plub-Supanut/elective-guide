@@ -202,6 +202,7 @@ function runSearch() {
     clone.classList.add('result-clone');
     results.appendChild(clone);
   });
+  equalizeCardRows();
 }
 
 // Highlight matches by building nodes — never re-parse text as HTML.
@@ -306,6 +307,52 @@ document.querySelectorAll('.card').forEach(card => {
   hint.setAttribute('aria-hidden', 'true');
   card.appendChild(hint);
 });
+
+// ── การ์ดในแถวเดียวกันให้สูงเท่ากัน ────────────────────────────
+// ใช้ min-height ต่อแถว (แทน align-items: stretch) เพราะ stretch จะถ่าง
+// การ์ดใบข้าง ๆ ตามไปด้วยตอนที่อีกใบกางรายละเอียด จนเหลือที่ว่างท้ายการ์ด
+const equalizeTargets = () => [
+  ...document.querySelectorAll('.cards-grid'),
+  ...document.querySelectorAll('.ssc-grid'),
+  ...document.querySelectorAll('#searchResults.active'),
+];
+
+function equalizeCardRows() {
+  equalizeTargets().forEach(grid => {
+    if (grid.offsetParent === null) return; // ซ่อนอยู่ วัดตำแหน่งไม่ได้
+    const cards = Array.from(grid.children).filter(c =>
+      c.classList.contains('card') || c.classList.contains('ssc-card'));
+    if (cards.length < 2) return;
+
+    const rows = new Map();
+    cards.forEach(card => {
+      const top = card.offsetTop;
+      let key = null;
+      for (const k of rows.keys()) { if (Math.abs(k - top) < 4) { key = k; break; } }
+      if (key === null) { rows.set(top, [card]); } else { rows.get(key).push(card); }
+    });
+
+    rows.forEach(list => {
+      if (list.length < 2) { list.forEach(c => { c.style.minHeight = ''; }); return; }
+      // ใบที่กางอยู่สูงไม่ใช่ความสูงจริง — ปล่อยแถวนี้ไว้ตามเดิม
+      if (list.some(c => c.classList.contains('expanded'))) return;
+      list.forEach(c => { c.style.minHeight = ''; });
+      const h = Math.max(...list.map(c => c.getBoundingClientRect().height));
+      list.forEach(c => { c.style.minHeight = Math.ceil(h) + 'px'; });
+    });
+  });
+}
+
+let equalizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(equalizeTimer);
+  equalizeTimer = setTimeout(equalizeCardRows, 150);
+}, { passive: true });
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(equalizeCardRows);
+}
+
+equalizeCardRows();
 
 // ── Smooth anchor scrolling with offset for sticky nav ────────
 document.querySelectorAll('a[href^="#"]').forEach(link => {

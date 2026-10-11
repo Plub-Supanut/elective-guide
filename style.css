@@ -433,6 +433,9 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
+  /* align-items: start + min-height ต่อแถวที่คำนวณใน app.js (equalizeCardRows)
+     → ตอนพับอยู่การ์ดในแถวเดียวกันสูงเท่ากัน แต่พอใบหนึ่งกางรายละเอียด
+       ใบข้าง ๆ ไม่ถูกถ่างตามจนเหลือที่ว่างท้ายการ์ด (ข้อเสียของ align-items: stretch) */
   align-items: start;
 }
 
@@ -938,6 +941,12 @@ input:focus-visible,
   gap: 1.4rem;
   align-items: start;
 }
+/* การ์ด SSC ในแถวเดียวกันสูงเท่ากัน (min-height จาก app.js) — ให้รายการลิงก์
+   เป็นตัวดูดช่องว่างที่เหลือ การ์ด «แบบฟอร์มที่ใช้» 2 ลิงก์จึงสูงเท่ากับการ์ดกำหนดการ */
+.ssc-card { display: flex; flex-direction: column; }
+.ssc-links { flex: 1; display: flex; flex-direction: column; }
+.ssc-links li { display: flex; }
+.ssc-links li > a { flex: 1; justify-content: center; }
 @media (min-width: 900px) {
   .ssc-grid { grid-template-columns: repeat(2, 1fr); }
 }
