@@ -166,15 +166,15 @@ function parseSchedule(rows) {
     const [, year, round, rest] = m;
     let date = (rest || '').trim();
     let unknown = false;
-    if (/^[-–—]$/.test(date)) {
-      date = '—';               // ต้นฉบับขีดไว้ = ไม่มีรอบ/ไม่ใช้
-    } else if (!date) {
-      date = 'ยังไม่ประกาศ';      // ต้นฉบับเว้นว่าง = ยังไม่ประกาศวัน
+    // มาตรฐานเดียว: ต้นฉบับเว้นว่าง หรือใส่ขีด «-» ไว้ → ถือว่า «ยังไม่ประกาศ» ทั้งคู่
+    // (เดิมแสดง «—» กับ «ยังไม่ประกาศ» ปนกัน ทำให้อ่านเหมือนข้อมูลไม่ครบคนละแบบ)
+    if (!date || /^[-–—\s]+$/.test(date)) {
+      date = 'ยังไม่ประกาศ';
       unknown = true;
     }
     const label = round ? `SSCs ${year} · ${round}` : `SSCs ${year}`;
     if (out.some(o => o.label === label)) continue;
-    out.push({ label, date, muted: unknown || date === '—' });
+    out.push({ label, date, muted: unknown });
   }
   return out;
 }
@@ -328,6 +328,7 @@ ${formRows}
             <ul class="ssc-sched">
 ${scheduleRows}
             </ul>
+            <p class="ssc-note">«ยังไม่ประกาศ» = ฝ่ายวิชาการยังไม่ระบุวันในตารางต้นฉบับ</p>
           </article>
 
           <!-- หลักเกณฑ์ · ประกาศ · รายชื่อ MOU -->

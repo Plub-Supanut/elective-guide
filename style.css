@@ -1026,8 +1026,10 @@ input:focus-visible,
 }
 .ssc-sched li:first-child { border-top: none; }
 .ssc-sched .lbl { color: var(--charcoal); font-weight: 500; }
-.ssc-sched .date { color: var(--warm-gray); white-space: nowrap; }
-.ssc-sched .date.is-empty { color: var(--sand-dark); }
+.ssc-sched .date { color: var(--warm-gray); white-space: nowrap; font-weight: 500; }
+/* «ยังไม่ประกาศ» เดิมใช้ sand-dark (contrast 1.5:1 — อ่านยากและดูเหมือนข้อมูลพัง)
+   ใช้สีเดียวกับวันที่จริง (5.8:1) แล้วแยกด้วยน้ำหนักตัวอักษรแทน */
+.ssc-sched .date.is-empty { color: var(--warm-gray); font-weight: 400; }
 
 .ssc-note {
   font-size: 0.75rem;
