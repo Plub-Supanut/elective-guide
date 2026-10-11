@@ -184,6 +184,46 @@
       legend.appendChild(li);
     });
   }
+  // ── ระยะทางจากคณะฯ (คิดจากพิกัดจริง) ─────────────────────────
+  const home = proj(100.5346, 13.7383);
+  const toXY = (lon, lat) => proj(lon, lat);
+  const kmOf = (p) => {
+    // แปลงกลับจากหน่วยแผนที่ → องศา → ระยะจริง (haversine ย่อ)
+    const lat = LAT0 - p.y / 100, lon = p.x / (100 * COS) + LON0;
+    const dLat = (lat - 13.7383) * 111.32;
+    const dLon = (lon - 100.5346) * 111.32 * Math.cos(13.7383 * Math.PI / 180);
+    return Math.hypot(dLat, dLon);
+  };
+  const nearBox = document.querySelector('#map-near');
+  if (nearBox) {
+    const away = M.pins
+      .filter(p => p.t.includes('chula') === false)          // ไม่นับภาควิชาในคณะฯ (อยู่ที่เดียวกัน)
+      .map(p => ({ p, km: kmOf(p) }))
+      .filter(o => o.km > 1)
+      .sort((a, b) => a.km - b.km);
+    const row = (o, tag) => `<li class="map-near-row" data-name="${o.p.n.replace(/"/g, '&quot;')}">`
+      + `<span class="map-near-tag">${tag}</span><span class="map-near-name">${o.p.n}</span>`
+      + `<span class="map-near-km">${Math.round(o.km)} กม.</span></li>`;
+    nearBox.innerHTML = `<h3 class="map-near-title">ระยะทางจากคณะฯ</h3><ul class="map-near-list">`
+      + away.slice(0, 2).map(o => row(o, 'ใกล้สุด')).join('')
+      + away.slice(-3).reverse().map(o => row(o, 'ไกลสุด')).join('')
+      + '</ul><p class="map-near-note">ระยะเส้นตรงจากคณะแพทยศาสตร์ จุฬาฯ</p>';
+    nearBox.querySelectorAll('.map-near-row').forEach(li => {
+      li.addEventListener('click', () => {
+        const card = [...document.querySelectorAll('.card')].find(c => {
+          const t = c.querySelector('.card-title');
+          return t && t.textContent.trim() === li.dataset.name;
+        });
+        if (!card) return;
+        card.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+        card.classList.remove('map-flash');
+        void card.offsetWidth;
+        card.classList.add('map-flash');
+        setTimeout(() => card.classList.remove('map-flash'), 2200);
+      });
+    });
+  }
+
   const facts = document.querySelector('#map-facts');
   if (facts) {
     const dorm = M.pins.filter(p => p.d).length;

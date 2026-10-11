@@ -1613,3 +1613,30 @@ input:focus-visible,
 .map-tip em.approx { color: var(--terra-light); opacity: 1; font-size: 0.7rem; }
 
 .map-fallback { font-size: 0.85rem; color: var(--warm-gray); padding: 2rem; text-align: center; }
+
+/* ระยะทางจากคณะฯ */
+.map-near-title { font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin: 0.4rem 0 0.55rem; }
+.map-near-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.map-near-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.map-near-row:hover { background: var(--sand); }
+.map-near-tag {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: var(--sand-mid);
+  color: var(--warm-gray);
+}
+.map-near-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-near-km { flex: 0 0 auto; color: var(--terra); font-variant-numeric: tabular-nums; }
+.map-near-note { font-size: 0.72rem; color: var(--warm-gray); margin: 0.5rem 0 0; }
