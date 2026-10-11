@@ -69,6 +69,7 @@
         <div class="nav-links">
           <a href="#search">ค้นหา</a>
           <a href="#ssc">นอกคณะ</a>
+          <a href="#map">แผนที่</a>
           <a href="#institutions">สถาบัน</a>
           <a href="#chula">ภาควิชาจุฬา</a>
           <a href="#tips">คำแนะนำ</a>
@@ -328,6 +329,34 @@
     <!-- SSC:DATA-HASH:9d19410bef5f -->
     <!-- SSC:DATA-HASH:9d19410bef5f -->
     <!-- SSC:DATA-HASH:791d69b3a305 -->
+
+    <!-- MAP — แผนที่สถาบัน -->
+    <section class="map-section" id="map">
+      <div class="container">
+        <div class="section-head">
+          <p class="section-eyebrow">แผนที่</p>
+          <h2 class="section-title">117 ที่หมาย อยู่ตรงไหนของประเทศ</h2>
+          <p class="section-sub">
+            ชี้ที่จุดเพื่อดูชื่อสถาบัน · กดที่จุดเพื่อกระโดดไปการ์ดของสถาบันนั้น · กดที่ภาคเพื่อกรองรายการด้านล่าง
+          </p>
+        </div>
+        <div class="map-wrap">
+          <div class="map-paper">
+            <div id="elective-map">
+              <p class="map-fallback">แผนที่ต้องเปิด JavaScript · ดูรายชื่อสถาบันทั้งหมดได้ที่ส่วน «สถาบัน» ด้านล่าง</p>
+            </div>
+          </div>
+          <div class="map-side">
+            <ul class="map-legend" id="map-legend"></ul>
+            <div class="map-facts" id="map-facts"></div>
+            <p class="map-note">
+              พิกัดจาก OpenStreetMap (Nominatim) · ภาควิชาในคณะแพทยศาสตร์ จุฬาฯ อยู่ที่ตำแหน่งเดียวกัน จึงกระจายจุด
+              ออกเป็นวงเล็ก ๆ เพื่อให้เห็นแยกกัน
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- MAIN INSTITUTIONS -->
     <main id="institutions">
@@ -5890,5 +5919,9 @@
 
     <script src="aliases.js"></script>
     <script src="app.js"></script>
+    <script src="hero-bg.js"></script>
+    <script src="map-data.js"></script>
+    <script src="map.js"></script>
+    <script src="flair.js"></script>
   </body>
 </html>

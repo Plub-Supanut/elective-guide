@@ -1416,3 +1416,200 @@ input:focus-visible,
   .card-header { row-gap: 0.5rem; }
   .card-header .card-title { flex: 1 0 100%; }
 }
+
+/* ============================
+   แผนที่สถาบัน (แผนที่ไทย interactive)
+   ============================ */
+.map-section {
+  padding: 4.5rem 2rem;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 8%, rgba(196, 113, 75, 0.06), transparent 60%),
+    radial-gradient(ellipse 50% 45% at 8% 92%, rgba(125, 155, 118, 0.07), transparent 60%),
+    var(--off-white);
+}
+.map-wrap {
+  display: grid;
+  grid-template-columns: minmax(310px, 470px) minmax(0, 1fr);
+  gap: 2.6rem;
+  align-items: start;
+}
+.map-paper {
+  position: relative;
+  padding: 0.9rem;
+  background: linear-gradient(168deg, #fdfaf6 0%, #f3ecdf 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+/* เส้นกริดจาง ๆ เหมือนกระดาษแผนที่ */
+.map-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(125, 155, 118, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 155, 118, 0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.map-svg { position: relative; display: block; width: 100%; height: auto; }
+.map-land path {
+  fill: var(--sand-mid);
+  stroke: var(--sage-light);
+  stroke-width: 0.75;
+  stroke-linejoin: round;
+}
+
+/* หมุด: ค่อย ๆ ปรากฏไล่กันเมื่อเลื่อนมาถึง */
+.pin-dot {
+  opacity: 0;
+  transform: scale(0.2);
+  transform-origin: center;
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--i) * 9ms);
+}
+.map-paper.in .pin-dot { opacity: 0.78; transform: scale(1); }
+.pin-hit { fill: transparent; cursor: pointer; }
+.map-pin.on .pin-dot,
+.map-pin:hover .pin-dot { opacity: 1; transform: scale(1.6); }
+.map-pin.on .pin-dot { stroke: var(--off-white); stroke-width: 0.7; }
+.map-pins.touching .pin-dot { opacity: 0.28; }
+.map-pins.touching .map-pin.on .pin-dot { opacity: 1; }
+
+/* ไฮไลต์ภาคเมื่อชี้ที่คำอธิบาย */
+.map-svg.focus-bkk .map-pin:not([data-region="bkk"]),
+.map-svg.focus-central .map-pin:not([data-region="central"]),
+.map-svg.focus-north .map-pin:not([data-region="north"]),
+.map-svg.focus-isan .map-pin:not([data-region="isan"]),
+.map-svg.focus-south .map-pin:not([data-region="south"]) { opacity: 0.14; }
+.map-svg.focus-bkk .map-pin[data-region="bkk"] .pin-dot,
+.map-svg.focus-central .map-pin[data-region="central"] .pin-dot,
+.map-svg.focus-north .map-pin[data-region="north"] .pin-dot,
+.map-svg.focus-isan .map-pin[data-region="isan"] .pin-dot,
+.map-svg.focus-south .map-pin[data-region="south"] .pin-dot { opacity: 1; transform: scale(1.35); }
+
+/* เส้นทางจากจุฬาฯ ไปหมุดที่ชี้ */
+.map-arc { fill: none; stroke: var(--terra); stroke-width: 0.9; stroke-linecap: round; opacity: 0.8; }
+.map-home { fill: var(--terra); stroke: var(--off-white); stroke-width: 1.2; }
+
+/* ป้ายชื่อสถาบัน */
+.map-tip {
+  position: absolute;
+  z-index: 4;
+  transform: translate(-50%, -100%);
+  margin-top: -0.55rem;
+  max-width: 15rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--charcoal);
+  color: var(--sand);
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.map-tip.below { transform: translate(-50%, 0); margin-top: 0.9rem; }
+.map-tip strong { display: block; font-weight: 600; }
+.map-tip em { display: block; font-style: normal; opacity: 0.72; font-size: 0.72rem; margin-top: 0.1rem; }
+.map-tip-badges { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.35rem; }
+.map-tip-badges span {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(245, 239, 230, 0.16);
+}
+
+/* ฝั่งขวา: คำอธิบาย + ตัวเลข */
+.map-side { display: flex; flex-direction: column; gap: 1.1rem; }
+.map-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.map-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  min-height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  transition: background 0.2s;
+}
+.map-legend-row:hover { background: var(--sand); }
+.map-legend-row .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+.map-legend-row .legend-count { margin-left: auto; color: var(--warm-gray); font-variant-numeric: tabular-nums; font-size: 0.88rem; }
+.map-facts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.map-fact {
+  font-size: 0.76rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--warm-gray);
+}
+.map-note { font-size: 0.75rem; color: var(--warm-gray); line-height: 1.6; margin: 0; }
+
+/* การ์ดที่ถูกกดจากแผนที่ */
+.card.map-flash { animation: mapFlash 2.2s ease; }
+@keyframes mapFlash {
+  0%, 100% { box-shadow: var(--shadow); }
+  14%      { box-shadow: 0 0 0 3px var(--terra), var(--shadow-lg); }
+  60%      { box-shadow: 0 0 0 3px rgba(196, 113, 75, 0.35), var(--shadow-lg); }
+}
+
+@media (max-width: 900px) {
+  .map-section { padding: 3.5rem 1.25rem; }
+  .map-wrap { grid-template-columns: 1fr; gap: 1.6rem; }
+  .map-paper { max-width: 360px; margin: 0 auto; }
+  .map-legend-row { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pin-dot { transition: none; opacity: 0.78; transform: none; }
+  .card.map-flash { animation: none; box-shadow: 0 0 0 3px var(--terra), var(--shadow-lg); }
+}
+
+/* ============================
+   ลูกเล่น: ฉากหลัง hero, แถบอ่าน, สปอตไลต์, เมนูตามส่วน
+   ============================ */
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 130;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--sage) 0%, var(--terra) 55%, var(--dusk) 100%);
+  pointer-events: none;
+}
+
+/* เมนูบน: ไฮไลต์ส่วนที่กำลังอ่าน */
+.nav-links a.active { color: var(--terra); }
+.nav-links a.active::after { width: 100%; }
+
+/* ไฟสปอตไลต์นุ่ม ๆ ตามเมาส์บนการ์ด (ไม่บังข้อความ — เป็นเลเยอร์พื้นหลัง) */
+.card,
+.ssc-card,
+.tip-card,
+.stat-card {
+  background-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(196, 113, 75, 0.055),
+    transparent 68%
+  );
+}
+
+/* หมุดที่พิกัดเป็นเพียงตำแหน่งโดยประมาณ — วงกลมกลวง */
+.pin-dot.is-approx { fill: none; }
+.map-tip em.approx { color: var(--terra-light); opacity: 1; font-size: 0.7rem; }
+
+.map-fallback { font-size: 0.85rem; color: var(--warm-gray); padding: 2rem; text-align: center; }
