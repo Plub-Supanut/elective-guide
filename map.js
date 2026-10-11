@@ -227,8 +227,8 @@
                  aria-label="แผนผังอาคารคณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย">
         ${faces}${labels}${dotsSvg}
       </svg>
-      ${unplaced ? `<p class="campus-sub">ไม่ระบุอาคารในแบบฟอร์ม (กดเพื่อดูการ์ด)</p><div class="campus-chips">${unplaced}</div>` : ''}
-      <p class="campus-note">${campusData.source || ''}</p>`;
+      ${unplaced ? `<p class="campus-sub">ไม่ระบุอาคารในแบบฟอร์ม</p><div class="campus-chips">${unplaced}</div>` : ''}
+`;
   };
 
   const openCampus = () => {

@@ -111,13 +111,6 @@ body {
   color: var(--terra-light);
 }
 
-.hero-sub {
-  font-size: 1.05rem;
-  color: rgba(245,239,230,0.75);
-  margin-bottom: 2.5rem;
-  line-height: 1.8;
-}
-
 .hero-cta-row {
   display: flex;
   gap: 1rem;
@@ -1105,14 +1098,6 @@ input:focus-visible,
    ใช้สีเดียวกับวันที่จริง (5.8:1) แล้วแยกด้วยน้ำหนักตัวอักษรแทน */
 .ssc-sched .date.is-empty { color: var(--warm-gray); font-weight: 400; }
 
-.ssc-note {
-  font-size: 0.75rem;
-  line-height: 1.6;
-  color: var(--terra);
-  margin-top: 0.9rem;
-  padding-top: 0.7rem;
-  border-top: 1px dashed var(--border);
-}
 
 .ssc-contact {
   display: flex;
@@ -1300,27 +1285,9 @@ input:focus-visible,
   outline: 2px solid var(--terra);
   outline-offset: 3px;
 }
-.stat-cta {
-  display: block;
-  margin-top: 0.55rem;
-  font-size: 0.66rem;
-  letter-spacing: 0.05em;
-  color: var(--warm-gray);
-  opacity: 0.75;
-  transition: color 0.2s, opacity 0.2s;
-}
-.stat-card:hover .stat-cta,
-.stat-card:focus-visible .stat-cta {
-  color: var(--terra);
-  opacity: 1;
-}
 .stat-card.is-active {
   border-color: var(--terra);
   background: #fff;
-}
-.stat-card.is-active .stat-cta {
-  color: var(--terra);
-  opacity: 1;
 }
 /* กะพริบเบา ๆ ที่กล่องค้นหา เมื่อกดการ์ดสถิติ */
 .search-section.flash {
@@ -1577,7 +1544,6 @@ input:focus-visible,
   background: var(--sand);
   color: var(--warm-gray);
 }
-.map-note { font-size: 0.75rem; color: var(--warm-gray); line-height: 1.6; margin: 0; }
 
 /* การ์ดที่ถูกกดจากแผนที่ */
 .card.map-flash { animation: mapFlash 2.2s ease; }
@@ -1738,7 +1704,6 @@ input:focus-visible,
   cursor: pointer; transition: background 0.15s;
 }
 .campus-chip:hover { background: var(--sand-mid); }
-.campus-note { font-size: 0.7rem; color: var(--warm-gray); margin: 0.2rem 0 0; line-height: 1.5; }
 
 /* ── หมุดที่ชี้/เลือกอยู่ ─────────────────────────────────────── */
 .map-pin.hover .pin-dot { opacity: 1; }
