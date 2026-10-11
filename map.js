@@ -143,6 +143,27 @@
   };
   const clearArc = () => gArcs.replaceChildren();
 
+  // ── กระโดดไปการ์ดของสถาบัน (ใช้ทั้งจากหมุดและจากบล็อกระยะทาง) ──
+  const findCard = (name) => [...document.querySelectorAll('.card')].find(c => {
+    const t = c.querySelector('.card-title');
+    return t && t.textContent.trim() === name;
+  });
+  const jumpToCard = (name) => {
+    const card = findCard(name);
+    if (!card) return;
+    const hidden = card.offsetParent === null;      // ถูกตัวกรองซ่อนอยู่
+    if (hidden) document.getElementById('filterClear')?.click();
+    const go = () => {
+      card.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      card.classList.remove('map-flash');
+      void card.offsetWidth;
+      card.classList.add('map-flash');
+      setTimeout(() => card.classList.remove('map-flash'), 2200);
+    };
+    if (hidden) requestAnimationFrame(() => requestAnimationFrame(go));
+    else go();
+  };
+
   // ── ผูกเหตุการณ์ ─────────────────────────────────────────────
   pins.forEach(({ g, p }) => {
     g.addEventListener('pointerenter', () => {
@@ -157,32 +178,39 @@
       hideTip();
       clearArc();
     });
-    g.addEventListener('click', () => {
-      const card = [...document.querySelectorAll('.card')].find(c => {
-        const t = c.querySelector('.card-title');
-        return t && t.textContent.trim() === p.n;
-      });
-      if (!card) return;
-      card.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-      card.classList.remove('map-flash');
-      void card.offsetWidth;
-      card.classList.add('map-flash');
-      setTimeout(() => card.classList.remove('map-flash'), 2200);
-      hideTip();
-    });
+    g.addEventListener('click', () => { jumpToCard(p.n); hideTip(); });
   });
 
   // ── คำอธิบาย (legend) ────────────────────────────────────────
+  const mapSection = host.closest('.map-section') || document;
   const legend = document.querySelector('#map-legend');
   if (legend) {
     Object.entries(REGION).forEach(([key, meta]) => {
       const li = document.createElement('li');
-      li.className = 'map-legend-row';
-      li.dataset.region = key;
-      li.innerHTML = `<span class="legend-dot" style="background:${meta.color}"></span>${meta.name}`
+      const btn = document.createElement('button');      // ปุ่มจริง → กดด้วยคีย์บอร์ดได้
+      btn.type = 'button';
+      btn.className = 'map-legend-row';
+      btn.dataset.region = key;
+      btn.setAttribute('aria-pressed', 'false');
+      btn.innerHTML = `<span class="legend-dot" style="background:${meta.color}"></span>${meta.name}`
         + `<span class="legend-count">${count(key)}</span>`;
+      li.appendChild(btn);
       legend.appendChild(li);
     });
+    // ให้สถานะ aria-pressed ตรงกับชิปตัวกรองจริง (ดูการเปลี่ยนแปลงของชิป)
+    const syncPressed = () => {
+      // ต้องเทียบก่อนเขียน — setAttribute ค่าเดิมก็ยังเกิด mutation record
+      // แล้ว observer จะยิงกลับมาที่ฟังก์ชันนี้อีกเป็นวงไม่จบ (เจอจริงตอนทดสอบ)
+      legend.querySelectorAll('.map-legend-row').forEach(btn => {
+        const chip = document.querySelector(`.filter-btn[data-filter="region:${btn.dataset.region}"]`);
+        if (!chip) return;
+        const want = chip.getAttribute('aria-pressed') || 'false';
+        if (btn.getAttribute('aria-pressed') !== want) btn.setAttribute('aria-pressed', want);
+      });
+    };
+    syncPressed();
+    const chipPanel = document.querySelector('.filter-btns') || document.body;
+    new MutationObserver(syncPressed).observe(chipPanel, { subtree: true, attributes: true, attributeFilter: ['aria-pressed'] });
   }
   // ── ระยะทางจากคณะฯ (คิดจากพิกัดจริง) ─────────────────────────
   const home = proj(100.5346, 13.7383);
@@ -209,17 +237,12 @@
       + away.slice(-3).reverse().map(o => row(o, 'ไกลสุด')).join('')
       + '</ul><p class="map-near-note">ระยะเส้นตรงจากคณะแพทยศาสตร์ จุฬาฯ</p>';
     nearBox.querySelectorAll('.map-near-row').forEach(li => {
-      li.addEventListener('click', () => {
-        const card = [...document.querySelectorAll('.card')].find(c => {
-          const t = c.querySelector('.card-title');
-          return t && t.textContent.trim() === li.dataset.name;
-        });
-        if (!card) return;
-        card.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-        card.classList.remove('map-flash');
-        void card.offsetWidth;
-        card.classList.add('map-flash');
-        setTimeout(() => card.classList.remove('map-flash'), 2200);
+      li.tabIndex = 0;                                  // กดด้วยคีย์บอร์ดได้
+      li.setAttribute('role', 'button');
+      const go = () => jumpToCard(li.dataset.name);
+      li.addEventListener('click', go);
+      li.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
       });
     });
   }
@@ -236,13 +259,26 @@
     ].map(t => `<span class="map-fact">${t}</span>`).join('');
   }
 
-  host.querySelectorAll('.map-legend-row').forEach(row => {
+  legend?.querySelectorAll('.map-legend-row').forEach(row => {
     const r = row.dataset.region;
-    row.addEventListener('pointerenter', () => { svg.classList.add('focus-' + r); gArcs.replaceChildren(); });
-    row.addEventListener('pointerleave', () => svg.classList.remove('focus-' + r));
+    const light = () => {
+      svg.classList.add('focus-' + r); gArcs.replaceChildren();
+      if (typeof stage3d !== 'undefined' && stage3d) stage3d.setFocus(r);
+    };
+    const unlight = () => {
+      svg.classList.remove('focus-' + r);
+      if (typeof stage3d !== 'undefined' && stage3d) stage3d.setFocus(null);
+    };
+    row.addEventListener('pointerenter', light);
+    row.addEventListener('pointerleave', unlight);
+    row.addEventListener('focus', light);            // ใช้คีย์บอร์ดก็ไฮไลต์ได้
+    row.addEventListener('blur', unlight);
     row.addEventListener('click', () => {
       const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
-      if (chip) { chip.click(); document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
+      if (chip) {
+        chip.click();
+        document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      }
     });
   });
 
@@ -258,4 +294,341 @@
   } else {
     paper.classList.add('in');
   }
+
+  /* ══ แผนที่ 3D (WebGL ล้วน ไม่ใช้ไลบรารี) ═══════════════════════
+     โหมด «กลางคืน»: เส้นขอบจังหวัดเป็นเส้นลวด 3D + หมุด 117 จุดเรืองแสง
+     หมุนได้ด้วยการลาก · หมุดที่ชี้จะโตขึ้นและขึ้นชื่อ · กดแล้วไปการ์ดเหมือนโหมด 2D
+     ถ้าเครื่องไม่รองรับ WebGL ปุ่ม 3D จะไม่แสดงและใช้แผนที่ 2D ตามปกติ
+     ═════════════════════════════════════════════════════════════ */
+  const stage3d = (() => {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'map-3d';
+    const gl = canvas.getContext('webgl', { antialias: true, alpha: true, premultipliedAlpha: false })
+            || canvas.getContext('experimental-webgl');
+    if (!gl) return null;
+
+    // ── เมทริกซ์ 4x4 (column-major แบบ WebGL) ──
+    const mul = (a, b) => {
+      const o = new Float32Array(16);
+      for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+        o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+      }
+      return o;
+    };
+    const persp = (fovy, aspect, near, far) => {
+      const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
+      return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);
+    };
+    const rotX = (a) => { const c = Math.cos(a), s = Math.sin(a); return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]); };
+    const rotY = (a) => { const c = Math.cos(a), s = Math.sin(a); return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]); };
+    const trans = (x, y, z) => new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]);
+    const scale = (s) => new Float32Array([s,0,0,0, 0,s,0,0, 0,0,s,0, 0,0,0,1]);
+
+    const VSH_LINE = `
+      attribute vec3 aPos; attribute float aSide;
+      uniform mat4 uMVP;
+      varying float vSide; varying float vDepth;
+      void main() {
+        vec4 p = uMVP * vec4(aPos, 1.0);
+        gl_Position = p;
+        vSide = aSide;
+        vDepth = clamp((p.z / p.w + 1.0) * 0.5, 0.0, 1.0);
+      }`;
+    const FSH_LINE = `
+      precision mediump float;
+      varying float vSide; varying float vDepth;
+      uniform vec3 uTop; uniform vec3 uBottom;
+      void main() {
+        vec3 c = mix(uTop, uBottom, vSide);
+        float a = mix(1.0, 0.5, vDepth) * mix(1.0, 0.62, vSide);
+        gl_FragColor = vec4(c * (1.0 - vDepth * 0.12), a);
+      }`;
+    const VSH_PIN = `
+      attribute vec3 aPos; attribute vec3 aColor; attribute float aSize;
+      uniform mat4 uMVP; uniform float uScale; uniform float uGrow;
+      varying vec3 vColor; varying float vDepth;
+      void main() {
+        vec4 p = uMVP * vec4(aPos, 1.0);
+        gl_Position = p;
+        // ต้องจำกัดขนาดจุด — ถ้าไม่จำกัด พอหมุดใกล้กล้อง ขนาดจะพุ่งเป็นหลายร้อยพิกเซล
+        // แล้วการวาดจะหนักจนเครื่องค้าง (เจอจริงตอนทดสอบ)
+        gl_PointSize = clamp(aSize * uScale * (1.0 + uGrow) / max(1.5, p.w), 2.0, 24.0);
+        vColor = aColor;
+        vDepth = clamp((p.z / p.w + 1.0) * 0.5, 0.0, 1.0);
+      }`;
+    const FSH_PIN = `
+      precision mediump float;
+      varying vec3 vColor; varying float vDepth;
+      uniform float uDim;
+      void main() {
+        float d = length(gl_PointCoord - vec2(0.5));
+        float core = smoothstep(0.5, 0.06, d);
+        float halo = smoothstep(0.5, 0.0, d) * 0.35;
+        float a = (core + halo) * mix(1.0, 0.22, uDim) * mix(1.0, 0.55, vDepth);
+        gl_FragColor = vec4(vColor, a);
+      }`;
+
+    const compile = (type, src) => {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src); gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh));
+      return sh;
+    };
+    const program = (vs, fs) => {
+      const p = gl.createProgram();
+      gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
+      gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+      gl.linkProgram(p);
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+      return p;
+    };
+
+    let lineProg, pinProg;
+    try { lineProg = program(VSH_LINE, FSH_LINE); pinProg = program(VSH_PIN, FSH_PIN); }
+    catch (e) { return null; }
+
+    // ── แปลงข้อมูลแผนที่ → เรขาคณิต 3D ──
+    const VB = M.viewBox.split(' ').map(Number);
+    const CX = VB[2] / 2, CY = VB[3] / 2, UNIT = 760;      // ย่อให้ประเทศสูง ~1 หน่วย
+    const rings = M.paths.split('M').filter(Boolean).map(seg =>
+      seg.replace('Z', '').trim().split(' ').map(pair => pair.split(',').map(Number)));
+
+    const lineVerts = [], lineSides = [];
+    const push = (x, y, z, side) => { lineVerts.push((x - CX) / UNIT, (y - CY) / UNIT, z); lineSides.push(side); };
+    const Z_TOP = 0, Z_BOTTOM = -0.055;
+    rings.forEach(r => {
+      for (let i = 0; i < r.length; i++) {
+        const a = r[i], b = r[(i + 1) % r.length];
+        push(a[0], a[1], Z_TOP, 0); push(b[0], b[1], Z_TOP, 0);           // เส้นขอบบน
+        push(a[0], a[1], Z_BOTTOM, 1); push(b[0], b[1], Z_BOTTOM, 1);    // เส้นขอบล่าง (เงา)
+        if (i % 4 === 0) { push(a[0], a[1], Z_TOP, 1); push(a[0], a[1], Z_BOTTOM, 1); }  // เส้นเชื่อมแนวตั้ง
+      }
+    });
+    const lineBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(lineVerts), gl.STATIC_DRAW);
+    const sideBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, sideBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(lineSides), gl.STATIC_DRAW);
+
+    const hex2rgb = (h) => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255];
+    const pinPos = [], pinCol = [], pinSize = [];
+    M.pins.forEach(p => {
+      pinPos.push((p.x - CX) / UNIT, (p.y - CY) / UNIT, 0.012);
+      const c = hex2rgb((REGION[p.r] || { color: '#6b6157' }).color);
+      pinCol.push(c[0], c[1], c[2]);
+      pinSize.push(p.a ? 7.2 : 5.6);
+    });
+    const pinCount = M.pins.length;
+    const mkBuf = (arr) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(arr), gl.STATIC_DRAW); return b; };
+    const posBuf = mkBuf(pinPos), colBuf = mkBuf(pinCol), sizeBuf = mkBuf(pinSize);
+    const state = { yaw: 0.22, pitch: -1.02, drag: false, lx: 0, ly: 0, spin: 0, focus: null, hover: -1, visible: false, raf: 0, dpr: 1 };
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
+      state.dpr = Math.min(window.devicePixelRatio || 1, state.dprCap || 1.5);
+      canvas.width = Math.max(300, Math.round(r.width * state.dpr));
+      canvas.height = Math.max(300, Math.round(r.height * state.dpr));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      if (!state.visible) draw(0);
+    };
+
+    const mvpOf = (yaw) => {
+      const aspect = canvas.width / Math.max(1, canvas.height);
+      const P = persp(Math.PI / 4.2, aspect, 0.1, 20);
+      const V = trans(0, 0.10, -2.05);
+      const M = mul(mul(rotY(yaw), rotX(state.pitch)), scale(0.80));
+      return mul(P, mul(V, M));
+    };
+
+    const project = (mvp) => {
+      const out = [];
+      for (let i = 0; i < pinCount; i++) {
+        const x = pinPos[i * 3], y = pinPos[i * 3 + 1], z = pinPos[i * 3 + 2];
+        const w = mvp[3] * x + mvp[7] * y + mvp[11] * z + mvp[15];
+        if (w <= 0.05) { out.push(null); continue; }
+        const sx = (mvp[0] * x + mvp[4] * y + mvp[8] * z + mvp[12]) / w;
+        const sy = (mvp[1] * x + mvp[5] * y + mvp[9] * z + mvp[13]) / w;
+        out.push({ x: (sx * 0.5 + 0.5) * canvas.clientWidth, y: (-sy * 0.5 + 0.5) * canvas.clientHeight, w, r: M.pins[i].r });
+      }
+      return out;
+    };
+
+    let lastProj = [];
+    const draw = (t) => {
+      // แกว่งซ้าย-ขวาช้า ๆ (±0.22 ราด) แทนการหมุนวน เพื่อให้แผนที่อยู่ในกรอบเสมอ
+      const base = (state.drag || reduced) ? 0 : Math.sin((t || 0) * 0.00016) * 0.22;
+      const yaw = state.yaw + base;
+      const mvp = mvpOf(yaw);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      // เส้นขอบจังหวัด
+      gl.useProgram(lineProg);
+      gl.uniformMatrix4fv(gl.getUniformLocation(lineProg, 'uMVP'), false, mvp);
+      gl.uniform3fv(gl.getUniformLocation(lineProg, 'uTop'), hex2rgb('#cfe3c4'));
+      gl.uniform3fv(gl.getUniformLocation(lineProg, 'uBottom'), hex2rgb('#7d9b76'));
+      const aPos = gl.getAttribLocation(lineProg, 'aPos');
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 0, 0);
+      const aSide = gl.getAttribLocation(lineProg, 'aSide');
+      gl.bindBuffer(gl.ARRAY_BUFFER, sideBuf);
+      gl.enableVertexAttribArray(aSide);
+      gl.vertexAttribPointer(aSide, 1, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.LINES, 0, lineVerts.length / 3);
+
+      // หมุด
+      gl.useProgram(pinProg);
+      gl.uniformMatrix4fv(gl.getUniformLocation(pinProg, 'uMVP'), false, mvp);
+      gl.uniform1f(gl.getUniformLocation(pinProg, 'uScale'), Math.max(1.1, canvas.height / 700) * 1.6);
+      gl.uniform1f(gl.getUniformLocation(pinProg, 'uDim'), state.focus ? 1 : 0);
+      const pPos = gl.getAttribLocation(pinProg, 'aPos');
+      gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+      gl.enableVertexAttribArray(pPos);
+      gl.vertexAttribPointer(pPos, 3, gl.FLOAT, false, 0, 0);
+      const pCol = gl.getAttribLocation(pinProg, 'aColor');
+      gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
+      gl.enableVertexAttribArray(pCol);
+      gl.vertexAttribPointer(pCol, 3, gl.FLOAT, false, 0, 0);
+      const pSize = gl.getAttribLocation(pinProg, 'aSize');
+      gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuf);
+      gl.enableVertexAttribArray(pSize);
+      gl.vertexAttribPointer(pSize, 1, gl.FLOAT, false, 0, 0);
+      gl.uniform1f(gl.getUniformLocation(pinProg, 'uGrow'), 0);
+      gl.drawArrays(gl.POINTS, 0, pinCount);
+
+      // หมุดที่ชี้อยู่ วาดซ้ำให้โตขึ้น
+      if (state.hover >= 0) {
+        gl.uniform1f(gl.getUniformLocation(pinProg, 'uGrow'), 0.9);
+        gl.drawArrays(gl.POINTS, state.hover, 1);
+      }
+      lastProj = project(mvp);
+    };
+
+    let t0 = 0, lastT = 0, slowFrames = 0, lowPower = false;
+    let needDraw = true;
+    const requestDraw = () => { needDraw = true; };
+    const loop = (t) => {
+      if (!state.visible) return;
+      if (!t0) t0 = t;
+      const dt = lastT ? t - lastT : 16;
+      lastT = t;
+      slowFrames = dt > 80 ? slowFrames + 1 : Math.max(0, slowFrames - 1);
+      if (!lowPower && slowFrames > 8) {
+        // เครื่องช้า/ไม่มี GPU (เช่นโหมด software) → หยุดหมุน ลดความละเอียด
+        // แล้ววาดเฉพาะตอนมีการขยับ ไม่วาดซ้ำทุกเฟรม จะได้ไม่บล็อกหน้าเว็บ
+        lowPower = true;
+        state.spin = 0;
+        state.dprCap = 1;
+        resize();
+        requestDraw();
+      }
+      if (lowPower) {
+        if (needDraw) { draw(t - t0); needDraw = false; }
+      } else {
+        draw(t - t0);
+      }
+      state.raf = requestAnimationFrame(loop);
+    };
+    const start = () => {
+      if (state.raf) return;
+      state.visible = true;
+      resize();
+      state.raf = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      state.visible = false;
+      if (state.raf) cancelAnimationFrame(state.raf);
+      state.raf = 0;
+    };
+
+    // ── ลากหมุน ──
+    canvas.addEventListener('pointerdown', (e) => {
+      state.drag = true; state.lx = e.clientX; state.ly = e.clientY;
+      canvas.setPointerCapture(e.pointerId);
+      canvas.classList.add('grabbing');
+    });
+    canvas.addEventListener('pointermove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      if (state.drag) {
+        state.yaw += (e.clientX - state.lx) * 0.006;
+        state.pitch = Math.max(-1.35, Math.min(-0.55, state.pitch + (e.clientY - state.ly) * 0.004));
+        state.lx = e.clientX; state.ly = e.clientY;
+        requestDraw();
+        if (reduced) draw(0);
+        return;
+      }
+      // หาหมุดที่ใกล้ที่สุดในระยะ 20px
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      let best = -1, bd = 20 * 20;
+      lastProj.forEach((q, i) => {
+        if (!q) return;
+        const d = (q.x - mx) ** 2 + (q.y - my) ** 2;
+        if (d < bd) { bd = d; best = i; }
+      });
+      if (best !== state.hover) {
+        state.hover = best;
+        requestDraw();
+        if (best >= 0) {
+          const q = lastProj[best];
+          tip.hidden = false;
+          const p = { ...M.pins[best] };
+          tip.innerHTML = `<strong>${p.n}</strong><em>${REGION[p.r] ? REGION[p.r].name : ''}</em>`
+            + (p.a ? '' : '<em class="approx">ตำแหน่งโดยประมาณ</em>')
+            + `<div class="map-tip-badges">${badgeOf(p).map(b => `<span>${b}</span>`).join('')}</div>`;
+          tip.style.left = `${Math.max(8, Math.min(canvas.clientWidth - 8, q.x))}px`;
+          tip.style.top = `${q.y}px`;
+          tip.classList.toggle('below', q.y < 110);
+          canvas.style.cursor = 'pointer';
+        } else {
+          tip.hidden = true;
+          canvas.style.cursor = '';
+        }
+        if (reduced) draw(0);
+      }
+    });
+    const endDrag = (e) => {
+      state.drag = false;
+      canvas.classList.remove('grabbing');
+      try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    canvas.addEventListener('pointerup', endDrag);
+    canvas.addEventListener('pointercancel', endDrag);
+    canvas.addEventListener('pointerleave', () => { tip.hidden = true; state.hover = -1; if (reduced) draw(0); });
+    canvas.addEventListener('click', () => { if (state.hover >= 0) jumpToCard(M.pins[state.hover].n); });
+
+    // ── สลับโหมด 2D/3D ──
+    const btn = document.querySelector('#map-mode-toggle');
+    if (btn) {
+      btn.hidden = false;
+      const setMode = (three) => {
+        (host.closest('.map-paper') || host).classList.toggle('is-3d', three);   // คลาสต้องอยู่ที่ .map-paper ให้ตรงกับ CSS
+        btn.setAttribute('aria-pressed', String(three));
+        btn.textContent = three ? '🗺 แผนที่ 2D' : '🌐 แผนที่ 3D';
+        const hint = document.querySelector('#map-hint-3d');
+        if (hint) hint.hidden = !three;
+        if (three) { canvas.style.display = 'block'; requestAnimationFrame(() => { resize(); start(); }); }
+        else { stop(); tip.hidden = true; }
+      };
+      btn.addEventListener('click', () => { lowPower = lowPower && false; setMode(btn.getAttribute('aria-pressed') !== 'true'); });
+      // หยุดวาดเมื่อเลื่อนออกจากส่วนแผนที่
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([e]) => {
+          if (btn.getAttribute('aria-pressed') !== 'true') return;
+          if (e.isIntersecting) start(); else stop();
+        }, { threshold: 0.05 }).observe(host);
+      }
+      window.addEventListener('resize', () => { if (btn.getAttribute('aria-pressed') === 'true') resize(); });
+    }
+
+    host.appendChild(canvas);
+    return {
+      setFocus: (r) => { state.focus = r; if (state.visible && reduced) draw(0); },
+      isOn: () => document.querySelector('#map-mode-toggle')?.getAttribute('aria-pressed') === 'true',
+      start, stop,
+    };
+  })();
+
 })();
