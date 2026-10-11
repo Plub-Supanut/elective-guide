@@ -163,12 +163,17 @@ function matchesFilter(card, filter) {
   if (filter === 'all') return true;
   const entry = cardIndex.find(c => c.el === card);
   if (!entry) return true;
+  // «รพ.จังหวัด» = กลุ่มภูมิภาคที่ไม่ใช่ ศพช. (สองกลุ่มนี้แยกกัน ไม่ทับกัน)
+  if (filter === 'regional-plain') {
+    return entry.tags.includes('regional') && !entry.tags.includes('cpird');
+  }
   return entry.tags.includes(filter);
 }
 
 const filterLabel = {
   all: 'ทั้งหมด', chula: 'จุฬา (ภาควิชา)', university: 'มหาวิทยาลัย',
-  hospital: 'โรงพยาบาล/ศูนย์', regional: 'ภูมิภาค', dormitory: 'มีที่พัก',
+  hospital: 'โรงพยาบาล/ศูนย์', cpird: 'ศพช.', 'regional-plain': 'รพ.จังหวัด',
+  regional: 'ภูมิภาค', dormitory: 'มีที่พัก',
 };
 
 function clearAll() {

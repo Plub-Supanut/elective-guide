@@ -110,7 +110,8 @@
           <button class="filter-btn" data-filter="hospital">
             โรงพยาบาล/ศูนย์
           </button>
-          <button class="filter-btn" data-filter="regional">ภูมิภาค</button>
+          <button class="filter-btn" data-filter="cpird">ศพช.</button>
+          <button class="filter-btn" data-filter="regional-plain">รพ.จังหวัด</button>
           <button class="filter-btn" data-filter="dormitory">มีที่พัก</button>
         </div>
         <div id="searchResults" class="search-results"></div>
@@ -125,9 +126,9 @@
           <span class="stat-label">สถาบัน / ภาควิชา</span>
           <span class="stat-cta">ดูรายชื่อทั้งหมด ›</span>
         </button>
-        <button type="button" class="stat-card" data-stat="regional" aria-label="กรองเฉพาะสถาบันในภูมิภาคและ ศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก 36 แห่ง">
-          <span class="stat-num">36</span>
-          <span class="stat-label">สถาบันในภูมิภาค / ศพช.</span>
+        <button type="button" class="stat-card" data-stat="cpird" aria-label="กรองเฉพาะสถาบันที่เป็นศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก (ศพช.) 29 แห่ง">
+          <span class="stat-num">29</span>
+          <span class="stat-label">สถาบันที่เป็น ศพช.</span>
           <span class="stat-cta">กดเพื่อกรอง ›</span>
         </button>
         <button type="button" class="stat-card" data-stat="dormitory" aria-label="กรองเฉพาะสถาบันที่มีที่พัก 24 แห่ง">
@@ -318,10 +319,11 @@
           <div class="cards-grid">
             <div
               class="card fade-up"
-              data-tags="hospital พระปกเกล้า ต้อม dormitory"
+              data-tags="hospital พระปกเกล้า ต้อม dormitory cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลพระปกเกล้า</h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -366,9 +368,10 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="hospital ชลบุรี แอน เอ๋">
+            <div class="card fade-up" data-tags="hospital ชลบุรี แอน เอ๋ cpird">
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลชลบุรี</h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3541,6 +3544,7 @@
                 <h3 class="card-title">
                   <span class="code">402</span> ศพช. รพ.ขอนแก่น
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -3647,12 +3651,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 403 ชุมพร Chumphon คุณแบงค์"
+              data-tags="regional 403 ชุมพร Chumphon คุณแบงค์ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">403</span> รพ.ชุมพรเขตรอุดมศักดิ์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3677,12 +3682,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า"
+              data-tags="regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">404</span> ศพช. รพ.เชียงรายประชานุเคราะห์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3777,12 +3783,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 405 ตรัง Trang จารุวรรณ"
+              data-tags="regional 405 ตรัง Trang จารุวรรณ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">405</span> ศพช. รพ.ตรัง
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3820,12 +3827,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา"
+              data-tags="regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">406</span> รพ.บุรีรัมย์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3882,12 +3890,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 407 พิจิตร Phichit คคนัมพร ยะนะ"
+              data-tags="regional 407 พิจิตร Phichit คคนัมพร ยะนะ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">407</span> รพ.พิจิตร
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -3944,12 +3953,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory"
+              data-tags="regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">408</span> รพ.พุทธชินราช
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">ที่พักฟรี</span>
               </div>
               <div class="card-body">
@@ -4002,12 +4012,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 409 แพร่ Phrae กุมาร อุบัติเหตุ"
+              data-tags="regional 409 แพร่ Phrae กุมาร อุบัติเหตุ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">409</span> รพ.แพร่
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4046,6 +4057,7 @@
                 <h3 class="card-title">
                   <span class="code">410</span> ศพช. รพ.มหาราชนครราชสีมา
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -4130,12 +4142,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา"
+              data-tags="regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">411</span> ศพช. รพ.มหาราชนครศรีธรรมราช
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4168,6 +4181,7 @@
                 <h3 class="card-title">
                   <span class="code">412</span> ศพช. รพ.พุทธโสธร
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -4200,12 +4214,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 415 ราชบุรี Ratchaburi คุณมด มัทนา"
+              data-tags="regional 415 ราชบุรี Ratchaburi คุณมด มัทนา cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">415</span> ศพช. รพ.ราชบุรี
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4236,12 +4251,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 416 ลำปาง Lampang สุนันทา no-dorm"
+              data-tags="regional 416 ลำปาง Lampang สุนันทา no-dorm cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">416</span> ศพช. รพ.ลำปาง
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
 </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4346,6 +4362,7 @@
                 <h3 class="card-title">
                   <span class="code">417</span> ศพช. รพ.วชิระภูเก็ต
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4388,12 +4405,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 419 สงขลา Songkhla รัชฎาภรณ์"
+              data-tags="regional 419 สงขลา Songkhla รัชฎาภรณ์ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">419</span> รพ.สงขลา
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4412,12 +4430,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 421 สรรพสิทธิ Sapphasit dormitory"
+              data-tags="regional 421 สรรพสิทธิ Sapphasit dormitory cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">421</span> รพ.สรรพสิทธิประสงค์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -4446,12 +4465,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 422 สระบุรี Saraburi อารีย์ dormitory"
+              data-tags="regional 422 สระบุรี Saraburi อารีย์ dormitory cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">422</span> ศพช. รพ.สระบุรี
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -4484,12 +4504,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน"
+              data-tags="regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">423</span> รพ.สวรรค์ประชารักษ์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4631,12 +4652,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์"
+              data-tags="regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">424</span> รพ.สุราษฎร์ธานี
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4655,11 +4677,12 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="regional 425 สุรินทร์ Surin">
+            <div class="card fade-up" data-tags="regional 425 สุรินทร์ Surin cpird">
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">425</span> รพ.สุรินทร์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4683,6 +4706,7 @@
                 <h3 class="card-title">
                   <span class="code">426</span> ศพช. รพ.หาดใหญ่
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">มีที่พัก</span>
               </div>
               <div class="card-body">
@@ -4782,12 +4806,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 427 อุดรธานี Udon Thani บัญชร dormitory"
+              data-tags="regional 427 อุดรธานี Udon Thani บัญชร dormitory cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">427</span> รพ.อุดรธานี
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
                 <span class="badge badge-dormitory">ที่พักฟรี</span>
               </div>
               <div class="card-body">
@@ -4849,12 +4874,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์"
+              data-tags="regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">428</span> รพ.อุตรดิตถ์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -4933,12 +4959,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์"
+              data-tags="regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์ cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">502</span> รพ.เจ้าพระยาอภัยภูเบศร
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -5009,12 +5036,13 @@
 
             <div
               class="card fade-up"
-              data-tags="regional 506 นครพิงค์ เชียงใหม่ ชลธิดา"
+              data-tags="regional 506 นครพิงค์ เชียงใหม่ ชลธิดา cpird"
             >
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">506</span> รพ.นครพิงค์
                 </h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -5414,6 +5442,7 @@
             >
               <div class="card-header">
                 <h3 class="card-title">ศพช. รพ.นราธิวาสราชนครินทร์</h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
@@ -5590,6 +5619,7 @@
             >
               <div class="card-header">
                 <h3 class="card-title">ศพช. รพ.ชัยภูมิ</h3>
+                <span class="badge badge-cpird">ศพช.</span>
               </div>
               <div class="card-body">
                 <div class="contact-row">
