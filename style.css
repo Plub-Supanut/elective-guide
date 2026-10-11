@@ -1207,3 +1207,51 @@ input:focus-visible,
 @media (max-width: 768px) {
   .ssc-card--wide .ssc-contact { grid-template-columns: 1fr; gap: 0.9rem; }
 }
+
+/* ── การ์ดสถิติ = ทางลัดกรองข้อมูล (กดได้) ───────────────────── */
+.stat-card {
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+}
+.stat-card:focus-visible {
+  outline: 2px solid var(--terra);
+  outline-offset: 3px;
+}
+.stat-cta {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--warm-gray);
+  opacity: 0.75;
+  transition: color 0.2s, opacity 0.2s;
+}
+.stat-card:hover .stat-cta,
+.stat-card:focus-visible .stat-cta {
+  color: var(--terra);
+  opacity: 1;
+}
+.stat-card.is-active {
+  border-color: var(--terra);
+  background: #fff;
+}
+.stat-card.is-active .stat-cta {
+  color: var(--terra);
+  opacity: 1;
+}
+/* กะพริบเบา ๆ ที่กล่องค้นหา เมื่อกดการ์ดสถิติ */
+.search-section.flash {
+  animation: panelFlash 1.1s ease-out 2;
+}
+@keyframes panelFlash {
+  0%, 100% { background: transparent; }
+  50%      { background: rgba(196, 113, 75, 0.07); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-section.flash { animation: none; }
+}

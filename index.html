@@ -119,22 +119,26 @@
     <!-- QUICK STATS -->
     <section class="stats-section fade-up">
       <div class="container stats-grid">
-        <div class="stat-card">
+        <button type="button" class="stat-card" data-stat="all" aria-label="แสดงสถาบันทั้งหมด 117 แห่ง">
           <span class="stat-num">117</span>
           <span class="stat-label">สถาบัน / ภาควิชา</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-num">5</span>
-          <span class="stat-label">ภูมิภาคทั่วประเทศ</span>
-        </div>
-        <div class="stat-card">
+          <span class="stat-cta">ดูรายชื่อทั้งหมด ›</span>
+        </button>
+        <button type="button" class="stat-card" data-stat="regional" aria-label="กรองเฉพาะสถาบันในภูมิภาคและ ศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก 36 แห่ง">
+          <span class="stat-num">36</span>
+          <span class="stat-label">สถาบันในภูมิภาค / ศพช.</span>
+          <span class="stat-cta">กดเพื่อกรอง ›</span>
+        </button>
+        <button type="button" class="stat-card" data-stat="dormitory" aria-label="กรองเฉพาะสถาบันที่มีที่พัก 24 แห่ง">
           <span class="stat-num">24</span>
           <span class="stat-label">สถาบันที่มีที่พัก</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-num">20+</span>
-          <span class="stat-label">ภาควิชาจุฬาฯ</span>
-        </div>
+          <span class="stat-cta">กดเพื่อกรอง ›</span>
+        </button>
+        <button type="button" class="stat-card" data-stat="chula" aria-label="กรองเฉพาะภาควิชาและหน่วยงานจุฬาฯ 25 แห่ง">
+          <span class="stat-num">25</span>
+          <span class="stat-label">ภาควิชา / หน่วยงานจุฬาฯ</span>
+          <span class="stat-cta">กดเพื่อกรอง ›</span>
+        </button>
       </div>
     </section>
 
@@ -215,9 +219,9 @@
             </ul>
           </article>
 
-          <!-- หลักเกณฑ์และประกาศ -->
-          <article class="ssc-card fade-up">
-            <h3 class="ssc-title">หลักเกณฑ์และประกาศ</h3>
+          <!-- หลักเกณฑ์ · ประกาศ · รายชื่อ MOU -->
+          <article class="ssc-card ssc-card--wide fade-up">
+            <h3 class="ssc-title">เอกสาร หลักเกณฑ์ และรายชื่อที่เกี่ยวข้อง</h3>
             <p class="ssc-desc">ฉบับล่าสุดจากฝ่ายวิชาการ</p>
             <ul class="ssc-links">
               <li>
@@ -244,30 +248,10 @@
                   <span class="ssc-link-meta">PDF · ปีการศึกษา 2569</span>
                 </a>
               </li>
-            </ul>
-          </article>
-
-          <!-- ข้อมูลประกอบ -->
-          <article class="ssc-card fade-up">
-            <h3 class="ssc-title">ข้อมูลประกอบการตัดสินใจ</h3>
-            <p class="ssc-desc">เช็กลิสต์ก่อนเลือกสถาบัน</p>
-            <ul class="ssc-links">
-              <li>
-                <a href="https://docs.google.com/forms/d/10MmEj9L_zBfZ-vFX4IkEbARIFToITw4I9rcYhMeB-9Y/edit" target="_blank" rel="noopener noreferrer">
-                  <span class="ssc-link-title">ข้อมูลติดต่อผู้ประสานงานของแต่ละหน่วยงาน</span>
-                  <span class="ssc-link-meta">ต้นฉบับรวมโดยฝ่ายวิชาการ (Google Form)</span>
-                </a>
-              </li>
               <li>
                 <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRJcBZLGLVyZHMWRknq1pn9S8Lm4v66KpnN7jXpfttBU92Cl9rh8mB00SolrJSo8SjtiaojzNseh2r2/pubhtml?gid=306621735&amp;single=true" target="_blank" rel="noopener noreferrer">
                   <span class="ssc-link-title">รายชื่อสถาบันที่มี MOU กับคณะฯ</span>
                   <span class="ssc-link-meta">สถาบันในรายการนี้เลือกไปเองไม่ได้ · 🔒 ต้องล็อกอิน CU account</span>
-                </a>
-              </li>
-              <li>
-                <a class="is-internal" href="#institutions">
-                  <span class="ssc-link-title">ดูเบอร์โทร / อีเมล / ที่พักของสถาบันในคู่มือนี้</span>
-                  <span class="ssc-link-meta">117 สถาบัน — ค้นหาและกรองได้</span>
                 </a>
               </li>
             </ul>
@@ -305,6 +289,7 @@
       </div>
     </section>
     <!-- SSC:AUTO:END -->
+    <!-- SSC:DATA-HASH:ad71d1b3a9cd -->
     <!-- SSC:DATA-HASH:ad71d1b3a9cd -->
     <!-- SSC:DATA-HASH:b6fe1e09ea48 -->
     <!-- SSC:DATA-HASH:9d19410bef5f -->
@@ -3038,7 +3023,7 @@
                   <span class="icon">✉️</span
                   ><span
                     ><a href="mailto:mededu.srt02@gmail.com"
-                      >mededu.srt@gmail.com</a
+                      >mededu.srt02@gmail.com</a
                     ></span
                   >
                 </div>

@@ -51,10 +51,47 @@ let activeFilter = 'all';
 
 filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
     activeFilter = btn.dataset.filter;
+    syncFilterUI();
     runSearch();
+  });
+});
+
+// ── การ์ดสถิติ 4 อัน = ทางลัดกรอง (ไม่ใช่แค่ตัวเลขโชว์) ─────────
+const statCards = document.querySelectorAll('.stat-card[data-stat]');
+
+function syncFilterUI() {
+  filterBtns.forEach(b => {
+    const on = b.dataset.filter === activeFilter;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  statCards.forEach(c => {
+    const on = c.dataset.stat === activeFilter && activeFilter !== 'all';
+    c.classList.toggle('is-active', on);
+    c.setAttribute('aria-pressed', String(on));
+  });
+}
+
+statCards.forEach(card => {
+  card.addEventListener('click', () => {
+    activeFilter = card.dataset.stat;
+    syncFilterUI();
+    runSearch();
+    document.getElementById('searchResults')?.setAttribute('aria-live', 'polite');
+    if (activeFilter === 'all') {
+      // «แสดงทั้งหมด» = กลับไปดูรายชื่อเต็มที่อยู่ถัดลงไป (ไม่ต้องกรอง)
+      document.getElementById('institutions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    const sec = document.getElementById('search');
+    if (sec) {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sec.classList.remove('flash');
+      void sec.offsetWidth;              // ให้ animation เล่นใหม่ได้ทุกครั้ง
+      sec.classList.add('flash');
+      setTimeout(() => sec.classList.remove('flash'), 2400);
+    }
   });
 });
 

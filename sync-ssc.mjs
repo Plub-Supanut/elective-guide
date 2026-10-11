@@ -330,36 +330,16 @@ ${scheduleRows}
             </ul>
           </article>
 
-          <!-- หลักเกณฑ์และประกาศ -->
-          <article class="ssc-card fade-up">
-            <h3 class="ssc-title">หลักเกณฑ์และประกาศ</h3>
+          <!-- หลักเกณฑ์ · ประกาศ · รายชื่อ MOU -->
+          <article class="ssc-card ssc-card--wide fade-up">
+            <h3 class="ssc-title">เอกสาร หลักเกณฑ์ และรายชื่อที่เกี่ยวข้อง</h3>
             <p class="ssc-desc">ฉบับล่าสุดจากฝ่ายวิชาการ</p>
             <ul class="ssc-links">
 ${policyRows}
-            </ul>
-          </article>
-
-          <!-- ข้อมูลประกอบ -->
-          <article class="ssc-card fade-up">
-            <h3 class="ssc-title">ข้อมูลประกอบการตัดสินใจ</h3>
-            <p class="ssc-desc">เช็กลิสต์ก่อนเลือกสถาบัน</p>
-            <ul class="ssc-links">
-              <li>
-                <a href="${esc(form.url)}" target="_blank" rel="noopener noreferrer">
-                  <span class="ssc-link-title">ข้อมูลติดต่อผู้ประสานงานของแต่ละหน่วยงาน</span>
-                  <span class="ssc-link-meta">ต้นฉบับรวมโดยฝ่ายวิชาการ (Google Form)${lock(form)}</span>
-                </a>
-              </li>
               <li>
                 <a href="${esc(mou.url)}" target="_blank" rel="noopener noreferrer">
                   <span class="ssc-link-title">รายชื่อสถาบันที่มี MOU กับคณะฯ</span>
                   <span class="ssc-link-meta">สถาบันในรายการนี้เลือกไปเองไม่ได้${lock(mou)}</span>
-                </a>
-              </li>
-              <li>
-                <a class="is-internal" href="#institutions">
-                  <span class="ssc-link-title">ดูเบอร์โทร / อีเมล / ที่พักของสถาบันในคู่มือนี้</span>
-                  <span class="ssc-link-meta">117 สถาบัน — ค้นหาและกรองได้</span>
                 </a>
               </li>
             </ul>
@@ -508,9 +488,12 @@ function hashModel(model) {
   console.log(`   กำหนดการ ${model.schedule.length} แถว · เอกสาร ${model.docs.length} ฉบับ · สถานะ ${model.status.length} ชั้นปี`);
   console.log(`   ลิงก์ที่ต้องล็อกอิน: ${[model.apply, ...model.status, ...model.docs, model.form, model.mou].filter(t => t.locked).length}`);
 
-  if (currentHash === hash) {
+  if (currentHash === hash && !flag('force')) {
     console.log('✓ ข้อมูลตรงกับต้นฉบับอยู่แล้ว — ไม่มีอะไรต้องแก้');
     process.exit(0);
+  }
+  if (currentHash === hash && flag('force')) {
+    console.log('• ข้อมูลไม่เปลี่ยน แต่สั่ง --force → สร้างส่วน SSC ใหม่จากเทมเพลตล่าสุด');
   }
 
   const rendered = render(model, thaiDate()).replace(END, `${END}\n    ${`<!-- SSC:DATA-HASH:${hash} -->`}`);
