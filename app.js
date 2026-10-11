@@ -36,12 +36,54 @@ window.addEventListener('scroll', () => {
 const allCards = Array.from(document.querySelectorAll('.card'));
 const mainList = document.getElementById('institutions');
 
+// ── คำพ้อง / การเขียนแบบย่อ (aliases.js) ──────────────────────
+const SYNONYMS = window.SEARCH_SYNONYMS || [];
+
+// คำที่เขียนเต็มกับแบบย่อใช้แทนกันได้ — ตัดออกทั้งสองฝั่งก่อนเทียบ
+// (รพ.ชลบุรี = โรงพยาบาลชลบุรี, ภาควิชากายวิภาค = กายวิภาคศาสตร์, CU = จุฬาฯ)
+const FILLER = /(โรงพยาบาล|รพ\.|คณะแพทยศาสตร์|มหาวิทยาลัย|ศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก|ศูนย์การแพทย์|ศูนย์|สถาบัน|ภาควิชา|แผนก|สาขาวิชา|สาขา|วิทยาลัย|แห่งชาติ|hospital|university|faculty|department|dept|institute|centre|center|college|school|and)/gi;
+const normText = s => s.toLowerCase().replace(FILLER, '').replace(/[\s.\-–—()«»"'/]/g, '');
+
+// คำสั้น (เช่น «มข») ต้องยืนเป็นคำโดด ไม่งั้น «หมอ» จะถูกนับว่ามี «มอ»
+function hasTerm(text, term) {
+  const t = term.toLowerCase();
+  if (t.length >= 4) return text.includes(t);
+  let i = text.indexOf(t);
+  while (i > -1) {
+    const before = text[i - 1] || ' ';
+    const after = text[i + t.length] || ' ';
+    if (!/[฀-๿a-z0-9]/.test(before) && !/[฀-๿a-z0-9]/.test(after)) return true;
+    i = text.indexOf(t, i + 1);
+  }
+  return false;
+}
+
+// การ์ดที่มีคำใดในกลุ่มคำพ้อง → คำอื่นในกลุ่มเดียวกันค้นเจอด้วย
+function aliasTerms(text) {
+  const out = [];
+  SYNONYMS.forEach(group => {
+    if (group.some(term => hasTerm(text, term))) out.push(group.join(' '));
+  });
+  return out.join(' ');
+}
+
 const cardIndex = allCards.map(card => {
   const tags = (card.dataset.tags || '').toLowerCase();
+  // ใช้ textContent ไม่ใช่ innerText: ต้องค้นเจอข้อความใน «ดูรายละเอียดเพิ่มเติม»
+  // ที่ยังไม่กาง (innerText ข้ามข้อความที่ถูกซ่อน/ตัดด้วย overflow)
+  const body = card.textContent.replace(/\s+/g, ' ').toLowerCase();
+  const base = tags + ' ' + body;
+  const searchable = base + ' ' + aliasTerms(base).toLowerCase();
+  const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+  const titleBase = title + ' ' + tags;
   return {
     el: card,
     tags: tags.split(/\s+/).filter(Boolean),
-    searchable: tags + ' ' + card.innerText.toLowerCase(),
+    title,
+    // รวมคำพ้องของชื่อ/แท็กด้วย → ค้น «จุฬาฯ» แล้วการ์ดภาควิชาจุฬาฯ ขึ้นก่อน
+    titleNorm: normText(titleBase + ' ' + aliasTerms(titleBase).toLowerCase()),
+    searchable,
+    searchableNorm: normText(searchable),
   };
 });
 
@@ -150,8 +192,24 @@ function runSearch() {
     return;
   }
 
-  const matched = cardIndex.filter(({ el, searchable }) =>
-    matchesFilter(el, activeFilter) && (q === '' || searchable.includes(q)));
+  const qNorm = normText(q);
+  // คำค้นสั้น ๆ (เช่น «มข») ต้องยืนเป็นคำโดด ไม่งั้น «ความขัดแย้ง» จะถูกนับว่ามี «มข»
+  const rawHit = text => (q.length >= 4 ? text.includes(q) : hasTerm(text, q));
+  // เส้นทางที่ตัดคำเต็ม/คำย่อออก (รพ. → โรงพยาบาล) ใช้เฉพาะเมื่อมีคำถูกตัดจริง
+  // ไม่งั้นคำสั้นอย่าง «ENT» จะไปแมตช์กลางคำอื่น (stu**dent**, depart**ment**)
+  const punctStripped = q.replace(/[\s.\-–—()«»"'/]/g, '');
+  const useNorm = qNorm !== punctStripped && qNorm.length >= 2;
+
+  const matched = cardIndex.filter(({ el, searchable, searchableNorm }) =>
+    matchesFilter(el, activeFilter) && (q === '' || rawHit(searchable) ||
+      (useNorm && searchableNorm.includes(qNorm))));
+
+  // ชื่อการ์ด/แท็กตรงก่อน แล้วค่อยการ์ดที่ตรงแค่ในเนื้อหา (ค้น «จุฬาฯ» ให้ภาควิชาขึ้นก่อน)
+  if (q) {
+    // ใช้ titleNorm เทียบเสมอ (ไม่ผูกกับ useNorm) เพราะ titleNorm มีคำพ้องรวมอยู่แล้ว
+    const score = item => (rawHit(item.title) || (qNorm.length >= 2 && item.titleNorm.includes(qNorm)) ? 2 : 1);
+    matched.sort((x, y) => score(y) - score(x));
+  }
 
   // One results panel; the section list is hidden while it is showing,
   // so the reader never scrolls past blank section headers.
@@ -199,10 +257,24 @@ function runSearch() {
     const det = clone.querySelector('.card-detail');
     if (det) { det.style.maxHeight = '0'; det.style.opacity = '0'; }
     if (q) highlightCard(clone, q);
+    if (q) highlightSynonym(clone, q, qNorm);
+    // คำค้นไปตรงกับข้อความที่ซ่อนอยู่ใน «ดูรายละเอียดเพิ่มเติม» → กางให้เห็นเลย
+    if (q && det && det.textContent.toLowerCase().includes(q)) setExpanded(clone, true);
     clone.classList.add('result-clone');
     results.appendChild(clone);
   });
   equalizeCardRows();
+}
+
+// ถ้าคำค้นตรงเพราะเป็น «คำพ้อง» (เช่น พิมพ์ Siriraj แต่การ์ดเขียน ศิริราช)
+// ให้ไฮไลต์คำที่ตรงจริงในการ์ดให้เห็น ไม่งั้นจะไม่เห็นว่าตรงตรงไหน
+function highlightSynonym(card, q, qNorm) {
+  if (card.querySelector('mark.highlight') || qNorm.length < 2) return;
+  const group = SYNONYMS.find(g => g.some(t => normText(t) === qNorm));
+  if (!group) return;
+  const text = card.textContent.toLowerCase();
+  const term = group.find(t => t.length >= 3 && text.includes(t.toLowerCase()));
+  if (term) highlightCard(card, term.toLowerCase());
 }
 
 // Highlight matches by building nodes — never re-parse text as HTML.
