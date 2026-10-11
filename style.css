@@ -365,7 +365,7 @@ body {
 }
 #searchResults.active {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
   gap: 1.2rem;
   margin-top: 1rem;
 }
@@ -431,13 +431,20 @@ body {
    ============================ */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* ขั้นต่ำ 280px (เดิม 320) — จอ 900px ได้ 3 คอลัมน์, จอเต็ม 1200px ได้ 4 คอลัมน์
+     min(100%, 280px) กันไม่ให้การ์ดล้นจอเล็กระหว่างที่เบราว์เซอร์คำนวณ */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
   gap: 1.5rem;
+  /* การ์ดเป็น grid item ที่ min-width: auto ตามค่าเริ่มต้น → ถ้าเนื้อหาข้างใน
+     มี min-content กว้าง การ์ดจะไม่ยอมแคบกว่า ทำให้ได้คอลัมน์น้อยกว่าที่ควร */
   /* align-items: start + min-height ต่อแถวที่คำนวณใน app.js (equalizeCardRows)
      → ตอนพับอยู่การ์ดในแถวเดียวกันสูงเท่ากัน แต่พอใบหนึ่งกางรายละเอียด
        ใบข้าง ๆ ไม่ถูกถ่างตามจนเหลือที่ว่างท้ายการ์ด (ข้อเสียของ align-items: stretch) */
   align-items: start;
 }
+/* ให้การ์ดยอมแคบลงได้จริงตามคอลัมน์ที่คำนวณไว้ */
+.cards-grid > .card,
+#searchResults.active > .card { min-width: 0; }
 
 .card {
   background: var(--off-white);
@@ -565,6 +572,11 @@ body {
   margin-top: 0.1rem;
   flex-shrink: 0;
 }
+/* การ์ดแคบลง (280px) — อีเมล/ชื่อยาวต้องตัดบรรทัดได้ ไม่ดันการ์ดให้ล้น */
+.contact-row > * { min-width: 0; }
+.contact-row span,
+.contact-row a { overflow-wrap: anywhere; }
+
 .contact-row a {
   color: var(--sage-dark);
   text-decoration: none;
@@ -803,9 +815,9 @@ body {
   }
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { font-size: 0.82rem; white-space: nowrap; }
-  .cards-grid { grid-template-columns: 1fr; }
+  /* การ์ด/ทิปส์ ปล่อยให้ auto-fill จัดคอลัมน์เอง (เดิมบังคับ 1 คอลัมน์ถึง 768px
+     ทำให้การ์ดกว้าง 620-700px บนจอแนวนอนเตี้ย ๆ) */
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .tips-grid { grid-template-columns: 1fr; }
   .filter-row { gap: 0.4rem; }
   .filter-btn { font-size: 0.78rem; padding: 0.55rem 0.9rem; min-height: 40px; }
   .hero-title { font-size: 2.5rem; }
@@ -942,7 +954,7 @@ input:focus-visible,
 }
 .ssc-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 1.4rem;
   align-items: start;
 }
@@ -952,9 +964,7 @@ input:focus-visible,
 .ssc-links { flex: 1; display: flex; flex-direction: column; }
 .ssc-links li { display: flex; }
 .ssc-links li > a { flex: 1; justify-content: center; }
-@media (min-width: 900px) {
-  .ssc-grid { grid-template-columns: repeat(2, 1fr); }
-}
+
 
 .ssc-card {
   background: var(--off-white);
