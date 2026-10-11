@@ -282,7 +282,7 @@ function render(model, stampDate) {
           <span class="section-badge">🎓</span>
           <h2 class="section-title">รายวิชาเลือก « นอกคณะ »</h2>
           <p class="section-sub">
-            ยื่นความจำนง · ติดตามสถานะ · หลักเกณฑ์และเอกสาร — สำหรับนิสิตชั้นปีที่ 4–6
+            ยื่นความจำนง เช็คสถานะ โหลดหลักเกณฑ์ ของชั้นปี 4–6 อยู่ตรงนี้
           </p>
         </div>
 
@@ -315,7 +315,7 @@ ${statusPills}
           <!-- แบบฟอร์มที่ใช้บ่อย -->
           <article class="ssc-card fade-up">
             <h3 class="ssc-title">แบบฟอร์มที่ต้องใช้</h3>
-            <p class="ssc-desc">สองฉบับนี้ใช้บ่อยที่สุด — โหลดเก็บไว้ตั้งแต่ต้นเทอม</p>
+            <p class="ssc-desc">สองอันนี้ใช้บ่อยสุด โหลดเก็บไว้ตั้งแต่ต้นเทอม</p>
             <ul class="ssc-links ssc-links--forms">
 ${formRows}
             </ul>
@@ -328,12 +328,12 @@ ${formRows}
             <ul class="ssc-sched">
 ${scheduleRows}
             </ul>
-            <p class="ssc-note">«ยังไม่ประกาศ» = ฝ่ายวิชาการยังไม่ระบุวันในตารางต้นฉบับ</p>
+            <p class="ssc-note">«ยังไม่ประกาศ» = ในตารางต้นฉบับยังไม่มีวัน</p>
           </article>
 
           <!-- หลักเกณฑ์ · ประกาศ · รายชื่อ MOU -->
           <article class="ssc-card ssc-card--wide fade-up">
-            <h3 class="ssc-title">เอกสาร หลักเกณฑ์ และรายชื่อที่เกี่ยวข้อง</h3>
+            <h3 class="ssc-title">หลักเกณฑ์และเอกสารอื่นๆ</h3>
             <p class="ssc-desc">ฉบับล่าสุดจากฝ่ายวิชาการ</p>
             <ul class="ssc-links">
 ${policyRows}
