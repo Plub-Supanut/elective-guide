@@ -934,8 +934,9 @@ h1, h2, h3, .section-title, .ssc-title, .tip-card h3 { text-wrap: balance; }
    ============================ */
 .to-top {
   position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  /* เผื่อ safe area ของมือถือ (แถบ home indicator / มุมโค้งจอ) ไม่ให้ปุ่มไปชิดขอบจอ */
+  right: max(1.25rem, calc(env(safe-area-inset-right, 0px) + 0.9rem));
+  bottom: max(1.25rem, calc(env(safe-area-inset-bottom, 0px) + 0.9rem));
   z-index: 90;
   width: 44px;
   height: 44px;
@@ -1060,17 +1061,25 @@ input:focus-visible,
   border-radius: 10px;
   transition: color 0.2s;
 }
-.ssc-links a::after {
-  content: '↗';
-  position: absolute;
-  right: 0.15rem;
-  top: 0.72rem;
-  font-size: 0.82rem;
-  color: var(--sage);
+/* ลูกศร «เปิดที่อื่น» — เดิมปักไว้มุมขวาบนของแถวโดยใช้ top ตายตัว
+   ทำให้ห่างจากข้อความ ~25px และตัวอักษรมีขนาดจริงแค่ ~9px สีจาง ดูเหมือนเศษหมึก
+   → ย้ายไปต่อท้ายชื่อเรื่อง (ไหลตามข้อความ) ใหญ่ขึ้นและใช้สีที่อ่านออก */
+.ssc-links a::after { content: none; }
+.ssc-link-title::after {
+  /* ใช้ non-breaking space นำหน้า เพื่อไม่ให้ลูกศรหลุดไปอยู่บรรทัดใหม่คนเดียว */
+  content: ' ↗';
+  display: inline-block;
+  margin-left: 0.15rem;
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sage-dark);
   transition: transform 0.2s, color 0.2s;
 }
 .ssc-links a:hover { color: var(--terra); }
-.ssc-links a:hover::after { color: var(--terra); transform: translate(2px, -2px); }
+.ssc-links a:hover .ssc-link-title::after { color: var(--terra); transform: translate(2px, -2px); }
+/* ให้ชื่อเรื่องกินความกว้างเต็ม (เดิมเว้นที่ให้ลูกศรที่ปักมุม) */
+.ssc-links a { padding-right: 0; }
 .ssc-link-meta {
   font-size: 0.74rem;
   font-weight: 400;
@@ -1185,7 +1194,9 @@ input:focus-visible,
   line-height: 1.35;
 }
 .ssc-cta-meta { font-size: 0.78rem; color: rgba(255, 255, 255, 0.88); line-height: 1.5; }
-.ssc-cta-arrow { font-size: 1.15rem; opacity: 0.9; }
+/* ลูกศรบนการ์ด CTA — เดิมจาง (opacity .9) มองไม่ออกว่าเป็นลูกศร */
+.ssc-cta-arrow { font-size: 1.5rem; line-height: 1; opacity: 1; font-weight: 600; transition: transform 0.2s; }
+.ssc-cta:hover .ssc-cta-arrow { transform: translate(3px, -3px); }
 
 .ssc-status-block {
   display: flex;
