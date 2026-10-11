@@ -451,8 +451,29 @@ body {
   box-shadow: var(--shadow-lg);
 }
 .card-premium {
-  border-color: var(--dusk-light);
-  background: linear-gradient(135deg, var(--off-white), rgba(201,132,154,0.05));
+  grid-column: 1 / -1;            /* การ์ดเดียวในหมวดนี้: ให้กว้างเต็มแถว อ่านสบาย */
+  border-color: rgba(196, 113, 75, 0.35);
+  background: linear-gradient(150deg, var(--off-white) 45%, rgba(196, 113, 75, 0.07));
+  box-shadow: 0 6px 30px rgba(196, 113, 75, 0.13);
+}
+.card-premium:hover { box-shadow: 0 10px 38px rgba(196, 113, 75, 0.18); }
+.card-premium .card-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 2.5rem;
+  align-content: start;
+}
+.card-premium .card-detail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 2.5rem;
+  align-items: start;
+}
+.card-premium .card-detail .detail-group { min-width: 0; }
+@media (max-width: 900px) {
+  .card-premium .card-body,
+  .card-premium .card-detail { grid-template-columns: 1fr; gap: 0.45rem; }
+  .card-premium .card-detail .detail-group + .detail-group { margin-top: 0.9rem; }
 }
 
 .card-header {
@@ -510,8 +531,9 @@ body {
   font-size: 0.65rem;
 }
 .badge-special {
-  background: linear-gradient(135deg, var(--dusk), var(--terra));
+  background: var(--terra);
   color: #fff;
+  box-shadow: 0 2px 10px rgba(196, 113, 75, 0.3);
 }
 
 .card-body {
@@ -718,6 +740,37 @@ body {
 .fade-up.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── แถวเปิด/ปิดรายละเอียด: ทำเป็น footer ของการ์ด เพื่อให้ตำแหน่งนิ่งและกดง่าย ── */
+.expand-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding: 0.65rem 1rem;
+  border-top: 1px solid var(--border);
+  background: rgba(125, 155, 118, 0.06);
+  color: var(--sage-dark);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  user-select: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.card:hover .expand-hint { background: rgba(125, 155, 118, 0.14); }
+.card.expanded .expand-hint { background: transparent; border-top-color: transparent; }
+
+/* รายละเอียดที่ปิดอยู่ต้องไม่เหลือ padding ค้าง (ของเดิมเหลือ 32px ทำให้เกิดช่องว่าง) */
+.card-detail {
+  transition: max-height 0.4s ease, opacity 0.4s ease,
+              padding-top 0.4s ease, padding-bottom 0.4s ease, border-color 0.4s ease;
+}
+.card:not(.expanded) .card-detail {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top-color: transparent;
 }
 
 /* Search highlight */
