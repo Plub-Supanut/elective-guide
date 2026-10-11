@@ -170,12 +170,17 @@ body {
 }
 
 .btn-link {
+  display: inline-flex;
+  align-items: center;
   color: rgba(245,239,230,0.6);
   font-size: 0.82rem;
   font-weight: 400;
   text-decoration: none;
   letter-spacing: 0.01em;
   transition: color 0.2s;
+  /* เป้าแตะขั้นต่ำ: เดิมสูงแค่ 23px กดบนมือถือยาก */
+  min-height: 34px;
+  padding: 0.35rem 0.15rem;
 }
 .btn-link:hover {
   color: rgba(245,239,230,0.95);
@@ -244,6 +249,9 @@ body {
   gap: 1.8rem;
 }
 .nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;          /* เป้าแตะขั้นต่ำ (เดิมสูงแค่ 23px) */
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -572,30 +580,42 @@ body {
   flex: 1;
 }
 
+/* ใช้ block + ไอคอนลอย แทน flex: ข้อความไหลเป็นเนื้อเดียว ตัดบรรทัดตรงตัวคั่นเอง
+   (ถ้าใช้ flex หลายเบอร์จะดันล้นการ์ด หรือไอคอนหลงไปอยู่บรรทัดเดี่ยว) */
 .contact-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.55rem;
+  display: block;
+  position: relative;
   font-size: 0.875rem;
   color: var(--charcoal);
   line-height: 1.5;
 }
+.contact-row.has-icon { padding-left: 1.75rem; }
 .contact-row .icon {
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.25rem;
   font-size: 0.9rem;
-  margin-top: 0.1rem;
-  flex-shrink: 0;
+  line-height: 1.5;
 }
 /* การ์ดแคบลง (250-320px) — อีเมล/ชื่อยาวต้องตัดบรรทัดได้ ไม่ดันการ์ดให้ล้น */
 .contact-row > * { min-width: 0; }
 .contact-row span,
-.contact-row a { overflow-wrap: anywhere; }
+.contact-row a { overflow-wrap: break-word; }
+/* เบอร์โทรไม่ให้ขาดกลางเบอร์ (ขีดกลางในเบอร์เป็นจุดตัดบรรทัด) */
+.contact-row a[href^="tel:"] { white-space: nowrap; }
+/* บรรทัดสุดท้ายไม่ให้เหลือคำโดด */
+p, li, .contact-row, .card-title, .tip-card p, .ssc-link-title, .ssc-link-meta,
+.stat-label, .results-count, .filter-group-label { text-wrap: pretty; }
+h1, h2, h3, .section-title, .ssc-title, .tip-card h3 { text-wrap: balance; }
 
 /* การ์ดที่แคบกว่า ~300px ลดฟอนต์ลงนิดเดียว (14 → 13.1px) ให้อีเมลยาว ๆ
    อยู่บรรทัดเดียวได้ ไม่ต้องตัดกลางคำ (เบราว์เซอร์ที่ไม่รองรับ container query
    จะไม่ลดฟอนต์ ก็ยังใช้งานได้ปกติ) */
 .card { container-type: inline-size; }
 @container (max-width: 300px) {
-  .contact-row { font-size: 0.82rem; }
+  .contact-row { font-size: 0.78rem; }
+  .badge-loc { font-size: 0.62rem; }
 }
 
 .contact-row a {
@@ -1372,3 +1392,9 @@ input:focus-visible,
   .filter-tail { margin-left: 0; }
   .filter-group { gap: 0.35rem; }
 }
+
+/* ชื่อที่คั่นด้วย « / » ให้ตัดบรรทัดระหว่างชื่อ ไม่ตัดกลางชื่อ
+   (max-width 100% กันกรณีชื่อยาวเกินคอลัมน์ — จะกลับไปตัดในก้อนนั้นแทน) */
+.nm { display: inline-block; max-width: 100%; vertical-align: top; }
+/* ชิปตัวกรอง: เป้าแตะขั้นต่ำ 36px (เดิม 32px บนเดสก์ท็อป) */
+.filter-btn { min-height: 36px; }

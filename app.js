@@ -71,7 +71,9 @@ const cardIndex = allCards.map(card => {
   const tags = (card.dataset.tags || '').toLowerCase();
   // ใช้ textContent ไม่ใช่ innerText: ต้องค้นเจอข้อความใน «ดูรายละเอียดเพิ่มเติม»
   // ที่ยังไม่กาง (innerText ข้ามข้อความที่ถูกซ่อน/ตัดด้วย overflow)
-  const body = card.textContent.replace(/\s+/g, ' ').toLowerCase();
+  //   (non-breaking space ที่ใช้กัน «ต่อ» กับเลขไม่ให้แยกจากกัน) ต้องถือเป็นช่องว่างปกติด้วย
+  // ตัด ZWSP (zero-width space ที่ใช้กำหนดจุดตัดบรรทัดคำไทย) ออกก่อนทำดัชนี
+  const body = card.textContent.replace(/​/g, '').replace(/[\s ]+/g, ' ').toLowerCase();
   const base = tags + ' ' + body;
   const searchable = base + ' ' + aliasTerms(base).toLowerCase();
   const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
@@ -354,9 +356,23 @@ function highlightCard(card, q) {
   let node;
   while ((node = walker.nextNode())) {
     if (node.parentElement && node.parentElement.closest('.expand-hint')) continue;
-    if (node.textContent.toLowerCase().includes(q)) targets.push(node);
+    const clean = node.textContent.replace(/​/g, '');
+    if (node.textContent.toLowerCase().includes(q)) {
+      targets.push(node);
+    } else if (clean.toLowerCase().includes(q)) {
+      // โหนดนี้มี ZWSP คั่นกลางคำ — ไฮไลต์ทั้งโหนด (แทนที่จะหาตำแหน่งเป๊ะ)
+      node.__whole = true;
+      targets.push(node);
+    }
   }
   targets.forEach(node => {
+    if (node.__whole) {
+      const mark = document.createElement('mark');
+      mark.className = 'highlight';
+      mark.textContent = node.textContent;
+      node.replaceWith(mark);
+      return;
+    }
     const lower = node.textContent.toLowerCase();
     const frag = document.createDocumentFragment();
     let i = 0;
