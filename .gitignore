@@ -1,0 +1,8 @@
+# dependency ของสคริปต์ sync (ติดตั้งด้วย npm install — ไม่ต้อง commit)
+node_modules/
+
+# ไฟล์สำรองตอนทดสอบ
+*.bak-*
+
+# ตั้งค่าเฉพาะเครื่อง (Claude Code)
+.claude/

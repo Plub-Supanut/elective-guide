@@ -1,0 +1,67 @@
+name: Sync SSC data
+
+# ดึงข้อมูลจากเว็บต้นฉบับ SSCs Guide แล้วอัปเดตส่วน «รายวิชาเลือก นอกคณะ» ใน index.html
+# ถ้ากำหนดการ / เอกสาร / ช่องทางติดต่อ เปลี่ยน เว็บจะอัปเดตตามเองแล้ว commit ให้
+
+on:
+  schedule:
+    # ทุกวันจันทร์ 08:00 น. เวลาไทย (01:00 UTC)
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-ssc
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: ติดตั้ง dependency
+        run: npm install --no-audit --no-fund
+
+      - name: เตรียม Chrome สำหรับดึงข้อมูล
+        run: |
+          if [ -x /usr/bin/google-chrome ] || [ -x /usr/bin/chromium-browser ] || [ -x /usr/bin/chromium ]; then
+            echo "ใช้ Chrome ที่มีใน runner"
+          else
+            npx --yes @puppeteer/browsers install chrome@stable --path "$RUNNER_TEMP/chrome"
+            echo "CHROME_PATH=$(find "$RUNNER_TEMP/chrome" -type f -name chrome | head -1)" >> "$GITHUB_ENV"
+          fi
+
+      - name: ดึงข้อมูลจากต้นฉบับ
+        id: sync
+        run: |
+          set +e
+          node sync-ssc.mjs
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: แจ้งเตือนถ้าดึงข้อมูลไม่สำเร็จ
+        if: steps.sync.outputs.code != '0'
+        run: |
+          echo "::error::sync ล้มเหลว (exit ${{ steps.sync.outputs.code }}) — เว็บต้นฉบับอาจเปลี่ยนโครงสร้าง ต้องแก้ sync-ssc.mjs (เว็บเดิมยังไม่ถูกแก้)"
+          exit 1
+
+      - name: commit & push ถ้ามีการเปลี่ยนแปลง
+        if: steps.sync.outputs.code == '0'
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "ข้อมูลตรงกับต้นฉบับอยู่แล้ว — ไม่มีอะไรต้อง commit"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "chore(sync): อัปเดตข้อมูลรายวิชาเลือกนอกคณะจากเว็บ SSCs Guide"
+          git push

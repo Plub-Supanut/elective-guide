@@ -1,0 +1,15 @@
+{
+  "name": "elective-guide",
+  "private": true,
+  "version": "1.0.0",
+  "description": "คู่มือ Elective สำหรับนิสิตแพทย์จุฬาฯ — เว็บ static + สคริปต์ sync ข้อมูลจากเว็บ SSCs Guide",
+  "type": "module",
+  "scripts": {
+    "sync": "node sync-ssc.mjs",
+    "sync:check": "node sync-ssc.mjs --check",
+    "sync:print": "node sync-ssc.mjs --print"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

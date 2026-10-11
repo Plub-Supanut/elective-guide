@@ -4,18 +4,54 @@
 
 ## 🌐 เข้าชมเว็บไซต์
 
-**GitHub Pages URL:** [Visit Elective Guide](https://Plub-Supanut.github.io/elective-guide/)
+**GitHub Pages URL:** `https://<your-username>.github.io/<repo-name>/`
+
+## 🚀 วิธี Deploy บน GitHub Pages
+
+1. สร้าง repository ใหม่บน GitHub
+2. Upload ไฟล์ทั้ง 3 ไฟล์นี้:
+   - `index.html`
+   - `style.css`
+   - `app.js`
+3. ไปที่ **Settings → Pages → Source: Deploy from a branch → main / root**
+4. รอประมาณ 1-2 นาที แล้วเว็บจะออนไลน์
 
 ## 📂 ไฟล์
 
 | ไฟล์ | รายละเอียด |
 |------|-----------|
-| `index.html` | หน้าหลัก รวมข้อมูลทุกสถาบัน |
+| `index.html` | หน้าหลัก รวมข้อมูลทุกสถาบัน + ส่วน «รายวิชาเลือก นอกคณะ» |
 | `style.css` | สไตล์ในธีม Yoga Studio (warm sand · sage green · terracotta) |
 | `app.js` | Search/Filter, animation, card expand/collapse |
+| `sync-ssc.mjs` | ดึงข้อมูลจากเว็บ SSCs Guide มาอัปเดตส่วน «นอกคณะ» อัตโนมัติ |
+| `.github/workflows/sync-ssc.yml` | ให้ GitHub รัน `sync-ssc.mjs` ทุกวันจันทร์แล้ว commit ให้เอง |
+
+## 🔄 อัปเดตข้อมูล «นอกคณะ» จากเว็บต้นฉบับ
+
+ส่วน «รายวิชาเลือก นอกคณะ» ใน `index.html` ถูกคั่นด้วย marker:
+
+```
+<!-- SSC:AUTO:START -->  ...ข้อมูลที่ดึงมา...  <!-- SSC:AUTO:END -->
+<!-- SSC:DATA-HASH:xxxxxxxxxxxx -->
+```
+
+เนื้อหาในกรอบนี้ **ห้ามแก้ด้วยมือ** (จะถูกเขียนทับ) ถ้าต้องแก้คำ/โครง ให้แก้ที่ `TEMPLATE` ใน `sync-ssc.mjs`
+
+```bash
+npm install          # ครั้งแรกครั้งเดียว
+npm run sync         # ดึงข้อมูลใหม่ ถ้าเปลี่ยนจะเขียน index.html ให้
+npm run sync:check   # แค่ตรวจว่ามีอะไรเปลี่ยนไหม (exit 2 = มี)
+npm run sync:print   # ดู HTML ที่จะได้ โดยไม่แตะไฟล์
+```
+
+สิ่งที่ดึงมาอัตโนมัติ: กำหนดการส่งแบบแสดงความจำนง · ลิงก์สถานะรายชั้นปี · รายชื่อ/ลิงก์เอกสาร PDF · ฟอร์มและรายชื่อ MOU · ช่องทางติดต่อ
+สิ่งที่ดึงมาให้ด้วย: ตรวจจริงว่าลิงก์ไหนต้องล็อกอิน CU account แล้วติดป้าย 🔒 ให้เอง
+
+ถ้าเว็บต้นฉบับเปลี่ยนโครงสร้างจนดึงข้อมูลไม่ครบ สคริปต์จะ **ไม่แก้ไฟล์** และคืน exit code 3 (workflow จะขึ้น error ให้รู้)
 
 ## ✨ ฟีเจอร์
 
+- 🎓 **ลิงก์ « นอกคณะ »** — รวมช่องทางยื่นความจำนง, สถานะรายชั้นปี, กำหนดการ, หลักเกณฑ์/เอกสาร PDF และช่องทางสอบถาม ไว้ในส่วนเดียว (เมนู «นอกคณะ»)
 - 🔍 **ค้นหาแบบ Real-time** — พิมพ์ชื่อสถาบัน ภาควิชา ผู้ประสานงาน หรือเบอร์โทร
 - 🏷️ **Filter** — กรองตามประเภท: มหาวิทยาลัย / โรงพยาบาล / ภูมิภาค / มีที่พัก
 - 📋 **Expand/Collapse** — คลิกที่การ์ดเพื่อดูรายละเอียดเพิ่มเติม
