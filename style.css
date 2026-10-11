@@ -493,8 +493,14 @@ body {
   justify-content: space-between;
   gap: 0.8rem;
   border-bottom: 1px solid var(--border);
+  /* การ์ดแคบ (250px): ถ้าชื่อกับ badge อยู่บรรทัดเดียวกันไม่พอ ให้ badge ตกลงบรรทัดใหม่
+     ดีกว่าดันหัวการ์ดให้ล้นออกนอกการ์ด */
+  flex-wrap: wrap;
 }
 .card-title {
+  /* ไม่ตั้ง min-width: 0 — ถ้าชื่อกับ badge อยู่บรรทัดเดียวกันไม่พอ
+     ให้ flex-wrap พา badge ลงบรรทัดใหม่ ดีกว่าบีบชื่อจนแตกทุกคำ */
+  flex: 1 1 auto;
   font-family: var(--font-head);
   font-size: 1.05rem;
   font-weight: 600;
@@ -544,6 +550,13 @@ body {
   color: var(--terra);
   border: 1px solid rgba(196,113,75,0.2);
   font-size: 0.65rem;
+  /* badge สถานที่บางอันยาว (เช่น «รัตนวิทยาพัฒน์ ชั้น 15B ห้อง 1512»)
+     การ์ดแคบ 250px จึงต้องตัดบรรทัดได้ ไม่ดันหัวการ์ดให้ล้น */
+  white-space: normal;
+  flex-shrink: 1;
+  min-width: 0;
+  text-align: right;
+  line-height: 1.35;
 }
 .badge-special {
   background: var(--terra);
@@ -572,10 +585,18 @@ body {
   margin-top: 0.1rem;
   flex-shrink: 0;
 }
-/* การ์ดแคบลง (280px) — อีเมล/ชื่อยาวต้องตัดบรรทัดได้ ไม่ดันการ์ดให้ล้น */
+/* การ์ดแคบลง (250-320px) — อีเมล/ชื่อยาวต้องตัดบรรทัดได้ ไม่ดันการ์ดให้ล้น */
 .contact-row > * { min-width: 0; }
 .contact-row span,
 .contact-row a { overflow-wrap: anywhere; }
+
+/* การ์ดที่แคบกว่า ~300px ลดฟอนต์ลงนิดเดียว (14 → 13.1px) ให้อีเมลยาว ๆ
+   อยู่บรรทัดเดียวได้ ไม่ต้องตัดกลางคำ (เบราว์เซอร์ที่ไม่รองรับ container query
+   จะไม่ลดฟอนต์ ก็ยังใช้งานได้ปกติ) */
+.card { container-type: inline-size; }
+@container (max-width: 300px) {
+  .contact-row { font-size: 0.82rem; }
+}
 
 .contact-row a {
   color: var(--sage-dark);
