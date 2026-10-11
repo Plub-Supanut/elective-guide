@@ -80,6 +80,9 @@ const cardIndex = allCards.map(card => {
     el: card,
     tags: tags.split(/\s+/).filter(Boolean),
     title,
+    region: card.dataset.region || '',
+    code: (card.querySelector('.code')?.textContent || '').trim(),
+    freeDorm: /ที่พักฟรี/.test(card.querySelector('.badge-dormitory')?.textContent || ''),
     // รวมคำพ้องของชื่อ/แท็กด้วย → ค้น «จุฬาฯ» แล้วการ์ดภาควิชาจุฬาฯ ขึ้นก่อน
     titleNorm: normText(titleBase + ' ' + aliasTerms(titleBase).toLowerCase()),
     searchable,
@@ -87,45 +90,89 @@ const cardIndex = allCards.map(card => {
   };
 });
 
-// ── Filter buttons ────────────────────────────────────────────
-const filterBtns = document.querySelectorAll('.filter-btn');
-let activeFilter = 'all';
-
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    activeFilter = btn.dataset.filter;
-    syncFilterUI();
-    runSearch();
-  });
-});
-
-// ── การ์ดสถิติ 4 อัน = ทางลัดกรอง (ไม่ใช่แค่ตัวเลขโชว์) ─────────
+// ── ตัวกรองแบบเลือกได้หลายเงื่อนไข ────────────────────────────
+// แบ่ง 3 กลุ่ม: ประเภท / ภูมิภาค / อื่น ๆ
+// เลือกหลายอันในกลุ่มเดียวกัน = หรือ (OR) · เลือกข้ามกลุ่ม = และ (AND)
+const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+const filterClearBtn = document.getElementById('filterClear');
+const sortSelect = document.getElementById('sortSelect');
 const statCards = document.querySelectorAll('.stat-card[data-stat]');
+const groups = { type: new Set(), region: new Set(), extra: new Set() };
+let sortMode = 'default';
+
+const groupOf = f => (f.startsWith('region:') ? 'region'
+  : (f === 'dormitory' || f === 'dorm-free') ? 'extra' : 'type');
+const selected = () => [...groups.type, ...groups.region, ...groups.extra];
+const activeCount = () => selected().length;
+const anyFilter = () => activeCount() > 0;
+
+// การ์ดผ่านตัวกรองไหม — เทียบทีละกลุ่ม
+function cardMatches(item) {
+  if (groups.type.size) {
+    const ok = [...groups.type].some(f => f === 'regional-plain'
+      ? (item.tags.includes('regional') && !item.tags.includes('cpird'))
+      : item.tags.includes(f));
+    if (!ok) return false;
+  }
+  // ชิปใช้ค่า «region:north» แต่ข้อมูลการ์ดเก็บเป็น «north»
+  if (groups.region.size && !groups.region.has('region:' + item.region)) return false;
+  if (groups.extra.size) {
+    const ok = [...groups.extra].some(f => f === 'dormitory'
+      ? item.tags.includes('dormitory') : item.freeDorm);
+    if (!ok) return false;
+  }
+  return true;
+}
 
 function syncFilterUI() {
   filterBtns.forEach(b => {
-    const on = b.dataset.filter === activeFilter;
+    const on = groups[groupOf(b.dataset.filter)].has(b.dataset.filter);
     b.classList.toggle('active', on);
     b.setAttribute('aria-pressed', String(on));
   });
+  if (filterClearBtn) {
+    const n = activeCount();
+    filterClearBtn.hidden = n === 0;
+    filterClearBtn.textContent = n > 1 ? `✕ ล้างตัวกรอง (${n})` : '✕ ล้างตัวกรอง';
+  }
+  // การ์ดสถิติ = ทางลัด: ติดสว่างเมื่อเลือกตัวกรองนั้นอันเดียว
   statCards.forEach(c => {
-    const on = c.dataset.stat === activeFilter && activeFilter !== 'all';
+    const f = c.dataset.stat;
+    const on = f !== 'all' && activeCount() === 1 && groups[groupOf(f)].has(f);
     c.classList.toggle('is-active', on);
     c.setAttribute('aria-pressed', String(on));
   });
 }
 
+function toggleFilter(f) {
+  const g = groups[groupOf(f)];
+  g.has(f) ? g.delete(f) : g.add(f);
+  syncFilterUI();
+  runSearch();
+}
+
+filterBtns.forEach(b => b.addEventListener('click', () => toggleFilter(b.dataset.filter)));
+filterClearBtn?.addEventListener('click', clearAll);
+sortSelect?.addEventListener('change', () => {
+  sortMode = sortSelect.value;
+  runSearch();
+});
+
+// ── การ์ดสถิติ 4 อัน = ทางลัดกรอง (ไม่ใช่แค่ตัวเลขโชว์) ─────────
 statCards.forEach(card => {
   card.addEventListener('click', () => {
-    activeFilter = card.dataset.stat;
-    syncFilterUI();
-    runSearch();
-    document.getElementById('searchResults')?.setAttribute('aria-live', 'polite');
-    if (activeFilter === 'all') {
-      // «แสดงทั้งหมด» = กลับไปดูรายชื่อเต็มที่อยู่ถัดลงไป (ไม่ต้องกรอง)
+    const f = card.dataset.stat;
+    if (f === 'all') {
+      clearAll();
+      // «แสดงรายชื่อทั้งหมด» = กลับไปดูรายชื่อเต็มที่อยู่ถัดลงไป
       document.getElementById('institutions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
+    groups.type.clear(); groups.region.clear(); groups.extra.clear();
+    groups[groupOf(f)].add(f);
+    syncFilterUI();
+    runSearch();
+    document.getElementById('searchResults')?.setAttribute('aria-live', 'polite');
     const sec = document.getElementById('search');
     if (sec) {
       sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -157,43 +204,44 @@ searchClear.addEventListener('click', () => {
   searchInput.focus();
 });
 
-// Exact tag match — substring matching made the จุฬา filter also
-// match "chulabhorn" and made "rama" match "ramathibodi".
-function matchesFilter(card, filter) {
-  if (filter === 'all') return true;
-  const entry = cardIndex.find(c => c.el === card);
-  if (!entry) return true;
-  // «รพ.จังหวัด» = กลุ่มภูมิภาคที่ไม่ใช่ ศพช. (สองกลุ่มนี้แยกกัน ไม่ทับกัน)
-  if (filter === 'regional-plain') {
-    return entry.tags.includes('regional') && !entry.tags.includes('cpird');
-  }
-  return entry.tags.includes(filter);
-}
-
 const filterLabel = {
-  all: 'ทั้งหมด', chula: 'จุฬา (ภาควิชา)', university: 'มหาวิทยาลัย',
-  hospital: 'โรงพยาบาล/ศูนย์', cpird: 'ศพช.', 'regional-plain': 'รพ.จังหวัด',
-  regional: 'ภูมิภาค', dormitory: 'มีที่พัก',
+  chula: 'จุฬา (ภาควิชา)', university: 'มหาวิทยาลัย', hospital: 'โรงพยาบาล/ศูนย์',
+  cpird: 'ศพช.', 'regional-plain': 'รพ.จังหวัด', private: 'เอกชน',
+  'region:bkk': 'กทม.', 'region:central': 'กลาง', 'region:north': 'เหนือ',
+  'region:isan': 'อีสาน', 'region:south': 'ใต้',
+  dormitory: 'มีที่พัก', 'dorm-free': 'ที่พักฟรี',
 };
 
 function clearAll() {
   searchInput.value = '';
   searchClear.classList.remove('visible');
-  activeFilter = 'all';
-  filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+  groups.type.clear(); groups.region.clear(); groups.extra.clear();
+  syncFilterUI();
   runSearch();
+}
+
+// ── เก็บเงื่อนไขไว้ใน URL → ส่งลิงก์ให้เพื่อนเปิดแล้วได้ผลเดียวกัน ──
+function syncURL() {
+  const p = new URLSearchParams(location.search);
+  const f = selected();
+  f.length ? p.set('f', f.join(',')) : p.delete('f');
+  sortMode === 'default' ? p.delete('sort') : p.set('sort', sortMode);
+  const q = searchInput.value.trim();
+  q ? p.set('q', q) : p.delete('q');
+  const qs = p.toString();
+  history.replaceState(null, '', (qs ? `${location.pathname}?${qs}` : location.pathname) + location.hash);
 }
 
 function runSearch() {
   const results = document.getElementById('searchResults');
   const q = searchInput.value.trim().toLowerCase();
-  const filterActive = activeFilter !== 'all';
 
-  // Nothing searched or filtered: restore the full list.
-  if (q === '' && !filterActive) {
+  // ไม่มีคำค้นและไม่มีตัวกรอง → กลับไปแสดงรายชื่อเต็มตามปกติ
+  if (q === '' && !anyFilter()) {
     results.classList.remove('active');
     results.innerHTML = '';
     mainList.hidden = false;
+    syncURL();
     return;
   }
 
@@ -205,13 +253,20 @@ function runSearch() {
   const punctStripped = q.replace(/[\s.\-–—()«»"'/]/g, '');
   const useNorm = qNorm !== punctStripped && qNorm.length >= 2;
 
-  const matched = cardIndex.filter(({ el, searchable, searchableNorm }) =>
-    matchesFilter(el, activeFilter) && (q === '' || rawHit(searchable) ||
-      (useNorm && searchableNorm.includes(qNorm))));
+  const matched = cardIndex.filter(item =>
+    cardMatches(item) && (q === '' || rawHit(item.searchable) ||
+      (useNorm && item.searchableNorm.includes(qNorm))));
 
-  // ชื่อการ์ด/แท็กตรงก่อน แล้วค่อยการ์ดที่ตรงแค่ในเนื้อหา (ค้น «จุฬาฯ» ให้ภาควิชาขึ้นก่อน)
-  if (q) {
-    // ใช้ titleNorm เทียบเสมอ (ไม่ผูกกับ useNorm) เพราะ titleNorm มีคำพ้องรวมอยู่แล้ว
+  // เรียงผลลัพธ์: ถ้าผู้ใช้เลือกเอง ใช้ที่เลือก · ถ้าไม่ เลือกให้เองตามความเกี่ยวข้อง
+  if (sortMode === 'code') {
+    matched.sort((x, y) => (x.code || 'zzz').localeCompare(y.code || 'zzz'));
+  } else if (sortMode === 'name') {
+    const bare = item => item.title.replace(/^\s*\d{3}\s*/, '');
+    matched.sort((x, y) => bare(x).localeCompare(bare(y), 'th'));
+  } else if (sortMode === 'dorm') {
+    matched.sort((x, y) => (y.tags.includes('dormitory') ? 1 : 0) - (x.tags.includes('dormitory') ? 1 : 0));
+  } else if (q) {
+    // ชื่อการ์ด/แท็กตรงก่อน แล้วค่อยการ์ดที่ตรงแค่ในเนื้อหา (ค้น «จุฬาฯ» ให้ภาควิชาขึ้นก่อน)
     const score = item => (rawHit(item.title) || (qNorm.length >= 2 && item.titleNorm.includes(qNorm)) ? 2 : 1);
     matched.sort((x, y) => score(y) - score(x));
   }
@@ -227,10 +282,15 @@ function runSearch() {
 
   const count = document.createElement('p');
   count.className = 'results-count';
-  const what = q === '' ? `ตัวกรอง «${filterLabel[activeFilter]}»` : `คำค้น «${searchInput.value.trim()}»`;
+  const what = [];
+  if (q) what.push(`คำค้น «${searchInput.value.trim()}»`);
+  if (groups.type.size) what.push(`ประเภท ${[...groups.type].map(f => filterLabel[f] || f).join(' + ')}`);
+  if (groups.region.size) what.push(`ภูมิภาค ${[...groups.region].map(f => filterLabel[f] || f).join(' + ')}`);
+  if (groups.extra.size) what.push([...groups.extra].map(f => filterLabel[f] || f).join(' + '));
+  const from = what.length ? ` จาก${what.join(' · ')}` : '';
   count.innerHTML = matched.length
-    ? `พบ <strong>${matched.length}</strong> รายการ จาก${what}`
-    : `ไม่พบรายการจาก${what}`;
+    ? `พบ <strong>${matched.length}</strong> รายการ${from}`
+    : `ไม่พบรายการ${from}`;
   head.appendChild(count);
 
   const reset = document.createElement('button');
@@ -244,7 +304,11 @@ function runSearch() {
   if (!matched.length) {
     const empty = document.createElement('p');
     empty.className = 'results-empty';
-    empty.textContent = 'ลองใช้คำค้นอื่น เช่น ชื่อโรงพยาบาล ภาควิชา ชื่อผู้ประสานงาน หรือเบอร์โทร';
+    empty.textContent = (q && anyFilter())
+      ? 'ไม่พบที่ตรงกับทั้งคำค้นและตัวกรองนี้ ลองตัดตัวกรองบางอันออก หรือใช้คำค้นสั้นลง'
+      : anyFilter()
+        ? 'ไม่พบที่ตรงกับตัวกรองนี้ ลองลดเงื่อนไขลง หรือกด «ล้างตัวกรอง»'
+        : 'ลองใช้คำค้นอื่น เช่น ชื่อโรงพยาบาล ภาควิชา ชื่อผู้ประสานงาน หรือเบอร์โทร';
     results.appendChild(empty);
     return;
   }
@@ -269,6 +333,7 @@ function runSearch() {
     results.appendChild(clone);
   });
   equalizeCardRows();
+  syncURL();
 }
 
 // ถ้าคำค้นตรงเพราะเป็น «คำพ้อง» (เช่น พิมพ์ Siriraj แต่การ์ดเขียน ศิริราช)
@@ -459,3 +524,23 @@ document.body.appendChild(toTop);
 window.addEventListener('scroll', () => {
   toTop.classList.toggle('visible', window.scrollY > 800);
 }, { passive: true });
+
+// ── เริ่มต้นจาก URL (ลิงก์ที่แชร์กันมาเปิดแล้วได้ตัวกรองเดิม) ───
+(function initFromURL() {
+  const p = new URLSearchParams(location.search);
+  const valid = f => /^(chula|university|hospital|cpird|regional-plain|private|dormitory|dorm-free)$/.test(f) || /^region:(bkk|central|north|isan|south)$/.test(f);
+  (p.get('f') || '').split(',').filter(valid).forEach(f => groups[groupOf(f)].add(f));
+
+  const s = p.get('sort');
+  if (s && sortSelect && Array.from(sortSelect.options).some(o => o.value === s)) {
+    sortMode = s;
+    sortSelect.value = s;
+  }
+  const q = p.get('q');
+  if (q) {
+    searchInput.value = q;
+    searchClear.classList.add('visible');
+  }
+  syncFilterUI();
+  if (q || anyFilter()) runSearch();
+})();

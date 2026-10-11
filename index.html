@@ -101,18 +101,41 @@
             ✕
           </button>
         </div>
-        <div class="filter-row fade-up">
-          <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
-          <button class="filter-btn" data-filter="chula">จุฬา (ภาควิชา)</button>
-          <button class="filter-btn" data-filter="university">
-            มหาวิทยาลัย
-          </button>
-          <button class="filter-btn" data-filter="hospital">
-            โรงพยาบาล/ศูนย์
-          </button>
-          <button class="filter-btn" data-filter="cpird">ศพช.</button>
-          <button class="filter-btn" data-filter="regional-plain">รพ.จังหวัด</button>
-          <button class="filter-btn" data-filter="dormitory">มีที่พัก</button>
+        <div class="filter-panel fade-up">
+          <div class="filter-group">
+            <span class="filter-group-label">ประเภท</span>
+            <button class="filter-btn" data-filter="chula" aria-pressed="false">จุฬา (ภาควิชา)</button>
+            <button class="filter-btn" data-filter="university" aria-pressed="false">มหาวิทยาลัย</button>
+            <button class="filter-btn" data-filter="hospital" aria-pressed="false">โรงพยาบาล/ศูนย์</button>
+            <button class="filter-btn" data-filter="cpird" aria-pressed="false">ศพช.</button>
+            <button class="filter-btn" data-filter="regional-plain" aria-pressed="false">รพ.จังหวัด</button>
+            <button class="filter-btn" data-filter="private" aria-pressed="false">เอกชน</button>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">ภูมิภาค</span>
+            <button class="filter-btn" data-filter="region:bkk" aria-pressed="false">กทม.</button>
+            <button class="filter-btn" data-filter="region:central" aria-pressed="false">กลาง</button>
+            <button class="filter-btn" data-filter="region:north" aria-pressed="false">เหนือ</button>
+            <button class="filter-btn" data-filter="region:isan" aria-pressed="false">อีสาน</button>
+            <button class="filter-btn" data-filter="region:south" aria-pressed="false">ใต้</button>
+          </div>
+          <div class="filter-group">
+            <span class="filter-group-label">อื่น ๆ</span>
+            <button class="filter-btn" data-filter="dormitory" aria-pressed="false">มีที่พัก</button>
+            <button class="filter-btn" data-filter="dorm-free" aria-pressed="false">ที่พักฟรี</button>
+          </div>
+          <div class="filter-tail">
+            <button type="button" class="filter-clear" id="filterClear" hidden>✕ ล้างตัวกรอง</button>
+            <label class="filter-sort">
+              <span>เรียงตาม</span>
+              <select id="sortSelect">
+                <option value="default">ลำดับเดิม</option>
+                <option value="code">รหัส</option>
+                <option value="name">ชื่อ ก-ฮ</option>
+                <option value="dorm">มีที่พักก่อน</option>
+              </select>
+            </label>
+          </div>
         </div>
         <div id="searchResults" class="search-results"></div>
       </div>
@@ -320,6 +343,7 @@
             <div
               class="card fade-up"
               data-tags="hospital พระปกเกล้า ต้อม dormitory cpird"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลพระปกเกล้า</h3>
@@ -368,7 +392,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="hospital ชลบุรี แอน เอ๋ cpird">
+            <div class="card fade-up" data-tags="hospital ชลบุรี แอน เอ๋ cpird"
+              data-region="central">
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลชลบุรี</h3>
                 <span class="badge badge-cpird">ศพช.</span>
@@ -403,7 +428,8 @@
             <p class="section-sub">แยกตามภาควิชา</p>
           </div>
           <div class="cards-grid">
-            <div class="card fade-up" data-tags="chula กายวิภาค anatomy">
+            <div class="card fade-up" data-tags="chula กายวิภาค anatomy"
+              data-region="bkk">
               <div class="card-header">
                 <h3 class="card-title">ภาควิชากายวิภาคศาสตร์</h3>
               </div>
@@ -427,6 +453,7 @@
             <div
               class="card fade-up"
               data-tags="chula กุมารเวชศาสตร์ pediatrics กบ แหม่ม"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชากุมารเวชศาสตร์</h3>
@@ -464,6 +491,7 @@
             <div
               class="card fade-up"
               data-tags="chula จักษุวิทยา ophthalmology วรินทร"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาจักษุวิทยา</h3>
@@ -488,6 +516,7 @@
             <div
               class="card fade-up"
               data-tags="chula จุลชีววิทยา microbiology Pattaraporn Fah"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาจุลชีววิทยา</h3>
@@ -517,6 +546,7 @@
             <div
               class="card fade-up"
               data-tags="chula ชีวเคมี biochemistry พนินธรณ์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาชีวเคมี</h3>
@@ -546,6 +576,7 @@
             <div
               class="card fade-up"
               data-tags="chula นิติเวช forensic ธัญญารัตน์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชานิติเวชศาสตร์</h3>
@@ -574,6 +605,7 @@
             <div
               class="card fade-up"
               data-tags="chula จิตเวช psychiatry นิสายชล ชุตาภรณ์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาจิตเวชศาสตร์</h3>
@@ -613,6 +645,7 @@
             <div
               class="card fade-up"
               data-tags="chula ปรสิตวิทยา parasitology น้ำ"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาปรสิตวิทยา</h3>
@@ -627,6 +660,7 @@
             <div
               class="card fade-up"
               data-tags="chula พยาธิวิทยา pathology อริยาภรณ์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาพยาธิวิทยา</h3>
@@ -659,7 +693,8 @@
 </div>
             </div>
 
-            <div class="card fade-up" data-tags="chula เภสัชวิทยา pharmacology">
+            <div class="card fade-up" data-tags="chula เภสัชวิทยา pharmacology"
+              data-region="bkk">
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาเภสัชวิทยา</h3>
               </div>
@@ -674,6 +709,7 @@
             <div
               class="card fade-up"
               data-tags="chula รังสีวิทยา radiology นู radiochula"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชารังสีวิทยา</h3>
@@ -707,6 +743,7 @@
             <div
               class="card fade-up"
               data-tags="chula วิสัญญี anesthesia Anchalee"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาวิสัญญีวิทยา</h3>
@@ -733,6 +770,7 @@
             <div
               class="card fade-up"
               data-tags="chula เวชศาสตร์ชันสูตร laboratory สิรภัทร คุณากร"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาเวชศาสตร์ชันสูตร</h3>
@@ -766,6 +804,7 @@
             <div
               class="card fade-up"
               data-tags="chula เวชศาสตร์ป้องกัน preventive social ปริญญา ภาวิตา"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาเวชศาสตร์ป้องกันและสังคม</h3>
@@ -806,6 +845,7 @@
             <div
               class="card fade-up"
               data-tags="chula ศัลยศาสตร์ surgery สุพรรณี Trauma CVT Neuro Plastic Uro"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาศัลยศาสตร์</h3>
@@ -844,7 +884,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="chula ออร์โธ orthopedics">
+            <div class="card fade-up" data-tags="chula ออร์โธ orthopedics"
+              data-region="bkk">
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาออร์โธปิดิกส์</h3>
                 <span class="badge badge-loc">รัตนวิทยาพัฒน์ ชั้น 12</span>
@@ -863,7 +904,8 @@
 </div>
             </div>
 
-            <div class="card fade-up" data-tags="chula สรีรวิทยา physiology">
+            <div class="card fade-up" data-tags="chula สรีรวิทยา physiology"
+              data-region="bkk">
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาสรีรวิทยา</h3>
               </div>
@@ -884,6 +926,7 @@
             <div
               class="card fade-up"
               data-tags="chula สูติ นรีเวช OB GYN วรัญญา"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาสูติศาสตร์-นรีเวชวิทยา</h3>
@@ -908,6 +951,7 @@
             <div
               class="card fade-up"
               data-tags="chula โสต ศอ นาสิก ENT เกศแก้ว"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาโสต ศอ นาสิกวิทยา</h3>
@@ -935,6 +979,7 @@
             <div
               class="card fade-up"
               data-tags="chula อายุรศาสตร์ internal medicine วรรณี ดวงนภา cardiology nephrology GI pulmonary"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาอายุรศาสตร์</h3>
@@ -1006,6 +1051,7 @@
             <div
               class="card fade-up"
               data-tags="chula เวชศาสตร์ฟื้นฟู rehabilitation จิณณ์ณิชา พรพิมล"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาเวชศาสตร์ฟื้นฟู</h3>
@@ -1040,6 +1086,7 @@
             <div
               class="card fade-up"
               data-tags="chula เวชศาสตร์ฉุกเฉิน emergency"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ภาควิชาเวชศาสตร์ฉุกเฉิน</h3>
@@ -1057,6 +1104,7 @@
             <div
               class="card fade-up"
               data-tags="chula ชีวาภิบาล palliative care 3000610"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ศูนย์ชีวาภิบาล</h3>
@@ -1087,6 +1135,7 @@
             <div
               class="card fade-up"
               data-tags="chula ฝ่ายวางแผน สัญญาชดใช้ทุน อรสา"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ฝ่ายวางแผนและพัฒนา</h3>
@@ -1114,6 +1163,7 @@
             <div
               class="card fade-up"
               data-tags="chula สนับสนุน HR การเงิน อาคาร International Affairs"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)</h3>
@@ -1169,6 +1219,7 @@
             <div
               class="card fade-up"
               data-tags="university hospital ภูมิพล Bhumibol airforce"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.ภูมิพลอดุลยเดช (BB)</h3>
@@ -1211,6 +1262,7 @@
             <div
               class="card fade-up"
               data-tags="university 101 ขอนแก่น KKU เฟียต ปุ้ย"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1306,6 +1358,7 @@
             <div
               class="card fade-up"
               data-tags="university 102 เชียงใหม่ CMU จีระนันท์ dormitory"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1456,6 +1509,7 @@
             <div
               class="card fade-up"
               data-tags="university 103 ธรรมศาสตร์ TU MANOW dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1557,6 +1611,7 @@
             <div
               class="card fade-up"
               data-tags="university 104 นเรศวร NU ธเนศ มาโนชญ์"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1606,6 +1661,7 @@
             <div
               class="card fade-up"
               data-tags="university 105 สงขลานครินทร์ PSU ลัดดาวัลย์ ปาจรีย์"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1695,6 +1751,7 @@
             <div
               class="card fade-up"
               data-tags="university 106 รามาธิบดี Rama มหิดล มินต์ ติ๊ก dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1815,6 +1872,7 @@
             <div
               class="card fade-up"
               data-tags="university 107 วชิรพยาบาล Vajira BM"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -1883,6 +1941,7 @@
             <div
               class="card fade-up"
               data-tags="university 108 ศิริราช Siriraj มหิดล เกด dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2006,6 +2065,7 @@
             <div
               class="card fade-up"
               data-tags="university hospital 109 ราชวิถี Rajavithi"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2137,6 +2197,7 @@
             <div
               class="card fade-up"
               data-tags="university 110 พระมงกุฎเกล้า PMK อำไพ เก่ง กุ้ง"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2247,6 +2308,7 @@
             <div
               class="card fade-up"
               data-tags="university 111 ศรีนครินทรวิโรฒ SWU สุรีย์รัตน์ dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2298,6 +2360,7 @@
             <div
               class="card fade-up"
               data-tags="university 112 ปัญญานันทภิกขุ ชลประทาน PCMC SWU dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2396,6 +2459,7 @@
             <div
               class="card fade-up"
               data-tags="university hospital 113 สมเด็จพระบรมราชเทวี ศรีราชา dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2467,6 +2531,7 @@
             <div
               class="card fade-up"
               data-tags="university Suranaree SUT สุรนารี โบว์"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2491,6 +2556,7 @@
             <div
               class="card fade-up"
               data-tags="university Walailak WU วลัยลักษณ์ แป้ง"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2514,6 +2580,7 @@
             <div
               class="card fade-up"
               data-tags="university 119 นราธิวาส ยะลา Yala MEC ก้อย"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2542,6 +2609,7 @@
             <div
               class="card fade-up"
               data-tags="university 120 พะเยา Phayao จ๊ะเอ๋"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2566,6 +2634,7 @@
             <div
               class="card fade-up"
               data-tags="university 123 แม่ฟ้าหลวง MFU แก้ว"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2594,6 +2663,7 @@
             <div
               class="card fade-up"
               data-tags="university 124 ลาดกระบัง KMITL ปอ แจง"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2640,6 +2710,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 201 เจริญกรุง ประชารักษ์ พิณรัตน์ dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2708,7 +2779,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="hospital 202 ตากสิน อัตพล">
+            <div class="card fade-up" data-tags="hospital 202 ตากสิน อัตพล"
+              data-region="north">
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">202</span> รพ.ตากสิน
@@ -2743,6 +2815,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 203 ตำรวจ Police มะปราง dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2818,6 +2891,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 204 นพรัตน์ นพรัตนราชธานี อาชีวเวช"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2848,6 +2922,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 205 เลิดสิน Lerdsin ออร์โธ"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2932,6 +3007,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 206 พระปิ่นเกล้า Pinklao Navy dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -2996,6 +3072,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 207 สิรินธร Sirindhorn dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3035,6 +3112,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 301 เมตตา วัดไร่ขิง จักษุ dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3073,6 +3151,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 302 สมเด็จเจ้าพระยา จิตเวช psychiatry วศินี"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3127,6 +3206,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 303 ประสาทวิทยา neurology ปัทมรัศม์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3163,6 +3243,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 304 ยุวประสาทไวทโยปถัมภ์ จิตเวชเด็ก ก้อยกมล"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3202,6 +3283,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 305 โรคทรวงอก chest Chest Institute ณัฏฐนันท์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3259,6 +3341,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 307 สุขภาพเด็ก รพ.เด็ก children ปัด dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3307,6 +3390,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 308 ระบาดวิทยา epidemiology ณัฐปราง"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3348,6 +3432,7 @@
             <div
               class="card fade-up"
               data-tags="hospital 309 เวชศาสตร์เขตร้อน Tropical Medicine มหิดล อิจจิมา dormitory"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3408,6 +3493,7 @@
             <div
               class="card fade-up"
               data-tags="hospital จิตเวช กัลยาณ์ กัลยาณ์ราชนครินทร์ นงลักษณ์"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">สถาบันกัลยาณ์ราชนครินทร์</h3>
@@ -3445,6 +3531,7 @@
             <div
               class="card fade-up"
               data-tags="hospital ผิวหนัง โรคผิวหนัง นันท์นภัส พี่นก"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">สถาบันโรคผิวหนัง</h3>
@@ -3466,7 +3553,8 @@
             </div>
 
             <!-- NEW CARD:  โรงพยาบาลสงฆ์ -->
-            <div class="card fade-up" data-tags="hospital สงฆ์ โรงพยาบาลสงฆ์">
+            <div class="card fade-up" data-tags="hospital สงฆ์ โรงพยาบาลสงฆ์"
+              data-region="bkk">
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลสงฆ์</h3>
               </div>
@@ -3484,6 +3572,7 @@
             <div
               class="card fade-up"
               data-tags="hospital บำราศ บำราศนราดูร ติดเชื้อ"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">สถาบันบำราศนราดูร</h3>
@@ -3505,6 +3594,7 @@
             <div
               class="card fade-up"
               data-tags="hospital พยาธิวิทยา สถาบันพยาธิวิทยา วิลาย"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">สถาบันพยาธิวิทยา</h3>
@@ -3539,6 +3629,7 @@
             <div
               class="card fade-up"
               data-tags="regional 402 ขอนแก่น KKH CPIRD dormitory"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3652,6 +3743,7 @@
             <div
               class="card fade-up"
               data-tags="regional 403 ชุมพร Chumphon คุณแบงค์ cpird"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3683,6 +3775,7 @@
             <div
               class="card fade-up"
               data-tags="regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3784,6 +3877,7 @@
             <div
               class="card fade-up"
               data-tags="regional 405 ตรัง Trang จารุวรรณ cpird"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3828,6 +3922,7 @@
             <div
               class="card fade-up"
               data-tags="regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา cpird"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3891,6 +3986,7 @@
             <div
               class="card fade-up"
               data-tags="regional 407 พิจิตร Phichit คคนัมพร ยะนะ cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -3954,6 +4050,7 @@
             <div
               class="card fade-up"
               data-tags="regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4013,6 +4110,7 @@
             <div
               class="card fade-up"
               data-tags="regional 409 แพร่ Phrae กุมาร อุบัติเหตุ cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4052,6 +4150,7 @@
             <div
               class="card fade-up"
               data-tags="regional 410 มหาราชนครราชสีมา Korat CPIRD dormitory"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4143,6 +4242,7 @@
             <div
               class="card fade-up"
               data-tags="regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา cpird"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4176,6 +4276,7 @@
             <div
               class="card fade-up"
               data-tags="regional 412 พุทธโสธร Buddhasothon CPIRD dormitory"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4215,6 +4316,7 @@
             <div
               class="card fade-up"
               data-tags="regional 415 ราชบุรี Ratchaburi คุณมด มัทนา cpird"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4252,6 +4354,7 @@
             <div
               class="card fade-up"
               data-tags="regional 416 ลำปาง Lampang สุนันทา no-dorm cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4357,6 +4460,7 @@
             <div
               class="card fade-up"
               data-tags="regional 417 วชิระภูเก็ต Phuket CPIRD"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4406,6 +4510,7 @@
             <div
               class="card fade-up"
               data-tags="regional 419 สงขลา Songkhla รัชฎาภรณ์ cpird"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4431,6 +4536,7 @@
             <div
               class="card fade-up"
               data-tags="regional 421 สรรพสิทธิ Sapphasit dormitory cpird"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4466,6 +4572,7 @@
             <div
               class="card fade-up"
               data-tags="regional 422 สระบุรี Saraburi อารีย์ dormitory cpird"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4505,6 +4612,7 @@
             <div
               class="card fade-up"
               data-tags="regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4653,6 +4761,7 @@
             <div
               class="card fade-up"
               data-tags="regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์ cpird"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4677,7 +4786,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="regional 425 สุรินทร์ Surin cpird">
+            <div class="card fade-up" data-tags="regional 425 สุรินทร์ Surin cpird"
+              data-region="isan">
               <div class="card-header">
                 <h3 class="card-title">
                   <span class="code">425</span> รพ.สุรินทร์
@@ -4701,6 +4811,7 @@
             <div
               class="card fade-up"
               data-tags="regional 426 หาดใหญ่ Hat Yai CPIRD dormitory"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4807,6 +4918,7 @@
             <div
               class="card fade-up"
               data-tags="regional 427 อุดรธานี Udon Thani บัญชร dormitory cpird"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4875,6 +4987,7 @@
             <div
               class="card fade-up"
               data-tags="regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์ cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4937,6 +5050,7 @@
             <div
               class="card fade-up"
               data-tags="regional 501 ตากสินมหาราช สมเด็จเจ้าพระยายมราช ออร์โธ"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -4960,6 +5074,7 @@
             <div
               class="card fade-up"
               data-tags="regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์ cpird"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5001,6 +5116,7 @@
             <div
               class="card fade-up"
               data-tags="regional 505 นครปฐม Nakhon Pathom ฉันทนา"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5037,6 +5153,7 @@
             <div
               class="card fade-up"
               data-tags="regional 506 นครพิงค์ เชียงใหม่ ชลธิดา cpird"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5060,6 +5177,7 @@
             <div
               class="card fade-up"
               data-tags="regional 507 น่าน Nan มยุรี สุทธินี หทัยรัตน์"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5096,6 +5214,7 @@
             <div
               class="card fade-up"
               data-tags="regional 509 พระนครศรีอยุธยา Ayutthaya"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5119,6 +5238,7 @@
             <div
               class="card fade-up"
               data-tags="regional 510 พระนั่งเกล้า Nonthaburi พรจิตร"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5144,6 +5264,7 @@
             <div
               class="card fade-up"
               data-tags="regional 512 แม่สอด Mae Sot Tak ชายแดน"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5191,6 +5312,7 @@
             <div
               class="card fade-up"
               data-tags="regional 513 ระยอง Rayong เจี๊ยบ"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5212,6 +5334,7 @@
             <div
               class="card fade-up"
               data-tags="regional 514 ลำพูน Lamphun ธิดารัตนภรณ์"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5244,6 +5367,7 @@
             <div
               class="card fade-up"
               data-tags="regional 516 สมเด็จพระยุพราชสระแก้ว Sa Kaeo สุพัตรา"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5266,6 +5390,7 @@
             <div
               class="card fade-up"
               data-tags="regional 521 อุ้มผาง Umphang ชายแดน วัลลีย์ dormitory"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5331,6 +5456,7 @@
             <div
               class="card fade-up"
               data-tags="regional 522 สมเด็จพระนางเจ้าสิริกิติ์ กรมแพทย์ทหารเรือ ชลบุรี จิตรลดา"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">
@@ -5389,6 +5515,7 @@
             <div
               class="card fade-up"
               data-tags="hospital กุฉินารายณ์ กาฬสินธุ์ ปวีณา"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.สมเด็จพระยุพราชกุฉินารายณ์</h3>
@@ -5420,7 +5547,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="hospital ปราสาท สุรินทร์">
+            <div class="card fade-up" data-tags="hospital ปราสาท สุรินทร์"
+              data-region="isan">
               <div class="card-header">
                 <h3 class="card-title">รพ.ปราสาท</h3>
               </div>
@@ -5439,6 +5567,7 @@
             <div
               class="card fade-up"
               data-tags="hospital นราธิวาส Narathiwat CPIRD"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">ศพช. รพ.นราธิวาสราชนครินทร์</h3>
@@ -5455,6 +5584,7 @@
             <div
               class="card fade-up"
               data-tags="hospital บูรพา ชลบุรี BUU วิรยา"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">คณะแพทยศาสตร์ ม.บูรพา</h3>
@@ -5473,6 +5603,7 @@
             <div
               class="card fade-up"
               data-tags="hospital สถาบันมะเร็ง cancer oncology"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">สถาบันมะเร็งแห่งชาติ</h3>
@@ -5485,7 +5616,8 @@
               </div>
             </div>
 
-            <div class="card fade-up" data-tags="hospital กระบี่ Krabi">
+            <div class="card fade-up" data-tags="hospital กระบี่ Krabi"
+              data-region="south">
               <div class="card-header">
                 <h3 class="card-title">รพ.กระบี่</h3>
               </div>
@@ -5509,6 +5641,7 @@
             <div
               class="card fade-up"
               data-tags="hospital สวนปรุง จิตเวช เชียงใหม่ กรมสุขภาพจิต"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.สวนปรุง (กรมสุขภาพจิต)</h3>
@@ -5533,6 +5666,7 @@
             <div
               class="card fade-up"
               data-tags="hospital เกาะสมุย Koh Samui พี่นุ้ย"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.เกาะสมุย</h3>
@@ -5553,6 +5687,7 @@
             <div
               class="card fade-up"
               data-tags="hospital ทุ่งสง Thung Song นครศรีธรรมราช"
+              data-region="south"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.ทุ่งสง</h3>
@@ -5570,6 +5705,7 @@
             <div
               class="card fade-up"
               data-tags="hospital สมุทรปราการ Samut Prakan ศุภกิจ"
+              data-region="central"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.สมุทรปราการ</h3>
@@ -5593,6 +5729,7 @@
             <div
               class="card fade-up"
               data-tags="hospital จุฬาภรณ์ Chulabhorn ธนกร"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">รพ.จุฬาภรณ์</h3>
@@ -5616,6 +5753,7 @@
             <div
               class="card fade-up"
               data-tags="hospital ชัยภูมิ Chaiyaphum CPIRD พาขวัญ"
+              data-region="isan"
             >
               <div class="card-header">
                 <h3 class="card-title">ศพช. รพ.ชัยภูมิ</h3>
@@ -5639,6 +5777,7 @@
                       <div
               class="card fade-up"
               data-tags="hospital แม่ฟ้าหลวง MFU เชียงราย ศึกษาดูงาน"
+              data-region="north"
             >
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลศูนย์การแพทย์ ม.แม่ฟ้าหลวง</h3>
@@ -5686,6 +5825,7 @@
             <div
               class="card fade-up card-premium"
               data-tags="hospital บำรุงราษฎร์ Bumrungrad เอกชน private"
+              data-region="bkk"
             >
               <div class="card-header">
                 <h3 class="card-title">โรงพยาบาลบำรุงราษฎร์</h3>
