@@ -331,30 +331,13 @@
     <!-- SSC:DATA-HASH:791d69b3a305 -->
 
     <!-- MAP — แผนที่สถาบัน -->
-    <section class="map-section" id="map">
+    <section class="map-section" id="map" aria-labelledby="map-heading">
       <div class="container">
-        <div class="section-head">
-          <p class="section-eyebrow">แผนที่</p>
-          <h2 class="section-title">117 ที่หมาย อยู่ตรงไหนของประเทศ</h2>
-          <p class="section-sub">
-            ชี้ที่จุดเพื่อดูข้อมูลย่อด้านขวา · คลิกที่จุดเพื่อซูมเข้าและดูข้อมูลเต็ม · ลากเพื่อเลื่อนแผนที่ ·
-            หมุนล้อเมาส์หรือกด + − เพื่อซูม · กดที่ภาคเพื่อกรองรายการด้านล่าง
-          </p>
-          <div class="map-mode">
-            <button type="button" id="map-mode-toggle" class="map-mode-btn" hidden aria-pressed="false">🌐 แผนที่ 3D</button>
-            <span class="map-hint-3d" id="map-hint-3d" hidden>ลากเพื่อหมุน · ชี้ที่จุดเพื่อดูชื่อ · กดที่จุดเพื่อไปการ์ด · ใช้คีย์บอร์ดกดปุ่มภาคด้านขวาได้</span>
-          </div>
-        </div>
+        <h2 class="sr-only" id="map-heading">แผนที่สถาบันทั้งหมด</h2>
         <div class="map-wrap">
           <div class="map-paper">
             <div id="elective-map">
               <p class="map-fallback">แผนที่ต้องเปิด JavaScript · ดูรายชื่อสถาบันทั้งหมดได้ที่ส่วน «สถาบัน» ด้านล่าง</p>
-            </div>
-            <div class="map-zoom-ui" role="group" aria-label="ควบคุมการซูม">
-              <button type="button" id="map-zoom-in" aria-label="ซูมเข้า">+</button>
-              <button type="button" id="map-zoom-out" aria-label="ซูมออก">−</button>
-              <button type="button" id="map-zoom-reset" aria-label="ย้อนกลับมุมเดิม">⟲</button>
-              <span id="map-zoom-level" aria-live="off">1.0×</span>
             </div>
           </div>
           <div class="map-side">

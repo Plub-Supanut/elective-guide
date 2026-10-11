@@ -1,1 +1,1172 @@
-{"โรงพยาบาลพระปกเกล้า": {"title": "โรงพยาบาลพระปกเกล้า", "region": "central", "tags": "hospital พระปกเกล้า ต้อม dormitory cpird", "lat": 12.6035261, "lon": 102.1020007, "src": "name+hint", "dorm": true, "free": false}, "โรงพยาบาลชลบุรี": {"title": "โรงพยาบาลชลบุรี", "region": "central", "tags": "hospital ชลบุรี แอน เอ๋ cpird", "lat": 13.3514518, "lon": 100.9818996, "src": "name+hint", "dorm": false, "free": false}, "ภาควิชากายวิภาคศาสตร์": {"title": "ภาควิชากายวิภาคศาสตร์", "region": "bkk", "tags": "chula กายวิภาค anatomy", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชากุมารเวชศาสตร์": {"title": "ภาควิชากุมารเวชศาสตร์", "region": "bkk", "tags": "chula กุมารเวชศาสตร์ pediatrics กบ แหม่ม", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาจักษุวิทยา": {"title": "ภาควิชาจักษุวิทยา", "region": "bkk", "tags": "chula จักษุวิทยา ophthalmology วรินทร", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาจุลชีววิทยา": {"title": "ภาควิชาจุลชีววิทยา", "region": "bkk", "tags": "chula จุลชีววิทยา microbiology Pattaraporn Fah", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาชีวเคมี": {"title": "ภาควิชาชีวเคมี", "region": "bkk", "tags": "chula ชีวเคมี biochemistry พนินธรณ์", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชานิติเวชศาสตร์": {"title": "ภาควิชานิติเวชศาสตร์", "region": "bkk", "tags": "chula นิติเวช forensic ธัญญารัตน์", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาจิตเวชศาสตร์": {"title": "ภาควิชาจิตเวชศาสตร์", "region": "bkk", "tags": "chula จิตเวช psychiatry นิสายชล ชุตาภรณ์", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาปรสิตวิทยา": {"title": "ภาควิชาปรสิตวิทยา", "region": "bkk", "tags": "chula ปรสิตวิทยา parasitology น้ำ", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาพยาธิวิทยา": {"title": "ภาควิชาพยาธิวิทยา", "region": "bkk", "tags": "chula พยาธิวิทยา pathology อริยาภรณ์", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาเภสัชวิทยา": {"title": "ภาควิชาเภสัชวิทยา", "region": "bkk", "tags": "chula เภสัชวิทยา pharmacology", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชารังสีวิทยา": {"title": "ภาควิชารังสีวิทยา", "region": "bkk", "tags": "chula รังสีวิทยา radiology นู radiochula", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาวิสัญญีวิทยา": {"title": "ภาควิชาวิสัญญีวิทยา", "region": "bkk", "tags": "chula วิสัญญี anesthesia Anchalee", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาเวชศาสตร์ชันสูตร": {"title": "ภาควิชาเวชศาสตร์ชันสูตร", "region": "bkk", "tags": "chula เวชศาสตร์ชันสูตร laboratory สิรภัทร คุณากร", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาเวชศาสตร์ป้องกันและสังคม": {"title": "ภาควิชาเวชศาสตร์ป้องกันและสังคม", "region": "bkk", "tags": "chula เวชศาสตร์ป้องกัน preventive social ปริญญา ภาวิตา", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาศัลยศาสตร์": {"title": "ภาควิชาศัลยศาสตร์", "region": "central", "tags": "chula ศัลยศาสตร์ surgery สุพรรณี Trauma CVT Neuro Plastic Uro", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาออร์โธปิดิกส์": {"title": "ภาควิชาออร์โธปิดิกส์", "region": "bkk", "tags": "chula ออร์โธ orthopedics", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาสรีรวิทยา": {"title": "ภาควิชาสรีรวิทยา", "region": "bkk", "tags": "chula สรีรวิทยา physiology", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาสูติศาสตร์-นรีเวชวิทยา": {"title": "ภาควิชาสูติศาสตร์-นรีเวชวิทยา", "region": "bkk", "tags": "chula สูติ นรีเวช OB GYN วรัญญา", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาโสต ศอ นาสิกวิทยา": {"title": "ภาควิชาโสต ศอ นาสิกวิทยา", "region": "bkk", "tags": "chula โสต ศอ นาสิก ENT เกศแก้ว", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาอายุรศาสตร์": {"title": "ภาควิชาอายุรศาสตร์", "region": "bkk", "tags": "chula อายุรศาสตร์ internal medicine วรรณี ดวงนภา cardiology nephrology GI pulmonary", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาเวชศาสตร์ฟื้นฟู": {"title": "ภาควิชาเวชศาสตร์ฟื้นฟู", "region": "bkk", "tags": "chula เวชศาสตร์ฟื้นฟู rehabilitation จิณณ์ณิชา พรพิมล", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ภาควิชาเวชศาสตร์ฉุกเฉิน": {"title": "ภาควิชาเวชศาสตร์ฉุกเฉิน", "region": "bkk", "tags": "chula เวชศาสตร์ฉุกเฉิน emergency", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ศูนย์ชีวาภิบาล": {"title": "ศูนย์ชีวาภิบาล", "region": "bkk", "tags": "chula ชีวาภิบาล palliative care 3000610", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ฝ่ายวางแผนและพัฒนา": {"title": "ฝ่ายวางแผนและพัฒนา", "region": "bkk", "tags": "chula ฝ่ายวางแผน สัญญาชดใช้ทุน อรสา", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)": {"title": "ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)", "region": "bkk", "tags": "chula สนับสนุน HR การเงิน อาคาร International Affairs", "lat": 13.7383, "lon": 100.5346, "src": "chula-fixed", "dorm": false, "free": false}, "รพ.ภูมิพลอดุลยเดช (BB)": {"title": "รพ.ภูมิพลอดุลยเดช (BB)", "region": "bkk", "tags": "university hospital ภูมิพล Bhumibol airforce", "lat": 13.910714, "lon": 100.6173961, "src": "name+hint", "dorm": false, "free": false}, "101 ม.ขอนแก่น (KKU)": {"title": "101 ม.ขอนแก่น (KKU)", "region": "isan", "tags": "university 101 ขอนแก่น KKU เฟียต ปุ้ย", "lat": 16.4558094, "lon": 102.8191518, "src": "name+hint", "dorm": false, "free": false}, "102 ม.เชียงใหม่ (CMU)": {"title": "102 ม.เชียงใหม่ (CMU)", "region": "north", "tags": "university 102 เชียงใหม่ CMU จีระนันท์ dormitory", "lat": 18.7209352, "lon": 98.9553266, "src": "name+hint", "dorm": true, "free": false}, "103 ม.ธรรมศาสตร์": {"title": "103 ม.ธรรมศาสตร์", "region": "central", "tags": "university 103 ธรรมศาสตร์ TU MANOW dormitory", "lat": 13.7182184, "lon": 100.5443772, "src": "name+hint", "dorm": true, "free": false}, "104 ม.นเรศวร (NU)": {"title": "104 ม.นเรศวร (NU)", "region": "north", "tags": "university 104 นเรศวร NU ธเนศ มาโนชญ์", "lat": 14.1359309, "lon": 101.3876633, "src": "name+hint", "dorm": false, "free": false}, "105 ม.สงขลานครินทร์ (PSU)": {"title": "105 ม.สงขลานครินทร์ (PSU)", "region": "south", "tags": "university 105 สงขลานครินทร์ PSU ลัดดาวัลย์ ปาจรีย์", "lat": 7.0086731, "lon": 100.4984129, "src": "name+hint", "dorm": false, "free": false}, "106 รามาธิบดี (Rama)": {"title": "106 รามาธิบดี (Rama)", "region": "bkk", "tags": "university 106 รามาธิบดี Rama มหิดล มินต์ ติ๊ก dormitory", "lat": 13.7685073, "lon": 100.5255047, "src": "name+hint", "dorm": true, "free": false}, "107 วชิรพยาบาล (BM)": {"title": "107 วชิรพยาบาล (BM)", "region": "bkk", "tags": "university 107 วชิรพยาบาล Vajira BM", "lat": 13.7811731, "lon": 100.5078861, "src": "name+hint", "dorm": false, "free": false}, "108 ศิริราชพยาบาล (มหิดล)": {"title": "108 ศิริราชพยาบาล (มหิดล)", "region": "bkk", "tags": "university 108 ศิริราช Siriraj มหิดล เกด dormitory", "lat": 13.7801433, "lon": 100.460393, "src": "name+hint", "dorm": true, "free": false}, "109 โรงพยาบาลราชวิถี": {"title": "109 โรงพยาบาลราชวิถี", "region": "bkk", "tags": "university hospital 109 ราชวิถี Rajavithi", "lat": 13.764113, "lon": 100.5361673, "src": "name+hint", "dorm": false, "free": false}, "110 พระมงกุฎเกล้า (PCM)": {"title": "110 พระมงกุฎเกล้า (PCM)", "region": "bkk", "tags": "university 110 พระมงกุฎเกล้า PMK อำไพ เก่ง กุ้ง", "lat": 13.7694257, "lon": 100.5318649, "src": "name+hint", "dorm": false, "free": false}, "111 ม.ศรีนครินทรวิโรฒ (SWU)": {"title": "111 ม.ศรีนครินทรวิโรฒ (SWU)", "region": "central", "tags": "university 111 ศรีนครินทรวิโรฒ SWU สุรีย์รัตน์ dormitory", "lat": 14.1064581, "lon": 100.983765, "src": "manual-exact", "dorm": true, "free": false}, "112 ศูนย์การแพทย์ปัญญานันทภิกขุ\n                  ชลประทาน": {"title": "112 ศูนย์การแพทย์ปัญญานันทภิกขุ\n                  ชลประทาน", "region": "central", "tags": "university 112 ปัญญานันทภิกขุ ชลประทาน PCMC SWU dormitory", "lat": 13.8999879, "lon": 100.5019709, "src": "name+hint", "dorm": true, "free": false}, "113 รพ.สมเด็จพระบรมราชเทวี ณ ศรีราชา": {"title": "113 รพ.สมเด็จพระบรมราชเทวี ณ ศรีราชา", "region": "central", "tags": "university hospital 113 สมเด็จพระบรมราชเทวี ศรีราชา dormitory", "lat": 13.1611818, "lon": 100.9180404, "src": "name", "dorm": true, "free": false}, "113 ม.เทคโนโลยีสุรนารี": {"title": "113 ม.เทคโนโลยีสุรนารี", "region": "isan", "tags": "university Suranaree SUT สุรนารี โบว์", "lat": 14.8812177, "lon": 102.0121748, "src": "name", "dorm": false, "free": false}, "114 ม.วลัยลักษณ์": {"title": "114 ม.วลัยลักษณ์", "region": "south", "tags": "university Walailak WU วลัยลักษณ์ แป้ง", "lat": 8.6405172, "lon": 99.8949777, "src": "repair-name", "dorm": false, "free": false}, "119 ม.นราธิวาสราชนครินทร์": {"title": "119 ม.นราธิวาสราชนครินทร์", "region": "south", "tags": "university 119 นราธิวาส ยะลา Yala MEC ก้อย", "lat": 6.4363533, "lon": 101.7871328, "src": "repair-name", "dorm": false, "free": false}, "120 ม.พะเยา": {"title": "120 ม.พะเยา", "region": "north", "tags": "university 120 พะเยา Phayao จ๊ะเอ๋", "lat": 19.1667813, "lon": 99.9021075, "src": "name+hint", "dorm": false, "free": false}, "123 ม.แม่ฟ้าหลวง": {"title": "123 ม.แม่ฟ้าหลวง", "region": "north", "tags": "university 123 แม่ฟ้าหลวง MFU แก้ว", "lat": 20.1669677, "lon": 99.7122777, "src": "name+hint", "dorm": false, "free": false}, "124\n                  สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": {"title": "124\n                  สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง", "region": "bkk", "tags": "university 124 ลาดกระบัง KMITL ปอ แจง", "lat": 13.7299068, "lon": 100.7829827, "src": "name+hint", "dorm": false, "free": false}, "201 รพ.เจริญกรุงประชารักษ์": {"title": "201 รพ.เจริญกรุงประชารักษ์", "region": "bkk", "tags": "hospital 201 เจริญกรุง ประชารักษ์ พิณรัตน์ dormitory", "lat": 13.6935765, "lon": 100.4945241, "src": "name+hint", "dorm": true, "free": false}, "202 รพ.ตากสิน": {"title": "202 รพ.ตากสิน", "region": "north", "tags": "hospital 202 ตากสิน อัตพล", "lat": 16.8729592, "lon": 99.1314969, "src": "manual-exact", "dorm": false, "free": false}, "203 รพ.ตำรวจ": {"title": "203 รพ.ตำรวจ", "region": "bkk", "tags": "hospital 203 ตำรวจ Police มะปราง dormitory", "lat": 13.7421205, "lon": 100.539723, "src": "name+hint", "dorm": true, "free": false}, "204 รพ.นพรัตนราชธานี": {"title": "204 รพ.นพรัตนราชธานี", "region": "bkk", "tags": "hospital 204 นพรัตน์ นพรัตนราชธานี อาชีวเวช", "lat": 13.7761618, "lon": 100.5742012, "src": "name+hint", "dorm": false, "free": false}, "205 รพ.เลิดสิน": {"title": "205 รพ.เลิดสิน", "region": "bkk", "tags": "hospital 205 เลิดสิน Lerdsin ออร์โธ", "lat": 13.7223773, "lon": 100.51737, "src": "name+hint", "dorm": false, "free": false}, "206 รพ.พระปิ่นเกล้า": {"title": "206 รพ.พระปิ่นเกล้า", "region": "bkk", "tags": "hospital 206 พระปิ่นเกล้า Pinklao Navy dormitory", "lat": 13.762992, "lon": 100.4906911, "src": "name+hint", "dorm": false, "free": true}, "207 รพ.สิรินธร": {"title": "207 รพ.สิรินธร", "region": "bkk", "tags": "hospital 207 สิรินธร Sirindhorn dormitory", "lat": 14.7185098, "lon": 103.6674048, "src": "name+hint", "dorm": false, "free": true}, "301 รพ.เมตตาประชารักษ์ (วัดไร่ขิง)": {"title": "301 รพ.เมตตาประชารักษ์ (วัดไร่ขิง)", "region": "central", "tags": "hospital 301 เมตตา วัดไร่ขิง จักษุ dormitory", "lat": 13.7390047, "lon": 100.2560109, "src": "name", "dorm": true, "free": false}, "302\n                  สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา": {"title": "302\n                  สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา", "region": "bkk", "tags": "hospital 302 สมเด็จเจ้าพระยา จิตเวช psychiatry วศินี", "lat": 13.7302114, "lon": 100.504678, "src": "manual-exact", "dorm": false, "free": false}, "303 สถาบันประสาทวิทยา": {"title": "303 สถาบันประสาทวิทยา", "region": "bkk", "tags": "hospital 303 ประสาทวิทยา neurology ปัทมรัศม์", "lat": 13.7687544, "lon": 100.527008, "src": "name+hint", "dorm": false, "free": false}, "304 รพ.ยุวประสาทไวทโยปถัมภ์": {"title": "304 รพ.ยุวประสาทไวทโยปถัมภ์", "region": "bkk", "tags": "hospital 304 ยุวประสาทไวทโยปถัมภ์ จิตเวชเด็ก ก้อยกมล", "lat": 13.5937, "lon": 100.5965, "src": "approximate", "dorm": false, "free": false}, "305 สถาบันโรคทรวงอก": {"title": "305 สถาบันโรคทรวงอก", "region": "bkk", "tags": "hospital 305 โรคทรวงอก chest Chest Institute ณัฏฐนันท์", "lat": 13.862225, "lon": 100.5218885, "src": "name+hint", "dorm": false, "free": false}, "307 สถาบันสุขภาพเด็กแห่งชาติฯ\n                  (รพ.เด็ก)": {"title": "307 สถาบันสุขภาพเด็กแห่งชาติฯ\n                  (รพ.เด็ก)", "region": "bkk", "tags": "hospital 307 สุขภาพเด็ก รพ.เด็ก children ปัด dormitory", "lat": 13.7655723, "lon": 100.5349722, "src": "name", "dorm": true, "free": false}, "308 สำนักระบาดวิทยา": {"title": "308 สำนักระบาดวิทยา", "region": "central", "tags": "hospital 308 ระบาดวิทยา epidemiology ณัฐปราง", "lat": 13.8535565, "lon": 100.5272159, "src": "manual-exact", "dorm": false, "free": false}, "309 คณะเวชศาสตร์เขตร้อน (มหิดล)": {"title": "309 คณะเวชศาสตร์เขตร้อน (มหิดล)", "region": "bkk", "tags": "hospital 309 เวชศาสตร์เขตร้อน Tropical Medicine มหิดล อิจจิมา dormitory", "lat": 13.7655931, "lon": 100.5337777, "src": "name+hint", "dorm": true, "free": false}, "สถาบันกัลยาณ์ราชนครินทร์": {"title": "สถาบันกัลยาณ์ราชนครินทร์", "region": "bkk", "tags": "hospital จิตเวช กัลยาณ์ กัลยาณ์ราชนครินทร์ นงลักษณ์", "lat": 13.761931, "lon": 100.3323769, "src": "name+hint", "dorm": false, "free": false}, "สถาบันโรคผิวหนัง": {"title": "สถาบันโรคผิวหนัง", "region": "bkk", "tags": "hospital ผิวหนัง โรคผิวหนัง นันท์นภัส พี่นก", "lat": 13.7655723, "lon": 100.5357268, "src": "name+hint", "dorm": false, "free": false}, "โรงพยาบาลสงฆ์": {"title": "โรงพยาบาลสงฆ์", "region": "bkk", "tags": "hospital สงฆ์ โรงพยาบาลสงฆ์", "lat": 13.7619082, "lon": 100.5270825, "src": "name+hint", "dorm": false, "free": false}, "สถาบันบำราศนราดูร": {"title": "สถาบันบำราศนราดูร", "region": "central", "tags": "hospital บำราศ บำราศนราดูร ติดเชื้อ", "lat": 13.8529919, "lon": 100.5221977, "src": "name+hint", "dorm": false, "free": false}, "สถาบันพยาธิวิทยา": {"title": "สถาบันพยาธิวิทยา", "region": "bkk", "tags": "hospital พยาธิวิทยา สถาบันพยาธิวิทยา วิลาย", "lat": 13.764685, "lon": 100.5352241, "src": "name+hint", "dorm": false, "free": false}, "402 ศพช. รพ.ขอนแก่น": {"title": "402 ศพช. รพ.ขอนแก่น", "region": "isan", "tags": "regional 402 ขอนแก่น KKH CPIRD dormitory", "lat": 16.430562, "lon": 102.8484612, "src": "name", "dorm": true, "free": false}, "403 รพ.ชุมพรเขตรอุดมศักดิ์": {"title": "403 รพ.ชุมพรเขตรอุดมศักดิ์", "region": "south", "tags": "regional 403 ชุมพร Chumphon คุณแบงค์ cpird", "lat": 10.5033588, "lon": 99.1759331, "src": "province-centroid", "dorm": false, "free": false}, "404 ศพช. รพ.เชียงรายประชานุเคราะห์": {"title": "404 ศพช. รพ.เชียงรายประชานุเคราะห์", "region": "north", "tags": "regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า cpird", "lat": 19.9007797, "lon": 99.8291769, "src": "name", "dorm": false, "free": false}, "405 ศพช. รพ.ตรัง": {"title": "405 ศพช. รพ.ตรัง", "region": "south", "tags": "regional 405 ตรัง Trang จารุวรรณ cpird", "lat": 7.5723368, "lon": 99.6193355, "src": "name", "dorm": false, "free": false}, "406 รพ.บุรีรัมย์": {"title": "406 รพ.บุรีรัมย์", "region": "isan", "tags": "regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา cpird", "lat": 15.0057823, "lon": 103.1023453, "src": "repair-name", "dorm": false, "free": false}, "407 รพ.พิจิตร": {"title": "407 รพ.พิจิตร", "region": "north", "tags": "regional 407 พิจิตร Phichit คคนัมพร ยะนะ cpird", "lat": 16.5298915, "lon": 100.1510975, "src": "name+hint", "dorm": false, "free": false}, "408 รพ.พุทธชินราช": {"title": "408 รพ.พุทธชินราช", "region": "north", "tags": "regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory cpird", "lat": 16.805889, "lon": 100.2640895, "src": "name", "dorm": false, "free": true}, "409 รพ.แพร่": {"title": "409 รพ.แพร่", "region": "north", "tags": "regional 409 แพร่ Phrae กุมาร อุบัติเหตุ cpird", "lat": 18.1490098, "lon": 100.1454492, "src": "name+hint", "dorm": false, "free": false}, "410 ศพช. รพ.มหาราชนครราชสีมา": {"title": "410 ศพช. รพ.มหาราชนครราชสีมา", "region": "isan", "tags": "regional 410 มหาราชนครราชสีมา Korat CPIRD dormitory", "lat": 14.9845903, "lon": 102.1010435, "src": "name", "dorm": true, "free": false}, "411 ศพช. รพ.มหาราชนครศรีธรรมราช": {"title": "411 ศพช. รพ.มหาราชนครศรีธรรมราช", "region": "south", "tags": "regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา cpird", "lat": 8.3910275, "lon": 99.9745815, "src": "name", "dorm": false, "free": false}, "412 ศพช. รพ.พุทธโสธร": {"title": "412 ศพช. รพ.พุทธโสธร", "region": "central", "tags": "regional 412 พุทธโสธร Buddhasothon CPIRD dormitory", "lat": 13.6861778, "lon": 101.0731985, "src": "name", "dorm": true, "free": false}, "415 ศพช. รพ.ราชบุรี": {"title": "415 ศพช. รพ.ราชบุรี", "region": "central", "tags": "regional 415 ราชบุรี Ratchaburi คุณมด มัทนา cpird", "lat": 13.5307948, "lon": 99.8166613, "src": "name", "dorm": false, "free": false}, "416 ศพช. รพ.ลำปาง": {"title": "416 ศพช. รพ.ลำปาง", "region": "north", "tags": "regional 416 ลำปาง Lampang สุนันทา no-dorm cpird", "lat": 18.2870758, "lon": 99.5066409, "src": "name", "dorm": false, "free": false}, "417 ศพช. รพ.วชิระภูเก็ต": {"title": "417 ศพช. รพ.วชิระภูเก็ต", "region": "south", "tags": "regional 417 วชิระภูเก็ต Phuket CPIRD", "lat": 7.8974264, "lon": 98.3830121, "src": "name", "dorm": false, "free": false}, "419 รพ.สงขลา": {"title": "419 รพ.สงขลา", "region": "south", "tags": "regional 419 สงขลา Songkhla รัชฎาภรณ์ cpird", "lat": 7.1406664, "lon": 100.5642533, "src": "name", "dorm": false, "free": false}, "421 รพ.สรรพสิทธิประสงค์": {"title": "421 รพ.สรรพสิทธิประสงค์", "region": "isan", "tags": "regional 421 สรรพสิทธิ Sapphasit dormitory cpird", "lat": 15.2369585, "lon": 104.8655405, "src": "name", "dorm": true, "free": false}, "422 ศพช. รพ.สระบุรี": {"title": "422 ศพช. รพ.สระบุรี", "region": "central", "tags": "regional 422 สระบุรี Saraburi อารีย์ dormitory cpird", "lat": 14.5334711, "lon": 100.9151705, "src": "name", "dorm": true, "free": false}, "423 รพ.สวรรค์ประชารักษ์": {"title": "423 รพ.สวรรค์ประชารักษ์", "region": "north", "tags": "regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน cpird", "lat": 15.7071976, "lon": 100.138379, "src": "repair-name", "dorm": false, "free": false}, "424 รพ.สุราษฎร์ธานี": {"title": "424 รพ.สุราษฎร์ธานี", "region": "south", "tags": "regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์ cpird", "lat": 9.1243004, "lon": 99.3096003, "src": "name", "dorm": false, "free": false}, "425 รพ.สุรินทร์": {"title": "425 รพ.สุรินทร์", "region": "isan", "tags": "regional 425 สุรินทร์ Surin cpird", "lat": 14.7185098, "lon": 103.6674048, "src": "name+hint", "dorm": false, "free": false}, "426 ศพช. รพ.หาดใหญ่": {"title": "426 ศพช. รพ.หาดใหญ่", "region": "south", "tags": "regional 426 หาดใหญ่ Hat Yai CPIRD dormitory", "lat": 7.0166654, "lon": 100.4674503, "src": "name", "dorm": true, "free": false}, "427 รพ.อุดรธานี": {"title": "427 รพ.อุดรธานี", "region": "isan", "tags": "regional 427 อุดรธานี Udon Thani บัญชร dormitory cpird", "lat": 17.4043099, "lon": 103.2429066, "src": "name+hint", "dorm": false, "free": true}, "428 รพ.อุตรดิตถ์": {"title": "428 รพ.อุตรดิตถ์", "region": "north", "tags": "regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์ cpird", "lat": 17.619204, "lon": 100.0854239, "src": "name", "dorm": false, "free": false}, "501 รพ.สมเด็จเจ้าพระยายมราช": {"title": "501 รพ.สมเด็จเจ้าพระยายมราช", "region": "north", "tags": "regional 501 ตากสินมหาราช สมเด็จเจ้าพระยายมราช ออร์โธ", "lat": 14.4743, "lon": 100.1226, "src": "manual-exact", "dorm": false, "free": false}, "502 รพ.เจ้าพระยาอภัยภูเบศร": {"title": "502 รพ.เจ้าพระยาอภัยภูเบศร", "region": "central", "tags": "regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์ cpird", "lat": 14.0524056, "lon": 101.3955658, "src": "name+hint", "dorm": false, "free": false}, "505 รพ.นครปฐม": {"title": "505 รพ.นครปฐม", "region": "central", "tags": "regional 505 นครปฐม Nakhon Pathom ฉันทนา", "lat": 13.8451663, "lon": 100.053091, "src": "name+hint", "dorm": false, "free": false}, "506 รพ.นครพิงค์": {"title": "506 รพ.นครพิงค์", "region": "north", "tags": "regional 506 นครพิงค์ เชียงใหม่ ชลธิดา cpird", "lat": 18.8519186, "lon": 98.9663736, "src": "name+hint", "dorm": false, "free": false}, "507 รพ.น่าน": {"title": "507 รพ.น่าน", "region": "north", "tags": "regional 507 น่าน Nan มยุรี สุทธินี หทัยรัตน์", "lat": 18.7957123, "lon": 100.7887299, "src": "repair-name", "dorm": false, "free": false}, "509 รพ.พระนครศรีอยุธยา": {"title": "509 รพ.พระนครศรีอยุธยา", "region": "central", "tags": "regional 509 พระนครศรีอยุธยา Ayutthaya", "lat": 14.3439213, "lon": 100.5596395, "src": "name", "dorm": false, "free": false}, "510 รพ.พระนั่งเกล้า": {"title": "510 รพ.พระนั่งเกล้า", "region": "central", "tags": "regional 510 พระนั่งเกล้า Nonthaburi พรจิตร", "lat": 13.8648353, "lon": 100.480703, "src": "name", "dorm": false, "free": false}, "512 รพ.แม่สอด": {"title": "512 รพ.แม่สอด", "region": "north", "tags": "regional 512 แม่สอด Mae Sot Tak ชายแดน", "lat": 16.7103893, "lon": 98.5724993, "src": "name", "dorm": false, "free": false}, "513 รพ.ระยอง": {"title": "513 รพ.ระยอง", "region": "central", "tags": "regional 513 ระยอง Rayong เจี๊ยบ", "lat": 12.6840326, "lon": 101.2006196, "src": "name+hint", "dorm": false, "free": false}, "514 รพ.ลำพูน": {"title": "514 รพ.ลำพูน", "region": "north", "tags": "regional 514 ลำพูน Lamphun ธิดารัตนภรณ์", "lat": 18.5620107, "lon": 99.0380298, "src": "name", "dorm": false, "free": false}, "516 รพ.สมเด็จพระยุพราชสระแก้ว": {"title": "516 รพ.สมเด็จพระยุพราชสระแก้ว", "region": "central", "tags": "regional 516 สมเด็จพระยุพราชสระแก้ว Sa Kaeo สุพัตรา", "lat": 13.8168587, "lon": 102.0722848, "src": "name", "dorm": false, "free": false}, "521 รพ.อุ้มผาง": {"title": "521 รพ.อุ้มผาง", "region": "north", "tags": "regional 521 อุ้มผาง Umphang ชายแดน วัลลีย์ dormitory", "lat": 16.0172937, "lon": 98.866418, "src": "name+hint", "dorm": false, "free": true}, "522 รพ.สมเด็จพระนางเจ้าสิริกิติ์\n                  (กรมแพทย์ทหารเรือ)": {"title": "522 รพ.สมเด็จพระนางเจ้าสิริกิติ์\n                  (กรมแพทย์ทหารเรือ)", "region": "central", "tags": "regional 522 สมเด็จพระนางเจ้าสิริกิติ์ กรมแพทย์ทหารเรือ ชลบุรี จิตรลดา", "lat": 13.3662087, "lon": 100.9872185, "src": "province-centroid", "dorm": false, "free": false}, "รพ.สมเด็จพระยุพราชกุฉินารายณ์": {"title": "รพ.สมเด็จพระยุพราชกุฉินารายณ์", "region": "isan", "tags": "hospital กุฉินารายณ์ กาฬสินธุ์ ปวีณา", "lat": 16.434034, "lon": 103.5059403, "src": "province-centroid", "dorm": false, "free": false}, "รพ.ปราสาท": {"title": "รพ.ปราสาท", "region": "isan", "tags": "hospital ปราสาท สุรินทร์", "lat": 14.6320312, "lon": 103.4109378, "src": "name+hint", "dorm": false, "free": false}, "ศพช. รพ.นราธิวาสราชนครินทร์": {"title": "ศพช. รพ.นราธิวาสราชนครินทร์", "region": "south", "tags": "hospital นราธิวาส Narathiwat CPIRD", "lat": 6.4350352, "lon": 101.8228923, "src": "province-centroid", "dorm": false, "free": false}, "คณะแพทยศาสตร์ ม.บูรพา": {"title": "คณะแพทยศาสตร์ ม.บูรพา", "region": "central", "tags": "hospital บูรพา ชลบุรี BUU วิรยา", "lat": 13.3662087, "lon": 100.9872185, "src": "province-centroid", "dorm": false, "free": false}, "สถาบันมะเร็งแห่งชาติ": {"title": "สถาบันมะเร็งแห่งชาติ", "region": "bkk", "tags": "hospital สถาบันมะเร็ง cancer oncology", "lat": 13.7675155, "lon": 100.5272624, "src": "name+hint", "dorm": false, "free": false}, "รพ.กระบี่": {"title": "รพ.กระบี่", "region": "south", "tags": "hospital กระบี่ Krabi", "lat": 8.0807978, "lon": 98.9058189, "src": "name+hint", "dorm": false, "free": false}, "รพ.สวนปรุง (กรมสุขภาพจิต)": {"title": "รพ.สวนปรุง (กรมสุขภาพจิต)", "region": "north", "tags": "hospital สวนปรุง จิตเวช เชียงใหม่ กรมสุขภาพจิต", "lat": 18.7793839, "lon": 98.9791006, "src": "name+hint", "dorm": false, "free": false}, "รพ.เกาะสมุย": {"title": "รพ.เกาะสมุย", "region": "south", "tags": "hospital เกาะสมุย Koh Samui พี่นุ้ย", "lat": 9.5220384, "lon": 99.9351787, "src": "name+hint", "dorm": false, "free": false}, "รพ.ทุ่งสง": {"title": "รพ.ทุ่งสง", "region": "south", "tags": "hospital ทุ่งสง Thung Song นครศรีธรรมราช", "lat": 8.3149621, "lon": 99.3631611, "src": "name+hint", "dorm": false, "free": false}, "รพ.สมุทรปราการ": {"title": "รพ.สมุทรปราการ", "region": "central", "tags": "hospital สมุทรปราการ Samut Prakan ศุภกิจ", "lat": 13.5981041, "lon": 100.6011757, "src": "province-centroid", "dorm": false, "free": false}, "รพ.จุฬาภรณ์": {"title": "รพ.จุฬาภรณ์", "region": "bkk", "tags": "hospital จุฬาภรณ์ Chulabhorn ธนกร", "lat": 13.8806873, "lon": 100.5780867, "src": "name+hint", "dorm": false, "free": false}, "ศพช. รพ.ชัยภูมิ": {"title": "ศพช. รพ.ชัยภูมิ", "region": "isan", "tags": "hospital ชัยภูมิ Chaiyaphum CPIRD พาขวัญ", "lat": 15.8045532, "lon": 102.0346133, "src": "name", "dorm": false, "free": false}, "โรงพยาบาลศูนย์การแพทย์ ม.แม่ฟ้าหลวง": {"title": "โรงพยาบาลศูนย์การแพทย์ ม.แม่ฟ้าหลวง", "region": "north", "tags": "hospital แม่ฟ้าหลวง MFU เชียงราย ศึกษาดูงาน", "lat": 19.9068867, "lon": 99.8332739, "src": "province-centroid", "dorm": false, "free": false}, "โรงพยาบาลบำรุงราษฎร์": {"title": "โรงพยาบาลบำรุงราษฎร์", "region": "bkk", "tags": "hospital บำรุงราษฎร์ Bumrungrad เอกชน private", "lat": 13.7464113, "lon": 100.5524335, "src": "name+hint", "dorm": false, "free": false}}
+{
+ "โรงพยาบาลพระปกเกล้า": {
+  "title": "โรงพยาบาลพระปกเกล้า",
+  "region": "central",
+  "tags": "hospital พระปกเกล้า ต้อม dormitory cpird",
+  "lat": 12.6035261,
+  "lon": 102.1020007,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "โรงพยาบาลชลบุรี": {
+  "title": "โรงพยาบาลชลบุรี",
+  "region": "central",
+  "tags": "hospital ชลบุรี แอน เอ๋ cpird",
+  "lat": 13.3514518,
+  "lon": 100.9818996,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชากายวิภาคศาสตร์": {
+  "title": "ภาควิชากายวิภาคศาสตร์",
+  "region": "bkk",
+  "tags": "chula กายวิภาค anatomy",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชากุมารเวชศาสตร์": {
+  "title": "ภาควิชากุมารเวชศาสตร์",
+  "region": "bkk",
+  "tags": "chula กุมารเวชศาสตร์ pediatrics กบ แหม่ม",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาจักษุวิทยา": {
+  "title": "ภาควิชาจักษุวิทยา",
+  "region": "bkk",
+  "tags": "chula จักษุวิทยา ophthalmology วรินทร",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาจุลชีววิทยา": {
+  "title": "ภาควิชาจุลชีววิทยา",
+  "region": "bkk",
+  "tags": "chula จุลชีววิทยา microbiology Pattaraporn Fah",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาชีวเคมี": {
+  "title": "ภาควิชาชีวเคมี",
+  "region": "bkk",
+  "tags": "chula ชีวเคมี biochemistry พนินธรณ์",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชานิติเวชศาสตร์": {
+  "title": "ภาควิชานิติเวชศาสตร์",
+  "region": "bkk",
+  "tags": "chula นิติเวช forensic ธัญญารัตน์",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาจิตเวชศาสตร์": {
+  "title": "ภาควิชาจิตเวชศาสตร์",
+  "region": "bkk",
+  "tags": "chula จิตเวช psychiatry นิสายชล ชุตาภรณ์",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาปรสิตวิทยา": {
+  "title": "ภาควิชาปรสิตวิทยา",
+  "region": "bkk",
+  "tags": "chula ปรสิตวิทยา parasitology น้ำ",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาพยาธิวิทยา": {
+  "title": "ภาควิชาพยาธิวิทยา",
+  "region": "bkk",
+  "tags": "chula พยาธิวิทยา pathology อริยาภรณ์",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาเภสัชวิทยา": {
+  "title": "ภาควิชาเภสัชวิทยา",
+  "region": "bkk",
+  "tags": "chula เภสัชวิทยา pharmacology",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชารังสีวิทยา": {
+  "title": "ภาควิชารังสีวิทยา",
+  "region": "bkk",
+  "tags": "chula รังสีวิทยา radiology นู radiochula",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาวิสัญญีวิทยา": {
+  "title": "ภาควิชาวิสัญญีวิทยา",
+  "region": "bkk",
+  "tags": "chula วิสัญญี anesthesia Anchalee",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาเวชศาสตร์ชันสูตร": {
+  "title": "ภาควิชาเวชศาสตร์ชันสูตร",
+  "region": "bkk",
+  "tags": "chula เวชศาสตร์ชันสูตร laboratory สิรภัทร คุณากร",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาเวชศาสตร์ป้องกันและสังคม": {
+  "title": "ภาควิชาเวชศาสตร์ป้องกันและสังคม",
+  "region": "bkk",
+  "tags": "chula เวชศาสตร์ป้องกัน preventive social ปริญญา ภาวิตา",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาศัลยศาสตร์": {
+  "title": "ภาควิชาศัลยศาสตร์",
+  "region": "central",
+  "tags": "chula ศัลยศาสตร์ surgery สุพรรณี Trauma CVT Neuro Plastic Uro",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาออร์โธปิดิกส์": {
+  "title": "ภาควิชาออร์โธปิดิกส์",
+  "region": "bkk",
+  "tags": "chula ออร์โธ orthopedics",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาสรีรวิทยา": {
+  "title": "ภาควิชาสรีรวิทยา",
+  "region": "bkk",
+  "tags": "chula สรีรวิทยา physiology",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาสูติศาสตร์-นรีเวชวิทยา": {
+  "title": "ภาควิชาสูติศาสตร์-นรีเวชวิทยา",
+  "region": "bkk",
+  "tags": "chula สูติ นรีเวช OB GYN วรัญญา",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาโสต ศอ นาสิกวิทยา": {
+  "title": "ภาควิชาโสต ศอ นาสิกวิทยา",
+  "region": "bkk",
+  "tags": "chula โสต ศอ นาสิก ENT เกศแก้ว",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาอายุรศาสตร์": {
+  "title": "ภาควิชาอายุรศาสตร์",
+  "region": "bkk",
+  "tags": "chula อายุรศาสตร์ internal medicine วรรณี ดวงนภา cardiology nephrology GI pulmonary",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาเวชศาสตร์ฟื้นฟู": {
+  "title": "ภาควิชาเวชศาสตร์ฟื้นฟู",
+  "region": "bkk",
+  "tags": "chula เวชศาสตร์ฟื้นฟู rehabilitation จิณณ์ณิชา พรพิมล",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ภาควิชาเวชศาสตร์ฉุกเฉิน": {
+  "title": "ภาควิชาเวชศาสตร์ฉุกเฉิน",
+  "region": "bkk",
+  "tags": "chula เวชศาสตร์ฉุกเฉิน emergency",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ศูนย์ชีวาภิบาล": {
+  "title": "ศูนย์ชีวาภิบาล",
+  "region": "bkk",
+  "tags": "chula ชีวาภิบาล palliative care 3000610",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ฝ่ายวางแผนและพัฒนา": {
+  "title": "ฝ่ายวางแผนและพัฒนา",
+  "region": "bkk",
+  "tags": "chula ฝ่ายวางแผน สัญญาชดใช้ทุน อรสา",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)": {
+  "title": "ส่วนงานสนับสนุน (รพ.จุฬาลงกรณ์)",
+  "region": "bkk",
+  "tags": "chula สนับสนุน HR การเงิน อาคาร International Affairs",
+  "lat": 13.7383,
+  "lon": 100.5346,
+  "src": "chula-fixed",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.ภูมิพลอดุลยเดช (BB)": {
+  "title": "รพ.ภูมิพลอดุลยเดช (BB)",
+  "region": "bkk",
+  "tags": "university hospital ภูมิพล Bhumibol airforce",
+  "lat": 13.910714,
+  "lon": 100.6173961,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "101 ม.ขอนแก่น (KKU)": {
+  "title": "101 ม.ขอนแก่น (KKU)",
+  "region": "isan",
+  "tags": "university 101 ขอนแก่น KKU เฟียต ปุ้ย",
+  "lat": 16.4558094,
+  "lon": 102.8191518,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "102 ม.เชียงใหม่ (CMU)": {
+  "title": "102 ม.เชียงใหม่ (CMU)",
+  "region": "north",
+  "tags": "university 102 เชียงใหม่ CMU จีระนันท์ dormitory",
+  "lat": 18.7209352,
+  "lon": 98.9553266,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "103 ม.ธรรมศาสตร์": {
+  "title": "103 ม.ธรรมศาสตร์",
+  "region": "central",
+  "tags": "university 103 ธรรมศาสตร์ TU MANOW dormitory",
+  "lat": 14.07463,
+  "lon": 100.61385,
+  "src": "manual-exact",
+  "dorm": true,
+  "free": false
+ },
+ "104 ม.นเรศวร (NU)": {
+  "title": "104 ม.นเรศวร (NU)",
+  "region": "north",
+  "tags": "university 104 นเรศวร NU ธเนศ มาโนชญ์",
+  "lat": 16.74271,
+  "lon": 100.19489,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": false
+ },
+ "105 ม.สงขลานครินทร์ (PSU)": {
+  "title": "105 ม.สงขลานครินทร์ (PSU)",
+  "region": "south",
+  "tags": "university 105 สงขลานครินทร์ PSU ลัดดาวัลย์ ปาจรีย์",
+  "lat": 7.0086731,
+  "lon": 100.4984129,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "106 รามาธิบดี (Rama)": {
+  "title": "106 รามาธิบดี (Rama)",
+  "region": "bkk",
+  "tags": "university 106 รามาธิบดี Rama มหิดล มินต์ ติ๊ก dormitory",
+  "lat": 13.7685073,
+  "lon": 100.5255047,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "107 วชิรพยาบาล (BM)": {
+  "title": "107 วชิรพยาบาล (BM)",
+  "region": "bkk",
+  "tags": "university 107 วชิรพยาบาล Vajira BM",
+  "lat": 13.7811731,
+  "lon": 100.5078861,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "108 ศิริราชพยาบาล (มหิดล)": {
+  "title": "108 ศิริราชพยาบาล (มหิดล)",
+  "region": "bkk",
+  "tags": "university 108 ศิริราช Siriraj มหิดล เกด dormitory",
+  "lat": 13.7801433,
+  "lon": 100.460393,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "109 โรงพยาบาลราชวิถี": {
+  "title": "109 โรงพยาบาลราชวิถี",
+  "region": "bkk",
+  "tags": "university hospital 109 ราชวิถี Rajavithi",
+  "lat": 13.764113,
+  "lon": 100.5361673,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "110 พระมงกุฎเกล้า (PCM)": {
+  "title": "110 พระมงกุฎเกล้า (PCM)",
+  "region": "bkk",
+  "tags": "university 110 พระมงกุฎเกล้า PMK อำไพ เก่ง กุ้ง",
+  "lat": 13.7694257,
+  "lon": 100.5318649,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "111 ม.ศรีนครินทรวิโรฒ (SWU)": {
+  "title": "111 ม.ศรีนครินทรวิโรฒ (SWU)",
+  "region": "central",
+  "tags": "university 111 ศรีนครินทรวิโรฒ SWU สุรีย์รัตน์ dormitory",
+  "lat": 14.1064581,
+  "lon": 100.983765,
+  "src": "manual-exact",
+  "dorm": true,
+  "free": false
+ },
+ "112 ศูนย์การแพทย์ปัญญานันทภิกขุ\n                  ชลประทาน": {
+  "title": "112 ศูนย์การแพทย์ปัญญานันทภิกขุ\n                  ชลประทาน",
+  "region": "central",
+  "tags": "university 112 ปัญญานันทภิกขุ ชลประทาน PCMC SWU dormitory",
+  "lat": 13.8999879,
+  "lon": 100.5019709,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "113 รพ.สมเด็จพระบรมราชเทวี ณ ศรีราชา": {
+  "title": "113 รพ.สมเด็จพระบรมราชเทวี ณ ศรีราชา",
+  "region": "central",
+  "tags": "university hospital 113 สมเด็จพระบรมราชเทวี ศรีราชา dormitory",
+  "lat": 13.1611818,
+  "lon": 100.9180404,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "113 ม.เทคโนโลยีสุรนารี": {
+  "title": "113 ม.เทคโนโลยีสุรนารี",
+  "region": "isan",
+  "tags": "university Suranaree SUT สุรนารี โบว์",
+  "lat": 14.8812177,
+  "lon": 102.0121748,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "114 ม.วลัยลักษณ์": {
+  "title": "114 ม.วลัยลักษณ์",
+  "region": "south",
+  "tags": "university Walailak WU วลัยลักษณ์ แป้ง",
+  "lat": 8.6405172,
+  "lon": 99.8949777,
+  "src": "repair-name",
+  "dorm": false,
+  "free": false
+ },
+ "119 ม.นราธิวาสราชนครินทร์": {
+  "title": "119 ม.นราธิวาสราชนครินทร์",
+  "region": "south",
+  "tags": "university 119 นราธิวาส ยะลา Yala MEC ก้อย",
+  "lat": 6.4363533,
+  "lon": 101.7871328,
+  "src": "repair-name",
+  "dorm": false,
+  "free": false
+ },
+ "120 ม.พะเยา": {
+  "title": "120 ม.พะเยา",
+  "region": "north",
+  "tags": "university 120 พะเยา Phayao จ๊ะเอ๋",
+  "lat": 19.1667813,
+  "lon": 99.9021075,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "123 ม.แม่ฟ้าหลวง": {
+  "title": "123 ม.แม่ฟ้าหลวง",
+  "region": "north",
+  "tags": "university 123 แม่ฟ้าหลวง MFU แก้ว",
+  "lat": 20.1669677,
+  "lon": 99.7122777,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "124\n                  สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": {
+  "title": "124\n                  สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
+  "region": "bkk",
+  "tags": "university 124 ลาดกระบัง KMITL ปอ แจง",
+  "lat": 13.7299068,
+  "lon": 100.7829827,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "201 รพ.เจริญกรุงประชารักษ์": {
+  "title": "201 รพ.เจริญกรุงประชารักษ์",
+  "region": "bkk",
+  "tags": "hospital 201 เจริญกรุง ประชารักษ์ พิณรัตน์ dormitory",
+  "lat": 13.6935765,
+  "lon": 100.4945241,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "202 รพ.ตากสิน": {
+  "title": "202 รพ.ตากสิน",
+  "region": "north",
+  "tags": "hospital 202 ตากสิน อัตพล",
+  "lat": 16.8729592,
+  "lon": 99.1314969,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": false
+ },
+ "203 รพ.ตำรวจ": {
+  "title": "203 รพ.ตำรวจ",
+  "region": "bkk",
+  "tags": "hospital 203 ตำรวจ Police มะปราง dormitory",
+  "lat": 13.7421205,
+  "lon": 100.539723,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "204 รพ.นพรัตนราชธานี": {
+  "title": "204 รพ.นพรัตนราชธานี",
+  "region": "bkk",
+  "tags": "hospital 204 นพรัตน์ นพรัตนราชธานี อาชีวเวช",
+  "lat": 13.7761618,
+  "lon": 100.5742012,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "205 รพ.เลิดสิน": {
+  "title": "205 รพ.เลิดสิน",
+  "region": "bkk",
+  "tags": "hospital 205 เลิดสิน Lerdsin ออร์โธ",
+  "lat": 13.7223773,
+  "lon": 100.51737,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "206 รพ.พระปิ่นเกล้า": {
+  "title": "206 รพ.พระปิ่นเกล้า",
+  "region": "bkk",
+  "tags": "hospital 206 พระปิ่นเกล้า Pinklao Navy dormitory",
+  "lat": 13.762992,
+  "lon": 100.4906911,
+  "src": "name+hint",
+  "dorm": false,
+  "free": true
+ },
+ "207 รพ.สิรินธร": {
+  "title": "207 รพ.สิรินธร",
+  "region": "bkk",
+  "tags": "hospital 207 สิรินธร Sirindhorn dormitory",
+  "lat": 13.7175,
+  "lon": 100.70684,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": true
+ },
+ "301 รพ.เมตตาประชารักษ์ (วัดไร่ขิง)": {
+  "title": "301 รพ.เมตตาประชารักษ์ (วัดไร่ขิง)",
+  "region": "central",
+  "tags": "hospital 301 เมตตา วัดไร่ขิง จักษุ dormitory",
+  "lat": 13.7390047,
+  "lon": 100.2560109,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "302\n                  สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา": {
+  "title": "302\n                  สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา",
+  "region": "bkk",
+  "tags": "hospital 302 สมเด็จเจ้าพระยา จิตเวช psychiatry วศินี",
+  "lat": 13.7302114,
+  "lon": 100.504678,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": false
+ },
+ "303 สถาบันประสาทวิทยา": {
+  "title": "303 สถาบันประสาทวิทยา",
+  "region": "bkk",
+  "tags": "hospital 303 ประสาทวิทยา neurology ปัทมรัศม์",
+  "lat": 13.7687544,
+  "lon": 100.527008,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "304 รพ.ยุวประสาทไวทโยปถัมภ์": {
+  "title": "304 รพ.ยุวประสาทไวทโยปถัมภ์",
+  "region": "bkk",
+  "tags": "hospital 304 ยุวประสาทไวทโยปถัมภ์ จิตเวชเด็ก ก้อยกมล",
+  "lat": 13.5937,
+  "lon": 100.5965,
+  "src": "approximate",
+  "dorm": false,
+  "free": false
+ },
+ "305 สถาบันโรคทรวงอก": {
+  "title": "305 สถาบันโรคทรวงอก",
+  "region": "bkk",
+  "tags": "hospital 305 โรคทรวงอก chest Chest Institute ณัฏฐนันท์",
+  "lat": 13.862225,
+  "lon": 100.5218885,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "307 สถาบันสุขภาพเด็กแห่งชาติฯ\n                  (รพ.เด็ก)": {
+  "title": "307 สถาบันสุขภาพเด็กแห่งชาติฯ\n                  (รพ.เด็ก)",
+  "region": "bkk",
+  "tags": "hospital 307 สุขภาพเด็ก รพ.เด็ก children ปัด dormitory",
+  "lat": 13.7655723,
+  "lon": 100.5349722,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "308 สำนักระบาดวิทยา": {
+  "title": "308 สำนักระบาดวิทยา",
+  "region": "central",
+  "tags": "hospital 308 ระบาดวิทยา epidemiology ณัฐปราง",
+  "lat": 13.8535565,
+  "lon": 100.5272159,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": false
+ },
+ "309 คณะเวชศาสตร์เขตร้อน (มหิดล)": {
+  "title": "309 คณะเวชศาสตร์เขตร้อน (มหิดล)",
+  "region": "bkk",
+  "tags": "hospital 309 เวชศาสตร์เขตร้อน Tropical Medicine มหิดล อิจจิมา dormitory",
+  "lat": 13.7655931,
+  "lon": 100.5337777,
+  "src": "name+hint",
+  "dorm": true,
+  "free": false
+ },
+ "สถาบันกัลยาณ์ราชนครินทร์": {
+  "title": "สถาบันกัลยาณ์ราชนครินทร์",
+  "region": "bkk",
+  "tags": "hospital จิตเวช กัลยาณ์ กัลยาณ์ราชนครินทร์ นงลักษณ์",
+  "lat": 13.761931,
+  "lon": 100.3323769,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "สถาบันโรคผิวหนัง": {
+  "title": "สถาบันโรคผิวหนัง",
+  "region": "bkk",
+  "tags": "hospital ผิวหนัง โรคผิวหนัง นันท์นภัส พี่นก",
+  "lat": 13.7655723,
+  "lon": 100.5357268,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "โรงพยาบาลสงฆ์": {
+  "title": "โรงพยาบาลสงฆ์",
+  "region": "bkk",
+  "tags": "hospital สงฆ์ โรงพยาบาลสงฆ์",
+  "lat": 13.7619082,
+  "lon": 100.5270825,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "สถาบันบำราศนราดูร": {
+  "title": "สถาบันบำราศนราดูร",
+  "region": "central",
+  "tags": "hospital บำราศ บำราศนราดูร ติดเชื้อ",
+  "lat": 13.8529919,
+  "lon": 100.5221977,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "สถาบันพยาธิวิทยา": {
+  "title": "สถาบันพยาธิวิทยา",
+  "region": "bkk",
+  "tags": "hospital พยาธิวิทยา สถาบันพยาธิวิทยา วิลาย",
+  "lat": 13.764685,
+  "lon": 100.5352241,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "402 ศพช. รพ.ขอนแก่น": {
+  "title": "402 ศพช. รพ.ขอนแก่น",
+  "region": "isan",
+  "tags": "regional 402 ขอนแก่น KKH CPIRD dormitory",
+  "lat": 16.430562,
+  "lon": 102.8484612,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "403 รพ.ชุมพรเขตรอุดมศักดิ์": {
+  "title": "403 รพ.ชุมพรเขตรอุดมศักดิ์",
+  "region": "south",
+  "tags": "regional 403 ชุมพร Chumphon คุณแบงค์ cpird",
+  "lat": 10.5033588,
+  "lon": 99.1759331,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "404 ศพช. รพ.เชียงรายประชานุเคราะห์": {
+  "title": "404 ศพช. รพ.เชียงรายประชานุเคราะห์",
+  "region": "north",
+  "tags": "regional 404 เชียงราย Chiang Rai คุณโต น้อยหน่า cpird",
+  "lat": 19.9007797,
+  "lon": 99.8291769,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "405 ศพช. รพ.ตรัง": {
+  "title": "405 ศพช. รพ.ตรัง",
+  "region": "south",
+  "tags": "regional 405 ตรัง Trang จารุวรรณ cpird",
+  "lat": 7.5723368,
+  "lon": 99.6193355,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "406 รพ.บุรีรัมย์": {
+  "title": "406 รพ.บุรีรัมย์",
+  "region": "isan",
+  "tags": "regional 406 บุรีรัมย์ Buriram วารินธร ชลลดา cpird",
+  "lat": 15.0057823,
+  "lon": 103.1023453,
+  "src": "repair-name",
+  "dorm": false,
+  "free": false
+ },
+ "407 รพ.พิจิตร": {
+  "title": "407 รพ.พิจิตร",
+  "region": "north",
+  "tags": "regional 407 พิจิตร Phichit คคนัมพร ยะนะ cpird",
+  "lat": 16.5298915,
+  "lon": 100.1510975,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "408 รพ.พุทธชินราช": {
+  "title": "408 รพ.พุทธชินราช",
+  "region": "north",
+  "tags": "regional 408 พุทธชินราช Buddhachinaraj น้ำผึ้ง dormitory cpird",
+  "lat": 16.805889,
+  "lon": 100.2640895,
+  "src": "name",
+  "dorm": false,
+  "free": true
+ },
+ "409 รพ.แพร่": {
+  "title": "409 รพ.แพร่",
+  "region": "north",
+  "tags": "regional 409 แพร่ Phrae กุมาร อุบัติเหตุ cpird",
+  "lat": 18.1490098,
+  "lon": 100.1454492,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "410 ศพช. รพ.มหาราชนครราชสีมา": {
+  "title": "410 ศพช. รพ.มหาราชนครราชสีมา",
+  "region": "isan",
+  "tags": "regional 410 มหาราชนครราชสีมา Korat CPIRD dormitory",
+  "lat": 14.9845903,
+  "lon": 102.1010435,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "411 ศพช. รพ.มหาราชนครศรีธรรมราช": {
+  "title": "411 ศพช. รพ.มหาราชนครศรีธรรมราช",
+  "region": "south",
+  "tags": "regional 411 มหาราชนครศรีธรรมราช Nakhon Si Thammarat กุสุมา cpird",
+  "lat": 8.3910275,
+  "lon": 99.9745815,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "412 ศพช. รพ.พุทธโสธร": {
+  "title": "412 ศพช. รพ.พุทธโสธร",
+  "region": "central",
+  "tags": "regional 412 พุทธโสธร Buddhasothon CPIRD dormitory",
+  "lat": 13.6861778,
+  "lon": 101.0731985,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "415 ศพช. รพ.ราชบุรี": {
+  "title": "415 ศพช. รพ.ราชบุรี",
+  "region": "central",
+  "tags": "regional 415 ราชบุรี Ratchaburi คุณมด มัทนา cpird",
+  "lat": 13.5307948,
+  "lon": 99.8166613,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "416 ศพช. รพ.ลำปาง": {
+  "title": "416 ศพช. รพ.ลำปาง",
+  "region": "north",
+  "tags": "regional 416 ลำปาง Lampang สุนันทา no-dorm cpird",
+  "lat": 18.2870758,
+  "lon": 99.5066409,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "417 ศพช. รพ.วชิระภูเก็ต": {
+  "title": "417 ศพช. รพ.วชิระภูเก็ต",
+  "region": "south",
+  "tags": "regional 417 วชิระภูเก็ต Phuket CPIRD",
+  "lat": 7.8974264,
+  "lon": 98.3830121,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "419 รพ.สงขลา": {
+  "title": "419 รพ.สงขลา",
+  "region": "south",
+  "tags": "regional 419 สงขลา Songkhla รัชฎาภรณ์ cpird",
+  "lat": 7.1406664,
+  "lon": 100.5642533,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "421 รพ.สรรพสิทธิประสงค์": {
+  "title": "421 รพ.สรรพสิทธิประสงค์",
+  "region": "isan",
+  "tags": "regional 421 สรรพสิทธิ Sapphasit dormitory cpird",
+  "lat": 15.2369585,
+  "lon": 104.8655405,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "422 ศพช. รพ.สระบุรี": {
+  "title": "422 ศพช. รพ.สระบุรี",
+  "region": "central",
+  "tags": "regional 422 สระบุรี Saraburi อารีย์ dormitory cpird",
+  "lat": 14.5334711,
+  "lon": 100.9151705,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "423 รพ.สวรรค์ประชารักษ์": {
+  "title": "423 รพ.สวรรค์ประชารักษ์",
+  "region": "north",
+  "tags": "regional 423 สวรรค์ประชารักษ์ Sawanpracharak เกวลิน cpird",
+  "lat": 15.7071976,
+  "lon": 100.138379,
+  "src": "repair-name",
+  "dorm": false,
+  "free": false
+ },
+ "424 รพ.สุราษฎร์ธานี": {
+  "title": "424 รพ.สุราษฎร์ธานี",
+  "region": "south",
+  "tags": "regional 424 สุราษฎร์ธานี Surat Thani จิรนันท์ cpird",
+  "lat": 9.1243004,
+  "lon": 99.3096003,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "425 รพ.สุรินทร์": {
+  "title": "425 รพ.สุรินทร์",
+  "region": "isan",
+  "tags": "regional 425 สุรินทร์ Surin cpird",
+  "lat": 14.7185098,
+  "lon": 103.6674048,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "426 ศพช. รพ.หาดใหญ่": {
+  "title": "426 ศพช. รพ.หาดใหญ่",
+  "region": "south",
+  "tags": "regional 426 หาดใหญ่ Hat Yai CPIRD dormitory",
+  "lat": 7.0166654,
+  "lon": 100.4674503,
+  "src": "name",
+  "dorm": true,
+  "free": false
+ },
+ "427 รพ.อุดรธานี": {
+  "title": "427 รพ.อุดรธานี",
+  "region": "isan",
+  "tags": "regional 427 อุดรธานี Udon Thani บัญชร dormitory cpird",
+  "lat": 17.4043099,
+  "lon": 103.2429066,
+  "src": "name+hint",
+  "dorm": false,
+  "free": true
+ },
+ "428 รพ.อุตรดิตถ์": {
+  "title": "428 รพ.อุตรดิตถ์",
+  "region": "north",
+  "tags": "regional 428 อุตรดิตถ์ Uttaradit จิราภรณ์ กานดา ปัญจรัศม์ cpird",
+  "lat": 17.619204,
+  "lon": 100.0854239,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "501 รพ.สมเด็จเจ้าพระยายมราช": {
+  "title": "501 รพ.สมเด็จเจ้าพระยายมราช",
+  "region": "north",
+  "tags": "regional 501 ตากสินมหาราช สมเด็จเจ้าพระยายมราช ออร์โธ",
+  "lat": 14.4743,
+  "lon": 100.1226,
+  "src": "manual-exact",
+  "dorm": false,
+  "free": false
+ },
+ "502 รพ.เจ้าพระยาอภัยภูเบศร": {
+  "title": "502 รพ.เจ้าพระยาอภัยภูเบศร",
+  "region": "central",
+  "tags": "regional 502 เจ้าพระยาอภัยภูเบศร ปราจีนบุรี ฑิฆัมพร สุดารัตน์ cpird",
+  "lat": 14.0524056,
+  "lon": 101.3955658,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "505 รพ.นครปฐม": {
+  "title": "505 รพ.นครปฐม",
+  "region": "central",
+  "tags": "regional 505 นครปฐม Nakhon Pathom ฉันทนา",
+  "lat": 13.8451663,
+  "lon": 100.053091,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "506 รพ.นครพิงค์": {
+  "title": "506 รพ.นครพิงค์",
+  "region": "north",
+  "tags": "regional 506 นครพิงค์ เชียงใหม่ ชลธิดา cpird",
+  "lat": 18.8519186,
+  "lon": 98.9663736,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "507 รพ.น่าน": {
+  "title": "507 รพ.น่าน",
+  "region": "north",
+  "tags": "regional 507 น่าน Nan มยุรี สุทธินี หทัยรัตน์",
+  "lat": 18.7957123,
+  "lon": 100.7887299,
+  "src": "repair-name",
+  "dorm": false,
+  "free": false
+ },
+ "509 รพ.พระนครศรีอยุธยา": {
+  "title": "509 รพ.พระนครศรีอยุธยา",
+  "region": "central",
+  "tags": "regional 509 พระนครศรีอยุธยา Ayutthaya",
+  "lat": 14.3439213,
+  "lon": 100.5596395,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "510 รพ.พระนั่งเกล้า": {
+  "title": "510 รพ.พระนั่งเกล้า",
+  "region": "central",
+  "tags": "regional 510 พระนั่งเกล้า Nonthaburi พรจิตร",
+  "lat": 13.8648353,
+  "lon": 100.480703,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "512 รพ.แม่สอด": {
+  "title": "512 รพ.แม่สอด",
+  "region": "north",
+  "tags": "regional 512 แม่สอด Mae Sot Tak ชายแดน",
+  "lat": 16.7103893,
+  "lon": 98.5724993,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "513 รพ.ระยอง": {
+  "title": "513 รพ.ระยอง",
+  "region": "central",
+  "tags": "regional 513 ระยอง Rayong เจี๊ยบ",
+  "lat": 12.6840326,
+  "lon": 101.2006196,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "514 รพ.ลำพูน": {
+  "title": "514 รพ.ลำพูน",
+  "region": "north",
+  "tags": "regional 514 ลำพูน Lamphun ธิดารัตนภรณ์",
+  "lat": 18.5620107,
+  "lon": 99.0380298,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "516 รพ.สมเด็จพระยุพราชสระแก้ว": {
+  "title": "516 รพ.สมเด็จพระยุพราชสระแก้ว",
+  "region": "central",
+  "tags": "regional 516 สมเด็จพระยุพราชสระแก้ว Sa Kaeo สุพัตรา",
+  "lat": 13.8168587,
+  "lon": 102.0722848,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "521 รพ.อุ้มผาง": {
+  "title": "521 รพ.อุ้มผาง",
+  "region": "north",
+  "tags": "regional 521 อุ้มผาง Umphang ชายแดน วัลลีย์ dormitory",
+  "lat": 16.0172937,
+  "lon": 98.866418,
+  "src": "name+hint",
+  "dorm": false,
+  "free": true
+ },
+ "522 รพ.สมเด็จพระนางเจ้าสิริกิติ์\n                  (กรมแพทย์ทหารเรือ)": {
+  "title": "522 รพ.สมเด็จพระนางเจ้าสิริกิติ์\n                  (กรมแพทย์ทหารเรือ)",
+  "region": "central",
+  "tags": "regional 522 สมเด็จพระนางเจ้าสิริกิติ์ กรมแพทย์ทหารเรือ ชลบุรี จิตรลดา",
+  "lat": 13.3662087,
+  "lon": 100.9872185,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.สมเด็จพระยุพราชกุฉินารายณ์": {
+  "title": "รพ.สมเด็จพระยุพราชกุฉินารายณ์",
+  "region": "isan",
+  "tags": "hospital กุฉินารายณ์ กาฬสินธุ์ ปวีณา",
+  "lat": 16.434034,
+  "lon": 103.5059403,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.ปราสาท": {
+  "title": "รพ.ปราสาท",
+  "region": "isan",
+  "tags": "hospital ปราสาท สุรินทร์",
+  "lat": 14.6320312,
+  "lon": 103.4109378,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "ศพช. รพ.นราธิวาสราชนครินทร์": {
+  "title": "ศพช. รพ.นราธิวาสราชนครินทร์",
+  "region": "south",
+  "tags": "hospital นราธิวาส Narathiwat CPIRD",
+  "lat": 6.4350352,
+  "lon": 101.8228923,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "คณะแพทยศาสตร์ ม.บูรพา": {
+  "title": "คณะแพทยศาสตร์ ม.บูรพา",
+  "region": "central",
+  "tags": "hospital บูรพา ชลบุรี BUU วิรยา",
+  "lat": 13.3662087,
+  "lon": 100.9872185,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "สถาบันมะเร็งแห่งชาติ": {
+  "title": "สถาบันมะเร็งแห่งชาติ",
+  "region": "bkk",
+  "tags": "hospital สถาบันมะเร็ง cancer oncology",
+  "lat": 13.7675155,
+  "lon": 100.5272624,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.กระบี่": {
+  "title": "รพ.กระบี่",
+  "region": "south",
+  "tags": "hospital กระบี่ Krabi",
+  "lat": 8.0807978,
+  "lon": 98.9058189,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.สวนปรุง (กรมสุขภาพจิต)": {
+  "title": "รพ.สวนปรุง (กรมสุขภาพจิต)",
+  "region": "north",
+  "tags": "hospital สวนปรุง จิตเวช เชียงใหม่ กรมสุขภาพจิต",
+  "lat": 18.7793839,
+  "lon": 98.9791006,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.เกาะสมุย": {
+  "title": "รพ.เกาะสมุย",
+  "region": "south",
+  "tags": "hospital เกาะสมุย Koh Samui พี่นุ้ย",
+  "lat": 9.5220384,
+  "lon": 99.9351787,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.ทุ่งสง": {
+  "title": "รพ.ทุ่งสง",
+  "region": "south",
+  "tags": "hospital ทุ่งสง Thung Song นครศรีธรรมราช",
+  "lat": 8.3149621,
+  "lon": 99.3631611,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.สมุทรปราการ": {
+  "title": "รพ.สมุทรปราการ",
+  "region": "central",
+  "tags": "hospital สมุทรปราการ Samut Prakan ศุภกิจ",
+  "lat": 13.5981041,
+  "lon": 100.6011757,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "รพ.จุฬาภรณ์": {
+  "title": "รพ.จุฬาภรณ์",
+  "region": "bkk",
+  "tags": "hospital จุฬาภรณ์ Chulabhorn ธนกร",
+  "lat": 13.8806873,
+  "lon": 100.5780867,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ },
+ "ศพช. รพ.ชัยภูมิ": {
+  "title": "ศพช. รพ.ชัยภูมิ",
+  "region": "isan",
+  "tags": "hospital ชัยภูมิ Chaiyaphum CPIRD พาขวัญ",
+  "lat": 15.8045532,
+  "lon": 102.0346133,
+  "src": "name",
+  "dorm": false,
+  "free": false
+ },
+ "โรงพยาบาลศูนย์การแพทย์ ม.แม่ฟ้าหลวง": {
+  "title": "โรงพยาบาลศูนย์การแพทย์ ม.แม่ฟ้าหลวง",
+  "region": "north",
+  "tags": "hospital แม่ฟ้าหลวง MFU เชียงราย ศึกษาดูงาน",
+  "lat": 19.9068867,
+  "lon": 99.8332739,
+  "src": "province-centroid",
+  "dorm": false,
+  "free": false
+ },
+ "โรงพยาบาลบำรุงราษฎร์": {
+  "title": "โรงพยาบาลบำรุงราษฎร์",
+  "region": "bkk",
+  "tags": "hospital บำรุงราษฎร์ Bumrungrad เอกชน private",
+  "lat": 13.7464113,
+  "lon": 100.5524335,
+  "src": "name+hint",
+  "dorm": false,
+  "free": false
+ }
+}

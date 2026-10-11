@@ -8,6 +8,7 @@
    ───────────────────────────────────────────────────────────── */
 (() => {
   const host = document.getElementById('elective-map');
+  const paper = document.querySelector('.map-paper');
   const M = window.ELECTIVE_MAP;
   if (!host || !M || !M.pins) return;
 
@@ -79,6 +80,10 @@
   svg.setAttribute('aria-label', `แผนที่ประเทศไทยแสดงที่ตั้งสถาบัน ${M.pins.length} แห่ง`);
 
   const gLand = document.createElementNS(NS, 'g'); gLand.setAttribute('class', 'map-land');
+  const depthPath = document.createElementNS(NS, 'path');      // ขอบหนาของแผ่นประเทศ (ให้ดูเป็น slab)
+  depthPath.setAttribute('d', M.paths);
+  depthPath.setAttribute('class', 'map-land-depth');
+  gLand.appendChild(depthPath);
   const landPath = document.createElementNS(NS, 'path');
   landPath.setAttribute('d', M.paths);
   gLand.appendChild(landPath);
@@ -157,7 +162,7 @@
       </dl>
       ${mode === 'full'
         ? '<button type="button" class="map-card-go">ไปที่การ์ดเต็มในรายการ ↓</button>'
-        : '<p class="map-card-hint">คลิกที่จุดเพื่อดูรายละเอียด</p>'}`);
+        : ''}`);
     cardEl.querySelector('.map-card-go')?.addEventListener('click', () => jumpToCard(p.n));
   };
   const closeCard = () => {
@@ -251,32 +256,112 @@
     });
   };
 
-  // ══ กล้อง: ซูม + แพน (นุ่มนวล) ════════════════════════════════
+  // ══ แผ่นภาค — ใช้เส้นขอบจังหวัดจริงของแต่ละภาค (ยกขึ้น/ลดลงได้) ══════════
+  const gPlates = document.createElementNS(NS, 'g');
+  gPlates.setAttribute('class', 'map-plates');
+  gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
+
+  const LABEL_NUDGE = { bkk: [108, 46], central: [-18, 34], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const plates = {};
+  Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
+    if (!d || !REGION[r]) return;
+    const list = M.pins.filter(p => p.r === r);
+    if (!list.length) return;
+    const lab = (M.regionLabels && M.regionLabels[r]) || [0, 0];
+    const nudge = LABEL_NUDGE[r] || [0, 0];
+
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'plate');
+    g.dataset.region = r;
+    g.style.setProperty('--rc', REGION[r].color);
+
+    const depth = document.createElementNS(NS, 'path');      // ขอบหนา = ความหนาของแผ่น
+    depth.setAttribute('d', d);
+    depth.setAttribute('class', 'plate-depth');
+
+    const face = document.createElementNS(NS, 'path');       // หน้าแผ่น
+    face.setAttribute('d', d);
+    face.setAttribute('class', 'plate-face');
+
+    const hit = document.createElementNS(NS, 'path');        // พื้นที่กด/โฟกัส
+    hit.setAttribute('d', d);
+    hit.setAttribute('class', 'plate-hit');
+    hit.setAttribute('tabindex', '0');
+    hit.setAttribute('role', 'button');
+    hit.setAttribute('aria-label', `ภาค${REGION[r].name} — ${list.length} สถาบัน`);
+
+    const label = document.createElementNS(NS, 'text');
+    label.setAttribute('class', 'plate-label');
+    label.setAttribute('x', (lab[0] + nudge[0]).toFixed(1));
+    label.setAttribute('y', (lab[1] + nudge[1]).toFixed(1));
+    label.textContent = `${REGION[r].name} · ${list.length}`;
+
+    g.append(depth, face, hit, label);
+    gPlates.appendChild(g);
+    plates[r] = { g, label };
+  });
+
+  const raisePlate = (r, on) => {
+    Object.entries(plates).forEach(([key, pl]) => {
+      pl.g.classList.toggle('up', on && key === r);
+      pl.g.classList.toggle('dim', on && key !== r);
+    });
+  };
+  Object.entries(plates).forEach(([r, pl]) => {
+    const enter = () => raisePlate(r, true);
+    const leave = () => raisePlate(r, false);
+    pl.g.addEventListener('pointerenter', enter);
+    pl.g.addEventListener('pointerleave', leave);
+    pl.g.addEventListener('focusin', enter);
+    pl.g.addEventListener('focusout', leave);
+    const use = () => {
+      const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
+      if (chip) {
+        chip.click();
+        document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      }
+    };
+    pl.g.addEventListener('click', (e) => { if (moved > 6) return; e.stopPropagation(); use(); });
+    pl.g.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); use(); }
+    });
+  });
+
+  // ══ กล้อง: ซูม + แพน ด้วยท่าทางเท่านั้น (ไม่มีปุ่ม) ═════════════
   const VB = M.viewBox.split(' ').map(Number);
+  const PAD = 0.14;                                  // ยอมให้ลากเลยขอบได้นิดหน่อย (ยางยืด)
   const cam = { k: 1, tx: 0, ty: 0, kT: 1, txT: 0, tyT: 0, raf: 0 };
+  const bounds = (k) => ({
+    x0: -(VB[2] * (k - 1)) / k - VB[2] * PAD,
+    x1: VB[2] * PAD,
+    y0: -(VB[3] * (k - 1)) / k - VB[3] * PAD,
+    y1: VB[3] * PAD,
+  });
   const clampCam = () => {
-    cam.kT = Math.max(1, Math.min(9, cam.kT));
-    const w = VB[2], h = VB[3];
-    cam.txT = Math.max(-(w * (cam.kT - 1)) / cam.kT, Math.min(0, cam.txT));
-    cam.tyT = Math.max(-(h * (cam.kT - 1)) / cam.kT, Math.min(0, cam.tyT));
+    cam.kT = Math.max(1, Math.min(7, cam.kT));
+    const b = bounds(cam.kT);
+    cam.txT = Math.max(b.x0, Math.min(b.x1, cam.txT));
+    cam.tyT = Math.max(b.y0, Math.min(b.y1, cam.tyT));
   };
   const applyCam = () => {
-    gZoom.setAttribute('transform', `translate(${cam.tx} ${cam.ty}) scale(${cam.k})`);
-    const f = 1 / Math.pow(cam.k, 0.62);
+    gZoom.setAttribute('transform', `translate(${cam.tx.toFixed(2)} ${cam.ty.toFixed(2)}) scale(${cam.k.toFixed(4)})`);
+    // ป้ายชื่อภาคหดตามซูม → ขนาดบนจอคงที่ ไม่บวมเป็นตัวเบ้อเริ่มตอนซูมเข้า
+    gPlates.style.setProperty('--lk', (1 / cam.k).toFixed(4));
+    // หมุดเล็กลงเมื่อซูมเข้า (ไม่ให้บวมทับกัน) แต่ไม่เล็กจนมองไม่เห็น
+    const f = 1 / Math.pow(cam.k, 0.55);
     dots.forEach(d => {
-      d.dot.setAttribute('r', d.baseR * f);
-      d.hit.setAttribute('r', d.baseHit * Math.max(f, 0.5));
+      d.dot.setAttribute('r', (d.baseR * f).toFixed(2));
+      d.hit.setAttribute('r', (d.baseHit * Math.max(f, 0.55)).toFixed(2));
     });
-    const z = document.getElementById('map-zoom-level');
-    if (z) z.textContent = cam.k.toFixed(1) + '×';
+    svg.classList.toggle('is-zoomed', cam.k > 1.15);
   };
   const stepCam = () => {
     cam.raf = 0;
-    const ease = reduced ? 1 : 0.18;
+    const ease = reduced ? 1 : 0.2;
     cam.k += (cam.kT - cam.k) * ease;
     cam.tx += (cam.txT - cam.tx) * ease;
     cam.ty += (cam.tyT - cam.ty) * ease;
-    if (Math.abs(cam.kT - cam.k) < 0.002 && Math.abs(cam.txT - cam.tx) < 0.5 && Math.abs(cam.tyT - cam.ty) < 0.5) {
+    if (Math.abs(cam.kT - cam.k) < 0.0015 && Math.abs(cam.txT - cam.tx) < 0.4 && Math.abs(cam.tyT - cam.ty) < 0.4) {
       cam.k = cam.kT; cam.tx = cam.txT; cam.ty = cam.tyT;
       applyCam();
       return;
@@ -290,86 +375,151 @@
     const px = ((clientX - r.left) / r.width) * VB[2];
     const py = ((clientY - r.top) / r.height) * VB[3];
     const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
-    cam.kT = Math.max(1, Math.min(9, cam.kT * factor));
+    cam.kT = Math.max(1, Math.min(7, cam.kT * factor));
     cam.txT = px - wx * cam.kT;
     cam.tyT = py - wy * cam.kT;
     clampCam(); kickCam();
   };
-  const zoomCenter = (factor) => {
-    const r = svg.getBoundingClientRect();
-    zoomAt(factor, r.left + r.width / 2, r.top + r.height / 2);
-  };
-  const focusPin = (p, target = 4.5) => {
-    cam.kT = Math.max(cam.kT, target);
-    cam.txT = VB[2] / 2 - (p.x / VB[2] * VB[2] / cam.kT) * cam.kT;
-    cam.txT = VB[2] / 2 - p.x * 1;
-    cam.tyT = VB[3] / 2 - p.y * 1;
-    cam.txT = VB[2] / 2 - p.x * 1;
-    clampCam(); kickCam();
-  };
   const resetCam = () => { cam.kT = 1; cam.txT = 0; cam.tyT = 0; kickCam(); };
 
-  // ── อินพุต ────────────────────────────────────────────────────
-  let dragging = false, lastX = 0, lastY = 0, moved = 0;
+  // ── ท่าทาง: ล้อเมาส์ · ลาก · หยิกสองนิ้ว · ดับเบิลคลิก · คีย์บอร์ด ──
+  let dragging = false, lastX = 0, lastY = 0, moved = 0, pinchStart = 0, pinchK = 1, captured = false;
   const pointers = new Map();
+  const isTouch = (e) => e.pointerType === 'touch';
+
+  // สองนิ้ว = เราจัดการเอง ห้ามเบราว์เซอร์เลื่อนหน้าไปด้วย (นิ้วเดียวยังเลื่อนหน้าได้ตามปกติ)
+  const twoFinger = (e) => { if (e.touches.length > 1) e.preventDefault(); };
+  svg.addEventListener('touchstart', twoFinger, { passive: false });
+  svg.addEventListener('touchmove', twoFinger, { passive: false });
+
   svg.addEventListener('wheel', (e) => {
     e.preventDefault();
-    zoomAt(Math.exp(-e.deltaY * 0.0016), e.clientX, e.clientY);
+    // แทร็กแพด/ล้อเมาส์: หยิกบนแทร็กแพดจะมาเป็น ctrlKey + deltaY
+    const step = e.ctrlKey ? 0.012 : 0.0018;
+    zoomAt(Math.exp(-e.deltaY * step), e.clientX, e.clientY);
   }, { passive: false });
+
   svg.addEventListener('pointerdown', (e) => {
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointers.size === 1) { dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY; try { svg.setPointerCapture(e.pointerId); } catch (_) {} svg.classList.add('grabbing'); }
+    moved = 0;
+    // หมายเหตุ: ห้าม setPointerCapture ตอนนี้ — ถ้าจับตั้งแต่กด คลิกจะไม่ถึงหมุด (อีเวนต์ถูกเปลี่ยนเป้าไปที่ svg)
+    //          จะจับก็ต่อเมื่อ "ลากจริง" (ขยับเกิน 6px) หรือตอนหยิกสองนิ้วเท่านั้น
+    if (pointers.size === 1) {
+      if (isTouch(e)) { /* นิ้วเดียว = เลื่อนหน้าเว็บตามปกติ ไม่แย่ง */ return; }
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      svg.classList.add('grabbing');
+    } else if (pointers.size === 2) {
+      dragging = false;
+      for (const id of pointers.keys()) { try { svg.setPointerCapture(id); } catch (_) {} }
+      const [a, b] = [...pointers.values()];
+      pinchStart = Math.hypot(a.x - b.x, a.y - b.y);
+      pinchK = cam.kT;
+    }
   });
+
   svg.addEventListener('pointermove', (e) => {
     if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointers.size === 2) {
+    if (pointers.size === 2) {                            // หยิกซูม (นิ้ว/แทร็กแพด)
       const [a, b] = [...pointers.values()];
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      if (svg._pinch) zoomAt(dist / svg._pinch, (a.x + b.x) / 2, (a.y + b.y) / 2);
-      svg._pinch = dist;
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (pinchStart > 0) {
+        const r = svg.getBoundingClientRect();
+        const px = ((a.x + b.x) / 2 - r.left) / r.width * VB[2];
+        const py = ((a.y + b.y) / 2 - r.top) / r.height * VB[3];
+        const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
+        cam.kT = Math.max(1, Math.min(7, pinchK * (d / pinchStart)));
+        cam.txT = px - wx * cam.kT;
+        cam.tyT = py - wy * cam.kT;
+        clampCam(); kickCam();
+      }
       return;
     }
-    if (dragging) {
-      const dx = e.clientX - lastX, dy = e.clientY - lastY;
-      moved += Math.abs(dx) + Math.abs(dy);
-      const r = svg.getBoundingClientRect();
-      cam.tx = Math.max(-(VB[2] * (cam.k - 1)) / cam.k, Math.min(0, cam.tx + (dx / r.width) * VB[2] / cam.k));
-      cam.ty = Math.max(-(VB[3] * (cam.k - 1)) / cam.k, Math.min(0, cam.ty + (dy / r.height) * VB[3] / cam.k));
-      cam.txT = cam.tx; cam.tyT = cam.ty;
-      applyCam();
-      lastX = e.clientX; lastY = e.clientY;
+    if (!dragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    moved += Math.abs(dx) + Math.abs(dy);
+    if (moved > 6 && !captured) {                    // เริ่มลากจริงแล้ว → จับ pointer ให้ลากนอกแผนที่ได้
+      captured = true;
+      try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+      gArcs.replaceChildren();                       // ลากแล้วอย่าให้เส้นทางค้าง
     }
+    const r = svg.getBoundingClientRect();
+    // ลากตามมือ: แปลงระยะพิกเซลเป็นหน่วยแผนที่ แล้วหารด้วยซูมปัจจุบัน
+    cam.tx += (dx / r.width) * VB[2] / cam.k;
+    cam.ty += (dy / r.height) * VB[3] / cam.k;
+    const b = bounds(cam.k);
+    cam.tx = Math.max(b.x0, Math.min(b.x1, cam.tx));
+    cam.ty = Math.max(b.y0, Math.min(b.y1, cam.ty));
+    cam.txT = cam.tx; cam.tyT = cam.ty;
+    applyCam();
+    lastX = e.clientX; lastY = e.clientY;
   });
+
   const endPointer = (e) => {
     pointers.delete(e.pointerId);
-    if (pointers.size < 2) svg._pinch = 0;
-    if (pointers.size === 0) { dragging = false; svg.classList.remove('grabbing'); try { svg.releasePointerCapture(e.pointerId); } catch (_) {} }
+    if (pointers.size < 2) pinchStart = 0;
+    if (pointers.size === 0) {
+      dragging = false;
+      captured = false;
+      svg.classList.remove('grabbing');
+      try { svg.releasePointerCapture(e.pointerId); } catch (_) {}
+      // คืนตำแหน่งถ้าลากเลยขอบ (ยางยืด)
+      const b = bounds(cam.k);
+      cam.txT = Math.max(b.x0 + VB[2] * PAD, Math.min(b.x1 - VB[2] * PAD, cam.tx));
+      cam.tyT = Math.max(b.y0 + VB[3] * PAD, Math.min(b.y1 - VB[3] * PAD, cam.ty));
+      kickCam();
+    }
   };
   svg.addEventListener('pointerup', endPointer);
   svg.addEventListener('pointercancel', endPointer);
-  svg.addEventListener('dblclick', (e) => { e.preventDefault(); zoomAt(2, e.clientX, e.clientY); });
 
-  document.getElementById('map-zoom-in')?.addEventListener('click', () => zoomCenter(1.7));
-  document.getElementById('map-zoom-out')?.addEventListener('click', () => zoomCenter(1 / 1.7));
-  document.getElementById('map-zoom-reset')?.addEventListener('click', resetCam);
-  const paper = host.closest('.map-paper') || host;
+  svg.addEventListener('dblclick', (e) => {
+    e.preventDefault();
+    if (cam.kT > 1.4) resetCam();
+    else zoomAt(2.2, e.clientX, e.clientY);
+  });
+
+  // คลิกพื้นที่ว่าง = ปิดการ์ด แล้วย้อนกลับมาที่มุมเต็มประเทศ
+  svg.addEventListener('click', (e) => {
+    if (moved > 6) return;
+    if (e.target.closest('.map-pin')) return;
+    if (e.target.closest('.plate')) return;
+    if (selected) { closeCard(); return; }
+    if (cam.kT > 1.15) resetCam();
+  });
+
+  // คีย์บอร์ด (ไม่มีปุ่มบนจอ แต่ยังใช้คีย์บอร์ดได้)
   paper.setAttribute('tabindex', '0');
-  paper.setAttribute('aria-label', 'แผนที่สถาบัน — ลูกศรเพื่อเลื่อน, + และ - เพื่อซูม, 0 เพื่อย้อนกลับ');
+  paper.setAttribute('aria-label', 'แผนที่สถาบัน');
   paper.addEventListener('keydown', (e) => {
     const r = svg.getBoundingClientRect();
-    const pxs = 70;
+    const stepPx = 70;
     if (e.key.startsWith('Arrow')) {
       e.preventDefault();
-      const dx = e.key === 'ArrowLeft' ? pxs : e.key === 'ArrowRight' ? -pxs : 0;
-      const dy = e.key === 'ArrowUp' ? pxs : e.key === 'ArrowDown' ? -pxs : 0;
+      const dx = e.key === 'ArrowLeft' ? stepPx : e.key === 'ArrowRight' ? -stepPx : 0;
+      const dy = e.key === 'ArrowUp' ? stepPx : e.key === 'ArrowDown' ? -stepPx : 0;
       cam.txT += (dx / r.width) * VB[2] / cam.kT;
       cam.tyT += (dy / r.height) * VB[3] / cam.kT;
       clampCam(); kickCam();
-    } else if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomCenter(1.4); }
-    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomCenter(1 / 1.4); }
+    } else if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomAt(1.4, r.left + r.width / 2, r.top + r.height / 2); }
+    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomAt(1 / 1.4, r.left + r.width / 2, r.top + r.height / 2); }
     else if (e.key === '0') { e.preventDefault(); resetCam(); }
     else if (e.key === 'Escape') closeCard();
   });
+
+  // เลื่อนเข้า-ออกจากจอ: หยุดอนิเมชันกล้องเมื่อไม่มอง
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting && cam.raf) { cancelAnimationFrame(cam.raf); cam.raf = 0; cam.k = cam.kT; cam.tx = cam.txT; cam.ty = cam.tyT; applyCam(); }
+    }, { threshold: 0.02 }).observe(paper);
+  }
+
+  const focusPin = (p, target = 3.6) => {
+    const k = Math.max(cam.kT, target);
+    cam.kT = k;
+    cam.txT = VB[2] / 2 - p.x * k;     // transform คือ translate * scale → จุด (px,py) อยู่ที่ px*k+tx
+    cam.tyT = VB[3] / 2 - p.y * k;
+    clampCam(); kickCam();
+  };
 
   // ── ผูกเหตุการณ์ให้หมุด ───────────────────────────────────────
   dots.forEach(rec => {
@@ -423,340 +573,6 @@
   const showArc = (p) => { if (p.t.includes('chula')) return; drawArcTo(p); };
   const clearArc = () => { if (!selected) gArcs.replaceChildren(); };
 
-/* ══ แผนที่ 3D (WebGL ล้วน ไม่ใช้ไลบรารี) ═══════════════════════
-     โหมด «กลางคืน»: เส้นขอบจังหวัดเป็นเส้นลวด 3D + หมุด 117 จุดเรืองแสง
-     หมุนได้ด้วยการลาก · หมุดที่ชี้จะโตขึ้นและขึ้นชื่อ · กดแล้วไปการ์ดเหมือนโหมด 2D
-     ถ้าเครื่องไม่รองรับ WebGL ปุ่ม 3D จะไม่แสดงและใช้แผนที่ 2D ตามปกติ
-     ═════════════════════════════════════════════════════════════ */
-  const stage3d = (() => {
-    const canvas = document.createElement('canvas');
-    canvas.className = 'map-3d';
-    const gl = canvas.getContext('webgl', { antialias: true, alpha: true, premultipliedAlpha: false })
-            || canvas.getContext('experimental-webgl');
-    if (!gl) return null;
-
-    // ── เมทริกซ์ 4x4 (column-major แบบ WebGL) ──
-    const mul = (a, b) => {
-      const o = new Float32Array(16);
-      for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
-        o[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
-      }
-      return o;
-    };
-    const persp = (fovy, aspect, near, far) => {
-      const f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);
-      return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);
-    };
-    const rotX = (a) => { const c = Math.cos(a), s = Math.sin(a); return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]); };
-    const rotY = (a) => { const c = Math.cos(a), s = Math.sin(a); return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]); };
-    const trans = (x, y, z) => new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]);
-    const scale = (s) => new Float32Array([s,0,0,0, 0,s,0,0, 0,0,s,0, 0,0,0,1]);
-
-    const VSH_LINE = `
-      attribute vec3 aPos; attribute float aSide;
-      uniform mat4 uMVP;
-      varying float vSide; varying float vDepth;
-      void main() {
-        vec4 p = uMVP * vec4(aPos, 1.0);
-        gl_Position = p;
-        vSide = aSide;
-        vDepth = clamp((p.z / p.w + 1.0) * 0.5, 0.0, 1.0);
-      }`;
-    const FSH_LINE = `
-      precision mediump float;
-      varying float vSide; varying float vDepth;
-      uniform vec3 uTop; uniform vec3 uBottom;
-      void main() {
-        vec3 c = mix(uTop, uBottom, vSide);
-        float a = mix(1.0, 0.5, vDepth) * mix(1.0, 0.62, vSide);
-        gl_FragColor = vec4(c * (1.0 - vDepth * 0.12), a);
-      }`;
-    const VSH_PIN = `
-      attribute vec3 aPos; attribute vec3 aColor; attribute float aSize;
-      uniform mat4 uMVP; uniform float uScale; uniform float uGrow;
-      varying vec3 vColor; varying float vDepth;
-      void main() {
-        vec4 p = uMVP * vec4(aPos, 1.0);
-        gl_Position = p;
-        // ต้องจำกัดขนาดจุด — ถ้าไม่จำกัด พอหมุดใกล้กล้อง ขนาดจะพุ่งเป็นหลายร้อยพิกเซล
-        // แล้วการวาดจะหนักจนเครื่องค้าง (เจอจริงตอนทดสอบ)
-        gl_PointSize = clamp(aSize * uScale * (1.0 + uGrow) / max(1.5, p.w), 2.0, 24.0);
-        vColor = aColor;
-        vDepth = clamp((p.z / p.w + 1.0) * 0.5, 0.0, 1.0);
-      }`;
-    const FSH_PIN = `
-      precision mediump float;
-      varying vec3 vColor; varying float vDepth;
-      uniform float uDim;
-      void main() {
-        float d = length(gl_PointCoord - vec2(0.5));
-        float core = smoothstep(0.5, 0.06, d);
-        float halo = smoothstep(0.5, 0.0, d) * 0.35;
-        float a = (core + halo) * mix(1.0, 0.22, uDim) * mix(1.0, 0.55, vDepth);
-        gl_FragColor = vec4(vColor, a);
-      }`;
-
-    const compile = (type, src) => {
-      const sh = gl.createShader(type);
-      gl.shaderSource(sh, src); gl.compileShader(sh);
-      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh));
-      return sh;
-    };
-    const program = (vs, fs) => {
-      const p = gl.createProgram();
-      gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
-      gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
-      gl.linkProgram(p);
-      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
-      return p;
-    };
-
-    let lineProg, pinProg;
-    try { lineProg = program(VSH_LINE, FSH_LINE); pinProg = program(VSH_PIN, FSH_PIN); }
-    catch (e) { return null; }
-
-    // ── แปลงข้อมูลแผนที่ → เรขาคณิต 3D ──
-    const VB = M.viewBox.split(' ').map(Number);
-    const CX = VB[2] / 2, CY = VB[3] / 2, UNIT = 760;      // ย่อให้ประเทศสูง ~1 หน่วย
-    const rings = M.paths.split('M').filter(Boolean).map(seg =>
-      seg.replace('Z', '').trim().split(' ').map(pair => pair.split(',').map(Number)));
-
-    const lineVerts = [], lineSides = [];
-    const push = (x, y, z, side) => { lineVerts.push((x - CX) / UNIT, (y - CY) / UNIT, z); lineSides.push(side); };
-    const Z_TOP = 0, Z_BOTTOM = -0.055;
-    rings.forEach(r => {
-      for (let i = 0; i < r.length; i++) {
-        const a = r[i], b = r[(i + 1) % r.length];
-        push(a[0], a[1], Z_TOP, 0); push(b[0], b[1], Z_TOP, 0);           // เส้นขอบบน
-        push(a[0], a[1], Z_BOTTOM, 1); push(b[0], b[1], Z_BOTTOM, 1);    // เส้นขอบล่าง (เงา)
-        if (i % 4 === 0) { push(a[0], a[1], Z_TOP, 1); push(a[0], a[1], Z_BOTTOM, 1); }  // เส้นเชื่อมแนวตั้ง
-      }
-    });
-    const lineBuf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(lineVerts), gl.STATIC_DRAW);
-    const sideBuf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, sideBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(lineSides), gl.STATIC_DRAW);
-
-    const hex2rgb = (h) => [parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255];
-    const pinPos = [], pinCol = [], pinSize = [];
-    M.pins.forEach(p => {
-      pinPos.push((p.x - CX) / UNIT, (p.y - CY) / UNIT, 0.012);
-      const c = hex2rgb((REGION[p.r] || { color: '#6b6157' }).color);
-      pinCol.push(c[0], c[1], c[2]);
-      pinSize.push(p.a ? 7.2 : 5.6);
-    });
-    const pinCount = M.pins.length;
-    const mkBuf = (arr) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(arr), gl.STATIC_DRAW); return b; };
-    const posBuf = mkBuf(pinPos), colBuf = mkBuf(pinCol), sizeBuf = mkBuf(pinSize);
-    const state = { yaw: 0.22, pitch: -1.02, drag: false, lx: 0, ly: 0, spin: 0, focus: null, hover: -1, visible: false, raf: 0, dpr: 1 };
-    const resize = () => {
-      const r = canvas.getBoundingClientRect();
-      state.dpr = Math.min(window.devicePixelRatio || 1, state.dprCap || 1.5);
-      canvas.width = Math.max(300, Math.round(r.width * state.dpr));
-      canvas.height = Math.max(300, Math.round(r.height * state.dpr));
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      if (!state.visible) draw(0);
-    };
-
-    const mvpOf = (yaw) => {
-      const aspect = canvas.width / Math.max(1, canvas.height);
-      const P = persp(Math.PI / 4.2, aspect, 0.1, 20);
-      const V = trans(0, 0.10, -2.05);
-      const M = mul(mul(rotY(yaw), rotX(state.pitch)), scale(0.80));
-      return mul(P, mul(V, M));
-    };
-
-    const project = (mvp) => {
-      const out = [];
-      for (let i = 0; i < pinCount; i++) {
-        const x = pinPos[i * 3], y = pinPos[i * 3 + 1], z = pinPos[i * 3 + 2];
-        const w = mvp[3] * x + mvp[7] * y + mvp[11] * z + mvp[15];
-        if (w <= 0.05) { out.push(null); continue; }
-        const sx = (mvp[0] * x + mvp[4] * y + mvp[8] * z + mvp[12]) / w;
-        const sy = (mvp[1] * x + mvp[5] * y + mvp[9] * z + mvp[13]) / w;
-        out.push({ x: (sx * 0.5 + 0.5) * canvas.clientWidth, y: (-sy * 0.5 + 0.5) * canvas.clientHeight, w, r: M.pins[i].r });
-      }
-      return out;
-    };
-
-    let lastProj = [];
-    const draw = (t) => {
-      // แกว่งซ้าย-ขวาช้า ๆ (±0.22 ราด) แทนการหมุนวน เพื่อให้แผนที่อยู่ในกรอบเสมอ
-      const base = (state.drag || reduced) ? 0 : Math.sin((t || 0) * 0.00016) * 0.22;
-      const yaw = state.yaw + base;
-      const mvp = mvpOf(yaw);
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-      // เส้นขอบจังหวัด
-      gl.useProgram(lineProg);
-      gl.uniformMatrix4fv(gl.getUniformLocation(lineProg, 'uMVP'), false, mvp);
-      gl.uniform3fv(gl.getUniformLocation(lineProg, 'uTop'), hex2rgb('#cfe3c4'));
-      gl.uniform3fv(gl.getUniformLocation(lineProg, 'uBottom'), hex2rgb('#7d9b76'));
-      const aPos = gl.getAttribLocation(lineProg, 'aPos');
-      gl.bindBuffer(gl.ARRAY_BUFFER, lineBuf);
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 0, 0);
-      const aSide = gl.getAttribLocation(lineProg, 'aSide');
-      gl.bindBuffer(gl.ARRAY_BUFFER, sideBuf);
-      gl.enableVertexAttribArray(aSide);
-      gl.vertexAttribPointer(aSide, 1, gl.FLOAT, false, 0, 0);
-      gl.drawArrays(gl.LINES, 0, lineVerts.length / 3);
-
-      // หมุด
-      gl.useProgram(pinProg);
-      gl.uniformMatrix4fv(gl.getUniformLocation(pinProg, 'uMVP'), false, mvp);
-      gl.uniform1f(gl.getUniformLocation(pinProg, 'uScale'), Math.max(1.1, canvas.height / 700) * 1.6);
-      gl.uniform1f(gl.getUniformLocation(pinProg, 'uDim'), state.focus ? 1 : 0);
-      const pPos = gl.getAttribLocation(pinProg, 'aPos');
-      gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
-      gl.enableVertexAttribArray(pPos);
-      gl.vertexAttribPointer(pPos, 3, gl.FLOAT, false, 0, 0);
-      const pCol = gl.getAttribLocation(pinProg, 'aColor');
-      gl.bindBuffer(gl.ARRAY_BUFFER, colBuf);
-      gl.enableVertexAttribArray(pCol);
-      gl.vertexAttribPointer(pCol, 3, gl.FLOAT, false, 0, 0);
-      const pSize = gl.getAttribLocation(pinProg, 'aSize');
-      gl.bindBuffer(gl.ARRAY_BUFFER, sizeBuf);
-      gl.enableVertexAttribArray(pSize);
-      gl.vertexAttribPointer(pSize, 1, gl.FLOAT, false, 0, 0);
-      gl.uniform1f(gl.getUniformLocation(pinProg, 'uGrow'), 0);
-      gl.drawArrays(gl.POINTS, 0, pinCount);
-
-      // หมุดที่ชี้อยู่ วาดซ้ำให้โตขึ้น
-      if (state.hover >= 0) {
-        gl.uniform1f(gl.getUniformLocation(pinProg, 'uGrow'), 0.9);
-        gl.drawArrays(gl.POINTS, state.hover, 1);
-      }
-      lastProj = project(mvp);
-    };
-
-    let t0 = 0, lastT = 0, slowFrames = 0, lowPower = false;
-    let needDraw = true;
-    const requestDraw = () => { needDraw = true; };
-    const loop = (t) => {
-      if (!state.visible) return;
-      if (!t0) t0 = t;
-      const dt = lastT ? t - lastT : 16;
-      lastT = t;
-      slowFrames = dt > 80 ? slowFrames + 1 : Math.max(0, slowFrames - 1);
-      if (!lowPower && slowFrames > 8) {
-        // เครื่องช้า/ไม่มี GPU (เช่นโหมด software) → หยุดหมุน ลดความละเอียด
-        // แล้ววาดเฉพาะตอนมีการขยับ ไม่วาดซ้ำทุกเฟรม จะได้ไม่บล็อกหน้าเว็บ
-        lowPower = true;
-        state.spin = 0;
-        state.dprCap = 1;
-        resize();
-        requestDraw();
-      }
-      if (lowPower) {
-        if (needDraw) { draw(t - t0); needDraw = false; }
-      } else {
-        draw(t - t0);
-      }
-      state.raf = requestAnimationFrame(loop);
-    };
-    const start = () => {
-      if (state.raf) return;
-      state.visible = true;
-      resize();
-      state.raf = requestAnimationFrame(loop);
-    };
-    const stop = () => {
-      state.visible = false;
-      if (state.raf) cancelAnimationFrame(state.raf);
-      state.raf = 0;
-    };
-
-    // ── ลากหมุน ──
-    canvas.addEventListener('pointerdown', (e) => {
-      state.drag = true; state.lx = e.clientX; state.ly = e.clientY;
-      canvas.setPointerCapture(e.pointerId);
-      canvas.classList.add('grabbing');
-    });
-    canvas.addEventListener('pointermove', (e) => {
-      const r = canvas.getBoundingClientRect();
-      if (state.drag) {
-        state.yaw += (e.clientX - state.lx) * 0.006;
-        state.pitch = Math.max(-1.35, Math.min(-0.55, state.pitch + (e.clientY - state.ly) * 0.004));
-        state.lx = e.clientX; state.ly = e.clientY;
-        requestDraw();
-        if (reduced) draw(0);
-        return;
-      }
-      // หาหมุดที่ใกล้ที่สุดในระยะ 20px
-      const mx = e.clientX - r.left, my = e.clientY - r.top;
-      let best = -1, bd = 20 * 20;
-      lastProj.forEach((q, i) => {
-        if (!q) return;
-        const d = (q.x - mx) ** 2 + (q.y - my) ** 2;
-        if (d < bd) { bd = d; best = i; }
-      });
-      if (best !== state.hover) {
-        state.hover = best;
-        requestDraw();
-        if (best >= 0) {
-          const q = lastProj[best];
-          showCard(M.pins[best], 'preview');
-          canvas.style.cursor = 'pointer';
-        } else {
-          if (!selected) { cardEl.hidden = true; cardEl.innerHTML = ''; }
-          canvas.style.cursor = '';
-        }
-        if (reduced) draw(0);
-      }
-    });
-    const endDrag = (e) => {
-      state.drag = false;
-      canvas.classList.remove('grabbing');
-      try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-    };
-    canvas.addEventListener('pointerup', endDrag);
-    canvas.addEventListener('pointercancel', endDrag);
-    canvas.addEventListener('pointerleave', () => { state.hover = -1; if (!selected) { cardEl.hidden = true; cardEl.innerHTML = ''; } if (reduced) draw(0); });
-    canvas.addEventListener('click', () => {
-      if (state.hover < 0) return;
-      const p = M.pins[state.hover];
-      selected = p;
-      showCard(p, 'full');            // แสดงการ์ดเต็ม ไม่เลื่อนหน้าเว็บ
-    });
-
-    // ── สลับโหมด 2D/3D ──
-    const btn = document.querySelector('#map-mode-toggle');
-    if (btn) {
-      btn.hidden = false;
-      const setMode = (three) => {
-        (host.closest('.map-paper') || host).classList.toggle('is-3d', three);   // คลาสต้องอยู่ที่ .map-paper ให้ตรงกับ CSS
-        btn.setAttribute('aria-pressed', String(three));
-        btn.textContent = three ? '🗺 แผนที่ 2D' : '🌐 แผนที่ 3D';
-        const hint = document.querySelector('#map-hint-3d');
-        if (hint) hint.hidden = !three;
-        if (three) { canvas.style.display = 'block'; requestAnimationFrame(() => { resize(); start(); }); }
-        else { stop(); if (!selected) { cardEl.hidden = true; cardEl.innerHTML = ''; } }
-      };
-      btn.addEventListener('click', () => { lowPower = lowPower && false; setMode(btn.getAttribute('aria-pressed') !== 'true'); });
-      // หยุดวาดเมื่อเลื่อนออกจากส่วนแผนที่
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(([e]) => {
-          if (btn.getAttribute('aria-pressed') !== 'true') return;
-          if (e.isIntersecting) start(); else stop();
-        }, { threshold: 0.05 }).observe(host);
-      }
-      window.addEventListener('resize', () => { if (btn.getAttribute('aria-pressed') === 'true') resize(); });
-    }
-
-    host.appendChild(canvas);
-    return {
-      setFocus: (r) => { state.focus = r; if (state.visible && reduced) draw(0); },
-      isOn: () => document.querySelector('#map-mode-toggle')?.getAttribute('aria-pressed') === 'true',
-      start, stop,
-    };
-  })();
-
   // ══ legend + ระยะทาง (คงของเดิม) ═════════════════════════════
   const legend = document.getElementById('map-legend');
   if (legend) {
@@ -786,8 +602,8 @@
 
     legend.querySelectorAll('.map-legend-row').forEach(row => {
       const r = row.dataset.region;
-      const light = () => { svg.classList.add('focus-' + r); if (typeof stage3d !== 'undefined' && stage3d) stage3d.setFocus(r); };
-      const unlight = () => { svg.classList.remove('focus-' + r); if (typeof stage3d !== 'undefined' && stage3d) stage3d.setFocus(null); };
+      const light = () => raisePlate(r, true);
+      const unlight = () => raisePlate(r, false);
       row.addEventListener('pointerenter', light);
       row.addEventListener('pointerleave', unlight);
       row.addEventListener('focus', light);
