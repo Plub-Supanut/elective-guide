@@ -1683,3 +1683,109 @@ input:focus-visible,
   border-color: rgba(245, 239, 230, 0.14);
 }
 .map-paper.is-3d::before { opacity: 0.16; }
+
+/* ── แผนที่: การ์ดข้างแผนที่ (ย่อตอนชี้ / เต็มตอนคลิก) ────────── */
+.map-card {
+  position: relative;
+  padding: 1.1rem 1.15rem 1.2rem;
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1.1rem;
+}
+.map-card-close {
+  position: absolute; top: 0.5rem; right: 0.55rem;
+  width: 34px; height: 34px;
+  border: 0; background: none; cursor: pointer;
+  color: var(--warm-gray); font-size: 1rem; line-height: 1;
+  border-radius: 50%;
+}
+.map-card-close:hover { background: var(--sand); color: var(--charcoal); }
+.map-card-eyebrow { margin: 0 0 0.15rem; font-size: 0.72rem; letter-spacing: 0.04em; color: var(--sage-dark); }
+.map-card-name { margin: 0 0 0.5rem; font-size: 1.12rem; line-height: 1.35; color: var(--charcoal); padding-right: 2rem; }
+.map-card-badges { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.7rem; }
+.map-card-badges span {
+  font-size: 0.7rem; padding: 0.16rem 0.45rem; border-radius: 999px;
+  background: var(--sand); color: var(--warm-gray);
+}
+.map-card-facts { display: flex; flex-wrap: wrap; gap: 0.35rem 1.4rem; margin: 0 0 0.9rem; }
+.map-card-facts > div { display: flex; gap: 0.4rem; align-items: baseline; }
+.map-card-facts dt { font-size: 0.72rem; color: var(--warm-gray); }
+.map-card-facts dd { margin: 0; font-size: 0.88rem; color: var(--charcoal); }
+.map-card-hint { margin: 0; font-size: 0.76rem; color: var(--warm-gray); }
+.map-card-go {
+  width: 100%; min-height: 42px;
+  border: 1px solid var(--sage); border-radius: 10px;
+  background: var(--sage); color: #fff;
+  font-family: inherit; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.map-card-go:hover { background: var(--sage-dark); border-color: var(--sage-dark); }
+
+/* ── ปุ่มควบคุมการซูม ───────────────────────────────────────── */
+.map-zoom-ui {
+  position: absolute; right: 0.7rem; bottom: 0.7rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+  z-index: 3;
+}
+.map-zoom-ui button {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: rgba(253, 250, 246, 0.94); color: var(--charcoal);
+  font-size: 1.05rem; line-height: 1; cursor: pointer;
+  box-shadow: var(--shadow); transition: background 0.15s;
+}
+.map-zoom-ui button:hover { background: var(--sand); }
+#map-zoom-level {
+  font-size: 0.68rem; color: var(--warm-gray);
+  background: rgba(253, 250, 246, 0.9); border-radius: 6px; padding: 0.1rem 0.35rem;
+}
+.map-svg.grabbing { cursor: grabbing; }
+.map-svg { cursor: grab; }
+
+/* ── จุดจุฬาฯ (รวม 25 ภาควิชาเป็นจุดเดียว) ───────────────────── */
+.chula-ring { fill: none; stroke: var(--terra); stroke-width: 1.2; opacity: 0.5; }
+.chula-label {
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  fill: var(--terra); paint-order: stroke; stroke: var(--off-white); stroke-width: 3px;
+}
+.map-chula .pin-hit { cursor: pointer; }
+
+/* ── แผนผังอาคารจุฬาฯ (isometric) ────────────────────────────── */
+.map-campus { width: 100%; height: auto; display: block; margin: 0.2rem 0 0.6rem; }
+.campus-face { stroke: rgba(44, 40, 36, 0.18); stroke-width: 0.8; }
+.campus-face.top { fill: #e8e2d5; }
+.campus-face.side { fill: #cfc6b6; }
+.campus-face.side2 { fill: #bdb3a2; }
+.campus-label { font-family: var(--font-body); font-size: 12px; fill: var(--warm-gray); text-anchor: middle; }
+.campus-dept { cursor: pointer; }
+.campus-hit { fill: transparent; }
+.campus-dot { stroke: var(--off-white); stroke-width: 1.2; transition: r 0.15s; }
+.campus-dept:hover .campus-dot, .campus-dept.on .campus-dot, .campus-dept:focus-visible .campus-dot { r: 5.4; }
+.campus-sub { font-size: 0.76rem; color: var(--warm-gray); margin: 0.4rem 0 0.35rem; }
+.campus-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.6rem; }
+.campus-chip {
+  font-family: inherit; font-size: 0.72rem;
+  padding: 0.28rem 0.5rem; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--sand); color: var(--charcoal);
+  cursor: pointer; transition: background 0.15s;
+}
+.campus-chip:hover { background: var(--sand-mid); }
+.campus-note { font-size: 0.7rem; color: var(--warm-gray); margin: 0.2rem 0 0; line-height: 1.5; }
+
+/* ── หมุดที่ชี้/เลือกอยู่ ─────────────────────────────────────── */
+.map-pin.hover .pin-dot { opacity: 1; }
+.map-pin.on .pin-dot { opacity: 1; stroke: var(--charcoal); stroke-width: 1.1; }
+
+/* ── มือถือ: การ์ดกลายเป็นแผ่นเลื่อนขึ้นจากขอบจอ (ไม่ดันเนื้อหา) ── */
+@media (max-width: 900px) {
+  .map-card {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    margin: 0; border-radius: 18px 18px 0 0;
+    max-height: 64vh; overflow: auto;
+    box-shadow: 0 -8px 34px rgba(44, 40, 36, 0.22);
+    animation: cardUp 0.22s ease;
+  }
+  @keyframes cardUp { from { transform: translateY(18%); opacity: 0.6; } to { transform: none; opacity: 1; } }
+}

@@ -337,7 +337,8 @@
           <p class="section-eyebrow">แผนที่</p>
           <h2 class="section-title">117 ที่หมาย อยู่ตรงไหนของประเทศ</h2>
           <p class="section-sub">
-            ชี้ที่จุดเพื่อดูชื่อสถาบัน · กดที่จุดเพื่อกระโดดไปการ์ดของสถาบันนั้น · กดที่ภาคเพื่อกรองรายการด้านล่าง
+            ชี้ที่จุดเพื่อดูข้อมูลย่อด้านขวา · คลิกที่จุดเพื่อซูมเข้าและดูข้อมูลเต็ม · ลากเพื่อเลื่อนแผนที่ ·
+            หมุนล้อเมาส์หรือกด + − เพื่อซูม · กดที่ภาคเพื่อกรองรายการด้านล่าง
           </p>
           <div class="map-mode">
             <button type="button" id="map-mode-toggle" class="map-mode-btn" hidden aria-pressed="false">🌐 แผนที่ 3D</button>
@@ -349,8 +350,15 @@
             <div id="elective-map">
               <p class="map-fallback">แผนที่ต้องเปิด JavaScript · ดูรายชื่อสถาบันทั้งหมดได้ที่ส่วน «สถาบัน» ด้านล่าง</p>
             </div>
+            <div class="map-zoom-ui" role="group" aria-label="ควบคุมการซูม">
+              <button type="button" id="map-zoom-in" aria-label="ซูมเข้า">+</button>
+              <button type="button" id="map-zoom-out" aria-label="ซูมออก">−</button>
+              <button type="button" id="map-zoom-reset" aria-label="ย้อนกลับมุมเดิม">⟲</button>
+              <span id="map-zoom-level" aria-live="off">1.0×</span>
+            </div>
           </div>
           <div class="map-side">
+            <div class="map-card" id="map-card" hidden></div>
             <ul class="map-legend" id="map-legend"></ul>
             <div class="map-facts" id="map-facts"></div>
             <div class="map-near" id="map-near"></div>

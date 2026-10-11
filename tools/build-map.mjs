@@ -12,6 +12,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+const CAMPUS = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'chula-campus.json'), 'utf8'));
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 const CACHE = path.join(ROOT, 'tools', 'map-geocode.json');
 const OUT = path.join(ROOT, 'map-data.js');
@@ -93,6 +95,7 @@ window.ELECTIVE_MAP = {
   viewBox: '${vb}',
   paths: '${parts.join('')}',
   pins: ${JSON.stringify(pins)},
+  chula: ${JSON.stringify(CAMPUS)},
 };
 `;
   fs.writeFileSync(OUT, js);
