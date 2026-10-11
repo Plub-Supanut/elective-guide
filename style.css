@@ -1398,3 +1398,10 @@ input:focus-visible,
 .nm { display: inline-block; max-width: 100%; vertical-align: top; }
 /* ชิปตัวกรอง: เป้าแตะขั้นต่ำ 36px (เดิม 32px บนเดสก์ท็อป) */
 .filter-btn { min-height: 36px; }
+
+/* จอแคบมาก (≤360px): ให้ badge ลงมาอยู่ใต้ชื่อสถานที่
+   ไม่งั้นชื่อยาว ๆ จะถูกเบียดเป็น 4 บรรทัด («โรง» «พยาบาล» «พระ» «ปกเกล้า») */
+@media (max-width: 360px) {
+  .card-header { row-gap: 0.5rem; }
+  .card-header .card-title { flex: 1 0 100%; }
+}
