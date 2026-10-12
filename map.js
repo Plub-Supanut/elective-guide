@@ -340,7 +340,12 @@
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
   gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  const LABEL_NUDGE = { bkk: [34, -26], central: [-172, -44], east: [124, 34], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const LABEL_NUDGE = {   // คำนวณจากรูปทรงจริง: ทุกป้ายต้องอยู่ในภาคของตัวเอง + ไม่ทับกัน
+    north: [0, 0], south: [0, 0], isan: [0, 0],            // ค่าจากตัวสร้างอยู่ในภาคแล้ว
+    central: [-3, -69],   // ขึ้นไปอยู่แถบภาคกลางเหนือกรุงเทพ (อยู่ในภาคจริง ห่างขอบ 9.5 หน่วย)
+    bkk: [7, -4],         // กลางกรุงเทพพอดี (centroid ของภาค กทม.)
+    east: [71, 36],       // ลงไปพื้นที่กว้างของภาคตะวันออก
+  };
   const plates = {};
   Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
     if (!d || !REGION[r]) return;
