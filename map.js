@@ -340,7 +340,7 @@
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
   gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  const LABEL_NUDGE = { bkk: [16, 66], central: [-152, -30], east: [126, 34], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const LABEL_NUDGE = { bkk: [34, -26], central: [-172, -44], east: [124, 34], isan: [0, 0], north: [0, 0], south: [0, 0] };
   const plates = {};
   Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
     if (!d || !REGION[r]) return;
@@ -1027,6 +1027,13 @@
     clean0.setAttribute('aria-hidden', 'true');
     clean0.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     svg.parentNode.replaceChild(clean0, svg);
+    // ผู้ใช้: วงแดงเลข 22 กลางแผนที่ไม่สวย → เอาเลขออกและย่อวงให้พอดี
+    clean0.querySelectorAll('.hub-count').forEach(el => el.remove());
+    clean0.querySelectorAll('.hub-dot').forEach(el => el.setAttribute('r', '5.6'));
+    clean0.querySelectorAll('.map-pin.hub, .pin-hub').forEach(el => el.classList.remove('dim'));
+    // แผนที่นิ่งแล้ว → ป้ายภาคไม่ต้องซ่อนเอง (เดิมซ่อนเมื่อคิดว่าหลุดกรอบ ทำให้ 'ภาคกลาง' หาย)
+    clean0.querySelectorAll('.plate-label-wrap.off').forEach(el => el.classList.remove('off'));
+    clean0.querySelectorAll('.plate-labels').forEach(el => el.classList.remove('dim', 'sel'));
     clean0.querySelectorAll('[tabindex]').forEach(el => el.removeAttribute('tabindex'));
     clean0.querySelectorAll('[role="button"]').forEach(el => el.removeAttribute('role'));
     window.__MAP.staticView = clean0;
