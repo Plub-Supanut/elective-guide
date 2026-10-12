@@ -1773,3 +1773,7 @@ input:focus-visible,
 
 /* หมุดที่ใกล้พอจะชี้ — เคอร์เซอร์เป็น pointer ทั้งกรอบ เพื่อบอกว่ากดได้ */
 .map-svg.pin-hot { cursor: pointer; }
+
+/* แถบเมนูติดขอบบน (สูง ~62px) — กันไม่ให้ปลายทางของการเลื่อน/anchor ไปอยู่ใต้แถบ */
+html { scroll-padding-top: 78px; }
+.map-section, .map-card, #institutions, #ssc, #faculty { scroll-margin-top: 78px; }

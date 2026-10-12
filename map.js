@@ -435,7 +435,17 @@
     // ซ่อนป้ายชื่อภาคที่จุดยึดหลุดกรอบ (ไม่งั้นโดนขอบตัดครึ่ง ดูเหมือนบั๊ก)
     Object.values(plates).forEach(pl => {
       const sx = pl.labX * cam.k + cam.tx, sy = pl.labY * cam.k + cam.ty;
-      pl.wrap.classList.toggle('off', sx < 10 || sx > VB[2] - 10 || sy < 10 || sy > VB[3] - 10);
+      // ป้ายถูกย่อ/ขยายสวนทางกล้อง (คงขนาดบนจอ) → ขนาดในหน่วย viewBox คงที่ วัดครั้งเดียวพอ
+      if (pl.halfW == null) {
+        try {
+          const b = pl.wrap.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+          pl.halfW = b.width > 1 ? (b.width / 2) / (sr.width / VB[2]) : 26;
+          pl.halfH = b.height > 1 ? (b.height / 2) / (sr.height / VB[3]) : 12;
+        } catch (_) { pl.halfW = 26; pl.halfH = 12; }
+      }
+      const hw = pl.halfW + 1.5, hh = pl.halfH + 1.5;
+      pl.wrap.classList.toggle('off',
+        sx - hw < 0 || sx + hw > VB[2] || sy - hh < 0 || sy + hh > VB[3]);
     });
   };
   const stepCam = () => {

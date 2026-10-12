@@ -9,6 +9,7 @@
  * หมายเหตุ: ไฟล์ผลลัพธ์ map-data.js ถูก commit ไว้แล้ว เว็บใช้ไฟล์นั้นตรง ๆ
  *           สคริปต์นี้รันใหม่เฉพาะเมื่อรายชื่อสถาบันเปลี่ยน (เช่น หลังซิงก์ข้อมูล)
  */
+const clean = (s) => String(s || '').replace(/\s+/g, ' ').trim();
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -149,7 +150,7 @@ async function main() {
       if (!hit) stray.add(`${v.title} (ตกนอกประเทศ?)`);
     }
     pins.push({
-      n: v.title, r: v.region, x: +x.toFixed(1), y: +y.toFixed(1),
+      n: clean(v.title), r: v.region, x: +x.toFixed(1), y: +y.toFixed(1),
       t: v.tags || '',
       // a: 1 = พิกัดจริง (รวมภาควิชาจุฬาฯ ที่ใช้พิกัดคณะฯ) · 0 = ตำแหน่งโดยประมาณ (ระดับจังหวัด/ภาค)
       a: ['province-centroid', 'approximate'].includes(v.src) ? 0 : 1,
