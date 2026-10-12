@@ -227,3 +227,7 @@
   outline-offset: 2px;
   border-radius: 6px;
 }
+
+/* ปุ่มปิดการ์ดแผนที่ต้องกด/แตะได้เสมอ — egRowIn แตะ transform ของ .map-card > * ทุกตัว
+   ทำให้ลูกที่อยู่หลังปุ่มใน DOM สร้าง stacking context วาดทับ (tester รอบ 5: แตะกลางปุ่มไม่ปิดที่ 390px) */
+.map-card-close { z-index: 3; }

@@ -1777,3 +1777,8 @@ input:focus-visible,
 /* แถบเมนูติดขอบบน (สูง ~62px) — กันไม่ให้ปลายทางของการเลื่อน/anchor ไปอยู่ใต้แถบ */
 html { scroll-padding-top: 78px; }
 /* ใช้ html { scroll-padding-top } อย่างเดียว ไม่ใส่ scroll-margin-top ซ้ำ (ไม่งั้นเบิ้ล 78+78px) */
+
+/* เป้าสัมผัสของลิงก์เมนูบนจอเล็ก ต้อง ≥44px (tester รอบ 5 วัดได้ 34px) */
+@media (max-width: 480px) {
+  .nav-links a { min-height: 44px; }
+}
