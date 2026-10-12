@@ -223,10 +223,11 @@
       <h3 class="map-card-name">${p.n}</h3>
       <div class="map-card-badges">${badgeOf(p).map(b => `<span>${b}</span>`).join('')}</div>
       <dl class="map-card-facts">
-        ${dv ? `<div class="is-drive"><dt>ขับรถจากคณะฯ</dt><dd>${dv.km} กม. · ${dv.min} นาที</dd></div>` : ''}
+        ${dv ? `<div class="is-drive"><dt>ขับรถจากคณะฯ</dt><dd>${dv.km} กม. · ≈${dv.min} นาที</dd></div>` : ''}
         <div><dt>${dv ? 'เส้นตรง' : 'ระยะจากคณะฯ'}</dt><dd>${Math.round(kmOf(p))} กม.${dv ? '' : ' (เส้นตรง)'}</dd></div>
         ${p.a ? '' : '<div><dt>พิกัด</dt><dd>ตำแหน่งโดยประมาณ</dd></div>'}
       </dl>
+      ${dv ? '<p class="map-card-traffic">เวลาเป็นค่าประมาณ ขึ้นกับช่วงเวลาและการจราจร</p>' : ''}
       ${mode === 'full'
         ? '<button type="button" class="map-card-go">ไปที่การ์ดเต็มในรายการ ↓</button>'
         : ''}
@@ -942,14 +943,6 @@
       li.appendChild(btn);
       legend.appendChild(li);
     });
-    if (!document.querySelector('.map-legend-hint')) {
-      const hint = document.createElement('p');
-      hint.className = 'map-legend-hint';
-      hint.textContent = canHover
-        ? 'ชี้ที่ภาค → แผนที่เพ่งภาคนั้นพร้อมตัวเลขจริง · คลิก → กรองรายการสถาบัน'
-        : 'แตะภาค → กรองรายการสถาบัน · แตะซ้ำอีกครั้ง → ยกเลิก';
-      legend.after(hint);
-    }
     const syncPressed = () => {
       legend.querySelectorAll('.map-legend-row').forEach(btn => {
         const chip = document.querySelector(`.filter-btn[data-filter="region:${btn.dataset.region}"]`);
@@ -998,11 +991,11 @@
       .sort((a, b) => a.km - b.km);
     const row = (o, tag) => `<li class="map-near-row" tabindex="0" role="button" data-name="${o.p.n.replace(/"/g, '&quot;')}">`
       + `<span class="map-near-tag">${tag}</span><span class="map-near-name">${o.p.n}</span>`
-      + `<span class="map-near-km">${o.km >= 100 ? Math.round(o.km) : o.km} กม.${o.min != null ? ` · ${o.min} น.` : ''}</span></li>`;
+      + `<span class="map-near-km">${o.km >= 100 ? Math.round(o.km) : o.km} กม.${o.min != null ? ` · ≈${o.min} น.` : ''}</span></li>`;
     nearBox.innerHTML = `<h3 class="map-near-title">ระยะทางขับรถจากคณะฯ</h3><ul class="map-near-list">`
       + away.slice(0, 2).map(o => row(o, 'ใกล้สุด')).join('')
       + away.slice(-3).reverse().map(o => row(o, 'ไกลสุด')).join('')
-      + `</ul><p class="map-near-note">ระยะทางตามเส้นทางถนน · ${driveProv()}</p>`;
+      + `</ul><p class="map-near-note">เส้นทางถนน · ${driveProv()} · เวลาเป็นค่าประมาณ (ขึ้นกับเวลาและการจราจร)</p>`;
     nearBox.querySelectorAll('.map-near-row').forEach(li => {
       const go = () => jumpToCard(li.dataset.name);
       li.addEventListener('click', go);

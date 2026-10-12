@@ -1824,7 +1824,9 @@ html { scroll-padding-top: 78px; }
 .map-legend-row:hover .legend-dot,
 .map-legend-row[aria-pressed="true"] .legend-dot { transform: scale(1.4); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8); }
 .map-legend-row:hover .legend-count { color: var(--terra); font-weight: 700; }
-.map-legend-hint { margin: 0.4rem 0 0; font-size: 0.72rem; line-height: 1.5; color: var(--warm-gray); }
+
+/* หมายเหตุใต้การ์ด: เวลาขับรถเป็นค่าประมาณ (ไม่ใช่คำอธิบายวิธีใช้ UI) */
+.map-card-traffic { margin: -0.5rem 0 0.9rem; font-size: 0.72rem; line-height: 1.5; color: var(--warm-gray); }
 
 /* เป้าสัมผัสของลิงก์เมนูบนจอเล็ก ต้อง ≥44px (tester รอบ 5 วัดได้ 34px) */
 @media (max-width: 480px) {
