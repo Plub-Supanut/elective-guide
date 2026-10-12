@@ -560,18 +560,18 @@
       pl.g.addEventListener('focusin', enter);
       pl.g.addEventListener('focusout', leave);
     }
-    const use = () => {
+    const use = (scroll = true) => {
       const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
       if (chip) {
         chip.click();
-        document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+        if (scroll) document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
       }
     };
     pl.g.addEventListener('click', (e) => {
       if (moved > 6) return;
       e.stopPropagation();
-      use();
-      preview(null);        // จอสัมผัส: ไม่ให้ค้างสถานะเพ่งดูหลังแตะ (เหลือแต่ สถานะกรอง/ไม่กรอง)
+      use(false);           // คลิกบนแผนที่ = เลือกภาค ไม่ต้องกระโดดหน้าเว็บ (เลื่อนเฉพาะเมื่อคลิกจากรายการภาค)
+      preview(null);
     });
     pl.g.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); use(); }
@@ -840,6 +840,13 @@
     const unit = (r.width / VB[2]) * cam.k;
     const reach = touch ? HIT_PX * 1.7 : HIT_PX;
     const hubsOpen = svg.classList.contains('hub-open');
+    // วงกระจุกต้อง "ชนะ" การ hit-test: จุดจุฬาฯ อยู่ห่างศูนย์กลางวงไม่ถึง 1px
+    // ถ้าไม่กันไว้ ชี้/คลิกวงจะได้การ์ด «คณะแพทยศาสตร์ จุฬาฯ» แทนที่จะเป็นปุ่มซูมเข้า
+    if (!hubsOpen) {
+      for (const h of hubList) {
+        if (Math.hypot(h.cx - wx, h.cy - wy) * unit <= HUB_HIT_PX) return null;
+      }
+    }
     const cands = [];
     dots.forEach(rec => {
       if (!hubsOpen && rec.hub) return;                 // หมุดที่ถูกรวมอยู่ในกระจุก ยังกดไม่ได้จนกว่าจะซูม
