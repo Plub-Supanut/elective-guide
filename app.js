@@ -524,7 +524,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     // If a search/filter is hiding the list, clear it first so the
     // anchor never drops the reader into an empty section.
     if (mainList.hidden) clearAll();
-    const offset = 70;
+    const offset = 78;   // ตรงกับ html { scroll-padding-top: 78px } ให้ลงจอดเท่ากันทุกเส้นทาง
     const top = target.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' });
   });
