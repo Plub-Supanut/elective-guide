@@ -1830,3 +1830,21 @@ html { scroll-padding-top: 78px; }
 @media (max-width: 480px) {
   .nav-links a { min-height: 44px; }
 }
+
+/* กระจุกหมุด: เป้าสัมผัสล่องหน ≥44px (ตัววงกลมยังเล็กตามดีไซน์) */
+.hub-hit { fill: transparent; cursor: pointer; }
+
+/* ── จอสัมผัส: กันไฮไลต์ค้าง ───────────────────────────────────────
+   เบราว์เซอร์บนมือถือ "คง" สถานะ :hover ไว้หลังแตะ จนกว่าจะแตะที่อื่น
+   ทำให้ผู้ใช้คิดว่ายกเลิกการเลือกไม่สำเร็จ → บนจอที่ไม่มี hover ให้ยกเลิกสไตล์ hover ทั้งหมด
+   แล้วเหลือเฉพาะสถานะ "เลือกอยู่" (aria-pressed=true) ที่คงอยู่จริง                        */
+@media (hover: none) {
+  .map-legend-row:hover:not([aria-pressed="true"]) { background: none; }
+  .map-legend-row:hover:not([aria-pressed="true"]) .legend-dot { transform: none; box-shadow: none; }
+  .map-legend-row:hover:not([aria-pressed="true"]) .legend-count { color: var(--warm-gray); font-weight: 600; }
+}
+/* สถานะ "เลือกอยู่" — เห็นชัดและคงอยู่ ไม่ใช่แค่ตอนชี้ */
+.map-legend-row[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1.5px rgba(196, 113, 75, 0.45);
+}
+.map-legend-row[aria-pressed="true"] .legend-count { color: var(--terra); font-weight: 700; }

@@ -14,6 +14,7 @@
 
   const NS = 'http://www.w3.org/2000/svg';
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;   // จอสัมผัสไม่มี hover → ห้ามค้างสถานะ "เพ่งดู"
 
   // ── สี/ชื่อภาค (ชุดเดียวกับทั้งเว็บ) ──────────────────────────
   const REGION = {
@@ -409,6 +410,8 @@
   // ══ กระจุกหมุด: พื้นที่ที่หมุดแน่น (กทม.) รวมเป็นจุดเดียวพร้อมตัวเลข ══
   // ปัญหาเดิม: 50 จุดใน กทม. ซ้อนทับกันจนอ่านไม่ออก · ใหม่: ปุ่มตัวเลข → กดแล้วซูมเข้าไปจนแยกออก
   const HUB_R = 15;
+  const HUB_PX = 13;        // รัศมีจริงบนจอ (px) — คงที่ไม่ว่าจะจอใหญ่หรือเล็ก
+  const HUB_HIT_PX = 22;    // เป้าสัมผัสขั้นต่ำ = 44px เส้นผ่านศูนย์กลาง
   const gHubs = document.createElementNS(NS, 'g');
   gHubs.setAttribute('class', 'map-hubs');
   gPins.after(gHubs);
@@ -446,7 +449,11 @@
       txt.setAttribute('x', '0'); txt.setAttribute('y', '0');
       txt.setAttribute('font-size', (rad * 1.02).toFixed(1));
       txt.textContent = String(list.length);
-      g.append(dot, txt);
+      const hit = document.createElementNS(NS, 'circle');
+      hit.setAttribute('cx', '0'); hit.setAttribute('cy', '0');
+      hit.setAttribute('r', rad.toFixed(1));
+      hit.setAttribute('class', 'hub-hit');
+      g.append(hit, dot, txt);
       const zoomIn = (e) => {
         if (e) { e.stopPropagation(); e.preventDefault(); }
         focusPin({ x: cx, y: cy }, 3.4);
@@ -455,7 +462,7 @@
       g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') zoomIn(e); });
       gHubs.appendChild(g);
       list.forEach((rec) => { rec.g.classList.add('in-hub'); rec.hub = g; });
-      hubList.push({ g, dot, txt, cx, cy, rad, list });
+      hubList.push({ g, dot, txt, hit, cx, cy, rad, list });
     });
   }
 
@@ -526,6 +533,7 @@
       pl.g.classList.toggle('sel', !pre && sel.has(r));
       if (pl.pinG) { pl.pinG.classList.toggle('lit', lit); pl.pinG.classList.toggle('dim', dim); }
       if (pl.labG) { pl.labG.classList.toggle('lit', lit); pl.labG.classList.toggle('dim', dim); }
+      if (pl.wrap) { pl.wrap.classList.toggle('lit', lit); pl.wrap.classList.toggle('dim', dim); pl.wrap.classList.toggle('sel', !pre && sel.has(r)); }
     });
     hubList.forEach(h => {
       const r = h.g.dataset.region;
@@ -545,10 +553,12 @@
   Object.entries(plates).forEach(([r, pl]) => {
     const enter = () => preview(r);
     const leave = () => preview(null);
-    pl.g.addEventListener('pointerenter', enter);
-    pl.g.addEventListener('pointerleave', leave);
-    pl.g.addEventListener('focusin', enter);
-    pl.g.addEventListener('focusout', leave);
+    if (canHover) {                       // hover/focus มีความหมายเฉพาะจอที่มีเมาส์
+      pl.g.addEventListener('pointerenter', enter);
+      pl.g.addEventListener('pointerleave', leave);
+      pl.g.addEventListener('focusin', enter);
+      pl.g.addEventListener('focusout', leave);
+    }
     const use = () => {
       const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
       if (chip) {
@@ -556,7 +566,12 @@
         document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
       }
     };
-    pl.g.addEventListener('click', (e) => { if (moved > 6) return; e.stopPropagation(); use(); });
+    pl.g.addEventListener('click', (e) => {
+      if (moved > 6) return;
+      e.stopPropagation();
+      use();
+      preview(null);        // จอสัมผัส: ไม่ให้ค้างสถานะเพ่งดูหลังแตะ (เหลือแต่ สถานะกรอง/ไม่กรอง)
+    });
     pl.g.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); use(); }
     });
@@ -598,10 +613,19 @@
     svg.classList.toggle('is-zoomed', cam.k > 1.15);
     // กระจุกหมุด: คงขนาดบนจอ + เปิดออกเมื่อซูมพอ ("กดตัวเลข → ซูมเข้า → แยกเป็นจุด")
     const hs = Math.pow(cam.k, -0.55);
+    const rect0 = svg.getBoundingClientRect();
+    const upx = rect0.width > 0 ? rect0.width / VB[2] : 0.58;   // พิกเซลต่อหน่วย viewBox ที่ k=1
+    const hf = Math.pow(cam.k, 0.45) * upx;                     // ตัวคูณจริงบนจอของกลุ่มกระจุก
     hubList.forEach(h => {
       h.g.style.transform = `translate(${h.cx.toFixed(1)}px, ${h.cy.toFixed(1)}px) scale(${hs.toFixed(3)})`;
+      const r = hf > 0 ? HUB_PX / hf : h.rad;                   // คงขนาดบนจอทุกจอ ทุกซูม
+      h.dot.setAttribute('r', r.toFixed(1));
+      h.txt.setAttribute('font-size', (r * 1.02).toFixed(1));
+      if (h.hit) h.hit.setAttribute('r', Math.max(r, hf > 0 ? HUB_HIT_PX / hf : r).toFixed(1));
     });
     svg.classList.toggle('hub-open', cam.k > 2.4);
+    // นิ้วเดียวลากได้เฉพาะตอนซูมอยู่ (ตอนไม่ซูมต้องเลื่อนหน้าเว็บได้ — ไม่งั้นจอเล็กจะติดกับแผนที่)
+    svg.style.touchAction = cam.k > 1.02 ? 'none' : 'pan-y';
     // ซ่อนป้ายชื่อภาคที่จุดยึดหลุดกรอบ (ไม่งั้นโดนขอบตัดครึ่ง ดูเหมือนบั๊ก)
     Object.values(plates).forEach(pl => {
       const sx = pl.labX * cam.k + cam.tx, sy = pl.labY * cam.k + cam.ty;
@@ -670,7 +694,9 @@
     moved = 0; vx = 0; vy = 0; lastT = e.timeStamp;
     // หมายเหตุ: ห้าม setPointerCapture ตอนนี้ — ถ้าจับตั้งแต่กด คลิกจะไม่ถึงหมุด
     if (pointers.size === 1) {
-      if (isTouch(e)) { /* นิ้วเดียว = เลื่อนหน้าเว็บตามปกติ ไม่แย่ง */ return; }
+      // นิ้วเดียว: ถ้ายังไม่ซูม แผนที่พอดีกรอบ → ปล่อยให้นิ้วเลื่อนหน้าเว็บตามปกติ
+      //           ถ้าซูมอยู่แล้ว → ลากเพื่อแพนแผนที่ (ผู้ใช้บ่นว่า "pan map ในมือถือไม่ได้")
+      if (isTouch(e) && cam.k <= 1.02) return;
       dragging = true; lastX = e.clientX; lastY = e.clientY;
       svg.classList.add('grabbing');
     } else if (pointers.size === 2) {
@@ -919,7 +945,9 @@
     if (!document.querySelector('.map-legend-hint')) {
       const hint = document.createElement('p');
       hint.className = 'map-legend-hint';
-      hint.textContent = 'ชี้ที่ภาค → แผนที่เพ่งภาคนั้นพร้อมตัวเลขจริง · คลิก → กรองรายการสถาบัน';
+      hint.textContent = canHover
+        ? 'ชี้ที่ภาค → แผนที่เพ่งภาคนั้นพร้อมตัวเลขจริง · คลิก → กรองรายการสถาบัน'
+        : 'แตะภาค → กรองรายการสถาบัน · แตะซ้ำอีกครั้ง → ยกเลิก';
       legend.after(hint);
     }
     const syncPressed = () => {
@@ -939,13 +967,16 @@
       const r = row.dataset.region;
       const light = () => preview(r);
       const unlight = () => preview(null);
-      row.addEventListener('pointerenter', light);
-      row.addEventListener('pointerleave', unlight);
-      row.addEventListener('focus', light);
-      row.addEventListener('blur', unlight);
+      if (canHover) {                       // จอสัมผัส: ไม่ผูก hover/focus (ไม่งั้นไฮไลต์ค้างหลังแตะ)
+        row.addEventListener('pointerenter', light);
+        row.addEventListener('pointerleave', unlight);
+        row.addEventListener('focus', light);
+        row.addEventListener('blur', unlight);
+      }
       row.addEventListener('click', () => {
         const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
         if (chip) { chip.click(); document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
+        preview(null);                      // แตะแล้วต้องไม่ค้างไฮไลต์ — ให้เหลือแต่ "เลือกอยู่/ไม่เลือก"
       });
     });
   }
