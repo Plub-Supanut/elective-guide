@@ -23,6 +23,7 @@
     north:   { name: 'ภาคเหนือ',  color: '#c9849a' },
     isan:    { name: 'ภาคอีสาน',  color: '#b3893f' },
     south:   { name: 'ภาคใต้',    color: '#6f8c9b' },
+    east:    { name: 'ภาคตะวันออก', color: '#9385b5' },
   };
   const colorOf = r => (REGION[r] ? REGION[r].color : '#6b6157');
   const count = r => M.pins.filter(p => p.r === r).length;
@@ -339,7 +340,7 @@
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
   gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  const LABEL_NUDGE = { bkk: [142, 106], central: [-46, 54], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const LABEL_NUDGE = { bkk: [16, 66], central: [-152, -30], east: [126, 34], isan: [0, 0], north: [0, 0], south: [0, 0] };
   const plates = {};
   Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
     if (!d || !REGION[r]) return;
@@ -975,7 +976,7 @@
   if (facts) {
     const dorm = M.pins.filter(p => p.d).length;
     const free = M.pins.filter(p => p.f).length;
-    facts.innerHTML = [`${M.pins.length} สถาบัน`, '5 ภาค', `มีที่พัก ${dorm}`, `ที่พักฟรี ${free}`]
+    facts.innerHTML = [`${M.pins.length} สถาบัน`, `${Object.keys(REGION).length} ภาค`, `มีที่พัก ${dorm}`, `ที่พักฟรี ${free}`]
       .map(t => `<span class="map-fact">${t}</span>`).join('');
   }
 
