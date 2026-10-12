@@ -26,6 +26,22 @@
   const colorOf = r => (REGION[r] ? REGION[r].color : '#6b6157');
   const count = r => M.pins.filter(p => p.r === r).length;
 
+  // สีภาคแบบ "ทึบ" ที่ผสมกับสีกระดาษไว้ล่วงหน้า
+  // เหตุผล: ถ้าใช้ fill-opacity ต่ำ ๆ แล้วตีเส้นขอบจังหวัด สีจะซ้อนกันจนเป็น «เส้นเข้ม» เต็มไปหมด
+  // วิธีนี้ทำให้พื้นที่ภาคเป็นสีทึบเรียบเนียน ไม่มีรอยต่อจังหวัดให้ตาลาย
+  const PAPER_RGB = [243, 235, 223];
+  const mixHex = (hex, t) => '#' + [1, 3, 5]
+    .map(i => parseInt(hex.slice(i, i + 2), 16))
+    .map((v, i) => Math.round(v * t + PAPER_RGB[i] * (1 - t)).toString(16).padStart(2, '0'))
+    .join('');
+
+  // ── ระยะทาง "ขับรถ" จากคณะฯ ───────────────────────────────────
+  // สร้างล่วงหน้าด้วย tools/build-drive-distances.mjs (Google Distance Matrix ถ้ามีคีย์ · ไม่มีก็ใช้ OSRM)
+  // เก็บเป็น map-drive.js → เว็บไม่ต้องเรียก API ตอนผู้ใช้เปิด
+  const DRIVE = (window.ELECTIVE_DRIVE && window.ELECTIVE_DRIVE.byName) || null;
+  const driveOf = (p) => (DRIVE ? DRIVE[p.n] || null : null);
+  const driveProv = () => (window.ELECTIVE_DRIVE || {}).provider === 'google' ? 'Google Maps' : 'OpenStreetMap (OSRM)';
+
   // ── จุดอ้างอิงคณะแพทยศาสตร์ จุฬาฯ + วิธีคิดระยะทาง ────────────
   const LON0 = 97.343, LAT0 = 20.464, COS = Math.cos(13 * Math.PI / 180);
   const proj = (lon, lat) => [(lon - LON0) * COS * 100, (LAT0 - lat) * 100];
@@ -89,10 +105,6 @@
   svg.setAttribute('aria-label', `แผนที่ประเทศไทยแสดงที่ตั้งสถาบัน ${M.pins.length} แห่ง`);
 
   const gLand = document.createElementNS(NS, 'g'); gLand.setAttribute('class', 'map-land');
-  const depthPath = document.createElementNS(NS, 'path');      // ขอบหนาของแผ่นประเทศ (ให้ดูเป็น slab)
-  depthPath.setAttribute('d', M.paths);
-  depthPath.setAttribute('class', 'map-land-depth');
-  gLand.appendChild(depthPath);
   const landPath = document.createElementNS(NS, 'path');
   landPath.setAttribute('d', M.paths);
   gLand.appendChild(landPath);
@@ -104,11 +116,22 @@
   svg.appendChild(gZoom);
   host.appendChild(svg);
 
+  // ตัดสีภาคให้พอดีกับเส้นขอบประเทศ (สีไม่ล้นออกนอกแผ่นดิน)
+  const defs = document.createElementNS(NS, 'defs');
+  const clip = document.createElementNS(NS, 'clipPath');
+  clip.setAttribute('id', 'eg-land-clip');
+  clip.setAttribute('clipPathUnits', 'userSpaceOnUse');
+  const clipShape = document.createElementNS(NS, 'path');
+  clipShape.setAttribute('d', M.paths);
+  clip.appendChild(clipShape);
+  defs.appendChild(clip);
+  svg.insertBefore(defs, svg.firstChild);
+
   // ══ หมุด ══════════════════════════════════════════════════════
   const chulaPins = M.pins.filter(p => p.t.includes('chula'));
   const normalPins = M.pins.filter(p => !p.t.includes('chula'));
   const dots = [];
-  const PIN_R = 5.1, HALO_R = 10.5, HIT_R = 14;
+  const PIN_R = 4.4, HALO_R = 9.6, HIT_R = 14;
 
   // กลุ่มหมุดรายภาค — ยก/จางพร้อมแผ่นภาคเสมอ (จุดหมุดเป็น entity เดียวกับภาค)
   const pinGroups = {};
@@ -192,13 +215,15 @@
   const showCard = (p, mode) => {
     if (!cardEl) return;
     const rg = REGION[p.r] ? REGION[p.r].name : '';
+    const dv = driveOf(p);
     paintCard(`
       <button type="button" class="map-card-close" aria-label="ปิด">✕</button>
       <p class="map-card-eyebrow">${rg}</p>
       <h3 class="map-card-name">${p.n}</h3>
       <div class="map-card-badges">${badgeOf(p).map(b => `<span>${b}</span>`).join('')}</div>
       <dl class="map-card-facts">
-        <div><dt>ระยะจากคณะฯ</dt><dd>${Math.round(kmOf(p))} กม. (เส้นตรง)</dd></div>
+        ${dv ? `<div class="is-drive"><dt>ขับรถจากคณะฯ</dt><dd>${dv.km} กม. · ${dv.min} นาที</dd></div>` : ''}
+        <div><dt>${dv ? 'เส้นตรง' : 'ระยะจากคณะฯ'}</dt><dd>${Math.round(kmOf(p))} กม.${dv ? '' : ' (เส้นตรง)'}</dd></div>
         ${p.a ? '' : '<div><dt>พิกัด</dt><dd>ตำแหน่งโดยประมาณ</dd></div>'}
       </dl>
       ${mode === 'full'
@@ -305,9 +330,14 @@
   // ══ แผ่นภาค — ยกพร้อมหมุดและป้ายชื่อของภาคนั้น (entity เดียว) ══════
   const gPlates = document.createElementNS(NS, 'g');
   gPlates.setAttribute('class', 'map-plates');
+  gPlates.setAttribute('clip-path', 'url(#eg-land-clip)');   // สีภาคไม่ล้นออกนอกเส้นขอบประเทศ
+  // ป้ายชื่อภาคอยู่นอกกลุ่มที่ถูก clip — ไม่งั้นป้ายของภาคที่แผ่นดินแคบ (ภาคใต้) จะโดนตัดครึ่ง
+  const gLabels = document.createElementNS(NS, 'g');
+  gLabels.setAttribute('class', 'map-labels');
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
+  gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  const LABEL_NUDGE = { bkk: [128, 74], central: [-24, 40], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const LABEL_NUDGE = { bkk: [142, 106], central: [-150, -14], isan: [0, 0], north: [0, 0], south: [0, 0] };
   const plates = {};
   Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
     if (!d || !REGION[r]) return;
@@ -320,10 +350,9 @@
     g.setAttribute('class', 'plate');
     g.dataset.region = r;
     g.style.setProperty('--rc', REGION[r].color);
+    g.style.setProperty('--rc-soft', mixHex(REGION[r].color, 0.34));
+    g.style.setProperty('--rc-lift', mixHex(REGION[r].color, 0.58));
 
-    const depth = document.createElementNS(NS, 'path');
-    depth.setAttribute('d', d);
-    depth.setAttribute('class', 'plate-depth');
     const face = document.createElementNS(NS, 'path');
     face.setAttribute('d', d);
     face.setAttribute('class', 'plate-face');
@@ -343,7 +372,13 @@
     label.textContent = `${REGION[r].name} · ${list.length}`;
     wrap.appendChild(label);
 
-    g.append(depth, face, hit, wrap);
+    const labG = document.createElementNS(NS, 'g');
+    labG.setAttribute('class', 'plate-labels');
+    labG.dataset.region = r;
+    labG.appendChild(wrap);
+    gLabels.appendChild(labG);
+
+    g.append(face, hit);
     gPlates.appendChild(g);
 
     // จุดหมุนร่วม: จุดกลางของแผ่น → แผ่นกับหมุดของภาคนี้ยกพร้อมกันเป๊ะ
@@ -352,7 +387,7 @@
     g.style.transformOrigin = `${ox}px ${oy}px`;
     const pg = pinGroupFor(r);
     pg.style.transformOrigin = `${ox}px ${oy}px`;
-    plates[r] = { g, pinG: pg, wrap, label, labX: lab[0] + nudge[0], labY: lab[1] + nudge[1] };
+    plates[r] = { g, pinG: pg, wrap, label, labG, labX: lab[0] + nudge[0], labY: lab[1] + nudge[1] };
   });
 
   // แผ่นรองป้ายชื่อ — สร้างหลังวัดข้อความจริงได้
@@ -371,17 +406,145 @@
     } catch (_) {}
   });
 
-  const raisePlate = (r, on) => {
-    Object.entries(plates).forEach(([key, pl]) => {
-      const up = on && key === r, dim = on && key !== r;
-      pl.g.classList.toggle('up', up);
+  // ══ กระจุกหมุด: พื้นที่ที่หมุดแน่น (กทม.) รวมเป็นจุดเดียวพร้อมตัวเลข ══
+  // ปัญหาเดิม: 50 จุดใน กทม. ซ้อนทับกันจนอ่านไม่ออก · ใหม่: ปุ่มตัวเลข → กดแล้วซูมเข้าไปจนแยกออก
+  const HUB_R = 15;
+  const gHubs = document.createElementNS(NS, 'g');
+  gHubs.setAttribute('class', 'map-hubs');
+  gPins.after(gHubs);
+  const hubList = [];
+  {
+    // จับกลุ่มแบบ "เพื่อนบ้านใกล้กัน" (ไม่ใช่ตาราง) — กทม. ที่หมุดกระจุกจึงรวมเป็นก้อนเดียวจริง
+    const R = 11, MIN = 5;
+    const pool = dots.filter(rec => !rec.cluster);
+    const used = new Set();
+    pool.forEach((seed) => {
+      if (used.has(seed)) return;
+      const list = pool.filter(r => !used.has(r) && Math.hypot(r.p.x - seed.p.x, r.p.y - seed.p.y) <= R);
+      if (list.length < MIN) return;
+      list.forEach(r => used.add(r));
+      const cx = list.reduce((s, r) => s + r.p.x, 0) / list.length;
+      const cy = list.reduce((s, r) => s + r.p.y, 0) / list.length;
+      const rad = 11 + Math.min(9, list.length * 0.5);     // ยิ่งมาก ยิ่งวงใหญ่
+      const g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'pin-hub');
+      g.setAttribute('role', 'button');
+      g.setAttribute('tabindex', '0');
+      g.dataset.region = list[0].p.r;
+      g.style.setProperty('--rc', colorOf(list[0].p.r));
+      g.style.transformBox = 'view-box';
+      g.style.transformOrigin = '0 0';
+      g.style.transform = `translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px)`;
+      g.setAttribute('aria-label', `${list.length} สถาบันในพื้นที่นี้ — กดเพื่อซูมเข้า`);
+      const dot = document.createElementNS(NS, 'circle');
+      dot.setAttribute('cx', '0'); dot.setAttribute('cy', '0');
+      dot.setAttribute('r', rad.toFixed(1));
+      dot.setAttribute('class', 'hub-dot');
+      dot.setAttribute('fill', colorOf(list[0].p.r));
+      const txt = document.createElementNS(NS, 'text');
+      txt.setAttribute('class', 'hub-count');
+      txt.setAttribute('x', '0'); txt.setAttribute('y', '0');
+      txt.setAttribute('font-size', (rad * 1.02).toFixed(1));
+      txt.textContent = String(list.length);
+      g.append(dot, txt);
+      const zoomIn = (e) => {
+        if (e) { e.stopPropagation(); e.preventDefault(); }
+        focusPin({ x: cx, y: cy }, 3.4);
+      };
+      g.addEventListener('click', zoomIn);
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') zoomIn(e); });
+      gHubs.appendChild(g);
+      list.forEach((rec) => { rec.g.classList.add('in-hub'); rec.hub = g; });
+      hubList.push({ g, dot, txt, cx, cy, rad, list });
+    });
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  สถานะของ "ภาค" — ออกแบบใหม่ทั้งชุด
+  //   • hover / focus  = "เพ่งดู"  → ภาคนั้นสว่างขึ้น หมุดเด่นชัด ป้ายสรุปตัวเลขจริงโผล่
+  //                     และ "ไม่ขยับกล้อง" (เดิมยกแผ่นลอยขึ้นเฉย ๆ = ไม่สื่ออะไร)
+  //   • คลิก            = "ยืนยัน" → กรองรายการสถาบันด้านล่าง + เลื่อนไปดู
+  //   • ตัวกรองที่กดค้าง = ภาคนั้นติดสว่างต่อ ไม่ต้องเอาเมาส์ชี้
+  // ══════════════════════════════════════════════════════════════
+  const gStats = document.createElementNS(NS, 'g');
+  gStats.setAttribute('class', 'map-stats');
+  gHubs.after(gStats);
+
+  const statEls = {};
+  const statsOf = (r) => {
+    const list = M.pins.filter(p => p.r === r);
+    const kms = list.map(p => { const d = driveOf(p); return d ? d.km : kmOf(p); }).filter(k => k > 1);
+    return { n: list.length, min: kms.length ? Math.min(...kms) : 0, max: kms.length ? Math.max(...kms) : 0 };
+  };
+
+  // ป้ายสรุปของภาค (สร้างครั้งแรกที่ใช้) — ย่อ/ขยายสวนทางกล้องด้วย --lk
+  const statChip = (r) => {
+    if (r in statEls) return statEls[r];
+    const pl = plates[r];
+    if (!pl) { statEls[r] = null; return null; }
+    const s = statsOf(r);
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'plate-stat');
+    const box = document.createElementNS(NS, 'rect');
+    box.setAttribute('class', 'plate-stat-bg');
+    box.setAttribute('rx', '7');
+    const txt = document.createElementNS(NS, 'text');
+    txt.setAttribute('class', 'plate-stat-text');
+    txt.setAttribute('x', pl.labX.toFixed(1));
+    txt.setAttribute('y', (pl.labY + 34).toFixed(1));
+    txt.textContent = `${s.n} สถาบัน · ใกล้สุด ${Math.round(s.min)} กม. · ไกลสุด ${Math.round(s.max)} กม.`;
+    g.append(box, txt);
+    gStats.appendChild(g);
+    try {
+      const tb = txt.getBBox();
+      box.setAttribute('x', (tb.x - 10).toFixed(1));
+      box.setAttribute('y', (tb.y - 5.5).toFixed(1));
+      box.setAttribute('width', (tb.width + 20).toFixed(1));
+      box.setAttribute('height', (tb.height + 11).toFixed(1));
+    } catch (_) {}
+    statEls[r] = g;
+    return g;
+  };
+
+  let previewRegion = null;
+  const selectedRegions = () => {
+    const set = new Set();
+    document.querySelectorAll('.filter-btn[data-filter^="region:"]').forEach(btn => {
+      if (btn.getAttribute('aria-pressed') === 'true') set.add(btn.dataset.filter.split(':')[1]);
+    });
+    return set;
+  };
+
+  const paintRegions = () => {
+    const sel = selectedRegions();
+    const pre = previewRegion;
+    Object.entries(plates).forEach(([r, pl]) => {
+      const lit = pre ? pre === r : sel.has(r);
+      const dim = !!pre && pre !== r;
+      pl.g.classList.toggle('lit', lit);
       pl.g.classList.toggle('dim', dim);
-      if (pl.pinG) { pl.pinG.classList.toggle('up', up); pl.pinG.classList.toggle('dim', dim); }
+      pl.g.classList.toggle('sel', !pre && sel.has(r));
+      if (pl.pinG) { pl.pinG.classList.toggle('lit', lit); pl.pinG.classList.toggle('dim', dim); }
+      if (pl.labG) { pl.labG.classList.toggle('lit', lit); pl.labG.classList.toggle('dim', dim); }
+    });
+    hubList.forEach(h => {
+      const r = h.g.dataset.region;
+      h.g.classList.toggle('lit', !!pre && pre === r);
+      h.g.classList.toggle('dim', !!pre && pre !== r);
+    });
+    const litRegions = pre ? [pre] : [...sel];
+    const solo = litRegions.length === 1 ? litRegions[0] : null;
+    Object.keys(plates).forEach(r => {
+      const el = solo ? statChip(r) : statEls[r];
+      if (el) el.classList.toggle('on', solo === r);
     });
   };
+
+  const preview = (r) => { previewRegion = r || null; paintRegions(); };
+
   Object.entries(plates).forEach(([r, pl]) => {
-    const enter = () => raisePlate(r, true);
-    const leave = () => raisePlate(r, false);
+    const enter = () => preview(r);
+    const leave = () => preview(null);
     pl.g.addEventListener('pointerenter', enter);
     pl.g.addEventListener('pointerleave', leave);
     pl.g.addEventListener('focusin', enter);
@@ -425,6 +588,7 @@
     gZoom.setAttribute('transform', `translate(${cam.tx.toFixed(2)} ${cam.ty.toFixed(2)}) scale(${cam.k.toFixed(4)})`);
     // ป้ายชื่อภาคหดตามซูม → ขนาดบนจอคงที่
     gPlates.style.setProperty('--lk', (1 / cam.k).toFixed(4));
+    svg.style.setProperty('--lk', (1 / cam.k).toFixed(4));   // ป้ายสรุปภาค + ป้ายที่อยู่ในเลเยอร์อื่น
     const f = 1 / Math.pow(cam.k, 0.55);
     dots.forEach(d => {
       d.dot.setAttribute('r', (d.baseR * f).toFixed(2));
@@ -432,6 +596,12 @@
       d.hit.setAttribute('r', (d.baseHit * Math.max(f, 0.55)).toFixed(2));
     });
     svg.classList.toggle('is-zoomed', cam.k > 1.15);
+    // กระจุกหมุด: คงขนาดบนจอ + เปิดออกเมื่อซูมพอ ("กดตัวเลข → ซูมเข้า → แยกเป็นจุด")
+    const hs = Math.pow(cam.k, -0.55);
+    hubList.forEach(h => {
+      h.g.style.transform = `translate(${h.cx.toFixed(1)}px, ${h.cy.toFixed(1)}px) scale(${hs.toFixed(3)})`;
+    });
+    svg.classList.toggle('hub-open', cam.k > 2.4);
     // ซ่อนป้ายชื่อภาคที่จุดยึดหลุดกรอบ (ไม่งั้นโดนขอบตัดครึ่ง ดูเหมือนบั๊ก)
     Object.values(plates).forEach(pl => {
       const sx = pl.labX * cam.k + cam.tx, sy = pl.labY * cam.k + cam.ty;
@@ -642,8 +812,10 @@
     const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
     const unit = (r.width / VB[2]) * cam.k;
     const reach = touch ? HIT_PX * 1.7 : HIT_PX;
+    const hubsOpen = svg.classList.contains('hub-open');
     const cands = [];
     dots.forEach(rec => {
+      if (!hubsOpen && rec.hub) return;                 // หมุดที่ถูกรวมอยู่ในกระจุก ยังกดไม่ได้จนกว่าจะซูม
       const d = Math.hypot(rec.p.x - wx, rec.p.y - wy) * unit;
       if (d <= reach + rec.baseR * unit) cands.push({ rec, d });
     });
@@ -744,6 +916,12 @@
       li.appendChild(btn);
       legend.appendChild(li);
     });
+    if (!document.querySelector('.map-legend-hint')) {
+      const hint = document.createElement('p');
+      hint.className = 'map-legend-hint';
+      hint.textContent = 'ชี้ที่ภาค → แผนที่เพ่งภาคนั้นพร้อมตัวเลขจริง · คลิก → กรองรายการสถาบัน';
+      legend.after(hint);
+    }
     const syncPressed = () => {
       legend.querySelectorAll('.map-legend-row').forEach(btn => {
         const chip = document.querySelector(`.filter-btn[data-filter="region:${btn.dataset.region}"]`);
@@ -751,6 +929,7 @@
         const want = chip.getAttribute('aria-pressed') || 'false';
         if (btn.getAttribute('aria-pressed') !== want) btn.setAttribute('aria-pressed', want);
       });
+      paintRegions();          // ภาคที่ถูกกรองอยู่ = ติดสว่างบนแผนที่ด้วย (เห็นสถานะโดยไม่ต้อง hover)
     };
     syncPressed();
     const chipPanel = document.querySelector('.filter-btns') || document.body;
@@ -758,8 +937,8 @@
 
     legend.querySelectorAll('.map-legend-row').forEach(row => {
       const r = row.dataset.region;
-      const light = () => raisePlate(r, true);
-      const unlight = () => raisePlate(r, false);
+      const light = () => preview(r);
+      const unlight = () => preview(null);
       row.addEventListener('pointerenter', light);
       row.addEventListener('pointerleave', unlight);
       row.addEventListener('focus', light);
@@ -783,16 +962,16 @@
   if (nearBox) {
     const away = M.pins
       .filter(p => !p.t.includes('chula'))
-      .map(p => ({ p, km: kmOf(p) }))
+      .map(p => { const d = driveOf(p); return { p, km: d ? d.km : kmOf(p), min: d ? d.min : null, drive: !!d }; })
       .filter(o => o.km > 1)
       .sort((a, b) => a.km - b.km);
     const row = (o, tag) => `<li class="map-near-row" tabindex="0" role="button" data-name="${o.p.n.replace(/"/g, '&quot;')}">`
       + `<span class="map-near-tag">${tag}</span><span class="map-near-name">${o.p.n}</span>`
-      + `<span class="map-near-km">${Math.round(o.km)} กม.</span></li>`;
-    nearBox.innerHTML = `<h3 class="map-near-title">ระยะทางจากคณะฯ</h3><ul class="map-near-list">`
+      + `<span class="map-near-km">${o.km >= 100 ? Math.round(o.km) : o.km} กม.${o.min != null ? ` · ${o.min} น.` : ''}</span></li>`;
+    nearBox.innerHTML = `<h3 class="map-near-title">ระยะทางขับรถจากคณะฯ</h3><ul class="map-near-list">`
       + away.slice(0, 2).map(o => row(o, 'ใกล้สุด')).join('')
       + away.slice(-3).reverse().map(o => row(o, 'ไกลสุด')).join('')
-      + '</ul><p class="map-near-note">ระยะเส้นตรงจากคณะแพทยศาสตร์ จุฬาฯ</p>';
+      + `</ul><p class="map-near-note">ระยะทางตามเส้นทางถนน · ${driveProv()}</p>`;
     nearBox.querySelectorAll('.map-near-row').forEach(li => {
       const go = () => jumpToCard(li.dataset.name);
       li.addEventListener('click', go);

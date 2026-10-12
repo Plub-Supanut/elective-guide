@@ -1405,32 +1405,31 @@ input:focus-visible,
 .map-paper {
   position: relative;
   padding: 0.9rem;
-  background: linear-gradient(168deg, #fdfaf6 0%, #f3ecdf 100%);
+  background: radial-gradient(120% 82% at 50% 0%, #fbf7f0 0%, #f2eade 58%, #eae0cf 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
 }
-/* เส้นกริดจาง ๆ เหมือนกระดาษแผนที่ */
+/* แสงนุ่มจากด้านบน — เลิกใช้เส้นกริด 28px ที่ทำให้ตาลาย */
 .map-paper::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(125, 155, 118, 0.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(125, 155, 118, 0.10) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background: radial-gradient(92% 58% at 50% 0%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 72%);
   pointer-events: none;
 }
 .map-svg { position: relative; display: block; width: 100%; height: auto; }
 .map-land path {
-  fill: #f9f3e7;                        /* แผ่นดินสว่างกว่า «ทะเล» เล็กน้อย ให้อ่านเป็นเกาะ */
-  stroke: rgba(139, 116, 88, 0.34);
-  stroke-width: 0.7;
+  fill: #fbf6ec;                        /* แผ่นดินสว่างกว่า «ทะเล» ให้อ่านเป็นเกาะได้ทันที */
+  stroke: #fbf6ec;                      /* ★ เส้นสีเดียวกับพื้น = กลบรอยต่อระหว่างจังหวัด
+                                           (เดิมตีเส้นสีน้ำตาลทุกจังหวัด → ทั้งประเทศเป็นตะแกรงเส้น) */
+  stroke-width: 2.4;
   stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;    /* ซูมแล้วเส้นไม่หนาเป็นแท่ง */
+  vector-effect: non-scaling-stroke;
 }
-.map-land { filter: drop-shadow(0 10px 15px rgba(96, 70, 44, 0.16)); }   /* เงาใต้แผ่นประเทศ */
+/* เงา 2 ชั้น: ชั้นแรก 0 เบลอ = เส้นขอบบาง ๆ ตามรูปทรงจริงของประเทศ · ชั้นสอง = เงานุ่ม */
+.map-land { filter: drop-shadow(0 0 1px rgba(124, 102, 74, 0.55)) drop-shadow(0 5px 11px rgba(96, 70, 44, 0.13)); }
 .map-land .map-land-depth {
   fill: #e7d8bf;
   stroke: none;
@@ -1440,38 +1439,52 @@ input:focus-visible,
 .map-svg { cursor: grab; touch-action: pan-y; }
 .map-svg.grabbing { cursor: grabbing; }
 .pin-dot, .pin-halo, .map-home { vector-effect: non-scaling-stroke; }
-.chula-label { font-size: 19px; font-weight: 600; fill: var(--charcoal); opacity: 0.85;
-  paint-order: stroke; stroke: rgba(250, 246, 238, 0.9); stroke-width: 4px; stroke-linejoin: round; }
-.map-svg.is-zoomed .chula-label { opacity: 0; }
+.chula-label { font-size: 17px; font-weight: 600; fill: var(--charcoal); opacity: 0;
+  paint-order: stroke; stroke: rgba(250, 246, 238, 0.9); stroke-width: 4px; stroke-linejoin: round;
+  transition: opacity 0.26s ease; }
+.map-svg.is-zoomed .chula-label { opacity: 0.85; }   /* ซูมเข้าแล้วค่อยบอกว่าจุดนี้คือ รพ.จุฬาฯ (ตอนซูมออกมีกระจุกบอกจำนวนอยู่แล้ว) */
 
-/* ── แผ่นภาค (plate): ยกพร้อม «จุดทุกจุด» และป้ายชื่อของภาคนั้น ── */
+/* ── แผ่นภาค (plate): พื้นที่ของภาค ไม่ใช่ «แผ่นลอยขึ้น» ─────────────
+   สีเดียวกับเส้นขอบ → รอยต่อระหว่างจังหวัดถูกกลบ ไม่เหลือเส้นซ้อนให้ตาลาย */
 .map-plates { pointer-events: none; }
 .plate { pointer-events: auto; cursor: pointer; transform-box: view-box;
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.12), opacity 0.34s ease, filter 0.45s ease; }
-.plate-depth { fill: var(--rc); fill-opacity: 0.38; transform: translate(2.4px, 3.8px);
-  transition: fill-opacity 0.35s ease; }
-.plate-face { fill: var(--rc); fill-opacity: 0.085; stroke: var(--rc); stroke-opacity: 0.22;
-  stroke-width: 0.9; vector-effect: non-scaling-stroke; transition: fill-opacity 0.35s ease, stroke-opacity 0.35s ease; }
+  transition: opacity 0.26s ease, filter 0.3s ease; }
+.plate-face { fill: var(--rc-soft, var(--rc)); stroke: var(--rc-soft, var(--rc));
+  stroke-width: 2.4; vector-effect: non-scaling-stroke;
+  transition: fill 0.26s ease, stroke 0.26s ease; }
 .plate-hit { fill: transparent; }
-.plate-label-wrap { opacity: 0.52; transition: opacity 0.3s ease;
+.plate-label-wrap { opacity: 0.72; transition: opacity 0.26s ease, transform 0.26s ease;
   transform: scale(var(--lk, 1)); transform-box: fill-box; transform-origin: center; }
-.plate-label-bg { fill: rgba(252, 248, 240, 0.82); stroke: rgba(122, 96, 66, 0.18); stroke-width: 0.8;
-  vector-effect: non-scaling-stroke; }
-.plate-label { font-size: 19px; font-weight: 600; letter-spacing: 0.01em; fill: #4a4139;
-  text-anchor: middle; pointer-events: none; }
-.plate.up { transform: scale(1.05) translateY(-4px); filter: drop-shadow(0 12px 18px rgba(70, 48, 26, 0.4)); }
-.plate.up .plate-face { fill-opacity: 0.2; stroke-opacity: 0.5; }
-.plate.up .plate-depth { fill-opacity: 0.62; transform: translate(4px, 7px); }
-.plate.up .plate-label-wrap { opacity: 1; }
-.plate.dim { opacity: 0.26; }
-.plate:focus-visible { outline: none; }
-.plate:focus-visible .plate-face { stroke-opacity: 1; stroke-width: 2; }
+.plate-label-bg { display: none; }         /* ใช้เส้นขอบขาวรอบตัวอักษรแทนกล่อง (สะอาดกว่า) */
+.plate-label { font-size: 18px; font-weight: 600; letter-spacing: 0.015em; fill: #453d34;
+  text-anchor: middle; pointer-events: none;
+  paint-order: stroke; stroke: rgba(253, 250, 246, 0.92); stroke-width: 5px; stroke-linejoin: round; }
 
-/* กลุ่มหมุดรายภาค — ยก/จางพร้อมแผ่นภาคเป๊ะ (จุดหมุนเดียวกับแผ่น) */
-.pin-group { transform-box: view-box;
-  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.12), opacity 0.34s ease; }
-.pin-group.up { transform: scale(1.05) translateY(-4px); }
-.pin-group.dim { opacity: 0.26; }
+/* "เพ่งภาค": สว่างขึ้น + เรืองแสงนุ่ม · ไม่ขยับตำแหน่ง (ตำแหน่งหมุดตรงกับที่กดเสมอ) */
+.plate.lit .plate-face { fill: var(--rc-lift, var(--rc)); stroke: var(--rc-lift, var(--rc)); }
+.plate.lit { filter: drop-shadow(0 0 9px rgba(160, 120, 80, 0.22)); }
+.plate.sel .plate-face { fill: var(--rc-lift, var(--rc)); stroke: var(--rc-lift, var(--rc)); }
+/* ป้ายชื่อภาค: แยกชั้นการแสดงผลออกจาก .plate (เพื่อไม่ให้โดน clip ตามรูปประเทศ) */
+.plate-label-wrap.lit { opacity: 1; transform: scale(calc(var(--lk, 1) * 1.06)); }
+.plate-label-wrap.sel { opacity: 1; }
+.plate-label-wrap.dim { opacity: 0.18; }
+.plate.dim { opacity: 0.14; }
+.plate:focus-visible { outline: none; }
+.plate:focus-visible .plate-face { stroke: var(--rc); stroke-width: 2.6; }
+
+/* ป้ายสรุปตัวเลขจริงของภาค — โผล่ตอน «เพ่งดู» ให้การ hover มีความหมาย */
+.plate-stat { opacity: 0; pointer-events: none; transition: opacity 0.24s ease;
+  transform: scale(var(--lk, 1)); transform-box: fill-box; transform-origin: center; }
+.plate-stat.on { opacity: 1; }
+.plate-stat-bg { fill: rgba(44, 40, 36, 0.88); }
+.plate-stat-text { font-size: 15px; font-weight: 500; fill: #fdfaf6; text-anchor: middle;
+  font-variant-numeric: tabular-nums; }
+
+/* กลุ่มหมุดรายภาค — สว่าง/จางตาม «การเพ่งภาค» (ไม่ขยับตำแหน่ง) */
+.pin-group { transition: opacity 0.26s ease; }
+.pin-group.dim { opacity: 0.12; }
+.pin-group.lit .pin-dot { opacity: 1; }
+.pin-group.lit .pin-halo { opacity: 0.3; }
 
 /* หมุด: ค่อย ๆ ปรากฏไล่กันเมื่อเลื่อนมาถึง */
 .pin-dot {
@@ -1777,3 +1790,43 @@ input:focus-visible,
 /* แถบเมนูติดขอบบน (สูง ~62px) — กันไม่ให้ปลายทางของการเลื่อน/anchor ไปอยู่ใต้แถบ */
 html { scroll-padding-top: 78px; }
 /* ใช้ html { scroll-padding-top } อย่างเดียว ไม่ใส่ scroll-margin-top ซ้ำ (ไม่งั้นเบิ้ล 78+78px) */
+
+/* =====================================================================
+   แผนที่ (รอบออกแบบใหม่): กระจุกหมุด · ภาคที่ถูกเพ่ง · รายการภาค
+   วางท้ายไฟล์เพื่อให้ชนะกฎเดิมเมื่อ specificity เท่ากัน
+   ===================================================================== */
+
+/* หมุดที่ถูกรวมอยู่ในกระจุก → ซ่อนไว้จนกว่าจะซูมเข้า (กดที่ปุ่มตัวเลขก่อน) */
+.map-pin.in-hub .pin-dot,
+.map-pin.in-hub .pin-halo { opacity: 0; }
+.map-pin.in-hub .pin-hit { pointer-events: none; }
+.map-svg.hub-open .map-pin.in-hub .pin-dot { opacity: 0.86; }
+.map-svg.hub-open .map-pin.in-hub .pin-halo { opacity: 0.16; }
+.map-svg.hub-open .map-pin.in-hub .pin-hit { pointer-events: auto; }
+
+/* กระจุกหมุด: วงกลมสีภาค + ตัวเลขจำนวนสถาบัน (กดแล้วซูมเข้าไปแยกเป็นจุด) */
+.map-hubs { pointer-events: none; }
+.pin-hub { pointer-events: auto; cursor: pointer; transition: opacity 0.24s ease; }
+.hub-dot { fill-opacity: 0.94; stroke: rgba(253, 250, 246, 0.95); stroke-width: 2.2;
+  vector-effect: non-scaling-stroke; transition: fill-opacity 0.2s ease, stroke-width 0.2s ease; }
+.hub-count { fill: #fdfaf6; font-weight: 700; text-anchor: middle; dominant-baseline: central;
+  pointer-events: none; font-variant-numeric: tabular-nums; }
+.pin-hub:hover .hub-dot,
+.pin-hub.lit .hub-dot { fill-opacity: 1; }
+.pin-hub:hover .hub-dot { stroke: #fff; stroke-width: 3; }
+.pin-hub.dim { opacity: 0.14; }
+.pin-hub:focus-visible { outline: none; }
+.pin-hub:focus-visible .hub-dot { stroke: var(--charcoal); stroke-width: 3; }
+.map-svg.hub-open .pin-hub { opacity: 0; pointer-events: none; }
+
+/* รายการภาค (legend): ชี้ = เพ่งดูภาคนั้น · คลิก = กรองรายการสถาบัน */
+.map-legend-row .legend-dot { transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1), box-shadow 0.24s ease; }
+.map-legend-row:hover .legend-dot,
+.map-legend-row[aria-pressed="true"] .legend-dot { transform: scale(1.4); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8); }
+.map-legend-row:hover .legend-count { color: var(--terra); font-weight: 700; }
+.map-legend-hint { margin: 0.4rem 0 0; font-size: 0.72rem; line-height: 1.5; color: var(--warm-gray); }
+
+/* เป้าสัมผัสของลิงก์เมนูบนจอเล็ก ต้อง ≥44px (tester รอบ 5 วัดได้ 34px) */
+@media (max-width: 480px) {
+  .nav-links a { min-height: 44px; }
+}
