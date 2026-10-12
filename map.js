@@ -175,6 +175,20 @@
     cardEl.innerHTML = html;
     cardEl.querySelector('.map-card-close')?.addEventListener('click', () => closeCard());
   };
+  let nearList = [];                       // สถาบันที่อยู่ตำแหน่งเดียวกันกับที่เพิ่งคลิก (ตัวที่เลือกอยู่อันดับแรก)
+  const nearHtml = () => !nearList.length ? '' : `<div class="map-card-near"><p>ตำแหน่งเดียวกัน (${nearList.length})</p>${nearList
+    .map((q, i) => `<button type="button" class="map-near-pick${q === selected ? ' is-current' : ''}" data-near="${i}">${q.n}</button>`)
+    .join('')}</div>`;
+  const wireNear = () => {
+    cardEl.querySelectorAll('.map-near-pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const q = nearList[+btn.dataset.near];
+        const found = q && dots.find(d => d.p === q);
+        if (found) openPin(found, nearList.slice());
+      });
+    });
+  };
+
   const showCard = (p, mode) => {
     if (!cardEl) return;
     const rg = REGION[p.r] ? REGION[p.r].name : '';
@@ -190,20 +204,9 @@
       ${mode === 'full'
         ? '<button type="button" class="map-card-go">ไปที่การ์ดเต็มในรายการ ↓</button>'
         : ''}
-      ${(p.__near && p.__near.length)
-        ? `<div class="map-card-near"><p>ตำแหน่งเดียวกัน (${p.__near.length + 1})</p>${[p, ...p.__near]
-            .map((q, i) => `<button type="button" class="map-near-pick${i === 0 ? ' is-current' : ''}" data-i="${i}">${q.n}</button>`)
-            .join('')}</div>`
-        : ''}`);
+      ${(p.__near && p.__near.length) ? nearHtml() : ''}`);
     cardEl.querySelector('.map-card-go')?.addEventListener('click', () => jumpToCard(p.n));
-    cardEl.querySelectorAll('.map-near-pick').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const list = [p, ...(p.__near || [])];
-        const pick = list[+btn.dataset.i];
-        const found = dots.find(d => d.p === pick);
-        if (found && pick !== p) openPin(found);
-      });
-    });
+    wireNear();
   };
   const closeCard = () => {
     selected = null;
@@ -271,7 +274,8 @@
 `;
   };
 
-  const openCampus = () => {
+  const openCampus = (near) => {
+    if (near && near.length) nearList = near;       // เคสคลิกชนจุดจุฬาฯ: ให้เลือกสถาบันที่ตั้งตรงนั้นได้
     selected = 'chula';
     dots.forEach(d => d.g.classList.toggle('on', d.cluster));
     paintCard(`
@@ -279,7 +283,8 @@
       <p class="map-card-eyebrow">กรุงเทพฯ · อาคารในคณะแพทยศาสตร์</p>
       <h3 class="map-card-name">คณะแพทยศาสตร์ จุฬาฯ</h3>
       <div class="map-card-badges"><span>${chulaPins.length} ภาควิชา/หน่วยงาน</span><span>แผนผังอาคาร</span></div>
-      ${campusSvg()}`);
+      ${campusSvg()}
+      ${nearHtml()}`);
     cardEl.querySelectorAll('.campus-dept').forEach(gEl => {
       const pin2 = M.pins.find(p => p.n === gEl.dataset.name) || { n: gEl.dataset.name, r: 'bkk', t: 'chula', a: 1 };
       const act = () => showCard(pin2, 'full');
@@ -294,6 +299,7 @@
         if (pin2) showCard(pin2, 'full');
       });
     });
+      wireNear();
   };
 
   // ══ แผ่นภาค — ยกพร้อมหมุดและป้ายชื่อของภาคนั้น (entity เดียว) ══════
@@ -573,14 +579,14 @@
   let clickTimer = 0;
   svg.addEventListener('click', (e) => {
     if (moved > 6) return;
-    const rec = pickPin(e.clientX, e.clientY, lastType === 'touch');
-    if (rec) { e.stopPropagation(); openPin(rec); return; }
+    const hit = pickAt(e.clientX, e.clientY, lastType === 'touch');
+    if (hit) { e.stopPropagation(); openPin(hit.rec, nearFrom(hit)); return; }
     if (e.target.closest('.plate')) return;
     clearTimeout(clickTimer);
     clickTimer = setTimeout(() => {
       if (selected) { closeCard(); return; }
       if (cam.kT > 1.15) resetCam();
-    }, 250);
+    }, 180);
   });
 
   // คีย์บอร์ด (ไม่มีปุ่มบนจอ แต่ยังใช้คีย์บอร์ดได้)
@@ -619,7 +625,7 @@
 
   // ── เลือกหมุดแบบ "ใกล้ที่สุด" (แก้ปัญหาหมุดทับกัน — คลิกกลางจุดที่เห็นต้องได้ตัวนั้น) ──
   const HIT_PX = 16;                               // รัศมีรอบจุดบนจอ (พิกเซล)
-  const pickPin = (clientX, clientY, touch) => {
+  const pickAt = (clientX, clientY, touch) => {
     const r = svg.getBoundingClientRect();
     const px = ((clientX - r.left) / r.width) * VB[2];
     const py = ((clientY - r.top) / r.height) * VB[3];
@@ -632,10 +638,21 @@
       if (d <= reach + rec.baseR * unit) cands.push({ rec, d });
     });
     if (!cands.length) return null;
-    // กติกา: "ระยะใกล้สุดชนะเสมอ" → คลิกกลางจุดที่เห็นได้ตัวนั้นแน่นอน
-    // โบนัส (กลุ่มจุฬาฯ / จุดใหญ่) ใช้ตัดสินเฉพาะคู่ที่ใกล้กันจนแยกไม่ออก (< 2.5px)
+    // กติกา: "ระยะใกล้สุดชนะเสมอ" — คลิกกลางจุดที่เห็นได้ตัวนั้น
     cands.sort((a, b) => a.d - b.d || (b.rec.cluster ? 1 : 0) - (a.rec.cluster ? 1 : 0));
-    return cands[0].rec;
+    return { rec: cands[0].rec, wx, wy, unit };
+  };
+
+  // รายการ "ตำแหน่งเดียวกัน": ตัวที่ถูกเลือกมาก่อน แล้วเรียงตัวอื่นตามระยะจากจุดที่คลิก
+  const nearFrom = (hit) => {
+    const others = dots
+      .filter(d => d !== hit.rec)
+      .map(d => ({ p: d.p, d: Math.hypot(d.p.x - hit.wx, d.p.y - hit.wy) * hit.unit }))
+      .filter(x => x.d < 6)
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 5)
+      .map(x => x.p);
+    return [hit.rec.p, ...others];
   };
 
   let hoverRec = null;
@@ -659,25 +676,15 @@
   svg.addEventListener('pointermove', (e) => {
     if (dragging || pointers.size > 0) return;
     lastType = e.pointerType;
-    setHover(pickPin(e.clientX, e.clientY, isTouch(e)));
+    const h = pickAt(e.clientX, e.clientY, isTouch(e));
+    setHover(h ? h.rec : null);
   }, { passive: true });
   svg.addEventListener('pointerleave', () => { if (!dragging) setHover(null); });
 
-  const nearDots = (rec, px) => {
-    const r = svg.getBoundingClientRect();
-    const unit = (r.width / VB[2]) * cam.k;   // พิกเซลต่อ 1 หน่วยแผนที่ ที่ระดับซูมปัจจุบัน
-    const out = [];
-    dots.forEach(d => {
-      if (d === rec) return;
-      const dist = Math.hypot(d.p.x - rec.p.x, d.p.y - rec.p.y) * unit;
-      if (dist < px) out.push(d.p);
-    });
-    return out.slice(0, 6);
-  };
-
-  const openPin = (rec) => {
-    if (rec.cluster) { openCampus(); return; }
-    rec.p.__near = nearDots(rec, 4);
+  const openPin = (rec, near) => {
+    if (rec.cluster) { openCampus(near || []); return; }
+    nearList = (near || []).slice();
+    rec.p.__near = nearList.length > 1 ? nearList : [];   // แสดงแถวเลือกเฉพาะเมื่อมีหลายสถาบันที่ตำแหน่งเดียวกัน
     selected = rec.p;
     dots.forEach(d => d.g.classList.toggle('on', d === rec));
     rec.g.parentNode.appendChild(rec.g);

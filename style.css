@@ -1720,6 +1720,7 @@ input:focus-visible,
   padding: 0.28rem 0.5rem; border-radius: 999px;
   border: 1px solid var(--border); background: var(--sand); color: var(--charcoal);
   cursor: pointer; transition: background 0.15s;
+  min-height: 44px;
 }
 .campus-chip:hover { background: var(--sand-mid); }
 
@@ -1759,14 +1760,14 @@ input:focus-visible,
 .plate-label-wrap.off { opacity: 0 !important; }
 
 /* F10: ป้ายชื่ออาคารในแผนผังจุฬาฯ — ใส่ขอบขาวอ่านง่ายไม่ทับเส้นตึก */
-.campus-label { paint-order: stroke; stroke: #fbf7ef; stroke-width: 4px; stroke-linejoin: round; }
+.campus-label { paint-order: stroke; stroke: #fdfaf4; stroke-width: 4.5px; stroke-linejoin: round; fill: #4a4038; font-weight: 500; }
 
 /* แถวเลือกสถาบันที่ตำแหน่งเดียวกัน (หมุดซ้อนกันแน่นจนคลิกแยกไม่ได้) */
 .map-card-near { margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
 .map-card-near p { margin: 0 0 0.45rem; font-size: 0.72rem; color: var(--warm-gray); }
 .map-near-pick { display: block; width: 100%; text-align: left; padding: 0.45rem 0.6rem; margin-bottom: 0.3rem;
   border: 1px solid var(--border); border-radius: 8px; background: #fff; font: inherit; font-size: 0.8rem;
-  color: var(--charcoal); cursor: pointer; min-height: 40px; }
+  color: var(--charcoal); cursor: pointer; min-height: 44px; }
 .map-near-pick:hover { border-color: var(--terra); color: var(--terra); }
 .map-near-pick.is-current { background: var(--sand); border-color: var(--terra); font-weight: 600; }
 
