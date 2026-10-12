@@ -76,7 +76,7 @@ const cardIndex = allCards.map(card => {
   const body = card.textContent.replace(/​/g, '').replace(/[\s ]+/g, ' ').toLowerCase();
   const base = tags + ' ' + body;
   const searchable = base + ' ' + aliasTerms(base).toLowerCase();
-  const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+  const title = (card.querySelector('.card-title')?.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
   const titleBase = title + ' ' + tags;
   return {
     el: card,
@@ -561,3 +561,24 @@ window.addEventListener('scroll', () => {
   syncFilterUI();
   if (q || anyFilter()) runSearch();
 })();
+
+// ทำความสะอาดข้อความหัวการ์ด: ตัด \n/ช่องว่างหัวท้ายใน "text node" ตรง ๆ ของ element
+// หัวการ์ดมี <span class="code">101</span> ข้างใน จึงห้ามแตะ element ลูก และต้องคงช่องว่างนำหน้า
+// (ไม่งั้นจะกลายเป็น "101ม.ขอนแก่น" ติดกัน) — ช่วย DOM/การคัดลอก/screen reader
+const tidyCardText = () => {
+  document.querySelectorAll('.card-title, .card .card-sub, .inst-name, .map-near-pick, .map-card-name').forEach(el => {
+    el.childNodes.forEach(n => {
+      if (n.nodeType !== 3) return;
+      const raw = n.nodeValue;
+      const hasPrevEl = n.previousSibling && n.previousSibling.nodeType === 1;
+      let t = raw.replace(/[\s\u00a0]+/g, ' ');
+      const leading = hasPrevEl && t.replace(/\u00a0/g, ' ').trim() !== '';
+      const keepNbsp = leading && /^\u00a0/.test(t);
+      t = t.replace(/\u00a0/g, ' ').trim();
+      n.nodeValue = (leading && t !== '' ? (keepNbsp ? '\u00a0' : ' ') : '') + t;
+    });
+  });
+};
+tidyCardText();
+if (document.readyState !== 'complete') window.addEventListener('load', tidyCardText, { once: true });
+setTimeout(tidyCardText, 900);

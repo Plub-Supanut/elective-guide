@@ -1776,4 +1776,4 @@ input:focus-visible,
 
 /* แถบเมนูติดขอบบน (สูง ~62px) — กันไม่ให้ปลายทางของการเลื่อน/anchor ไปอยู่ใต้แถบ */
 html { scroll-padding-top: 78px; }
-.map-section, .map-card, #institutions, #ssc, #faculty { scroll-margin-top: 78px; }
+/* ใช้ html { scroll-padding-top } อย่างเดียว ไม่ใส่ scroll-margin-top ซ้ำ (ไม่งั้นเบิ้ล 78+78px) */
