@@ -337,7 +337,7 @@
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
   gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  const LABEL_NUDGE = { bkk: [142, 106], central: [-150, -14], isan: [0, 0], north: [0, 0], south: [0, 0] };
+  const LABEL_NUDGE = { bkk: [142, 106], central: [-46, 54], isan: [0, 0], north: [0, 0], south: [0, 0] };
   const plates = {};
   Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
     if (!d || !REGION[r]) return;

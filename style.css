@@ -1465,9 +1465,9 @@ input:focus-visible,
 .plate.lit { filter: drop-shadow(0 0 9px rgba(160, 120, 80, 0.22)); }
 .plate.sel .plate-face { fill: var(--rc-lift, var(--rc)); stroke: var(--rc-lift, var(--rc)); }
 /* ป้ายชื่อภาค: แยกชั้นการแสดงผลออกจาก .plate (เพื่อไม่ให้โดน clip ตามรูปประเทศ) */
-.plate-label-wrap.lit { opacity: 1; transform: scale(calc(var(--lk, 1) * 1.06)); }
-.plate-label-wrap.sel { opacity: 1; }
-.plate-label-wrap.dim { opacity: 0.18; }
+.plate-labels.lit .plate-label-wrap, .plate-label-wrap.lit { opacity: 1; transform: scale(calc(var(--lk, 1) * 1.06)); }
+.plate-labels.sel .plate-label-wrap, .plate-label-wrap.sel { opacity: 1; }
+.plate-labels.dim .plate-label-wrap, .plate-label-wrap.dim { opacity: 0.18; }
 .plate.dim { opacity: 0.14; }
 .plate:focus-visible { outline: none; }
 .plate:focus-visible .plate-face { stroke: var(--rc); stroke-width: 2.6; }
@@ -1830,3 +1830,5 @@ html { scroll-padding-top: 78px; }
 @media (max-width: 480px) {
   .nav-links a { min-height: 44px; }
 }
+/* เพิ่มคอนทราสต์เลขในฟองนับหมุด (เดิมขาวล้วนบนสีภาค = 2.78–3.47:1) */
+.hub-count { paint-order: stroke; stroke: rgba(28, 20, 12, 0.55); stroke-width: 2.4px; stroke-linejoin: round; }
