@@ -963,21 +963,11 @@
     const chipPanel = document.querySelector('.filter-btns') || document.body;
     new MutationObserver(syncPressed).observe(chipPanel, { subtree: true, attributes: true, attributeFilter: ['aria-pressed'] });
 
+    // legend = ข้อมูลประกอบ ไม่ใช่ปุ่ม (ผู้ใช้สั่ง: แผนที่/showcase เฉย ๆ ไม่ interactive)
     legend.querySelectorAll('.map-legend-row').forEach(row => {
-      const r = row.dataset.region;
-      const light = () => preview(r);
-      const unlight = () => preview(null);
-      if (canHover) {                       // จอสัมผัส: ไม่ผูก hover/focus (ไม่งั้นไฮไลต์ค้างหลังแตะ)
-        row.addEventListener('pointerenter', light);
-        row.addEventListener('pointerleave', unlight);
-        row.addEventListener('focus', light);
-        row.addEventListener('blur', unlight);
-      }
-      row.addEventListener('click', () => {
-        const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
-        if (chip) { chip.click(); document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); }
-        preview(null);                      // แตะแล้วต้องไม่ค้างไฮไลต์ — ให้เหลือแต่ "เลือกอยู่/ไม่เลือก"
-      });
+      row.removeAttribute('aria-pressed');
+      row.tabIndex = -1;
+      row.style.cursor = 'default';
     });
   }
 
@@ -1021,4 +1011,33 @@
 
   applyCam();
   window.__MAP = { cam, zoomAt, resetCam, dots, focusPin, closeCard, openCampus };
+
+  // == โหมดแสดงผลอย่างเดียว: แผนที่เป็นภาพ ไม่ใช่ตัวควบคุม ==
+  try {
+    // ต้องปิดที่ .map-paper ด้วย — handler ลาก/ซูมผูกที่ชั้นนี้ (ไม่ใช่ที่ svg)
+    paper.style.pointerEvents = 'none';
+    paper.style.touchAction = 'auto';
+    svg.style.pointerEvents = 'none';
+    svg.style.touchAction = 'auto';
+    // ตัด listener ทั้งหมดที่ผูกกับ svg — โคลนโหนดใหม่สะอาดที่สุด (pointer-events: none ปิดไม่หมดในเบราว์เซอร์จริง)
+    const clean0 = svg.cloneNode(true);
+    clean0.style.pointerEvents = 'none';
+    clean0.style.touchAction = 'auto';
+    clean0.setAttribute('aria-hidden', 'true');
+    clean0.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.parentNode.replaceChild(clean0, svg);
+    clean0.querySelectorAll('[tabindex]').forEach(el => el.removeAttribute('tabindex'));
+    clean0.querySelectorAll('[role="button"]').forEach(el => el.removeAttribute('role'));
+    window.__MAP.staticView = clean0;
+    svg.querySelectorAll('[tabindex]').forEach(el => el.removeAttribute('tabindex'));
+    svg.querySelectorAll('[role="button"]').forEach(el => el.removeAttribute('role'));
+    svg.setAttribute('aria-hidden', 'true');
+    paper.style.cursor = 'default';
+    paper.removeAttribute('tabindex');
+    const card = document.getElementById('map-card');
+    if (card) { card.hidden = true; card.setAttribute('aria-hidden', 'true'); }
+    document.querySelectorAll('.map-near-row').forEach(el => {
+      el.removeAttribute('tabindex'); el.removeAttribute('role'); el.style.pointerEvents = 'none';
+    });
+  } catch (e) {}
 })();

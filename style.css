@@ -1436,7 +1436,7 @@ input:focus-visible,
   transform: translate(3px, 4.5px);     /* ขอบหนาของแผ่นประเทศ */
   opacity: 0.85;
 }
-.map-svg { cursor: grab; touch-action: pan-y; }
+.map-svg { cursor: default; touch-action: auto; }   /* แผนที่ = ภาพประกอบ */
 .map-svg.grabbing { cursor: grabbing; }
 .pin-dot, .pin-halo, .map-home { vector-effect: non-scaling-stroke; }
 .chula-label { font-size: 17px; font-weight: 600; fill: var(--charcoal); opacity: 0;
@@ -1453,7 +1453,7 @@ input:focus-visible,
   stroke-width: 2.4; vector-effect: non-scaling-stroke;
   transition: fill 0.26s ease, stroke 0.26s ease; }
 .plate-hit { fill: transparent; }
-.plate-label-wrap { opacity: 0.72; transition: opacity 0.26s ease, transform 0.26s ease;
+.plate-label-wrap { opacity: 1; transition: opacity 0.26s ease, transform 0.26s ease;
   transform: scale(var(--lk, 1)); transform-box: fill-box; transform-origin: center; }
 .plate-label-bg { display: none; }         /* ใช้เส้นขอบขาวรอบตัวอักษรแทนกล่อง (สะอาดกว่า) */
 .plate-label { font-size: 18px; font-weight: 600; letter-spacing: 0.015em; fill: #453d34;
