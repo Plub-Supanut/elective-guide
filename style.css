@@ -319,8 +319,8 @@ body {
   right: 1.1rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   background: none;
@@ -353,6 +353,7 @@ body {
   color: var(--warm-gray);
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 44px;
 }
 .filter-btn:hover,
 .filter-btn.active {
@@ -1375,7 +1376,7 @@ input:focus-visible,
    (max-width 100% กันกรณีชื่อยาวเกินคอลัมน์ — จะกลับไปตัดในก้อนนั้นแทน) */
 .nm { display: inline-block; max-width: 100%; vertical-align: top; }
 /* ชิปตัวกรอง: เป้าแตะขั้นต่ำ 36px (เดิม 32px บนเดสก์ท็อป) */
-.filter-btn { min-height: 36px; }
+.filter-btn { min-height: 44px; }   /* เป้าสัมผัสขั้นต่ำ 44px ทุกขนาดจอ */
 
 /* จอแคบมาก (≤360px): ให้ badge ลงมาอยู่ใต้ชื่อสถานที่
    ไม่งั้นชื่อยาว ๆ จะถูกเบียดเป็น 4 บรรทัด («โรง» «พยาบาล» «พระ» «ปกเกล้า») */
@@ -1665,7 +1666,7 @@ input:focus-visible,
 }
 .map-card-close {
   position: absolute; top: 0.5rem; right: 0.55rem;
-  width: 34px; height: 34px;
+  width: 44px; height: 44px;
   border: 0; background: none; cursor: pointer;
   color: var(--warm-gray); font-size: 1rem; line-height: 1;
   border-radius: 50%;
@@ -1743,3 +1744,31 @@ input:focus-visible,
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* F7: ส่วนที่มีการ์ดน้อย (เช่น โรงพยาบาลพันธมิตร 2 ใบ) — ให้เต็มแถว ไม่เหลือที่ว่างครึ่งแถว */
+.inst-section[data-category="hospital"] .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 860px) { .inst-section[data-category="hospital"] .cards-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* F8: เมนูบนมือถือที่ล้น — ทำขอบขวาเป็น fade ให้รู้ว่าปัดได้ */
+@media (max-width: 760px) {
+  .nav-links { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 26px), transparent);
+               mask-image: linear-gradient(90deg, #000 calc(100% - 26px), transparent); }
+}
+
+/* F9: ป้ายชื่อภาคที่ถูกกรอบตัด — ซ่อนเมื่อจุดยึดหลุดกรอบ */
+.plate-label-wrap.off { opacity: 0 !important; }
+
+/* F10: ป้ายชื่ออาคารในแผนผังจุฬาฯ — ใส่ขอบขาวอ่านง่ายไม่ทับเส้นตึก */
+.campus-label { paint-order: stroke; stroke: #fbf7ef; stroke-width: 4px; stroke-linejoin: round; }
+
+/* แถวเลือกสถาบันที่ตำแหน่งเดียวกัน (หมุดซ้อนกันแน่นจนคลิกแยกไม่ได้) */
+.map-card-near { margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
+.map-card-near p { margin: 0 0 0.45rem; font-size: 0.72rem; color: var(--warm-gray); }
+.map-near-pick { display: block; width: 100%; text-align: left; padding: 0.45rem 0.6rem; margin-bottom: 0.3rem;
+  border: 1px solid var(--border); border-radius: 8px; background: #fff; font: inherit; font-size: 0.8rem;
+  color: var(--charcoal); cursor: pointer; min-height: 40px; }
+.map-near-pick:hover { border-color: var(--terra); color: var(--terra); }
+.map-near-pick.is-current { background: var(--sand); border-color: var(--terra); font-weight: 600; }
+
+/* หมุดที่ใกล้พอจะชี้ — เคอร์เซอร์เป็น pointer ทั้งกรอบ เพื่อบอกว่ากดได้ */
+.map-svg.pin-hot { cursor: pointer; }

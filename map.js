@@ -60,12 +60,21 @@
     if (!el) return;
     const hidden = el.offsetParent === null;
     if (hidden) document.getElementById('filterClear')?.click();
-    const go = () => {
-      el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+    const flash = () => {
       el.classList.remove('map-flash');
       void el.offsetWidth;
       el.classList.add('map-flash');
-      setTimeout(() => el.classList.remove('map-flash'), 2200);
+      setTimeout(() => el.classList.remove('map-flash'), 2600);
+    };
+    const go = () => {
+      const dist = Math.abs(el.getBoundingClientRect().top - window.innerHeight / 2);
+      const instant = reduced || dist > window.innerHeight * 1.6;
+      el.scrollIntoView({ behavior: instant ? 'auto' : 'smooth', block: 'center' });
+      if (instant) { flash(); return; }
+      let done = false;
+      const fin = () => { if (done) return; done = true; window.removeEventListener('scrollend', fin); flash(); };
+      window.addEventListener('scrollend', fin, { once: true });
+      setTimeout(fin, 4000);
     };
     if (hidden) requestAnimationFrame(() => requestAnimationFrame(go));
     else go();
@@ -156,6 +165,7 @@
     label.textContent = `รพ.จุฬาฯ · ${chulaPins.length} ภาควิชา`;
     pinGroups.bkk.appendChild(label);
   }
+  if (pinGroups.bkk) gPins.appendChild(pinGroups.bkk);   // กทม. หนาแน่นสุด → วาดบนสุด (จุดจุฬาฯ ต้องกดได้)
   const cardEl = document.getElementById('map-card');
   let selected = null;
 
@@ -179,8 +189,21 @@
       </dl>
       ${mode === 'full'
         ? '<button type="button" class="map-card-go">ไปที่การ์ดเต็มในรายการ ↓</button>'
+        : ''}
+      ${(p.__near && p.__near.length)
+        ? `<div class="map-card-near"><p>ตำแหน่งเดียวกัน (${p.__near.length + 1})</p>${[p, ...p.__near]
+            .map((q, i) => `<button type="button" class="map-near-pick${i === 0 ? ' is-current' : ''}" data-i="${i}">${q.n}</button>`)
+            .join('')}</div>`
         : ''}`);
     cardEl.querySelector('.map-card-go')?.addEventListener('click', () => jumpToCard(p.n));
+    cardEl.querySelectorAll('.map-near-pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const list = [p, ...(p.__near || [])];
+        const pick = list[+btn.dataset.i];
+        const found = dots.find(d => d.p === pick);
+        if (found && pick !== p) openPin(found);
+      });
+    });
   };
   const closeCard = () => {
     selected = null;
@@ -233,12 +256,12 @@
     }).join('');
 
     const labels = B.map(b => {
-      const [lx, ly] = iso(b.x + b.w * 0.5, b.y + b.d + 14, 0);
+      const [lx, ly] = iso(b.x + b.w * 0.5, b.y + b.d + 22, 0);
       const c = campusData.depts.filter(d => d.b === b.id);
       return `<text class="campus-label" x="${(lx + ox).toFixed(1)}" y="${(ly + oy).toFixed(1)}">${b.short}${c.length ? ' · ' + c.length + ' ภาควิชา' : ''}</text>`;
     }).join('');
 
-    const unplaced = (campusData.unplaced || []).map(n => `<button type="button" class="campus-chip" data-name="${n}">${n.replace('ภาควิชา', '')}</button>`).join('');
+    const unplaced = (campusData.unplaced || []).filter(n => M.pins.some(p => p.n === n)).map(n => `<button type="button" class="campus-chip" data-name="${n}">${n.replace('ภาควิชา', '')}</button>`).join('');
 
     return `<svg viewBox="0 0 ${W.toFixed(0)} ${H.toFixed(0)}" class="map-campus" role="img"
                  aria-label="แผนผังอาคารคณะแพทยศาสตร์ จุฬาลงกรณ์มหาวิทยาลัย">
@@ -323,7 +346,7 @@
     g.style.transformOrigin = `${ox}px ${oy}px`;
     const pg = pinGroupFor(r);
     pg.style.transformOrigin = `${ox}px ${oy}px`;
-    plates[r] = { g, pinG: pg, wrap, label };
+    plates[r] = { g, pinG: pg, wrap, label, labX: lab[0] + nudge[0], labY: lab[1] + nudge[1] };
   });
 
   // แผ่นรองป้ายชื่อ — สร้างหลังวัดข้อความจริงได้
@@ -403,6 +426,11 @@
       d.hit.setAttribute('r', (d.baseHit * Math.max(f, 0.55)).toFixed(2));
     });
     svg.classList.toggle('is-zoomed', cam.k > 1.15);
+    // ซ่อนป้ายชื่อภาคที่จุดยึดหลุดกรอบ (ไม่งั้นโดนขอบตัดครึ่ง ดูเหมือนบั๊ก)
+    Object.values(plates).forEach(pl => {
+      const sx = pl.labX * cam.k + cam.tx, sy = pl.labY * cam.k + cam.ty;
+      pl.wrap.classList.toggle('off', sx < 10 || sx > VB[2] - 10 || sy < 10 || sy > VB[3] - 10);
+    });
   };
   const stepCam = () => {
     cam.raf = 0;
@@ -535,17 +563,24 @@
 
   svg.addEventListener('dblclick', (e) => {
     e.preventDefault();
+    clearTimeout(clickTimer);
+    setHover(null);
     if (cam.kT > 2.6) resetCam();
     else zoomAt(2.4, e.clientX, e.clientY);
   });
 
-  // คลิกพื้นที่ว่าง = ปิดการ์ด แล้วย้อนกลับมาที่มุมเต็มประเทศ
+  // คลิก = หมุดที่ใกล้ที่สุดก่อน → ไม่มีก็ปิดการ์ด/ย้อนมุม (หน่วง 250ms ให้ดับเบิลคลิกได้ก่อน)
+  let clickTimer = 0;
   svg.addEventListener('click', (e) => {
     if (moved > 6) return;
-    if (e.target.closest('.map-pin')) return;
+    const rec = pickPin(e.clientX, e.clientY, lastType === 'touch');
+    if (rec) { e.stopPropagation(); openPin(rec); return; }
     if (e.target.closest('.plate')) return;
-    if (selected) { closeCard(); return; }
-    if (cam.kT > 1.15) resetCam();
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => {
+      if (selected) { closeCard(); return; }
+      if (cam.kT > 1.15) resetCam();
+    }, 250);
   });
 
   // คีย์บอร์ด (ไม่มีปุ่มบนจอ แต่ยังใช้คีย์บอร์ดได้)
@@ -582,31 +617,74 @@
     clampCam(); kickCam();
   };
 
-  // ── ผูกเหตุการณ์ให้หมุด ───────────────────────────────────────
-  dots.forEach(rec => {
-    const { g, p } = rec;
-    g.addEventListener('pointerenter', (e) => {
-      if (dragging) return;
-      g.classList.add('hover');
-      if (!selected) showCard(p, 'preview');
-      if (!reduced && e.clientX) showArc(p);
+  // ── เลือกหมุดแบบ "ใกล้ที่สุด" (แก้ปัญหาหมุดทับกัน — คลิกกลางจุดที่เห็นต้องได้ตัวนั้น) ──
+  const HIT_PX = 16;                               // รัศมีรอบจุดบนจอ (พิกเซล)
+  const pickPin = (clientX, clientY, touch) => {
+    const r = svg.getBoundingClientRect();
+    const px = ((clientX - r.left) / r.width) * VB[2];
+    const py = ((clientY - r.top) / r.height) * VB[3];
+    const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
+    const unit = (r.width / VB[2]) * cam.k;
+    const reach = touch ? HIT_PX * 1.7 : HIT_PX;
+    const cands = [];
+    dots.forEach(rec => {
+      const d = Math.hypot(rec.p.x - wx, rec.p.y - wy) * unit;
+      if (d <= reach + rec.baseR * unit) cands.push({ rec, d });
     });
-    g.addEventListener('pointerleave', () => {
-      g.classList.remove('hover');
-      if (!selected) { if (cardEl) { cardEl.hidden = true; cardEl.innerHTML = ''; } }
+    if (!cands.length) return null;
+    // กติกา: "ระยะใกล้สุดชนะเสมอ" → คลิกกลางจุดที่เห็นได้ตัวนั้นแน่นอน
+    // โบนัส (กลุ่มจุฬาฯ / จุดใหญ่) ใช้ตัดสินเฉพาะคู่ที่ใกล้กันจนแยกไม่ออก (< 2.5px)
+    cands.sort((a, b) => a.d - b.d || (b.rec.cluster ? 1 : 0) - (a.rec.cluster ? 1 : 0));
+    return cands[0].rec;
+  };
+
+  let hoverRec = null;
+  const setHover = (rec) => {
+    if (hoverRec === rec) return;
+    if (hoverRec) hoverRec.g.classList.remove('hover');
+    hoverRec = rec;
+    svg.classList.toggle('pin-hot', !!rec);
+    if (rec) {
+      rec.g.classList.add('hover');
+      rec.g.parentNode.appendChild(rec.g);
+      if (!selected) showCard(rec.p, 'preview');
+      if (!reduced) showArc(rec.p);
+    } else if (!selected) {
+      if (cardEl) { cardEl.hidden = true; cardEl.innerHTML = ''; }
       clearArc();
+    }
+  };
+
+  let lastType = 'mouse';
+  svg.addEventListener('pointermove', (e) => {
+    if (dragging || pointers.size > 0) return;
+    lastType = e.pointerType;
+    setHover(pickPin(e.clientX, e.clientY, isTouch(e)));
+  }, { passive: true });
+  svg.addEventListener('pointerleave', () => { if (!dragging) setHover(null); });
+
+  const nearDots = (rec, px) => {
+    const r = svg.getBoundingClientRect();
+    const unit = (r.width / VB[2]) * cam.k;   // พิกเซลต่อ 1 หน่วยแผนที่ ที่ระดับซูมปัจจุบัน
+    const out = [];
+    dots.forEach(d => {
+      if (d === rec) return;
+      const dist = Math.hypot(d.p.x - rec.p.x, d.p.y - rec.p.y) * unit;
+      if (dist < px) out.push(d.p);
     });
-    g.addEventListener('click', (e) => {
-      if (moved > 6) return;
-      e.stopPropagation();
-      if (rec.cluster) { openCampus(); return; }
-      selected = p;
-      dots.forEach(d => d.g.classList.toggle('on', d === rec));
-      showCard(p, 'full');
-      focusPin(p);
-      showArc(p);
-    });
-  });
+    return out.slice(0, 6);
+  };
+
+  const openPin = (rec) => {
+    if (rec.cluster) { openCampus(); return; }
+    rec.p.__near = nearDots(rec, 4);
+    selected = rec.p;
+    dots.forEach(d => d.g.classList.toggle('on', d === rec));
+    rec.g.parentNode.appendChild(rec.g);
+    showCard(rec.p, 'full');
+    focusPin(rec.p);
+    showArc(rec.p);
+  };
 
   // เส้นทางจากคณะฯ ไปจุดที่เลือก (แสดงเฉพาะตอนชี้/เลือก — ไม่มีแล้วตอนเลื่อนผ่าน)
   const drawArcTo = (p) => {
