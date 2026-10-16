@@ -1798,15 +1798,34 @@ input:focus-visible,
 }
 .bkk-pin-label {
   font-family: var(--font-body);
-  font-size: 7.8px;
+  font-size: 5.6px;
   font-weight: 600;
   fill: var(--charcoal);
   paint-order: stroke;
   stroke: rgba(255, 255, 255, 0.96);
-  stroke-width: 2.8px;
+  stroke-width: 2.2px;
   stroke-linejoin: round;
   pointer-events: none;
   user-select: none;
+}
+
+/* ── Bangkok Exploded View (ขยายผัง กทม.) ── */
+.map-svg.bkk-exploded .chula-label,
+.map-svg.bkk-exploded .plate-labels,
+.map-svg.bkk-exploded .plate-stat {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease;
+}
+.map-svg.bkk-exploded .pin-group:not([data-region="bkk"]) {
+  opacity: 0.12;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.map-svg.bkk-exploded .plate[data-region="bkk"] .plate-face {
+  filter: drop-shadow(0 6px 24px rgba(196, 113, 75, 0.42));
+  stroke: var(--terra);
+  stroke-width: 1.8px;
 }
 
 @media (max-width: 600px) {

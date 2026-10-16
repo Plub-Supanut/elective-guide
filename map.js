@@ -134,32 +134,32 @@
   // สถาบันใน กทม. มี 50 แห่ง กระจุกกันในพื้นที่แคบ ~30px บนแผนที่ทั้งประเทศ
   // จำลองแรงผลัก (repulsion) เพื่อกระจายหมุดให้อยู่ห่างกันอย่างน้อย 20 หน่วย พร้อมเส้นโยง
   const BKK_EXPLODE_MAP = {
-    "106 รามาธิบดี (Rama)": { ox: 310.1, oy: 669.5, ex: 288.9, ey: 679.3, dx: -21.2, dy: 9.8, short: "106 รามาธิบดี", group: "uni" },
-    "107 วชิรพยาบาล (BM)": { ox: 308.4, oy: 668.3, ex: 280.7, ey: 643.3, dx: -27.7, dy: -25.0, short: "107 วชิรพยาบาล", group: "uni" },
-    "108 ศิริราชพยาบาล (มหิดล)": { ox: 303.7, oy: 668.4, ex: 261.7, ey: 656.6, dx: -42.0, dy: -11.8, short: "108 ศิริราช", group: "uni" },
-    "109 โรงพยาบาลราชวิถี": { ox: 311.1, oy: 670.0, ex: 310.5, ey: 639.3, dx: -0.6, dy: -30.7, short: "109 รพ.ราชวิถี", group: "general" },
-    "110 พระมงกุฎเกล้า (PCM)": { ox: 310.7, oy: 669.5, ex: 297.3, ey: 653.5, dx: -13.4, dy: -16.0, short: "110 พระมงกุฎฯ", group: "uni" },
-    "124 สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": { ox: 335.2, oy: 673.4, ex: 407.5, ey: 680.9, dx: 72.3, dy: 7.5, short: "124 สจล.ลาดกระบัง", group: "uni" },
-    "201 รพ.เจริญกรุงประชารักษ์": { ox: 307.1, oy: 677.0, ex: 279.2, ey: 709.3, dx: -27.9, dy: 32.3, short: "201 เจริญกรุงฯ", group: "general" },
-    "203 รพ.ตำรวจ": { ox: 311.5, oy: 672.2, ex: 315.3, ey: 696.4, dx: 3.8, dy: 24.2, short: "203 รพ.ตำรวจ", group: "general" },
-    "204 รพ.นพรัตนราชธานี": { ox: 314.8, oy: 668.8, ex: 326.6, ey: 653.6, dx: 11.8, dy: -15.2, short: "204 นพรัตนฯ", group: "general" },
-    "205 รพ.เลิดสิน": { ox: 309.3, oy: 674.2, ex: 295.3, ey: 697.5, dx: -14.0, dy: 23.3, short: "205 รพ.เลิดสิน", group: "general" },
-    "206 รพ.พระปิ่นเกล้า": { ox: 306.7, oy: 670.1, ex: 280.5, ey: 663.3, dx: -26.2, dy: -6.8, short: "206 พระปิ่นเกล้า", group: "general" },
-    "207 รพ.สิรินธร": { ox: 327.8, oy: 674.6, ex: 380.6, ey: 686.6, dx: 52.8, dy: 12.0, short: "207 รพ.สิรินธร", group: "general" },
-    "302 สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา": { ox: 308.1, oy: 673.4, ex: 281.2, ey: 683.3, dx: -26.9, dy: 9.9, short: "302 สมเด็จเจ้าพระยา", group: "special" },
-    "303 สถาบันประสาทวิทยา": { ox: 319.2, oy: 669.5, ex: 345.7, ey: 659.0, dx: 26.5, dy: -10.5, short: "303 สถาบันประสาทฯ", group: "special" },
-    "304 รพ.ยุวประสาทไวทโยปถัมภ์": { ox: 317.0, oy: 687.0, ex: 333.6, ey: 740.1, dx: 16.6, dy: 53.1, short: "304 รพ.ยุวประสาทฯ", group: "special" },
-    "305 สถาบันโรคทรวงอก": { ox: 309.7, oy: 660.2, ex: 301.2, ey: 620.4, dx: -8.5, dy: -39.8, short: "305 สถาบันโรคทรวงอก", group: "special" },
-    "307 สถาบันสุขภาพเด็กแห่งชาติฯ (รพ.เด็ก)": { ox: 320.0, oy: 669.8, ex: 361.9, ey: 670.6, dx: 41.9, dy: 0.8, short: "307 สถาบันสุขภาพเด็ก", group: "special" },
-    "309 คณะเวชศาสตร์เขตร้อน (มหิดล)": { ox: 317.3, oy: 676.2, ex: 349.7, ey: 691.3, dx: 32.4, dy: 15.1, short: "309 เวชศาสตร์เขตร้อน", group: "special" },
-    "รพ.จุฬาภรณ์": { ox: 315.2, oy: 658.3, ex: 325.9, ey: 614.0, dx: 10.7, dy: -44.3, short: "รพ.จุฬาภรณ์", group: "special" },
-    "รพ.ภูมิพลอดุลยเดช (BB)": { ox: 319.0, oy: 655.3, ex: 342.7, ey: 603.1, dx: 23.7, dy: -52.2, short: "รพ.ภูมิพลอดุลยเดช", group: "general" },
-    "โรงพยาบาลบำรุงราษฎร์": { ox: 312.7, oy: 671.8, ex: 334.6, ey: 680.5, dx: 21.9, dy: 8.7, short: "รพ.บำรุงราษฎร์", group: "general" },
-    "โรงพยาบาลสงฆ์": { ox: 316.6, oy: 676.6, ex: 333.3, ey: 702.9, dx: 16.7, dy: 26.3, short: "รพ.สงฆ์", group: "general" },
-    "สถาบันกัลยาณ์ราชนครินทร์": { ox: 291.3, oy: 670.2, ex: 225.5, ey: 667.7, dx: -65.8, dy: -2.5, short: "สถาบันกัลยาณ์ฯ", group: "special" },
-    "สถาบันพยาธิวิทยา": { ox: 304.7, oy: 676.3, ex: 265.1, ey: 695.1, dx: -39.6, dy: 18.8, short: "สถาบันพยาธิวิทยา", group: "special" },
-    "สถาบันมะเร็งแห่งชาติ": { ox: 310.3, oy: 678.6, ex: 297.5, ey: 717.4, dx: -12.8, dy: 38.8, short: "สถาบันมะเร็งแห่งชาติ", group: "special" },
-    "สถาบันโรคผิวหนัง": { ox: 311.1, oy: 678.8, ex: 317.3, ey: 714.9, dx: 6.2, dy: 36.1, short: "สถาบันโรคผิวหนัง", group: "special" }
+    "106 รามาธิบดี (Rama)": { ox: 310.1, oy: 669.5, ex: 294.0, ey: 654.0, dx: -16.1, dy: -15.5, short: "106 รามาธิบดี", group: "uni", anchor: "end" },
+    "107 วชิรพยาบาล (BM)": { ox: 308.4, oy: 668.3, ex: 270.0, ey: 644.0, dx: -38.4, dy: -24.3, short: "107 วชิรพยาบาล", group: "uni", anchor: "end" },
+    "108 ศิริราชพยาบาล (มหิดล)": { ox: 303.7, oy: 668.4, ex: 256.0, ey: 664.0, dx: -47.7, dy: -4.4, short: "108 ศิริราช", group: "uni", anchor: "end" },
+    "109 โรงพยาบาลราชวิถี": { ox: 311.1, oy: 670.0, ex: 298.0, ey: 636.0, dx: -13.1, dy: -34.0, short: "109 รพ.ราชวิถี", group: "general", anchor: "end" },
+    "110 พระมงกุฎเกล้า (PCM)": { ox: 310.7, oy: 669.5, ex: 334.0, ey: 636.0, dx: 23.3, dy: -33.5, short: "110 พระมงกุฎฯ", group: "uni", anchor: "start" },
+    "124 สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": { ox: 335.2, oy: 673.4, ex: 396.0, ey: 676.0, dx: 60.8, dy: 2.6, short: "124 สจล.ลาดกระบัง", group: "uni", anchor: "start" },
+    "201 รพ.เจริญกรุงประชารักษ์": { ox: 307.1, oy: 677.0, ex: 280.0, ey: 730.0, dx: -27.1, dy: 53.0, short: "201 เจริญกรุงฯ", group: "general", anchor: "end" },
+    "203 รพ.ตำรวจ": { ox: 311.5, oy: 672.2, ex: 326.0, ey: 686.0, dx: 14.5, dy: 13.8, short: "203 รพ.ตำรวจ", group: "general", anchor: "start" },
+    "204 รพ.นพรัตนราชธานี": { ox: 314.8, oy: 668.8, ex: 372.0, ey: 642.0, dx: 57.2, dy: -26.8, short: "204 นพรัตนฯ", group: "general", anchor: "start" },
+    "205 รพ.เลิดสิน": { ox: 309.3, oy: 674.2, ex: 298.0, ey: 704.0, dx: -11.3, dy: 29.8, short: "205 รพ.เลิดสิน", group: "general", anchor: "start" },
+    "206 รพ.พระปิ่นเกล้า": { ox: 306.7, oy: 670.1, ex: 266.0, ey: 688.0, dx: -40.7, dy: 17.9, short: "206 พระปิ่นเกล้า", group: "general", anchor: "end" },
+    "207 รพ.สิรินธร": { ox: 327.8, oy: 674.6, ex: 382.0, ey: 690.0, dx: 54.2, dy: 15.4, short: "207 รพ.สิรินธร", group: "general", anchor: "start" },
+    "302 สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา": { ox: 308.1, oy: 673.4, ex: 272.0, ey: 712.0, dx: -36.1, dy: 38.6, short: "302 สมเด็จเจ้าพระยา", group: "special", anchor: "end" },
+    "303 สถาบันประสาทวิทยา": { ox: 319.2, oy: 669.5, ex: 356.0, ey: 654.0, dx: 36.8, dy: -15.5, short: "303 สถาบันประสาทฯ", group: "special", anchor: "start" },
+    "304 รพ.ยุวประสาทไวทโยปถัมภ์": { ox: 317.0, oy: 687.0, ex: 348.0, ey: 736.0, dx: 31.0, dy: 49.0, short: "304 รพ.ยุวประสาทฯ", group: "special", anchor: "start" },
+    "305 สถาบันโรคทรวงอก": { ox: 309.7, oy: 660.2, ex: 282.0, ey: 626.0, dx: -27.7, dy: -34.2, short: "305 สถาบันโรคทรวงอก", group: "special", anchor: "end" },
+    "307 สถาบันสุขภาพเด็กแห่งชาติฯ (รพ.เด็ก)": { ox: 320.0, oy: 669.8, ex: 376.0, ey: 666.0, dx: 56.0, dy: -3.8, short: "307 สถาบันสุขภาพเด็ก", group: "special", anchor: "start" },
+    "309 คณะเวชศาสตร์เขตร้อน (มหิดล)": { ox: 317.3, oy: 676.2, ex: 334.0, ey: 660.0, dx: 16.7, dy: -16.2, short: "309 เวชศาสตร์เขตร้อน", group: "special", anchor: "start" },
+    "รพ.จุฬาภรณ์": { ox: 315.2, oy: 658.3, ex: 312.0, ey: 624.0, dx: -3.2, dy: -34.3, short: "รพ.จุฬาภรณ์", group: "special", anchor: "start" },
+    "รพ.ภูมิพลอดุลยเดช (BB)": { ox: 319.0, oy: 655.3, ex: 346.0, ey: 620.0, dx: 27.0, dy: -35.3, short: "รพ.ภูมิพลอดุลยเดช", group: "general", anchor: "start" },
+    "โรงพยาบาลบำรุงราษฎร์": { ox: 312.7, oy: 671.8, ex: 352.0, ey: 676.0, dx: 39.3, dy: 4.2, short: "รพ.บำรุงราษฎร์", group: "general", anchor: "start" },
+    "โรงพยาบาลสงฆ์": { ox: 316.6, oy: 676.6, ex: 312.0, ey: 668.0, dx: -4.6, dy: -8.6, short: "รพ.สงฆ์", group: "general", anchor: "end" },
+    "สถาบันกัลยาณ์ราชนครินทร์": { ox: 291.3, oy: 670.2, ex: 242.0, ey: 676.0, dx: -49.3, dy: 5.8, short: "สถาบันกัลยาณ์ฯ", group: "special", anchor: "start" },
+    "สถาบันพยาธิวิทยา": { ox: 304.7, oy: 676.3, ex: 268.0, ey: 700.0, dx: -36.7, dy: 23.7, short: "สถาบันพยาธิวิทยา", group: "special", anchor: "end" },
+    "สถาบันมะเร็งแห่งชาติ": { ox: 310.3, oy: 678.6, ex: 304.0, ey: 716.0, dx: -6.3, dy: 37.4, short: "สถาบันมะเร็งแห่งชาติ", group: "special", anchor: "start" },
+    "สถาบันโรคผิวหนัง": { ox: 311.1, oy: 678.8, ex: 330.0, ey: 728.0, dx: 18.9, dy: 49.2, short: "สถาบันโรคผิวหนัง", group: "special", anchor: "start" }
   };
 
   // สร้างเส้นโยงและป้ายชื่อสำหรับโหมดกระจายผัง กทม.
@@ -177,10 +177,11 @@
     dot.setAttribute('class', 'bkk-origin-dot');
 
     const label = document.createElementNS(NS, 'text');
-    label.setAttribute('x', (d.ex + (d.dx >= 0 ? 5.5 : -5.5)).toFixed(1));
+    const isStart = d.anchor ? d.anchor === 'start' : d.dx >= 0;
+    label.setAttribute('x', (d.ex + (isStart ? 5.5 : -5.5)).toFixed(1));
     label.setAttribute('y', (d.ey + 2.5).toFixed(1));
     label.setAttribute('class', 'bkk-pin-label');
-    label.setAttribute('text-anchor', d.dx >= 0 ? 'start' : 'end');
+    label.setAttribute('text-anchor', isStart ? 'start' : 'end');
     label.textContent = d.short;
 
     gBkkExplode.append(line, dot, label);
@@ -690,6 +691,42 @@
     svg.classList.toggle('bkk-exploded', bkkExploded);
     if (gBkkExplode) gBkkExplode.style.display = bkkExploded ? 'block' : 'none';
 
+    // ขยายตัวแผนที่ กทม. (Bangkok plate) ตามจุดหมุดที่กระจายออก (Exploded Map)
+    const bkkPlate = plates.bkk?.g;
+    if (bkkPlate) {
+      bkkPlate.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease';
+      bkkPlate.style.transformOrigin = '316.5px 671.6px';
+      bkkPlate.style.transform = bkkExploded ? 'scale(3.1)' : '';
+      if (bkkExploded && bkkPlate.parentNode) {
+        bkkPlate.parentNode.appendChild(bkkPlate); // ยกแผ่น กทม. ขึ้นมาอยู่หน้าสุดของเลเยอร์แผ่นภาค
+      }
+    }
+
+    // ปลด clip-path ชั่วคราวเพื่อให้รูปทรง กทม. ที่ขยาย 3.1x ไม่ถูกเส้นขอบประเทศตัดขาด
+    gPlates.style.clipPath = bkkExploded ? 'none' : 'url(#eg-land-clip)';
+
+    // ผลักแผ่นภาคข้างเคียง (Central, East, South) ให้ออกห่างจาก กทม. แบบ exploded assembly diagram
+    const explodeOffsets = {
+      central: 'translate(-42px, -30px)',
+      east: 'translate(45px, 8px)',
+      south: 'translate(0px, 48px)'
+    };
+    ['central', 'east', 'south'].forEach(r => {
+      const pl = plates[r]?.g;
+      if (pl) {
+        pl.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease';
+        pl.style.transform = bkkExploded ? explodeOffsets[r] : '';
+        pl.style.opacity = bkkExploded ? '0.2' : '';
+      }
+    });
+    ['north', 'isan'].forEach(r => {
+      const pl = plates[r]?.g;
+      if (pl) {
+        pl.style.transition = 'opacity 0.35s ease';
+        pl.style.opacity = bkkExploded ? '0.14' : '';
+      }
+    });
+
     // ย้ายหมุดใน กทม. ออกไปตามตำแหน่งที่คำนวณไว้
     dots.forEach(rec => {
       if (rec.p.r !== 'bkk') return;
@@ -705,9 +742,14 @@
 
     if (bkkExploded) {
       cam.kT = 3.6;
-      cam.txT = VB[2] / 2 - 312 * cam.kT;
-      cam.tyT = VB[3] / 2 - 671 * cam.kT;
+      cam.txT = VB[2] / 2 - 316.5 * cam.kT;
+      cam.tyT = VB[3] / 2 - 671.6 * cam.kT;
       clampCam(); kickCam();
+    } else {
+      const activeRegionChip = document.querySelector('.filter-btn[data-filter^="region:"][aria-pressed="true"]');
+      if (!activeRegionChip) {
+        resetCam();
+      }
     }
   }
 
