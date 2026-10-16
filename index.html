@@ -322,10 +322,59 @@
     <section class="map-section" id="map" aria-labelledby="map-heading">
       <div class="container">
         <h2 class="sr-only" id="map-heading">แผนที่สถาบันทั้งหมด</h2>
+
+        <!-- ── แถบ toolbar ใหม่ ── -->
+        <div class="map-toolbar">
+          <!-- Search-on-map -->
+          <div class="map-search-wrap" role="search" aria-label="ค้นหาสถาบันบนแผนที่">
+            <label for="map-search-input" class="sr-only">ค้นหาสถาบัน</label>
+            <span class="map-search-icon" aria-hidden="true">🔍</span>
+            <input id="map-search-input" type="search" class="map-search-input"
+              placeholder="ค้นหาสถาบัน…" autocomplete="off" spellcheck="false" />
+            <div id="map-search-results" class="map-search-results" role="listbox" hidden></div>
+          </div>
+
+          <!-- Layer toggles -->
+          <div class="map-layers" role="group" aria-label="กรองที่พัก">
+            <button type="button" class="map-layer-btn" data-layer="dorm" aria-pressed="false">
+              🏠 มีที่พัก
+            </button>
+            <button type="button" class="map-layer-btn" data-layer="free" aria-pressed="false">
+              ✨ ที่พักฟรี
+            </button>
+          </div>
+
+          <!-- Compare toggle -->
+          <button type="button" id="map-compare-toggle" class="map-compare-btn" aria-pressed="false">
+            ⚖️ เปรียบเทียบ
+          </button>
+        </div>
+
+        <!-- ── ใกล้บ้านฉัน ── -->
+        <div class="map-home-row">
+          <label for="map-home-prov" class="map-home-label">🏡 ใกล้บ้านฉัน</label>
+          <div class="map-home-select-wrap">
+            <select id="map-home-prov" class="map-home-select">
+              <option value="">— เลือกจังหวัดบ้านเกิด —</option>
+            </select>
+            <button type="button" id="map-home-clear" class="map-home-clear" aria-label="ล้าง">✕</button>
+          </div>
+        </div>
+
         <div class="map-wrap">
           <div class="map-paper">
             <div id="elective-map">
               <p class="map-fallback">แผนที่ต้องเปิด JavaScript · ดูรายชื่อสถาบันทั้งหมดได้ที่ส่วน «สถาบัน» ด้านล่าง</p>
+            </div>
+            <!-- ปุ่มควบคุมการซูมแผนที่ -->
+            <div class="map-controls" role="group" aria-label="เครื่องมือซูมแผนที่">
+              <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="ซูมเข้า" title="ซูมเข้า">+</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="ซูมออก" title="ซูมออก">−</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-reset" aria-label="รีเซ็ตมุมมอง" title="รีเซ็ต">⟲</button>
+            </div>
+            <!-- แถบแจ้งเตือนเมื่อเลื่อนเมาส์ผ่านแผนที่โดยไม่กด Ctrl -->
+            <div class="map-scroll-hint" id="map-scroll-hint" aria-hidden="true">
+              กด <strong>Ctrl + เลื่อนลูกกลิ้งเมาส์</strong> เพื่อซูม หรือใช้ปุ่ม + / −
             </div>
           </div>
           <div class="map-side">
@@ -334,6 +383,15 @@
             <div class="map-facts" id="map-facts"></div>
             <div class="map-near" id="map-near"></div>
           </div>
+        </div>
+
+        <!-- ── Compare panel ── -->
+        <div id="map-compare-panel" class="map-compare-panel" hidden>
+          <div class="cmp-header">
+            <h3 class="cmp-title">⚖️ เปรียบเทียบสถาบัน</h3>
+            <p class="cmp-hint">คลิกหมุดบนแผนที่เพื่อเพิ่มสถาบันเข้าเปรียบ</p>
+          </div>
+          <div class="cmp-cols"></div>
         </div>
       </div>
     </section>

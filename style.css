@@ -1385,6 +1385,277 @@ input:focus-visible,
   .card-header .card-title { flex: 1 0 100%; }
 }
 
+/* ── map toolbar ────────────────────────────────────── */
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+/* Search */
+.map-search-wrap {
+  position: relative;
+  flex: 1 1 200px;
+  min-width: 180px;
+  max-width: 360px;
+}
+.map-search-icon {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: 1;
+}
+.map-search-input {
+  width: 100%;
+  padding: 0.55rem 0.9rem 0.55rem 2.3rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--off-white);
+  font-size: 0.9rem;
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.map-search-input:focus {
+  outline: none;
+  border-color: var(--terra);
+  box-shadow: 0 0 0 3px rgba(196, 113, 75, 0.14);
+}
+.map-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+  z-index: 200;
+  overflow: hidden;
+}
+.map-search-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.87rem;
+  font-family: var(--font-body);
+  color: var(--charcoal);
+  text-align: left;
+  transition: background 0.12s;
+}
+.map-search-item:hover,
+.map-search-item:focus { background: var(--sand); outline: none; }
+.map-search-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+.map-search-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-search-region { font-size: 0.76rem; color: var(--warm-gray); flex: 0 0 auto; }
+
+/* Layer toggles */
+.map-layers { display: flex; gap: 0.45rem; }
+.map-layer-btn {
+  padding: 0.45rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--off-white);
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.map-layer-btn:hover { background: var(--sand); border-color: var(--terra); }
+.map-layer-btn[aria-pressed="true"] {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Compare toggle button */
+.map-compare-btn {
+  padding: 0.45rem 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--off-white);
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.map-compare-btn:hover { background: var(--sand); border-color: var(--sage-dark); }
+.map-compare-btn.is-active {
+  background: var(--sage-dark);
+  border-color: var(--sage-dark);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Home Province selector */
+.map-home-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.map-home-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  white-space: nowrap;
+}
+.map-home-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.map-home-select {
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--off-white);
+  font-size: 0.87rem;
+  font-family: var(--font-body);
+  color: var(--charcoal);
+  cursor: pointer;
+  transition: border-color 0.18s;
+  min-width: 180px;
+}
+.map-home-select:focus { outline: none; border-color: var(--terra); }
+.map-home-clear {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--warm-gray);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+.map-home-clear:hover { background: var(--sand); color: var(--charcoal); }
+
+/* Home mode — pin states */
+.map-pin.home-near .pin-dot { opacity: 1; transform: scale(1.4); }
+.map-pin.home-near .pin-halo { opacity: 0.35; }
+.map-pin.home-far .pin-dot { opacity: 0.12; }
+.map-pin.home-far .pin-halo { opacity: 0; }
+.pin-hub.home-far { opacity: 0.12; }
+.pin-hub.home-near .hub-dot { opacity: 1; }
+.plate.home-lit .plate-face { fill: var(--rc-lift); stroke: var(--rc-lift); }
+.plate.home-dim .plate-face { opacity: 0.25; }
+
+/* Layer dim state */
+.map-pin.layer-dim .pin-dot { opacity: 0.1; }
+.map-pin.layer-dim .pin-halo { opacity: 0; }
+.pin-hub.layer-dim { opacity: 0.1; }
+
+/* Compare mode */
+#elective-map.compare-mode { cursor: crosshair; }
+.map-pin.cmp-selected .pin-dot { stroke: #fff; stroke-width: 2; transform: scale(1.7); opacity: 1; }
+.map-pin.cmp-selected .pin-halo { opacity: 0.45; }
+
+/* Compare panel */
+.map-compare-panel {
+  margin-top: 1.2rem;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  background: var(--off-white);
+  padding: 1.2rem 1.4rem 1.4rem;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+}
+.cmp-header { margin-bottom: 1rem; }
+.cmp-title { margin: 0 0 0.25rem; font-size: 1rem; font-weight: 700; color: var(--charcoal); }
+.cmp-hint { margin: 0; font-size: 0.78rem; color: var(--warm-gray); }
+.cmp-cols {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+.cmp-col {
+  flex: 1;
+  padding: 1rem 1.1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--sand);
+}
+.cmp-col + .cmp-vs + .cmp-col { border-left: none; border-radius: 0 10px 10px 0; }
+.cmp-col:first-child { border-radius: 10px 0 0 10px; }
+.cmp-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--warm-gray);
+  letter-spacing: 0.06em;
+  flex: 0 0 auto;
+}
+.cmp-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--warm-gray);
+  font-size: 0.87rem;
+  border-style: dashed;
+  background: transparent;
+}
+.cmp-region { margin: 0 0 0.25rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; }
+.cmp-name { margin: 0 0 0.55rem; font-size: 0.95rem; line-height: 1.35; color: var(--charcoal); font-weight: 700; }
+.cmp-badges { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.7rem; }
+.cmp-badges span {
+  padding: 0.18rem 0.55rem;
+  border-radius: 20px;
+  background: var(--sand-mid);
+  font-size: 0.72rem;
+  color: var(--charcoal);
+}
+.cmp-facts { display: flex; flex-direction: column; gap: 0.3rem; margin: 0 0 0.8rem; }
+.cmp-facts > div { display: flex; gap: 0.5rem; align-items: baseline; }
+.cmp-facts dt { font-size: 0.72rem; color: var(--warm-gray); min-width: 4rem; }
+.cmp-facts dd { margin: 0; font-size: 0.87rem; color: var(--charcoal); }
+.cmp-remove {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: none;
+  font-size: 0.75rem;
+  color: var(--warm-gray);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.12s, color 0.12s;
+}
+.cmp-remove:hover { background: var(--sand-mid); color: var(--charcoal); }
+
+@media (max-width: 600px) {
+  .map-toolbar { gap: 0.5rem; }
+  .map-search-wrap { min-width: 0; flex: 1 1 100%; max-width: none; }
+  .map-layers { flex-wrap: wrap; }
+  .cmp-cols { flex-direction: column; }
+  .cmp-col + .cmp-vs + .cmp-col { border-left: 1.5px solid var(--border); border-radius: 0 0 10px 10px; }
+  .cmp-col:first-child { border-radius: 10px 10px 0 0; }
+  .cmp-vs { padding: 0.4rem; writing-mode: horizontal-tb; }
+  .map-home-row { gap: 0.5rem; }
+  .map-home-select { min-width: 0; flex: 1; }
+}
+
 /* ============================
    แผนที่สถาบัน (แผนที่ไทย interactive)
    ============================ */
@@ -1418,6 +1689,72 @@ input:focus-visible,
   inset: 0;
   background: radial-gradient(92% 58% at 50% 0%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 72%);
   pointer-events: none;
+}
+/* ── map zoom controls (ปุ่ม + / - / reset) ─────────────── */
+.map-controls {
+  position: absolute;
+  right: 1.1rem;
+  top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  z-index: 20;
+}
+.map-ctrl-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--charcoal);
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 7px rgba(44, 40, 36, 0.1);
+  transition: all 0.15s ease;
+  user-select: none;
+  font-family: inherit;
+}
+.map-ctrl-btn:hover {
+  background: #fff;
+  color: var(--terra);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(44, 40, 36, 0.15);
+}
+.map-ctrl-btn:active {
+  transform: translateY(1px);
+}
+
+/* ── map scroll hint overlay (แจ้งเตือนกัน scroll hijack) ── */
+.map-scroll-hint {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(44, 40, 36, 0.92);
+  color: #fff;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 25;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+.map-scroll-hint strong {
+  color: #f7d286;
+}
+.map-scroll-hint.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 .map-svg { position: relative; display: block; width: 100%; height: auto; }
 .map-land path {

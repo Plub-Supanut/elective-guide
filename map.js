@@ -414,64 +414,10 @@
     } catch (_) {}
   });
 
-  // ══ กระจุกหมุด: พื้นที่ที่หมุดแน่น (กทม.) รวมเป็นจุดเดียวพร้อมตัวเลข ══
-  // ปัญหาเดิม: 50 จุดใน กทม. ซ้อนทับกันจนอ่านไม่ออก · ใหม่: ปุ่มตัวเลข → กดแล้วซูมเข้าไปจนแยกออก
-  const HUB_R = 15;
-  const HUB_PX = 13;        // รัศมีจริงบนจอ (px) — คงที่ไม่ว่าจะจอใหญ่หรือเล็ก
-  const HUB_HIT_PX = 22;    // เป้าสัมผัสขั้นต่ำ = 44px เส้นผ่านศูนย์กลาง
-  const gHubs = document.createElementNS(NS, 'g');
-  gHubs.setAttribute('class', 'map-hubs');
-  gPins.after(gHubs);
+  // ไม่รวมหมุดเป็นวงแดงใหญ่พร้อมเลข 22 (ผู้ใช้ติว่าไม่สวยและบังหมุดสถาบันใน กทม.)
+  // แสดงหมุดสถาบันทุกแห่งอย่างชัดเจน และจุดจุฬาฯ มีวง Chula-ring พิเศษอยู่แล้ว
+  const HUB_HIT_PX = 0;
   const hubList = [];
-  {
-    // จับกลุ่มแบบ "เพื่อนบ้านใกล้กัน" (ไม่ใช่ตาราง) — กทม. ที่หมุดกระจุกจึงรวมเป็นก้อนเดียวจริง
-    const R = 11, MIN = 5;
-    const pool = dots.filter(rec => !rec.cluster);
-    const used = new Set();
-    pool.forEach((seed) => {
-      if (used.has(seed)) return;
-      const list = pool.filter(r => !used.has(r) && Math.hypot(r.p.x - seed.p.x, r.p.y - seed.p.y) <= R);
-      if (list.length < MIN) return;
-      list.forEach(r => used.add(r));
-      const cx = list.reduce((s, r) => s + r.p.x, 0) / list.length;
-      const cy = list.reduce((s, r) => s + r.p.y, 0) / list.length;
-      const rad = 11 + Math.min(9, list.length * 0.5);     // ยิ่งมาก ยิ่งวงใหญ่
-      const g = document.createElementNS(NS, 'g');
-      g.setAttribute('class', 'pin-hub');
-      g.setAttribute('role', 'button');
-      g.setAttribute('tabindex', '0');
-      g.dataset.region = list[0].p.r;
-      g.style.setProperty('--rc', colorOf(list[0].p.r));
-      g.style.transformBox = 'view-box';
-      g.style.transformOrigin = '0 0';
-      g.style.transform = `translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px)`;
-      g.setAttribute('aria-label', `${list.length} สถาบันในพื้นที่นี้ — กดเพื่อซูมเข้า`);
-      const dot = document.createElementNS(NS, 'circle');
-      dot.setAttribute('cx', '0'); dot.setAttribute('cy', '0');
-      dot.setAttribute('r', rad.toFixed(1));
-      dot.setAttribute('class', 'hub-dot');
-      dot.setAttribute('fill', colorOf(list[0].p.r));
-      const txt = document.createElementNS(NS, 'text');
-      txt.setAttribute('class', 'hub-count');
-      txt.setAttribute('x', '0'); txt.setAttribute('y', '0');
-      txt.setAttribute('font-size', (rad * 1.02).toFixed(1));
-      txt.textContent = String(list.length);
-      const hit = document.createElementNS(NS, 'circle');
-      hit.setAttribute('cx', '0'); hit.setAttribute('cy', '0');
-      hit.setAttribute('r', rad.toFixed(1));
-      hit.setAttribute('class', 'hub-hit');
-      g.append(hit, dot, txt);
-      const zoomIn = (e) => {
-        if (e) { e.stopPropagation(); e.preventDefault(); }
-        focusPin({ x: cx, y: cy }, 3.4);
-      };
-      g.addEventListener('click', zoomIn);
-      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') zoomIn(e); });
-      gHubs.appendChild(g);
-      list.forEach((rec) => { rec.g.classList.add('in-hub'); rec.hub = g; });
-      hubList.push({ g, dot, txt, hit, cx, cy, rad, list });
-    });
-  }
 
   // ══════════════════════════════════════════════════════════════
   //  สถานะของ "ภาค" — ออกแบบใหม่ทั้งชุด
@@ -482,7 +428,7 @@
   // ══════════════════════════════════════════════════════════════
   const gStats = document.createElementNS(NS, 'g');
   gStats.setAttribute('class', 'map-stats');
-  gHubs.after(gStats);
+  gPins.after(gStats);
 
   const statEls = {};
   const statsOf = (r) => {
@@ -631,10 +577,15 @@
       if (h.hit) h.hit.setAttribute('r', Math.max(r, hf > 0 ? HUB_HIT_PX / hf : r).toFixed(1));
     });
     svg.classList.toggle('hub-open', cam.k > 2.4);
-    // นิ้วเดียวลากได้เฉพาะตอนซูมอยู่ (ตอนไม่ซูมต้องเลื่อนหน้าเว็บได้ — ไม่งั้นจอเล็กจะติดกับแผนที่)
-    svg.style.touchAction = cam.k > 1.02 ? 'none' : 'pan-y';
-    // ซ่อนป้ายชื่อภาคที่จุดยึดหลุดกรอบ (ไม่งั้นโดนขอบตัดครึ่ง ดูเหมือนบั๊ก)
+    // จอสัมผัส: pan-y เสมอ เพื่อให้การปัดนิ้วเลื่อนหน้าเว็บไม่ติดขัด
+    svg.style.touchAction = 'pan-y';
+    // ป้ายชื่อภาค: ไม่ซ่อนตอนมุมมองปกติ (แก้ปัญหาป้ายภาคกลาง/กรุงเทพฯ หาย)
+    // ซ่อนเฉพาะตอนที่ซูมลึกจริง ๆ (k > 1.25) และจุดยึดหลุดขอบจอ
     Object.values(plates).forEach(pl => {
+      if (cam.k <= 1.25) {
+        pl.wrap.classList.remove('off');
+        return;
+      }
       const sx = pl.labX * cam.k + cam.tx, sy = pl.labY * cam.k + cam.ty;
       // ป้ายถูกย่อ/ขยายสวนทางกล้อง (คงขนาดบนจอ) → ขนาดในหน่วย viewBox คงที่ วัดครั้งเดียวพอ
       if (pl.halfW == null) {
@@ -689,11 +640,25 @@
   svg.addEventListener('touchstart', twoFinger, { passive: false });
   svg.addEventListener('touchmove', twoFinger, { passive: false });
 
+  // ป้องกัน scroll hijacking: ซูมด้วย wheel เฉพาะเมื่อกด Ctrl/Cmd เท่านั้น
+  let hintTimer = null;
+  const scrollHint = document.getElementById('map-scroll-hint');
+  const showScrollHint = () => {
+    if (!scrollHint) return;
+    scrollHint.classList.add('visible');
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => scrollHint.classList.remove('visible'), 1600);
+  };
+
   svg.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    // แทร็กแพด/ล้อเมาส์: หยิกบนแทร็กแพดจะมาเป็น ctrlKey + deltaY
-    const step = e.ctrlKey ? 0.012 : 0.0018;
-    zoomAt(Math.exp(-e.deltaY * step), e.clientX, e.clientY);
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const step = 0.007;
+      zoomAt(Math.exp(-e.deltaY * step), e.clientX, e.clientY);
+    } else {
+      // ปล่อยให้หน้าเว็บเลื่อนตามปกติ และแสดงคำแนะนำสั้น ๆ
+      showScrollHint();
+    }
   }, { passive: false });
 
   svg.addEventListener('pointerdown', (e) => {
@@ -701,9 +666,9 @@
     moved = 0; vx = 0; vy = 0; lastT = e.timeStamp;
     // หมายเหตุ: ห้าม setPointerCapture ตอนนี้ — ถ้าจับตั้งแต่กด คลิกจะไม่ถึงหมุด
     if (pointers.size === 1) {
-      // นิ้วเดียว: ถ้ายังไม่ซูม แผนที่พอดีกรอบ → ปล่อยให้นิ้วเลื่อนหน้าเว็บตามปกติ
-      //           ถ้าซูมอยู่แล้ว → ลากเพื่อแพนแผนที่ (ผู้ใช้บ่นว่า "pan map ในมือถือไม่ได้")
-      if (isTouch(e) && cam.k <= 1.02) return;
+      // บนจอสัมผัส (มือถือ): นิ้วเดียวปล่อยให้ scroll หน้าเว็บตามธรรมชาติ
+      // แพน/ซูมในมือถือใช้ 2 นิ้ว pinch หรือกดปุ่ม zoom +/- ด้านขวา
+      if (isTouch(e)) return;
       dragging = true; lastX = e.clientX; lastY = e.clientY;
       svg.classList.add('grabbing');
     } else if (pointers.size === 2) {
@@ -1018,39 +983,267 @@
   applyCam();
   window.__MAP = { cam, zoomAt, resetCam, dots, focusPin, closeCard, openCampus };
 
-  // == โหมดแสดงผลอย่างเดียว: แผนที่เป็นภาพ ไม่ใช่ตัวควบคุม ==
-  try {
-    // ต้องปิดที่ .map-paper ด้วย — handler ลาก/ซูมผูกที่ชั้นนี้ (ไม่ใช่ที่ svg)
-    paper.style.pointerEvents = 'none';
-    paper.style.touchAction = 'auto';
-    svg.style.pointerEvents = 'none';
-    svg.style.touchAction = 'auto';
-    // ตัด listener ทั้งหมดที่ผูกกับ svg — โคลนโหนดใหม่สะอาดที่สุด (pointer-events: none ปิดไม่หมดในเบราว์เซอร์จริง)
-    const clean0 = svg.cloneNode(true);
-    clean0.style.pointerEvents = 'none';
-    clean0.style.touchAction = 'auto';
-    clean0.setAttribute('aria-hidden', 'true');
-    clean0.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    svg.parentNode.replaceChild(clean0, svg);
-    // ผู้ใช้: วงแดงเลข 22 กลางแผนที่ไม่สวย → เอาเลขออกและย่อวงให้พอดี
-    clean0.querySelectorAll('.hub-count').forEach(el => el.remove());
-    clean0.querySelectorAll('.hub-dot').forEach(el => el.setAttribute('r', '5.6'));
-    clean0.querySelectorAll('.map-pin.hub, .pin-hub').forEach(el => el.classList.remove('dim'));
-    // แผนที่นิ่งแล้ว → ป้ายภาคไม่ต้องซ่อนเอง (เดิมซ่อนเมื่อคิดว่าหลุดกรอบ ทำให้ 'ภาคกลาง' หาย)
-    clean0.querySelectorAll('.plate-label-wrap.off').forEach(el => el.classList.remove('off'));
-    clean0.querySelectorAll('.plate-labels').forEach(el => el.classList.remove('dim', 'sel'));
-    clean0.querySelectorAll('[tabindex]').forEach(el => el.removeAttribute('tabindex'));
-    clean0.querySelectorAll('[role="button"]').forEach(el => el.removeAttribute('role'));
-    window.__MAP.staticView = clean0;
-    svg.querySelectorAll('[tabindex]').forEach(el => el.removeAttribute('tabindex'));
-    svg.querySelectorAll('[role="button"]').forEach(el => el.removeAttribute('role'));
-    svg.setAttribute('aria-hidden', 'true');
-    paper.style.cursor = 'default';
-    paper.removeAttribute('tabindex');
-    const card = document.getElementById('map-card');
-    if (card) { card.hidden = true; card.setAttribute('aria-hidden', 'true'); }
-    document.querySelectorAll('.map-near-row').forEach(el => {
-      el.removeAttribute('tabindex'); el.removeAttribute('role'); el.style.pointerEvents = 'none';
+  // ══ FEATURE: Search-on-map ════════════════════════════════════
+  // พิมพ์ชื่อสถาบัน → ผลลัพธ์ dropdown → คลิก → กล้องบินไปหาหมุด
+  const searchInput = document.getElementById('map-search-input');
+  const searchResults = document.getElementById('map-search-results');
+  if (searchInput && searchResults) {
+    let searchTimer = null;
+    const pinataSearch = (q) => {
+      const norm = q.trim().toLowerCase();
+      if (!norm) { searchResults.hidden = true; searchResults.replaceChildren(); return; }
+      const hits = M.pins.filter(p => p.n.toLowerCase().includes(norm)).slice(0, 8);
+      if (!hits.length) { searchResults.hidden = true; searchResults.replaceChildren(); return; }
+      searchResults.replaceChildren();
+      hits.forEach(p => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'map-search-item';
+        btn.innerHTML = `<span class="map-search-dot" style="background:${colorOf(p.r)}"></span>`
+          + `<span class="map-search-name">${p.n}</span>`
+          + `<span class="map-search-region">${REGION[p.r]?.name || ''}</span>`;
+        btn.addEventListener('click', () => {
+          searchInput.value = p.n;
+          searchResults.hidden = true;
+          const rec = dots.find(d => d.p === p);
+          if (rec) openPin(rec, []);
+        });
+        searchResults.appendChild(btn);
+      });
+      searchResults.hidden = false;
+    };
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => pinataSearch(searchInput.value), 120);
     });
-  } catch (e) {}
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { searchResults.hidden = true; searchInput.blur(); }
+      if (e.key === 'ArrowDown' && !searchResults.hidden) {
+        e.preventDefault();
+        searchResults.querySelector('.map-search-item')?.focus();
+      }
+    });
+    searchResults.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { searchResults.hidden = true; searchInput.focus(); }
+      if (e.key === 'ArrowDown') { e.preventDefault(); (e.target.nextElementSibling || searchResults.firstElementChild)?.focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); (e.target.previousElementSibling || searchResults.lastElementChild)?.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) searchResults.hidden = true;
+    });
+  }
+
+  // ══ FEATURE: Layer Toggle (ที่พัก) ═══════════════════════════
+  // กรองหมุดแสดงเฉพาะสถาบันที่มี/ไม่มีที่พัก
+  let activeLayer = null;  // null | 'dorm' | 'free'
+  const applyLayer = () => {
+    dots.forEach(rec => {
+      if (!activeLayer) {
+        rec.g.classList.remove('layer-dim');
+      } else if (activeLayer === 'dorm') {
+        rec.g.classList.toggle('layer-dim', !rec.p.d && !rec.cluster);
+      } else if (activeLayer === 'free') {
+        rec.g.classList.toggle('layer-dim', !rec.p.f && !rec.cluster);
+      }
+    });
+    hubList.forEach(h => {
+      if (!activeLayer) { h.g.classList.remove('layer-dim'); return; }
+      const anyMatch = h.list.some(r => activeLayer === 'dorm' ? r.p.d : r.p.f);
+      h.g.classList.toggle('layer-dim', !anyMatch);
+    });
+    document.querySelectorAll('.map-layer-btn').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.layer === activeLayer ? 'true' : 'false');
+    });
+  };
+  document.querySelectorAll('.map-layer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeLayer = btn.dataset.layer === activeLayer ? null : btn.dataset.layer;
+      applyLayer();
+    });
+  });
+
+  // ══ FEATURE: ใกล้บ้านฉัน (Province proximity) ════════════════
+  // เลือกจังหวัดบ้านเกิด → highlight สถาบันที่อยู่ในภาคนั้น (พร้อมซูมไปที่ภาค)
+  const PROV_REGION = {
+    // ภาคเหนือ
+    'เชียงใหม่':'north','เชียงราย':'north','ลำพูน':'north','ลำปาง':'north','แม่ฮ่องสอน':'north',
+    'พะเยา':'north','แพร่':'north','น่าน':'north','อุตรดิตถ์':'north','ตาก':'north',
+    'สุโขทัย':'north','พิษณุโลก':'north','พิจิตร':'north','กำแพงเพชร':'north','เพชรบูรณ์':'north',
+    // ภาคกลาง
+    'กรุงเทพมหานคร':'bkk','นนทบุรี':'bkk','ปทุมธานี':'bkk','สมุทรปราการ':'bkk',
+    'อยุธยา':'central','สระบุรี':'central','ลพบุรี':'central','สิงห์บุรี':'central',
+    'อ่างทอง':'central','ชัยนาท':'central','นครสวรรค์':'central','อุทัยธานี':'central',
+    'สุพรรณบุรี':'central','นครปฐม':'central','สมุทรสาคร':'central','สมุทรสงคราม':'central',
+    'ราชบุรี':'central','กาญจนบุรี':'central','เพชรบุรี':'central','ประจวบคีรีขันธ์':'central',
+    // ภาคตะวันออก
+    'ชลบุรี':'east','ระยอง':'east','จันทบุรี':'east','ตราด':'east','ฉะเชิงเทรา':'east',
+    'ปราจีนบุรี':'east','สระแก้ว':'east','นครนายก':'east',
+    // ภาคอีสาน
+    'นครราชสีมา':'isan','ขอนแก่น':'isan','อุดรธานี':'isan','อุบลราชธานี':'isan',
+    'สกลนคร':'isan','บึงกาฬ':'isan','หนองคาย':'isan','หนองบัวลำภู':'isan',
+    'เลย':'isan','ชัยภูมิ':'isan','บุรีรัมย์':'isan','สุรินทร์':'isan',
+    'ศรีสะเกษ':'isan','ร้อยเอ็ด':'isan','มหาสารคาม':'isan','กาฬสินธุ์':'isan',
+    'มุกดาหาร':'isan','ยโสธร':'isan','อำนาจเจริญ':'isan','นครพนม':'isan',
+    // ภาคใต้
+    'สงขลา':'south','ภูเก็ต':'south','สุราษฎร์ธานี':'south','นครศรีธรรมราช':'south',
+    'กระบี่':'south','ตรัง':'south','พัทลุง':'south','สตูล':'south',
+    'ปัตตานี':'south','ยะลา':'south','นราธิวาส':'south','ชุมพร':'south',
+    'ระนอง':'south','พังงา':'south',
+  };
+  const PROVINCES_BY_REGION = {};
+  Object.entries(PROV_REGION).forEach(([p, r]) => { (PROVINCES_BY_REGION[r] = PROVINCES_BY_REGION[r] || []).push(p); });
+
+  let homeRegion = null;
+  const homeSelect = document.getElementById('map-home-prov');
+  if (homeSelect) {
+    Object.entries(REGION).forEach(([key, meta]) => {
+      const group = document.createElement('optgroup');
+      group.label = meta.name;
+      (PROVINCES_BY_REGION[key] || []).sort().forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = key + ':' + p;
+        opt.textContent = p;
+        group.appendChild(opt);
+      });
+      if (group.children.length) homeSelect.appendChild(group);
+    });
+    const applyHome = () => {
+      dots.forEach(rec => {
+        rec.g.classList.toggle('home-near', !!homeRegion && rec.p.r === homeRegion);
+        rec.g.classList.toggle('home-far', !!homeRegion && rec.p.r !== homeRegion && !rec.cluster);
+      });
+      hubList.forEach(h => {
+        h.g.classList.toggle('home-near', !!homeRegion && h.g.dataset.region === homeRegion);
+        h.g.classList.toggle('home-far', !!homeRegion && h.g.dataset.region !== homeRegion);
+      });
+      Object.entries(plates).forEach(([r, pl]) => {
+        pl.g.classList.toggle('home-lit', !!homeRegion && r === homeRegion);
+        pl.g.classList.toggle('home-dim', !!homeRegion && r !== homeRegion);
+      });
+      // ซูมไปที่ภาคบ้านเกิด
+      if (homeRegion && plates[homeRegion]) {
+        const bb = plates[homeRegion].g.querySelector('.plate-face')?.getBBox?.();
+        if (bb) {
+          const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
+          const fit = Math.min(VB[2] / bb.width, VB[3] / bb.height) * 0.65;
+          cam.kT = Math.max(1.2, Math.min(3.5, fit));
+          cam.txT = VB[2] / 2 - cx * cam.kT;
+          cam.tyT = VB[3] / 2 - cy * cam.kT;
+          clampCam(); kickCam();
+        }
+      } else if (!homeRegion) {
+        resetCam();
+      }
+    };
+    homeSelect.addEventListener('change', () => {
+      const v = homeSelect.value;
+      homeRegion = v ? v.split(':')[0] : null;
+      applyHome();
+    });
+    const clearHomeBtn = document.getElementById('map-home-clear');
+    if (clearHomeBtn) {
+      clearHomeBtn.addEventListener('click', () => {
+        homeSelect.value = '';
+        homeRegion = null;
+        applyHome();
+      });
+    }
+  }
+
+  // ══ FEATURE: Compare Mode ═════════════════════════════════════
+  // กดปุ่ม Compare แล้วเลือก 2 สถาบัน → แสดง side-by-side ใน panel
+  let compareMode = false;
+  let compareList = [];   // max 2 pins
+  const comparePanel = document.getElementById('map-compare-panel');
+  const compareToggle = document.getElementById('map-compare-toggle');
+
+  const renderCompare = () => {
+    if (!comparePanel) return;
+    if (!compareList.length) { comparePanel.hidden = true; return; }
+    comparePanel.hidden = false;
+    const cols = compareList.map(p => {
+      const dv = driveOf(p);
+      const km = Math.round(dv ? dv.km : kmOf(p));
+      const badges = badgeOf(p).map(b => `<span>${b}</span>`).join('');
+      return `<div class="cmp-col">
+        <p class="cmp-region" style="color:${colorOf(p.r)}">${REGION[p.r]?.name || ''}</p>
+        <h4 class="cmp-name">${p.n}</h4>
+        <div class="cmp-badges">${badges}</div>
+        <dl class="cmp-facts">
+          <div><dt>ระยะทาง</dt><dd>${km} กม.${dv ? ` · ≈${dv.min} น.` : ' (เส้นตรง)'}</dd></div>
+          <div><dt>ที่พัก</dt><dd>${p.d ? (p.f ? '✅ ฟรี' : '✅ มี') : '—'}</dd></div>
+          <div><dt>ประเภท</dt><dd>${p.t.includes('university') ? 'มหาวิทยาลัย' : p.t.includes('hospital') ? 'รพ./ศูนย์' : 'สถาบัน'}</dd></div>
+        </dl>
+        <button type="button" class="cmp-remove" data-name="${p.n}">✕ ลบออก</button>
+      </div>`;
+    });
+    if (compareList.length === 1) cols.push(`<div class="cmp-col cmp-empty"><p>เลือกสถาบันที่ 2 บนแผนที่</p></div>`);
+    comparePanel.querySelector('.cmp-cols').innerHTML = cols.join('<div class="cmp-vs">VS</div>');
+    comparePanel.querySelectorAll('.cmp-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        compareList = compareList.filter(p => p.n !== btn.dataset.name);
+        dots.forEach(d => d.g.classList.toggle('cmp-selected', compareList.includes(d.p)));
+        renderCompare();
+      });
+    });
+  };
+
+  if (compareToggle) {
+    compareToggle.addEventListener('click', () => {
+      compareMode = !compareMode;
+      compareToggle.setAttribute('aria-pressed', compareMode ? 'true' : 'false');
+      compareToggle.classList.toggle('is-active', compareMode);
+      if (!compareMode) {
+        compareList = [];
+        dots.forEach(d => d.g.classList.remove('cmp-selected'));
+        if (comparePanel) comparePanel.hidden = true;
+      }
+      host.classList.toggle('compare-mode', compareMode);
+    });
+  }
+
+  // Hook เข้ากับ openPin เดิม: ถ้า compareMode → เพิ่มใน compareList แทนเปิด card
+  const _origOpenPin = openPin;
+  // ไม่ override openPin โดยตรง แต่ใช้ event delegation ผ่าน click listener ที่ svg
+  // (เพราะ openPin ถูกเรียกจาก hit-test ใน svg click ด้านบน)
+  // แทนที่จะ monkey-patch ให้เพิ่ม compare logic ก่อน openPin ถูกเรียกใน click handler
+  svg.addEventListener('click', (e) => {
+    if (!compareMode || moved > 6) return;
+    const h = pickAt(e.clientX, e.clientY, false);
+    if (!h || h.rec.cluster) return;
+    e.stopImmediatePropagation();
+    const p = h.rec.p;
+    if (compareList.find(x => x === p)) return;  // ป้องกัน duplicate
+    if (compareList.length >= 2) compareList.shift();
+    compareList.push(p);
+    dots.forEach(d => d.g.classList.toggle('cmp-selected', compareList.includes(d.p)));
+    renderCompare();
+  }, true);   // capture: true → ทำงานก่อน listener อื่น
+
+  // ══ Zoom controls buttons (+ / − / ⟲) ════════════════════════
+  const btnZoomIn = document.getElementById('map-zoom-in');
+  const btnZoomOut = document.getElementById('map-zoom-out');
+  const btnZoomReset = document.getElementById('map-zoom-reset');
+  if (btnZoomIn) {
+    btnZoomIn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const r = svg.getBoundingClientRect();
+      zoomAt(1.4, r.left + r.width / 2, r.top + r.height / 2);
+    });
+  }
+  if (btnZoomOut) {
+    btnZoomOut.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const r = svg.getBoundingClientRect();
+      zoomAt(1 / 1.4, r.left + r.width / 2, r.top + r.height / 2);
+    });
+  }
+  if (btnZoomReset) {
+    btnZoomReset.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetCam();
+    });
+  }
+
+  window.__MAP = { cam, zoomAt, resetCam, dots, focusPin, closeCard, openCampus, compareList };
 })();
