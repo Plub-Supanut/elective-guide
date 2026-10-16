@@ -147,8 +147,16 @@ function syncFilterUI() {
 }
 
 function toggleFilter(f) {
-  const g = groups[groupOf(f)];
-  g.has(f) ? g.delete(f) : g.add(f);
+  const grpName = groupOf(f);
+  const g = groups[grpName];
+  if (grpName === 'region') {
+    // เลือกได้ทีละภาค: กดภาคเดิม = ปิด, กดภาคใหม่ = สลับภาค
+    const wasSelected = g.has(f);
+    g.clear();
+    if (!wasSelected) g.add(f);
+  } else {
+    g.has(f) ? g.delete(f) : g.add(f);
+  }
   syncFilterUI();
   runSearch();
 }
@@ -545,8 +553,16 @@ window.addEventListener('scroll', () => {
 // ── เริ่มต้นจาก URL (ลิงก์ที่แชร์กันมาเปิดแล้วได้ตัวกรองเดิม) ───
 (function initFromURL() {
   const p = new URLSearchParams(location.search);
-  const valid = f => /^(chula|university|hospital|cpird|regional-plain|private|dormitory|dorm-free)$/.test(f) || /^region:(bkk|central|north|isan|south)$/.test(f);
-  (p.get('f') || '').split(',').filter(valid).forEach(f => groups[groupOf(f)].add(f));
+  const valid = f => /^(chula|university|hospital|cpird|regional-plain|private|dormitory|dorm-free)$/.test(f) || /^region:(bkk|central|east|north|isan|south)$/.test(f);
+  (p.get('f') || '').split(',').filter(valid).forEach(f => {
+    const grp = groupOf(f);
+    if (grp === 'region') {
+      groups.region.clear();
+      groups.region.add(f);
+    } else {
+      groups[grp].add(f);
+    }
+  });
 
   const s = p.get('sort');
   if (s && sortSelect && Array.from(sortSelect.options).some(o => o.value === s)) {

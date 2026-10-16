@@ -115,7 +115,7 @@
   const gPins = document.createElementNS(NS, 'g'); gPins.setAttribute('class', 'map-pins');
   const gChula = document.createElementNS(NS, 'g'); gChula.setAttribute('class', 'map-chula');
   const gZoom = document.createElementNS(NS, 'g'); gZoom.setAttribute('class', 'map-zoom');
-  gZoom.append(gLand, gArcs, gBkkExplode, gPins, gChula);
+  gZoom.append(gLand, gBkkExplode, gPins, gArcs, gChula);
   svg.appendChild(gZoom);
   host.appendChild(svg);
 
@@ -163,11 +163,13 @@
   };
 
   // สร้างเส้นโยงและป้ายชื่อสำหรับโหมดกระจายผัง กทม.
+  const bkkLeaderLines = {};
   Object.entries(BKK_EXPLODE_MAP).forEach(([name, d]) => {
     const line = document.createElementNS(NS, 'line');
     line.setAttribute('x1', d.ox); line.setAttribute('y1', d.oy);
     line.setAttribute('x2', d.ex); line.setAttribute('y2', d.ey);
     line.setAttribute('class', 'bkk-leader-line');
+    bkkLeaderLines[name] = line;
 
     const dot = document.createElementNS(NS, 'circle');
     dot.setAttribute('cx', d.ox); dot.setAttribute('cy', d.oy);
@@ -294,7 +296,9 @@
   const closeCard = () => {
     selected = null;
     dots.forEach(d => d.g.classList.remove('on'));
+    Object.values(bkkLeaderLines).forEach(line => line.classList.remove('on'));
     if (cardEl) { cardEl.hidden = true; cardEl.innerHTML = ''; }
+    clearArc();
   };
 
   // ══ แผนผังอาคารคณะแพทยศาสตร์ จุฬาฯ (isometric) ════════════════
@@ -984,11 +988,15 @@
   let hoverRec = null;
   const setHover = (rec) => {
     if (hoverRec === rec) return;
-    if (hoverRec) hoverRec.g.classList.remove('hover');
+    if (hoverRec) {
+      hoverRec.g.classList.remove('hover');
+      if (bkkLeaderLines[hoverRec.p.n]) bkkLeaderLines[hoverRec.p.n].classList.remove('hover');
+    }
     hoverRec = rec;
     svg.classList.toggle('pin-hot', !!rec);
     if (rec) {
       rec.g.classList.add('hover');
+      if (bkkLeaderLines[rec.p.n]) bkkLeaderLines[rec.p.n].classList.add('hover');
       rec.g.parentNode.appendChild(rec.g);
       if (!selected) showCard(rec.p, 'preview');
       if (!reduced) showArc(rec.p);
@@ -1013,6 +1021,9 @@
     rec.p.__near = nearList.length > 1 ? nearList : [];   // แสดงแถวเลือกเฉพาะเมื่อมีหลายสถาบันที่ตำแหน่งเดียวกัน
     selected = rec.p;
     dots.forEach(d => d.g.classList.toggle('on', d === rec));
+    Object.entries(bkkLeaderLines).forEach(([name, line]) => {
+      line.classList.toggle('on', name === rec.p.n);
+    });
     rec.g.parentNode.appendChild(rec.g);
     showCard(rec.p, 'full');
     focusPin(rec.p);
@@ -1029,22 +1040,38 @@
     }
     const mx = (HOME_X + px) / 2, my = (HOME_Y + py) / 2;
     const dx = px - HOME_X, dy = py - HOME_Y, len = Math.hypot(dx, dy) || 1;
-    const cx = mx - dy / len * len * 0.2, cy = my + dx / len * len * 0.2;
+
+    // ความโค้ง (bow):
+    // สำหรับสถาบันใน กทม. หรือระยะใกล้ มีระยะโค้งขั้นต่ำ (bow >= 22)
+    // เพื่อให้เส้นโค้งออกมาพ้นรัศมีจุดจุฬาฯ และจุดปลาย เส้นไม่จมหาย/ไม่ขาด
+    const bow = Math.max(22, Math.min(len * 0.22, 65));
+    const cx = mx - (dy / len) * bow;
+    const cy = my + (dx / len) * bow;
+
     const path = document.createElementNS(NS, 'path');
     path.setAttribute('d', `M${HOME_X.toFixed(1)},${HOME_Y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${px.toFixed(1)},${py.toFixed(1)}`);
     path.setAttribute('class', 'map-arc');
     gArcs.appendChild(path);
+
+    // ละอองประกายวิ่งตามแนวเส้นทาง (Pulse animation)
+    const pulse = document.createElementNS(NS, 'path');
+    pulse.setAttribute('d', path.getAttribute('d'));
+    pulse.setAttribute('class', 'map-arc-pulse');
+    gArcs.appendChild(pulse);
+
     if (!reduced) {
-      const L = path.getTotalLength();
-      path.style.strokeDasharray = L;
-      path.style.strokeDashoffset = L;
+      const L = Math.ceil(path.getTotalLength() || 1);
+      const pad = 16;
+      path.style.strokeDasharray = `${L + pad} ${L + pad}`;
+      path.style.strokeDashoffset = `${L + pad}`;
       path.getBoundingClientRect();
-      path.style.transition = 'stroke-dashoffset 460ms cubic-bezier(.4,0,.2,1)';
-      path.style.strokeDashoffset = 0;
+      const dur = Math.max(320, Math.min(500, L * 1.5));
+      path.style.transition = `stroke-dashoffset ${dur}ms cubic-bezier(.25, .85, .3, 1)`;
+      path.style.strokeDashoffset = '0';
     }
     const home = document.createElementNS(NS, 'circle');
     home.setAttribute('cx', HOME_X.toFixed(1)); home.setAttribute('cy', HOME_Y.toFixed(1));
-    home.setAttribute('r', 6); home.setAttribute('class', 'map-home');
+    home.setAttribute('r', 5.5); home.setAttribute('class', 'map-home');
     gArcs.appendChild(home);
   };
   const showArc = (p) => { if (p.t.includes('chula')) return; drawArcTo(p); };

@@ -1779,11 +1779,17 @@ input:focus-visible,
 /* SVG Leader lines & labels for exploded pins */
 .bkk-leader-line {
   stroke: var(--terra);
-  stroke-width: 0.9;
-  stroke-dasharray: 2.5 2.5;
+  stroke-width: 1.1;
+  stroke-linecap: round;
   opacity: 0.45;
   vector-effect: non-scaling-stroke;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+}
+.bkk-leader-line.on,
+.bkk-leader-line.hover {
+  stroke: var(--terra);
+  stroke-width: 2.2;
+  opacity: 0.95;
 }
 .bkk-origin-dot {
   fill: var(--terra);
@@ -2006,9 +2012,34 @@ input:focus-visible,
 .map-pins.touching .map-pin.on .pin-dot { opacity: 1; }
 
 /* เส้นทางจากจุฬาฯ ไปหมุดที่ชี้ */
-.map-arc { fill: none; stroke: var(--terra); stroke-width: 1.3; stroke-linecap: round; opacity: 0.85;
-  vector-effect: non-scaling-stroke; }
-.map-home { fill: var(--terra); stroke: var(--off-white); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.map-arc {
+  fill: none;
+  stroke: var(--terra);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.88;
+  vector-effect: non-scaling-stroke;
+}
+.map-arc-pulse {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 8 28;
+  vector-effect: non-scaling-stroke;
+  animation: arcFlow 1.1s linear infinite;
+  pointer-events: none;
+}
+@keyframes arcFlow {
+  from { stroke-dashoffset: 36; }
+  to { stroke-dashoffset: 0; }
+}
+.map-home {
+  fill: var(--terra);
+  stroke: var(--off-white);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
 
 /* ป้ายชื่อสถาบัน */
 .map-tip {
