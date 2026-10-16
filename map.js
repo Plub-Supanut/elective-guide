@@ -111,10 +111,11 @@
   landPath.setAttribute('d', M.paths);
   gLand.appendChild(landPath);
   const gArcs = document.createElementNS(NS, 'g'); gArcs.setAttribute('class', 'map-arcs');
+  const gBkkExplode = document.createElementNS(NS, 'g'); gBkkExplode.setAttribute('class', 'bkk-explode-layer'); gBkkExplode.style.display = 'none';
   const gPins = document.createElementNS(NS, 'g'); gPins.setAttribute('class', 'map-pins');
   const gChula = document.createElementNS(NS, 'g'); gChula.setAttribute('class', 'map-chula');
   const gZoom = document.createElementNS(NS, 'g'); gZoom.setAttribute('class', 'map-zoom');
-  gZoom.append(gLand, gArcs, gPins, gChula);
+  gZoom.append(gLand, gArcs, gBkkExplode, gPins, gChula);
   svg.appendChild(gZoom);
   host.appendChild(svg);
 
@@ -128,6 +129,60 @@
   clip.appendChild(clipShape);
   defs.appendChild(clip);
   svg.insertBefore(defs, svg.firstChild);
+
+  // ══ พิกัดกระจายหมุดใน กทม. (Bangkok Exploded Coordinates) ═════
+  // สถาบันใน กทม. มี 50 แห่ง กระจุกกันในพื้นที่แคบ ~30px บนแผนที่ทั้งประเทศ
+  // จำลองแรงผลัก (repulsion) เพื่อกระจายหมุดให้อยู่ห่างกันอย่างน้อย 20 หน่วย พร้อมเส้นโยง
+  const BKK_EXPLODE_MAP = {
+    "106 รามาธิบดี (Rama)": { ox: 310.1, oy: 669.5, ex: 288.9, ey: 679.3, dx: -21.2, dy: 9.8, short: "106 รามาธิบดี", group: "uni" },
+    "107 วชิรพยาบาล (BM)": { ox: 308.4, oy: 668.3, ex: 280.7, ey: 643.3, dx: -27.7, dy: -25.0, short: "107 วชิรพยาบาล", group: "uni" },
+    "108 ศิริราชพยาบาล (มหิดล)": { ox: 303.7, oy: 668.4, ex: 261.7, ey: 656.6, dx: -42.0, dy: -11.8, short: "108 ศิริราช", group: "uni" },
+    "109 โรงพยาบาลราชวิถี": { ox: 311.1, oy: 670.0, ex: 310.5, ey: 639.3, dx: -0.6, dy: -30.7, short: "109 รพ.ราชวิถี", group: "general" },
+    "110 พระมงกุฎเกล้า (PCM)": { ox: 310.7, oy: 669.5, ex: 297.3, ey: 653.5, dx: -13.4, dy: -16.0, short: "110 พระมงกุฎฯ", group: "uni" },
+    "124 สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง": { ox: 335.2, oy: 673.4, ex: 407.5, ey: 680.9, dx: 72.3, dy: 7.5, short: "124 สจล.ลาดกระบัง", group: "uni" },
+    "201 รพ.เจริญกรุงประชารักษ์": { ox: 307.1, oy: 677.0, ex: 279.2, ey: 709.3, dx: -27.9, dy: 32.3, short: "201 เจริญกรุงฯ", group: "general" },
+    "203 รพ.ตำรวจ": { ox: 311.5, oy: 672.2, ex: 315.3, ey: 696.4, dx: 3.8, dy: 24.2, short: "203 รพ.ตำรวจ", group: "general" },
+    "204 รพ.นพรัตนราชธานี": { ox: 314.8, oy: 668.8, ex: 326.6, ey: 653.6, dx: 11.8, dy: -15.2, short: "204 นพรัตนฯ", group: "general" },
+    "205 รพ.เลิดสิน": { ox: 309.3, oy: 674.2, ex: 295.3, ey: 697.5, dx: -14.0, dy: 23.3, short: "205 รพ.เลิดสิน", group: "general" },
+    "206 รพ.พระปิ่นเกล้า": { ox: 306.7, oy: 670.1, ex: 280.5, ey: 663.3, dx: -26.2, dy: -6.8, short: "206 พระปิ่นเกล้า", group: "general" },
+    "207 รพ.สิรินธร": { ox: 327.8, oy: 674.6, ex: 380.6, ey: 686.6, dx: 52.8, dy: 12.0, short: "207 รพ.สิรินธร", group: "general" },
+    "302 สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา": { ox: 308.1, oy: 673.4, ex: 281.2, ey: 683.3, dx: -26.9, dy: 9.9, short: "302 สมเด็จเจ้าพระยา", group: "special" },
+    "303 สถาบันประสาทวิทยา": { ox: 319.2, oy: 669.5, ex: 345.7, ey: 659.0, dx: 26.5, dy: -10.5, short: "303 สถาบันประสาทฯ", group: "special" },
+    "304 รพ.ยุวประสาทไวทโยปถัมภ์": { ox: 317.0, oy: 687.0, ex: 333.6, ey: 740.1, dx: 16.6, dy: 53.1, short: "304 รพ.ยุวประสาทฯ", group: "special" },
+    "305 สถาบันโรคทรวงอก": { ox: 309.7, oy: 660.2, ex: 301.2, ey: 620.4, dx: -8.5, dy: -39.8, short: "305 สถาบันโรคทรวงอก", group: "special" },
+    "307 สถาบันสุขภาพเด็กแห่งชาติฯ (รพ.เด็ก)": { ox: 320.0, oy: 669.8, ex: 361.9, ey: 670.6, dx: 41.9, dy: 0.8, short: "307 สถาบันสุขภาพเด็ก", group: "special" },
+    "309 คณะเวชศาสตร์เขตร้อน (มหิดล)": { ox: 317.3, oy: 676.2, ex: 349.7, ey: 691.3, dx: 32.4, dy: 15.1, short: "309 เวชศาสตร์เขตร้อน", group: "special" },
+    "รพ.จุฬาภรณ์": { ox: 315.2, oy: 658.3, ex: 325.9, ey: 614.0, dx: 10.7, dy: -44.3, short: "รพ.จุฬาภรณ์", group: "special" },
+    "รพ.ภูมิพลอดุลยเดช (BB)": { ox: 319.0, oy: 655.3, ex: 342.7, ey: 603.1, dx: 23.7, dy: -52.2, short: "รพ.ภูมิพลอดุลยเดช", group: "general" },
+    "โรงพยาบาลบำรุงราษฎร์": { ox: 312.7, oy: 671.8, ex: 334.6, ey: 680.5, dx: 21.9, dy: 8.7, short: "รพ.บำรุงราษฎร์", group: "general" },
+    "โรงพยาบาลสงฆ์": { ox: 316.6, oy: 676.6, ex: 333.3, ey: 702.9, dx: 16.7, dy: 26.3, short: "รพ.สงฆ์", group: "general" },
+    "สถาบันกัลยาณ์ราชนครินทร์": { ox: 291.3, oy: 670.2, ex: 225.5, ey: 667.7, dx: -65.8, dy: -2.5, short: "สถาบันกัลยาณ์ฯ", group: "special" },
+    "สถาบันพยาธิวิทยา": { ox: 304.7, oy: 676.3, ex: 265.1, ey: 695.1, dx: -39.6, dy: 18.8, short: "สถาบันพยาธิวิทยา", group: "special" },
+    "สถาบันมะเร็งแห่งชาติ": { ox: 310.3, oy: 678.6, ex: 297.5, ey: 717.4, dx: -12.8, dy: 38.8, short: "สถาบันมะเร็งแห่งชาติ", group: "special" },
+    "สถาบันโรคผิวหนัง": { ox: 311.1, oy: 678.8, ex: 317.3, ey: 714.9, dx: 6.2, dy: 36.1, short: "สถาบันโรคผิวหนัง", group: "special" }
+  };
+
+  // สร้างเส้นโยงและป้ายชื่อสำหรับโหมดกระจายผัง กทม.
+  Object.entries(BKK_EXPLODE_MAP).forEach(([name, d]) => {
+    const line = document.createElementNS(NS, 'line');
+    line.setAttribute('x1', d.ox); line.setAttribute('y1', d.oy);
+    line.setAttribute('x2', d.ex); line.setAttribute('y2', d.ey);
+    line.setAttribute('class', 'bkk-leader-line');
+
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('cx', d.ox); dot.setAttribute('cy', d.oy);
+    dot.setAttribute('r', '1.8');
+    dot.setAttribute('class', 'bkk-origin-dot');
+
+    const label = document.createElementNS(NS, 'text');
+    label.setAttribute('x', (d.ex + (d.dx >= 0 ? 5.5 : -5.5)).toFixed(1));
+    label.setAttribute('y', (d.ey + 2.5).toFixed(1));
+    label.setAttribute('class', 'bkk-pin-label');
+    label.setAttribute('text-anchor', d.dx >= 0 ? 'start' : 'end');
+    label.textContent = d.short;
+
+    gBkkExplode.append(line, dot, label);
+  });
 
   // ══ หมุด ══════════════════════════════════════════════════════
   const chulaPins = M.pins.filter(p => p.t.includes('chula'));
@@ -512,21 +567,14 @@
       pl.g.addEventListener('focusin', enter);
       pl.g.addEventListener('focusout', leave);
     }
-    const use = (scroll = true) => {
-      const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
-      if (chip) {
-        chip.click();
-        if (scroll) document.getElementById('institutions')?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
-      }
-    };
     pl.g.addEventListener('click', (e) => {
       if (moved > 6) return;
       e.stopPropagation();
-      use(false);           // คลิกบนแผนที่ = เลือกภาค ไม่ต้องกระโดดหน้าเว็บ (เลื่อนเฉพาะเมื่อคลิกจากรายการภาค)
+      toggleRegion(r);
       preview(null);
     });
     pl.g.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); use(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRegion(r); }
     });
   });
 
@@ -626,6 +674,80 @@
     clampCam(); kickCam();
   };
   const resetCam = () => { cam.kT = 1; cam.txT = 0; cam.tyT = 0; kickCam(); };
+
+  let bkkExploded = false;
+  function setBkkExploded(on) {
+    bkkExploded = !!on;
+    const btn = document.getElementById('map-bkk-explode-toggle');
+    if (btn) {
+      btn.setAttribute('aria-pressed', bkkExploded ? 'true' : 'false');
+      btn.classList.toggle('is-active', bkkExploded);
+    }
+    svg.classList.toggle('bkk-exploded', bkkExploded);
+    if (gBkkExplode) gBkkExplode.style.display = bkkExploded ? 'block' : 'none';
+
+    // ย้ายหมุดใน กทม. ออกไปตามตำแหน่งที่คำนวณไว้
+    dots.forEach(rec => {
+      if (rec.p.r !== 'bkk') return;
+      const off = BKK_EXPLODE_MAP[rec.p.n];
+      if (off) {
+        rec.g.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+        rec.g.style.transform = bkkExploded ? `translate(${off.dx}px, ${off.dy}px)` : '';
+      }
+    });
+
+    const expPanel = document.getElementById('map-bkk-explorer');
+    if (expPanel) expPanel.hidden = !bkkExploded;
+
+    if (bkkExploded) {
+      cam.kT = 3.6;
+      cam.txT = VB[2] / 2 - 312 * cam.kT;
+      cam.tyT = VB[3] / 2 - 671 * cam.kT;
+      clampCam(); kickCam();
+    }
+  }
+
+  function zoomToRegion(r) {
+    if (!r) { resetCam(); return; }
+    if (r === 'bkk') {
+      cam.kT = 3.6;
+      cam.txT = VB[2] / 2 - 312 * cam.kT;
+      cam.tyT = VB[3] / 2 - 671 * cam.kT;
+      clampCam(); kickCam();
+      return;
+    }
+    const pl = plates[r];
+    if (!pl) return;
+    const bb = pl.g.querySelector('.plate-face')?.getBBox?.();
+    if (bb) {
+      const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
+      const fit = Math.min(VB[2] / bb.width, VB[3] / bb.height) * 0.72;
+      cam.kT = Math.max(1.2, Math.min(3.6, fit));
+      cam.txT = VB[2] / 2 - cx * cam.kT;
+      cam.tyT = VB[3] / 2 - cy * cam.kT;
+      clampCam(); kickCam();
+    }
+  }
+
+  function toggleRegion(r) {
+    const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
+    const isCurrentlyActive = chip && chip.getAttribute('aria-pressed') === 'true';
+    if (chip) chip.click();
+
+    if (!isCurrentlyActive) {
+      // เพิ่งเลือกภาคนี้
+      zoomToRegion(r);
+      if (r === 'bkk') {
+        setBkkExploded(true);
+      } else if (bkkExploded) {
+        setBkkExploded(false);
+      }
+    } else {
+      // เพิ่งยกเลิกภาคนี้
+      resetCam();
+      if (bkkExploded) setBkkExploded(false);
+    }
+  }
 
 
 
@@ -794,10 +916,15 @@
   }
 
   const focusPin = (p, target = 3.6) => {
+    let px = p.x, py = p.y;
+    if (bkkExploded && p.r === 'bkk') {
+      const off = BKK_EXPLODE_MAP[p.n];
+      if (off) { px += off.dx; py += off.dy; }
+    }
     const k = Math.max(cam.kT, target);
     cam.kT = k;
-    cam.txT = VB[2] / 2 - p.x * k;     // transform คือ translate * scale → จุด (px,py) อยู่ที่ px*k+tx
-    cam.tyT = VB[3] / 2 - p.y * k;
+    cam.txT = VB[2] / 2 - px * k;     // transform คือ translate * scale → จุด (px,py) อยู่ที่ px*k+tx
+    cam.tyT = VB[3] / 2 - py * k;
     clampCam(); kickCam();
   };
 
@@ -821,7 +948,12 @@
     const cands = [];
     dots.forEach(rec => {
       if (!hubsOpen && rec.hub) return;                 // หมุดที่ถูกรวมอยู่ในกระจุก ยังกดไม่ได้จนกว่าจะซูม
-      const d = Math.hypot(rec.p.x - wx, rec.p.y - wy) * unit;
+      let rx = rec.p.x, ry = rec.p.y;
+      if (bkkExploded && rec.p.r === 'bkk') {
+        const off = BKK_EXPLODE_MAP[rec.p.n];
+        if (off) { rx += off.dx; ry += off.dy; }
+      }
+      const d = Math.hypot(rx - wx, ry - wy) * unit;
       if (d <= reach + rec.baseR * unit) cands.push({ rec, d });
     });
     if (!cands.length) return null;
@@ -834,7 +966,14 @@
   const nearFrom = (hit) => {
     const others = dots
       .filter(d => d !== hit.rec)
-      .map(d => ({ p: d.p, d: Math.hypot(d.p.x - hit.wx, d.p.y - hit.wy) * hit.unit }))
+      .map(d => {
+        let rx = d.p.x, ry = d.p.y;
+        if (bkkExploded && d.p.r === 'bkk') {
+          const off = BKK_EXPLODE_MAP[d.p.n];
+          if (off) { rx += off.dx; ry += off.dy; }
+        }
+        return { p: d.p, d: Math.hypot(rx - hit.wx, ry - hit.wy) * hit.unit };
+      })
       .filter(x => x.d < 6)
       .sort((a, b) => a.d - b.d)
       .slice(0, 5)
@@ -883,11 +1022,16 @@
   // เส้นทางจากคณะฯ ไปจุดที่เลือก (แสดงเฉพาะตอนชี้/เลือก — ไม่มีแล้วตอนเลื่อนผ่าน)
   const drawArcTo = (p) => {
     gArcs.replaceChildren();
-    const mx = (HOME_X + p.x) / 2, my = (HOME_Y + p.y) / 2;
-    const dx = p.x - HOME_X, dy = p.y - HOME_Y, len = Math.hypot(dx, dy) || 1;
+    let px = p.x, py = p.y;
+    if (bkkExploded && p.r === 'bkk') {
+      const off = BKK_EXPLODE_MAP[p.n];
+      if (off) { px += off.dx; py += off.dy; }
+    }
+    const mx = (HOME_X + px) / 2, my = (HOME_Y + py) / 2;
+    const dx = px - HOME_X, dy = py - HOME_Y, len = Math.hypot(dx, dy) || 1;
     const cx = mx - dy / len * len * 0.2, cy = my + dx / len * len * 0.2;
     const path = document.createElementNS(NS, 'path');
-    path.setAttribute('d', `M${HOME_X.toFixed(1)},${HOME_Y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+    path.setAttribute('d', `M${HOME_X.toFixed(1)},${HOME_Y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${px.toFixed(1)},${py.toFixed(1)}`);
     path.setAttribute('class', 'map-arc');
     gArcs.appendChild(path);
     if (!reduced) {
@@ -906,7 +1050,7 @@
   const showArc = (p) => { if (p.t.includes('chula')) return; drawArcTo(p); };
   const clearArc = () => { if (!selected) gArcs.replaceChildren(); };
 
-  // ══ legend + ระยะทาง (คงของเดิม) ═════════════════════════════
+  // ══ legend + ระยะทาง (2-way คลิกภาคเชื่อมกับแผนที่) ══════════════
   const legend = document.getElementById('map-legend');
   if (legend) {
     Object.entries(REGION).forEach(([key, meta]) => {
@@ -916,8 +1060,19 @@
       btn.className = 'map-legend-row';
       btn.dataset.region = key;
       btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('role', 'button');
+      btn.tabIndex = 0;
       btn.innerHTML = `<span class="legend-dot" style="background:${meta.color}"></span>${meta.name}`
         + `<span class="legend-count">${count(key)}</span>`;
+      btn.addEventListener('click', () => toggleRegion(key));
+      btn.addEventListener('pointerenter', () => preview(key));
+      btn.addEventListener('pointerleave', () => preview(null));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleRegion(key);
+        }
+      });
       li.appendChild(btn);
       legend.appendChild(li);
     });
@@ -933,13 +1088,6 @@
     syncPressed();
     const chipPanel = document.querySelector('.filter-btns') || document.body;
     new MutationObserver(syncPressed).observe(chipPanel, { subtree: true, attributes: true, attributeFilter: ['aria-pressed'] });
-
-    // legend = ข้อมูลประกอบ ไม่ใช่ปุ่ม (ผู้ใช้สั่ง: แผนที่/showcase เฉย ๆ ไม่ interactive)
-    legend.querySelectorAll('.map-legend-row').forEach(row => {
-      row.removeAttribute('aria-pressed');
-      row.tabIndex = -1;
-      row.style.cursor = 'default';
-    });
   }
 
   const facts = document.querySelector('#map-facts');
@@ -1220,6 +1368,66 @@
     renderCompare();
   }, true);   // capture: true → ทำงานก่อน listener อื่น
 
+  // ══ FEATURE: Bangkok Explorer List ════════════════════════════
+  const expPanel = document.getElementById('map-bkk-explorer');
+  const expList = document.getElementById('map-bkk-exp-list');
+  const expClose = document.getElementById('map-bkk-exp-close');
+  const bkkToggle = document.getElementById('map-bkk-explode-toggle');
+
+  if (bkkToggle) {
+    bkkToggle.addEventListener('click', () => setBkkExploded(!bkkExploded));
+  }
+  if (expClose) {
+    expClose.addEventListener('click', () => setBkkExploded(false));
+  }
+
+  if (expPanel && expList) {
+    let currentExpGroup = 'all';
+    const bkkAllPins = M.pins.filter(p => p.r === 'bkk');
+
+    const renderBkkList = () => {
+      expList.replaceChildren();
+      const filtered = bkkAllPins.filter(p => {
+        if (currentExpGroup === 'all') return true;
+        if (p.t.includes('chula')) return currentExpGroup === 'chula';
+        const grp = BKK_EXPLODE_MAP[p.n]?.group || 'general';
+        return grp === currentExpGroup;
+      });
+
+      filtered.forEach(p => {
+        const isChula = p.t.includes('chula');
+        const grp = isChula ? 'chula' : (BKK_EXPLODE_MAP[p.n]?.group || 'general');
+        const tagMap = { chula: 'จุฬาฯ', uni: 'มหาลัย', general: 'ทั่วไป', special: 'เฉพาะทาง' };
+
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'bkk-exp-item' + (isChula ? ' is-chula' : '');
+        item.innerHTML = `<span class="bkk-item-name">${p.n}</span>`
+          + `<span class="bkk-item-tag">${tagMap[grp] || ''}</span>`;
+
+        item.addEventListener('click', () => {
+          if (isChula) {
+            openCampus(chulaPins);
+          } else {
+            const rec = dots.find(d => d.p === p);
+            if (rec) openPin(rec, []);
+          }
+        });
+        expList.appendChild(item);
+      });
+    };
+
+    expPanel.querySelectorAll('.bkk-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        expPanel.querySelectorAll('.bkk-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+        currentExpGroup = tab.dataset.group;
+        renderBkkList();
+      });
+    });
+
+    renderBkkList();
+  }
+
   // ══ Zoom controls buttons (+ / − / ⟲) ════════════════════════
   const btnZoomIn = document.getElementById('map-zoom-in');
   const btnZoomOut = document.getElementById('map-zoom-out');
@@ -1245,5 +1453,6 @@
     });
   }
 
-  window.__MAP = { cam, zoomAt, resetCam, dots, focusPin, closeCard, openCampus, compareList };
+  window.__MAP = { cam, zoomAt, resetCam, dots, focusPin, closeCard, openCampus, compareList, setBkkExploded, toggleRegion };
 })();
+

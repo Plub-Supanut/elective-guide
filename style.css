@@ -1644,6 +1644,165 @@ input:focus-visible,
 }
 .cmp-remove:hover { background: var(--sand-mid); color: var(--charcoal); }
 
+/* ── Bangkok Exploded View button ── */
+.map-bkk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--off-white);
+  color: var(--charcoal);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s ease;
+}
+.map-bkk-btn:hover {
+  background: var(--sand-mid);
+  border-color: var(--terra);
+}
+.map-bkk-btn[aria-pressed="true"],
+.map-bkk-btn.is-active {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(196, 113, 75, 0.3);
+}
+
+/* ── Bangkok Explorer Drawer / Panel ── */
+.map-bkk-explorer {
+  padding: 0.95rem 1rem 1.1rem;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+  animation: fadeIn 0.22s ease;
+}
+.bkk-exp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.bkk-exp-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--charcoal);
+}
+.bkk-exp-close {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: var(--warm-gray);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: background 0.15s, color 0.15s;
+}
+.bkk-exp-close:hover {
+  background: var(--sand-mid);
+  color: var(--charcoal);
+}
+.bkk-exp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+.bkk-tab {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--charcoal);
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+.bkk-tab:hover {
+  background: var(--sand-mid);
+}
+.bkk-tab.is-active {
+  background: var(--terra);
+  border-color: var(--terra);
+  color: #fff;
+}
+.bkk-exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+}
+.bkk-exp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.8rem;
+  color: var(--charcoal);
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s ease;
+}
+.bkk-exp-item:hover {
+  background: var(--sand-mid);
+  border-color: var(--terra);
+  transform: translateX(2px);
+}
+.bkk-exp-item.is-chula {
+  border-left: 3px solid var(--terra);
+  background: rgba(196, 113, 75, 0.05);
+}
+.bkk-exp-item .bkk-item-tag {
+  font-size: 0.68rem;
+  color: var(--warm-gray);
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+/* SVG Leader lines & labels for exploded pins */
+.bkk-leader-line {
+  stroke: var(--terra);
+  stroke-width: 0.9;
+  stroke-dasharray: 2.5 2.5;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+  transition: opacity 0.2s ease;
+}
+.bkk-origin-dot {
+  fill: var(--terra);
+  opacity: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+.bkk-pin-label {
+  font-family: var(--font-body);
+  font-size: 7.8px;
+  font-weight: 600;
+  fill: var(--charcoal);
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.96);
+  stroke-width: 2.8px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  user-select: none;
+}
+
 @media (max-width: 600px) {
   .map-toolbar { gap: 0.5rem; }
   .map-search-wrap { min-width: 0; flex: 1 1 100%; max-width: none; }
