@@ -111,7 +111,7 @@ async function main() {
     const out = [];
     for (const ring of p.rings) {
       raw += ring.length;
-      const s = rdp(ring.map(c => project(c[0], c[1])), EPS);
+      const s = rdp(ring.map(c => project(c[0], c[1])), p.region === 'bkk' ? 0.35 : EPS);
       kept += s.length;
       if (s.length < 3) continue;
       out.push('M' + s.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ') + 'Z');
@@ -127,28 +127,16 @@ async function main() {
   }
   console.log(`  จุด ${raw} → ${kept} (${(kept / raw * 100).toFixed(1)}%)`);
 
-  // ── 3) พิกัดสถาบัน ─────────────────────────────────────────────────────────
+  // ── 3) พิกัดสถาบัน (พิกัดจริงตาม ละติจูด/ลองจิจูด ไม่เลื่อนตำแหน่ง) ───────────
   const pins = [];
-  const seen = new Map();       // จุดซ้ำ (ภาควิชาในคณะฯ) → กระจายเป็นวง
   const stray = new Set();
   for (const v of entries) {
-    let [x, y] = project(v.lon, v.lat);
-    const k = `${x.toFixed(0)},${y.toFixed(0)}`;
-    const n = seen.get(k) || 0;
-    seen.set(k, n + 1);
-    if (n > 0) {                                   // วนกระจายรอบจุดเดิมแบบคงที่
-      const ring = Math.floor((n - 1) / 8) + 1;
-      const ang = ((n - 1) % 8) / 8 * Math.PI * 2;
-      x += Math.cos(ang) * 9 * ring;
-      y += Math.sin(ang) * 9 * ring;
-    }
+    const [x, y] = project(v.lon, v.lat);
     // ตรวจว่าหมุดตกอยู่ในภาคที่ตัวเองอ้างไหม — ถ้าไม่ ให้จดไว้เตือน
     const hit = prov.find(p => v.lon >= p.bbox.x0 && v.lon <= p.bbox.x1 && v.lat >= p.bbox.y0 && v.lat <= p.bbox.y1
       && p.rings.some(r => inRing(v.lon, v.lat, r)));
-    if (n === 0) {
-      if (hit && hit.region !== v.region) stray.add(`${v.title} (บอก ${v.region} · จริง ${hit.region})`);
-      if (!hit) stray.add(`${v.title} (ตกนอกประเทศ?)`);
-    }
+    if (hit && hit.region !== v.region) stray.add(`${v.title} (บอก ${v.region} · จริง ${hit.region})`);
+    if (!hit) stray.add(`${v.title} (ตกนอกประเทศ?)`);
     pins.push({
       n: clean(v.title), r: v.region, x: +x.toFixed(1), y: +y.toFixed(1),
       t: v.tags || '',
@@ -178,6 +166,7 @@ window.ELECTIVE_MAP = {
   paths: '${parts.join(' ')}',
   regionPaths: ${JSON.stringify(Object.fromEntries(Object.entries(regionParts).map(([r, ds]) => [r, ds.join(' ')])))},
   regionLabels: ${JSON.stringify(labels)},
+  chaoPhraya: 'M308.9,663.5 L309.2,665.1 L309.4,666.4 L308.9,667.5 L308.1,668.5 L307.0,669.5 L306.9,670.5 L306.5,671.0 L306.8,671.9 L307.5,672.4 L308.5,673.3 L308.9,674.5 L308.1,675.9 L306.9,677.2 L309.3,678.2 L311.8,679.1 L311.1,680.4 L312.3,681.5 L314.7,683.6 L317.0,687.1',
   pins: ${JSON.stringify(pins)},
   chula: ${JSON.stringify(CAMPUS)},
 };

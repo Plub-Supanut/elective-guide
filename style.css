@@ -1776,40 +1776,26 @@ input:focus-visible,
   white-space: nowrap;
 }
 
-/* SVG Leader lines & labels for exploded pins */
-.bkk-leader-line {
-  stroke: var(--terra);
-  stroke-width: 1.1;
-  stroke-linecap: round;
-  opacity: 0.45;
-  vector-effect: non-scaling-stroke;
-  transition: opacity 0.2s ease, stroke-width 0.2s ease;
-}
-.bkk-leader-line.on,
-.bkk-leader-line.hover {
-  stroke: var(--terra);
-  stroke-width: 2.2;
-  opacity: 0.95;
-}
-.bkk-origin-dot {
-  fill: var(--terra);
-  opacity: 0.6;
-  vector-effect: non-scaling-stroke;
-}
-.bkk-pin-label {
-  font-family: var(--font-body);
-  font-size: 5.6px;
-  font-weight: 600;
-  fill: var(--charcoal);
-  paint-order: stroke;
-  stroke: rgba(255, 255, 255, 0.96);
+/* ── แม่น้ำเจ้าพระยา (Chao Phraya River) ── */
+.map-river {
+  fill: none;
+  stroke: #72a9cc;
   stroke-width: 2.2px;
+  stroke-linecap: round;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.72;
   pointer-events: none;
-  user-select: none;
+  transition: opacity 0.3s ease, stroke-width 0.3s ease;
 }
 
-/* ── Bangkok Exploded View (ขยายผัง กทม.) ── */
+/* ── Bangkok Focus View (เจาะลึก กทม.) ── */
+.map-svg.bkk-exploded .map-river {
+  stroke: #2b7da8;
+  stroke-width: 2.8px;
+  opacity: 0.95;
+  filter: drop-shadow(0 1px 3px rgba(43, 125, 168, 0.35));
+}
 .map-svg.bkk-exploded .chula-label,
 .map-svg.bkk-exploded .plate-labels,
 .map-svg.bkk-exploded .plate-stat {
@@ -1817,15 +1803,19 @@ input:focus-visible,
   pointer-events: none !important;
   transition: opacity 0.2s ease;
 }
+.map-svg.bkk-exploded .plate:not([data-region="bkk"]) {
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
 .map-svg.bkk-exploded .pin-group:not([data-region="bkk"]) {
-  opacity: 0.12;
+  opacity: 0.15;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 .map-svg.bkk-exploded .plate[data-region="bkk"] .plate-face {
-  filter: drop-shadow(0 6px 24px rgba(196, 113, 75, 0.42));
+  filter: drop-shadow(0 4px 18px rgba(196, 113, 75, 0.35));
   stroke: var(--terra);
-  stroke-width: 1.8px;
+  stroke-width: 1.5px;
 }
 
 @media (max-width: 600px) {
