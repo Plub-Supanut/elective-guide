@@ -113,10 +113,96 @@
   const gArcs = document.createElementNS(NS, 'g'); gArcs.setAttribute('class', 'map-arcs');
   const gPins = document.createElementNS(NS, 'g'); gPins.setAttribute('class', 'map-pins');
   const gChula = document.createElementNS(NS, 'g'); gChula.setAttribute('class', 'map-chula');
+
+  // ป้ายบอกชื่อลอยบนแผนที่ (Floating Tooltip) — คมชัดเสมอ ไม่ทับกัน
+  const gTip = document.createElementNS(NS, 'g');
+  gTip.setAttribute('class', 'map-float-tip');
+  gTip.style.display = 'none';
+  gTip.style.pointerEvents = 'none';
+  const tipBg = document.createElementNS(NS, 'rect');
+  tipBg.setAttribute('class', 'map-tip-bg');
+  tipBg.setAttribute('rx', '5');
+  const tipText = document.createElementNS(NS, 'text');
+  tipText.setAttribute('class', 'map-tip-text');
+  tipText.setAttribute('text-anchor', 'middle');
+  gTip.append(tipBg, tipText);
+
   const gZoom = document.createElementNS(NS, 'g'); gZoom.setAttribute('class', 'map-zoom');
-  gZoom.append(gLand, gPins, gArcs, gChula);
+  gZoom.append(gLand, gPins, gArcs, gChula, gTip);
   svg.appendChild(gZoom);
   host.appendChild(svg);
+
+  // ── ขยายตัวผังกรุงเทพฯ (Bangkok Exploded / Focus Mode) ─────────
+  const BKK_OX = 315.0, BKK_OY = 672.0;
+  const BKK_SCALE = 3.5;
+  let bkkExploded = false;
+
+  const BKK_PIN_OFFSETS = {
+    '106 รามาธิบดี (Rama)': { dx: -0.8, dy: -0.6 },
+    '303 สถาบันประสาทวิทยา': { dx: -0.4, dy: -2.8 },
+    'สถาบันมะเร็งแห่งชาติ': { dx: -3.0, dy: 0.6 },
+    'โรงพยาบาลสงฆ์': { dx: 2.2, dy: 2.4 },
+    '109 โรงพยาบาลราชวิถี': { dx: 0.8, dy: -0.6 },
+    '307 สถาบันสุขภาพเด็กแห่งชาติฯ (รพ.เด็ก)': { dx: 3.0, dy: -0.4 },
+    '309 คณะเวชศาสตร์เขตร้อน (มหิดล)': { dx: 2.2, dy: -2.4 },
+    'สถาบันโรคผิวหนัง': { dx: 0.8, dy: 2.2 },
+    'สถาบันพยาธิวิทยา': { dx: -1.8, dy: 1.8 },
+    '110 พระมงกุฎเกล้า (PCM)': { dx: 1.2, dy: -3.8 },
+    '203 รพ.ตำรวจ': { dx: 2.2, dy: -1.6 },
+    '205 รพ.เลิดสิน': { dx: -1.2, dy: 2.0 },
+    '302 สถาบันจิตเวชศาสตร์สมเด็จเจ้าพระยา': { dx: -2.4, dy: 1.6 }
+  };
+
+  const getPinPos = (p) => {
+    if (!p) return { x: 0, y: 0 };
+    const isChula = (p === 'chula' || (typeof p === 'object' && p.t?.includes('chula')));
+    const px = isChula ? HOME_X : p.x;
+    const py = isChula ? HOME_Y : p.y;
+    const isBkk = isChula || p.r === 'bkk';
+
+    if (bkkExploded && isBkk) {
+      const off = (!isChula && p.n && BKK_PIN_OFFSETS[p.n]) || { dx: 0, dy: 0 };
+      const curX = px + off.dx;
+      const curY = py + off.dy;
+      return {
+        x: BKK_OX + (curX - BKK_OX) * BKK_SCALE,
+        y: BKK_OY + (curY - BKK_OY) * BKK_SCALE
+      };
+    }
+    return { x: px, y: py };
+  };
+
+  // ฟังก์ชันอัปเดตป้ายลอย
+  let tipTarget = null;
+  const updateTip = (p) => {
+    tipTarget = p || null;
+    if (!p) {
+      gTip.style.display = 'none';
+      return;
+    }
+    const dv = driveOf(p);
+    const shortName = (p === 'chula' || p.t?.includes('chula'))
+      ? 'รพ.จุฬาฯ'
+      : (p.n || '').replace(/^\d+\s*/, '').replace(/คณะแพทยศาสตร์\s*/g, '').replace(/โรงพยาบาล/g, 'รพ.').replace(/สถาบัน/g, 'สถ.').replace(/ภาควิชา/g, '').trim();
+    const distText = (p === 'chula' || p.t?.includes('chula'))
+      ? ' · คณะแพทยศาสตร์ จุฬาฯ'
+      : (dv ? ` · ${dv.km} กม. (${dv.min} นาที)` : ` · ${Math.round(kmOf(p))} กม.`);
+    tipText.textContent = `${shortName}${distText}`;
+    gTip.style.display = '';
+
+    const pos = getPinPos(p);
+    const s = 1 / cam.k;
+    const offY = 11 * s;
+    gTip.setAttribute('transform', `translate(${pos.x.toFixed(1)} ${(pos.y - offY).toFixed(1)}) scale(${s.toFixed(4)})`);
+    try {
+      const tb = tipText.getBBox();
+      const padX = 7, padY = 4;
+      tipBg.setAttribute('x', (tb.x - padX).toFixed(1));
+      tipBg.setAttribute('y', (tb.y - padY).toFixed(1));
+      tipBg.setAttribute('width', (tb.width + padX * 2).toFixed(1));
+      tipBg.setAttribute('height', (tb.height + padY * 2).toFixed(1));
+    } catch (_) {}
+  };
 
   // ตัดสีภาคให้พอดีกับเส้นขอบประเทศ (สีไม่ล้นออกนอกแผ่นดิน)
   const defs = document.createElementNS(NS, 'defs');
@@ -134,6 +220,8 @@
   const normalPins = M.pins.filter(p => !p.t.includes('chula'));
   const dots = [];
   const PIN_R = 4.4, HALO_R = 9.6, HIT_R = 14;
+
+  let syncExpActive = () => {};
 
   // กลุ่มหมุดรายภาค — ยก/จางพร้อมแผ่นภาคเสมอ (จุดหมุดเป็น entity เดียวกับภาค)
   const pinGroups = {};
@@ -178,7 +266,7 @@
   normalPins.forEach(p => addDot(p));
 
   const chulaPoint = { x: HOME_X, y: HOME_Y, r: 'bkk', n: 'คณะแพทยศาสตร์ จุฬาฯ', t: 'chula hospital', a: 1, d: false, f: false };
-  const chulaRec = chulaPins.length ? addDot(chulaPoint, { r: 7.6, hitR: 18, haloR: 13, group: pinGroupFor('bkk'), cluster: true }) : null;
+  const chulaRec = chulaPins.length ? addDot(chulaPoint, { r: 5.2, hitR: 16, haloR: 9, group: pinGroupFor('bkk'), cluster: true }) : null;
   if (chulaRec) {
     const ring = document.createElementNS(NS, 'circle');
     ring.setAttribute('cx', HOME_X); ring.setAttribute('cy', HOME_Y);
@@ -241,6 +329,8 @@
     dots.forEach(d => d.g.classList.remove('on'));
     if (cardEl) { cardEl.hidden = true; cardEl.innerHTML = ''; }
     clearArc();
+    updateTip(null);
+    syncExpActive(null);
   };
 
   // ══ แผนผังอาคารคณะแพทยศาสตร์ จุฬาฯ (isometric) ════════════════
@@ -307,6 +397,8 @@
     if (near && near.length) nearList = near;       // เคสคลิกชนจุดจุฬาฯ: ให้เลือกสถาบันที่ตั้งตรงนั้นได้
     selected = 'chula';
     dots.forEach(d => d.g.classList.toggle('on', d.cluster));
+    updateTip(chulaPoint);
+    syncExpActive('chula');
     paintCard(`
       <button type="button" class="map-card-close" aria-label="ปิด">✕</button>
       <p class="map-card-eyebrow">กรุงเทพฯ · อาคารในคณะแพทยศาสตร์</p>
@@ -341,16 +433,7 @@
   gLand.after(gPlates);                        // ทับเส้นขอบจังหวัด แต่ใต้หมุด
   gPlates.after(gLabels);                      // ต้องแทรก «หลัง» ที่ gPlates อยู่ในต้นไม้แล้ว
 
-  // ── แม่น้ำเจ้าพระยา (Chao Phraya River) ──────────────────────────
-  if (M.chaoPhraya) {
-    const gRivers = document.createElementNS(NS, 'g');
-    gRivers.setAttribute('class', 'map-rivers');
-    const river = document.createElementNS(NS, 'path');
-    river.setAttribute('d', M.chaoPhraya);
-    river.setAttribute('class', 'map-river');
-    gRivers.appendChild(river);
-    gPlates.after(gRivers);
-  }
+  // (แม่น้ำเจ้าพระยาถูกปิดใช้งาน ตามคำขอผู้ใช้)
 
   const LABEL_NUDGE = {   // คำนวณจากรูปทรงจริง: ทุกป้ายต้องอยู่ในภาคของตัวเอง + ไม่ทับกัน
     north: [0, 0], south: [0, 0], isan: [0, 0],            // ค่าจากตัวสร้างอยู่ในภาคแล้ว
@@ -563,10 +646,16 @@
     gPlates.style.setProperty('--lk', (1 / cam.k).toFixed(4));
     svg.style.setProperty('--lk', (1 / cam.k).toFixed(4));   // ป้ายสรุปภาค + ป้ายที่อยู่ในเลเยอร์อื่น
     const f = 1 / Math.pow(cam.k, 0.55);
+    const S = bkkExploded ? BKK_SCALE : 1;
     dots.forEach(d => {
-      d.dot.setAttribute('r', (d.baseR * f).toFixed(2));
-      d.halo.setAttribute('r', (d.baseHalo * Math.max(f, 0.7)).toFixed(2));
-      d.hit.setAttribute('r', (d.baseHit * Math.max(f, 0.55)).toFixed(2));
+      const isBkk = d.p.r === 'bkk' || d.cluster;
+      const scaleAdj = isBkk ? S : 1;
+      const baseR = (isBkk && bkkExploded && d.cluster) ? PIN_R : d.baseR;
+      const baseHalo = (isBkk && bkkExploded && d.cluster) ? HALO_R : d.baseHalo;
+      const baseHit = (isBkk && bkkExploded && d.cluster) ? HIT_R : d.baseHit;
+      d.dot.setAttribute('r', ((baseR * f) / scaleAdj).toFixed(2));
+      d.halo.setAttribute('r', ((baseHalo * Math.max(f, 0.7)) / scaleAdj).toFixed(2));
+      d.hit.setAttribute('r', ((baseHit * Math.max(f, 0.55)) / scaleAdj).toFixed(2));
     });
     svg.classList.toggle('is-zoomed', cam.k > 1.15);
     // กระจุกหมุด: คงขนาดบนจอ + เปิดออกเมื่อซูมพอ ("กดตัวเลข → ซูมเข้า → แยกเป็นจุด")
@@ -604,10 +693,16 @@
       pl.wrap.classList.toggle('off',
         sx - hw < 0 || sx + hw > VB[2] || sy - hh < 0 || sy + hh > VB[3]);
     });
+    if (tipTarget && gTip && gTip.style.display !== 'none') {
+      const pos = getPinPos(tipTarget);
+      const s = 1 / cam.k;
+      const offY = 11 * s;
+      gTip.setAttribute('transform', `translate(${pos.x.toFixed(1)} ${(pos.y - offY).toFixed(1)}) scale(${s.toFixed(4)})`);
+    }
   };
   const stepCam = () => {
     cam.raf = 0;
-    const ease = reduced ? 1 : 0.26;
+    const ease = reduced ? 1 : 0.22;
     cam.k += (cam.kT - cam.k) * ease;
     cam.tx += (cam.txT - cam.tx) * ease;
     cam.ty += (cam.tyT - cam.ty) * ease;
@@ -624,7 +719,9 @@
     const r = svg.getBoundingClientRect();
     const px = ((clientX - r.left) / r.width) * VB[2];
     const py = ((clientY - r.top) / r.height) * VB[3];
-    const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
+    // ใช้ตำแหน่ง target ปัจจุบันเพื่อป้องกันการ drift เมื่อหมุนล้อเมาส์ต่อเนื่อง
+    const kBase = cam.kT;
+    const wx = (px - cam.txT) / kBase, wy = (py - cam.tyT) / kBase;
     cam.kT = clampK(cam.kT * factor);
     cam.txT = px - wx * cam.kT;
     cam.tyT = py - wy * cam.kT;
@@ -632,7 +729,6 @@
   };
   const resetCam = () => { cam.kT = 1; cam.txT = 0; cam.tyT = 0; kickCam(); };
 
-  let bkkExploded = false;
   function setBkkExploded(on) {
     bkkExploded = !!on;
     const btn = document.getElementById('map-bkk-explode-toggle');
@@ -645,10 +741,67 @@
     const expPanel = document.getElementById('map-bkk-explorer');
     if (expPanel) expPanel.hidden = !bkkExploded;
 
+    // ขยายตัวแผนที่ กทม. (Bangkok plate & pins) ทั้งหมดเมื่อ focus กทม.
+    const bkkPlate = plates.bkk?.g;
+    const bkkPinsGroup = pinGroups.bkk;
+
+    if (bkkPlate) {
+      bkkPlate.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1)';
+      bkkPlate.style.transformOrigin = `${BKK_OX}px ${BKK_OY}px`;
+      bkkPlate.style.transform = bkkExploded ? `scale(${BKK_SCALE})` : '';
+      if (bkkExploded && bkkPlate.parentNode) {
+        bkkPlate.parentNode.appendChild(bkkPlate); // ยกแผ่น กทม. ขึ้นมาอยู่หน้าสุด
+      }
+    }
+
+    if (bkkPinsGroup) {
+      bkkPinsGroup.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1)';
+      bkkPinsGroup.style.transformOrigin = `${BKK_OX}px ${BKK_OY}px`;
+      bkkPinsGroup.style.transform = bkkExploded ? `scale(${BKK_SCALE})` : '';
+      if (bkkExploded && bkkPinsGroup.parentNode) {
+        bkkPinsGroup.parentNode.appendChild(bkkPinsGroup); // ยกหมุด กทม. ขึ้นมาอยู่หน้าสุด
+      }
+    }
+
+    // ปลด clip-path เพื่อให้รูปทรง กทม. ที่ขยาย 3.0x ไม่ถูกเส้นขอบประเทศตัดขาด
+    gPlates.style.clipPath = bkkExploded ? 'none' : 'url(#eg-land-clip)';
+
+    // ผลักแผ่นภาคข้างเคียง (Central, East, South) ให้ออกห่างจาก กทม. แบบ exploded view
+    const explodeOffsets = {
+      central: 'translate(-46px, -30px)',
+      east: 'translate(48px, 10px)',
+      south: 'translate(-6px, 52px)'
+    };
+    ['central', 'east', 'south'].forEach(r => {
+      const pl = plates[r]?.g;
+      if (pl) {
+        pl.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease';
+        pl.style.transform = bkkExploded ? explodeOffsets[r] : '';
+        pl.style.opacity = bkkExploded ? '0.22' : '';
+      }
+    });
+    ['north', 'isan'].forEach(r => {
+      const pl = plates[r]?.g;
+      if (pl) {
+        pl.style.transition = 'opacity 0.35s ease';
+        pl.style.opacity = bkkExploded ? '0.14' : '';
+      }
+    });
+
+    // ปรับ micro-offset ให้หมุดในคลัสเตอร์แน่นกระจายตัวตามทิศจริง ไม่ซ้อนทับกัน
+    dots.forEach(rec => {
+      if (rec.p.r !== 'bkk') return;
+      const off = BKK_PIN_OFFSETS[rec.p.n];
+      if (off) {
+        rec.g.style.transition = 'transform 0.48s cubic-bezier(0.16, 1, 0.3, 1)';
+        rec.g.style.transform = bkkExploded ? `translate(${off.dx}px, ${off.dy}px)` : '';
+      }
+    });
+
     if (bkkExploded) {
-      cam.kT = 4.2;
-      cam.txT = VB[2] / 2 - 311.0 * cam.kT;
-      cam.tyT = VB[3] / 2 - 672.6 * cam.kT;
+      cam.kT = 2.3;
+      cam.txT = VB[2] / 2 - (BKK_OX + 4) * cam.kT;
+      cam.tyT = VB[3] / 2 - (BKK_OY + 50) * cam.kT;
       clampCam(); kickCam();
     } else {
       const activeRegionChip = document.querySelector('.filter-btn[data-filter^="region:"][aria-pressed="true"]');
@@ -656,17 +809,22 @@
         resetCam();
       }
     }
+
+    applyCam();
+    if (selected) {
+      const target = (selected === 'chula' ? chulaPoint : selected);
+      showArc(target);
+      updateTip(target);
+    }
   }
 
   function zoomToRegion(r) {
     if (!r) { resetCam(); return; }
     if (r === 'bkk') {
-      cam.kT = 4.2;
-      cam.txT = VB[2] / 2 - 311.0 * cam.kT;
-      cam.tyT = VB[3] / 2 - 672.6 * cam.kT;
-      clampCam(); kickCam();
+      setBkkExploded(true);
       return;
     }
+    if (bkkExploded) setBkkExploded(false);
     const pl = plates[r];
     if (!pl) return;
     const bb = pl.g.querySelector('.plate-face')?.getBBox?.();
@@ -687,16 +845,16 @@
 
     if (!isCurrentlyActive) {
       // เพิ่งเลือกภาคนี้
-      zoomToRegion(r);
       if (r === 'bkk') {
         setBkkExploded(true);
-      } else if (bkkExploded) {
-        setBkkExploded(false);
+      } else {
+        if (bkkExploded) setBkkExploded(false);
+        zoomToRegion(r);
       }
     } else {
       // เพิ่งยกเลิกภาคนี้
-      resetCam();
       if (bkkExploded) setBkkExploded(false);
+      resetCam();
     }
   }
 
@@ -726,8 +884,11 @@
   svg.addEventListener('wheel', (e) => {
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
-      const step = 0.007;
-      zoomAt(Math.exp(-e.deltaY * step), e.clientX, e.clientY);
+      // ลด sensitivity ให้การซูมเป็น luxury experience ที่นุ่มนวล แม่นยำ
+      const rawDelta = e.deltaY;
+      const clampedDelta = Math.max(-100, Math.min(100, rawDelta));
+      const step = 0.0016;
+      zoomAt(Math.exp(-clampedDelta * step), e.clientX, e.clientY);
     } else {
       // ปล่อยให้หน้าเว็บเลื่อนตามปกติ และแสดงคำแนะนำสั้น ๆ
       showScrollHint();
@@ -762,7 +923,8 @@
         const r = svg.getBoundingClientRect();
         const px = ((a.x + b.x) / 2 - r.left) / r.width * VB[2];
         const py = ((a.y + b.y) / 2 - r.top) / r.height * VB[3];
-        const wx = (px - cam.tx) / cam.k, wy = (py - cam.ty) / cam.k;
+        const kBase = cam.kT;
+        const wx = (px - cam.txT) / kBase, wy = (py - cam.tyT) / kBase;
         cam.kT = clampK(pinchK * (d / pinchStart));
         cam.txT = px - wx * cam.kT;
         cam.tyT = py - wy * cam.kT;
@@ -780,7 +942,8 @@
     }
     const r = svg.getBoundingClientRect();
     const dt = Math.max(1, e.timeStamp - lastT);
-    const ux = (dx / r.width) * VB[2] / cam.k, uy = (dy / r.height) * VB[3] / cam.k;
+    // ความเร็วการแพนแผนที่ 1:1 ติดมือทุกระดับซูม ไม่หน่วงหรือช้าลงเมื่อซูมเข้า
+    const ux = (dx / r.width) * VB[2], uy = (dy / r.height) * VB[3];
     vx = ux / dt; vy = uy / dt;                      // หน่วยแผนที่ต่อมิลลิวินาที
     cam.tx += ux; cam.ty += uy;
     const b = bounds(cam.k);
@@ -805,7 +968,7 @@
       // — ถ้าปล่อยช้า หรือหยุดนิ่งก่อนปล่อย (เล็งตำแหน่ง) ต้องหยุดตรงจุดเป๊ะ
       const idle = e.timeStamp - lastT;
       const fling = Math.hypot(vx, vy) > 0.12 && idle < 90;
-      const glide = 130;
+      const glide = 120;
       let txT = fling ? cam.tx + vx * glide : cam.tx;
       let tyT = fling ? cam.ty + vy * glide : cam.ty;
       txT = Math.max(b.x0, Math.min(b.x1, txT));
@@ -823,7 +986,7 @@
     clearTimeout(clickTimer);
     setHover(null);
     if (cam.kT > 2.6) resetCam();
-    else zoomAt(2.4, e.clientX, e.clientY);
+    else zoomAt(1.6, e.clientX, e.clientY);
   });
 
   // คลิก = หมุดที่ใกล้ที่สุดก่อน → ไม่มีก็ปิดการ์ด/ย้อนมุม (หน่วง 250ms ให้ดับเบิลคลิกได้ก่อน)
@@ -850,11 +1013,11 @@
       e.preventDefault();
       const dx = e.key === 'ArrowLeft' ? stepPx : e.key === 'ArrowRight' ? -stepPx : 0;
       const dy = e.key === 'ArrowUp' ? stepPx : e.key === 'ArrowDown' ? -stepPx : 0;
-      cam.txT += (dx / r.width) * VB[2] / cam.kT;
-      cam.tyT += (dy / r.height) * VB[3] / cam.kT;
+      cam.txT += (dx / r.width) * VB[2];
+      cam.tyT += (dy / r.height) * VB[3];
       clampCam(); kickCam();
-    } else if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomAt(1.4, r.left + r.width / 2, r.top + r.height / 2); }
-    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomAt(1 / 1.4, r.left + r.width / 2, r.top + r.height / 2); }
+    } else if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomAt(1.25, r.left + r.width / 2, r.top + r.height / 2); }
+    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomAt(1 / 1.25, r.left + r.width / 2, r.top + r.height / 2); }
     else if (e.key === '0') { e.preventDefault(); resetCam(); }
     else if (e.key === 'Escape') closeCard();
   });
@@ -867,7 +1030,8 @@
   }
 
   const focusPin = (p, target = 3.6) => {
-    const px = p.x, py = p.y;
+    const pos = getPinPos(p);
+    const px = pos.x, py = pos.y;
     const k = Math.max(cam.kT, target);
     cam.kT = k;
     cam.txT = VB[2] / 2 - px * k;     // transform คือ translate * scale → จุด (px,py) อยู่ที่ px*k+tx
@@ -895,9 +1059,11 @@
     const cands = [];
     dots.forEach(rec => {
       if (!hubsOpen && rec.hub) return;                 // หมุดที่ถูกรวมอยู่ในกระจุก ยังกดไม่ได้จนกว่าจะซูม
-      const rx = rec.p.x, ry = rec.p.y;
+      const pos = getPinPos(rec.p);
+      const rx = pos.x, ry = pos.y;
       const d = Math.hypot(rx - wx, ry - wy) * unit;
-      if (d <= reach + rec.baseR * unit) cands.push({ rec, d });
+      const baseR = (rec.p.r === 'bkk' && bkkExploded && rec.cluster) ? PIN_R : rec.baseR;
+      if (d <= reach + baseR * unit) cands.push({ rec, d });
     });
     if (!cands.length) return null;
     // กติกา: "ระยะใกล้สุดชนะเสมอ" — คลิกกลางจุดที่เห็นได้ตัวนั้น
@@ -907,9 +1073,13 @@
 
   // รายการ "ตำแหน่งเดียวกัน": ตัวที่ถูกเลือกมาก่อน แล้วเรียงตัวอื่นตามระยะจากจุดที่คลิก
   const nearFrom = (hit) => {
+    const hitPos = getPinPos(hit.rec.p);
     const others = dots
       .filter(d => d !== hit.rec)
-      .map(d => ({ p: d.p, d: Math.hypot(d.p.x - hit.wx, d.p.y - hit.wy) * hit.unit }))
+      .map(d => {
+        const pos = getPinPos(d.p);
+        return { p: d.p, d: Math.hypot(pos.x - hitPos.x, pos.y - hitPos.y) * hit.unit };
+      })
       .filter(x => x.d < 6)
       .sort((a, b) => a.d - b.d)
       .slice(0, 5)
@@ -930,9 +1100,13 @@
       rec.g.parentNode.appendChild(rec.g);
       if (!selected) showCard(rec.p, 'preview');
       if (!reduced) showArc(rec.p);
+      updateTip(rec.p);
     } else if (!selected) {
       if (cardEl) { cardEl.hidden = true; cardEl.innerHTML = ''; }
       clearArc();
+      updateTip(null);
+    } else {
+      updateTip(selected === 'chula' ? chulaPoint : selected);
     }
   };
 
@@ -953,26 +1127,30 @@
     dots.forEach(d => d.g.classList.toggle('on', d === rec));
     rec.g.parentNode.appendChild(rec.g);
     showCard(rec.p, 'full');
-    focusPin(rec.p);
+    focusPin(rec.p, bkkExploded ? 2.6 : 3.6);
     showArc(rec.p);
+    updateTip(rec.p);
+    syncExpActive(rec.p);
   };
 
   // เส้นทางจากคณะฯ ไปจุดที่เลือก (แสดงเฉพาะตอนชี้/เลือก — ไม่มีแล้วตอนเลื่อนผ่าน)
   const drawArcTo = (p) => {
     gArcs.replaceChildren();
-    const px = p.x, py = p.y;
-    const mx = (HOME_X + px) / 2, my = (HOME_Y + py) / 2;
-    const dx = px - HOME_X, dy = py - HOME_Y, len = Math.hypot(dx, dy) || 1;
+    const homePos = getPinPos(chulaPoint);
+    const targetPos = getPinPos(p);
+    const px = targetPos.x, py = targetPos.y;
+    const hx = homePos.x, hy = homePos.y;
+    const mx = (hx + px) / 2, my = (hy + py) / 2;
+    const dx = px - hx, dy = py - hy, len = Math.hypot(dx, dy) || 1;
 
     // ความโค้ง (bow):
-    // สำหรับสถาบันใน กทม. หรือระยะใกล้ มีระยะโค้งขั้นต่ำ (bow >= 22)
-    // เพื่อให้เส้นโค้งออกมาพ้นรัศมีจุดจุฬาฯ และจุดปลาย เส้นไม่จมหาย/ไม่ขาด
-    const bow = Math.max(22, Math.min(len * 0.22, 65));
+    // สำหรับสถาบันใน กทม. หรือระยะใกล้ มีระยะโค้งขั้นต่ำ (bow >= 14)
+    const bow = Math.max(bkkExploded ? 14 : 22, Math.min(len * 0.22, 65));
     const cx = mx - (dy / len) * bow;
     const cy = my + (dx / len) * bow;
 
     const path = document.createElementNS(NS, 'path');
-    path.setAttribute('d', `M${HOME_X.toFixed(1)},${HOME_Y.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${px.toFixed(1)},${py.toFixed(1)}`);
+    path.setAttribute('d', `M${hx.toFixed(1)},${hy.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${px.toFixed(1)},${py.toFixed(1)}`);
     path.setAttribute('class', 'map-arc');
     gArcs.appendChild(path);
 
@@ -993,8 +1171,8 @@
       path.style.strokeDashoffset = '0';
     }
     const home = document.createElementNS(NS, 'circle');
-    home.setAttribute('cx', HOME_X.toFixed(1)); home.setAttribute('cy', HOME_Y.toFixed(1));
-    home.setAttribute('r', 5.5); home.setAttribute('class', 'map-home');
+    home.setAttribute('cx', hx.toFixed(1)); home.setAttribute('cy', hy.toFixed(1));
+    home.setAttribute('r', bkkExploded ? 3.5 : 5.5); home.setAttribute('class', 'map-home');
     gArcs.appendChild(home);
   };
   const showArc = (p) => { if (p.t.includes('chula')) return; drawArcTo(p); };
@@ -1341,6 +1519,7 @@
 
   if (expPanel && expList) {
     let currentExpGroup = 'all';
+    let searchQuery = '';
     const bkkAllPins = M.pins.filter(p => p.r === 'bkk');
 
     // อัปเดตตัวเลขบนปุ่มแท็บ
@@ -1358,12 +1537,42 @@
     const titleEl = expPanel.querySelector('.bkk-exp-title');
     if (titleEl) titleEl.textContent = `📍 สถาบันในกรุงเทพฯ (${bkkAllPins.length} แห่ง)`;
 
+    const searchInput = document.getElementById('map-bkk-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value.trim().toLowerCase();
+        renderBkkList();
+      });
+    }
+
+    syncExpActive = (p) => {
+      if (!expList) return;
+      const targetName = (typeof p === 'string') ? p : (p ? p.n : null);
+      expList.querySelectorAll('.bkk-exp-item').forEach(el => {
+        const isMatch = targetName && (el.dataset.name === targetName || (targetName === 'chula' && el.classList.contains('is-chula')));
+        el.classList.toggle('is-active', !!isMatch);
+        if (isMatch) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    };
+
     const renderBkkList = () => {
       expList.replaceChildren();
       const filtered = bkkAllPins.filter(p => {
-        if (currentExpGroup === 'all') return true;
-        return bkkCatOf(p) === currentExpGroup;
+        if (currentExpGroup !== 'all' && bkkCatOf(p) !== currentExpGroup) return false;
+        if (!searchQuery) return true;
+        return p.n.toLowerCase().includes(searchQuery) || (p.t && p.t.toLowerCase().includes(searchQuery));
       });
+
+      if (!filtered.length) {
+        const empty = document.createElement('div');
+        empty.className = 'bkk-exp-empty';
+        empty.style.cssText = 'padding: 1.2rem; text-align: center; font-size: 0.8rem; color: var(--warm-gray);';
+        empty.textContent = 'ไม่พบสถาบันที่ตรงกับคำค้นหา';
+        expList.appendChild(empty);
+        return;
+      }
 
       filtered.forEach(p => {
         const isChula = p.t.includes('chula');
@@ -1372,16 +1581,39 @@
 
         const item = document.createElement('button');
         item.type = 'button';
-        item.className = 'bkk-exp-item' + (isChula ? ' is-chula' : '');
+        item.dataset.name = isChula ? 'chula' : p.n;
+        const isCurrActive = selected && (selected === 'chula' ? isChula : selected.n === p.n);
+        item.className = 'bkk-exp-item' + (isChula ? ' is-chula' : '') + (isCurrActive ? ' is-active' : '');
         item.innerHTML = `<span class="bkk-item-name">${p.n}</span>`
           + `<span class="bkk-item-tag">${tagMap[grp] || ''}</span>`;
 
+        item.addEventListener('pointerenter', () => {
+          const rec = isChula ? chulaRec : dots.find(d => d.p === p);
+          if (rec) {
+            rec.g.classList.add('hover');
+            updateTip(rec.p);
+          }
+        });
+        item.addEventListener('pointerleave', () => {
+          const rec = isChula ? chulaRec : dots.find(d => d.p === p);
+          if (rec && rec.p !== selected) {
+            rec.g.classList.remove('hover');
+          }
+          updateTip(selected === 'chula' ? chulaPoint : selected);
+        });
+
         item.addEventListener('click', () => {
+          expList.querySelectorAll('.bkk-exp-item').forEach(el => el.classList.remove('is-active'));
+          item.classList.add('is-active');
           if (isChula) {
             openCampus(chulaPins);
+            focusPin(chulaPoint, bkkExploded ? 2.6 : 3.6);
           } else {
             const rec = dots.find(d => d.p === p);
-            if (rec) openPin(rec, []);
+            if (rec) {
+              openPin(rec, []);
+              focusPin(rec.p, bkkExploded ? 2.6 : 3.6);
+            }
           }
         });
         expList.appendChild(item);
@@ -1407,14 +1639,14 @@
     btnZoomIn.addEventListener('click', (e) => {
       e.stopPropagation();
       const r = svg.getBoundingClientRect();
-      zoomAt(1.4, r.left + r.width / 2, r.top + r.height / 2);
+      zoomAt(1.25, r.left + r.width / 2, r.top + r.height / 2);
     });
   }
   if (btnZoomOut) {
     btnZoomOut.addEventListener('click', (e) => {
       e.stopPropagation();
       const r = svg.getBoundingClientRect();
-      zoomAt(1 / 1.4, r.left + r.width / 2, r.top + r.height / 2);
+      zoomAt(1 / 1.25, r.left + r.width / 2, r.top + r.height / 2);
     });
   }
   if (btnZoomReset) {

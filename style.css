@@ -1769,6 +1769,13 @@ input:focus-visible,
   border-left: 3px solid var(--terra);
   background: rgba(196, 113, 75, 0.05);
 }
+.bkk-exp-item.is-active {
+  background: rgba(196, 113, 75, 0.12);
+  border-color: var(--terra);
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(196, 113, 75, 0.18);
+  transform: translateX(3px);
+}
 .bkk-exp-item .bkk-item-tag {
   font-size: 0.68rem;
   color: var(--warm-gray);
@@ -1776,25 +1783,58 @@ input:focus-visible,
   white-space: nowrap;
 }
 
-/* ── แม่น้ำเจ้าพระยา (Chao Phraya River) ── */
-.map-river {
-  fill: none;
-  stroke: #72a9cc;
-  stroke-width: 2.2px;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.72;
+/* ── Bangkok Explorer Search Box ── */
+.bkk-exp-search {
+  margin-bottom: 0.65rem;
+}
+.bkk-search-input {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.8rem;
+  font-family: inherit;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.bkk-search-input:focus {
+  border-color: var(--terra);
+  box-shadow: 0 0 0 3px rgba(196, 113, 75, 0.15);
+}
+
+/* ── Floating Pin Tooltip on Map ── */
+.map-float-tip {
   pointer-events: none;
-  transition: opacity 0.3s ease, stroke-width 0.3s ease;
+  transition: opacity 0.15s ease;
+}
+.map-tip-bg {
+  fill: #fff;
+  stroke: var(--terra);
+  stroke-width: 1.2px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.18));
+}
+.map-tip-text {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--charcoal);
+  dominant-baseline: central;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Sarabun", sans-serif;
 }
 
 /* ── Bangkok Focus View (เจาะลึก กทม.) ── */
-.map-svg.bkk-exploded .map-river {
-  stroke: #2b7da8;
-  stroke-width: 2.8px;
-  opacity: 0.95;
-  filter: drop-shadow(0 1px 3px rgba(43, 125, 168, 0.35));
+.map-svg.bkk-exploded .pin-halo {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease;
+}
+.map-svg.bkk-exploded .map-pin:hover .pin-halo,
+.map-svg.bkk-exploded .map-pin.hover .pin-halo,
+.map-svg.bkk-exploded .map-pin.on .pin-halo {
+  opacity: 0.45 !important;
+}
+.map-svg.bkk-exploded .chula-ring {
+  display: none !important;
 }
 .map-svg.bkk-exploded .chula-label,
 .map-svg.bkk-exploded .plate-labels,
@@ -1804,8 +1844,7 @@ input:focus-visible,
   transition: opacity 0.2s ease;
 }
 .map-svg.bkk-exploded .plate:not([data-region="bkk"]) {
-  opacity: 0.35;
-  transition: opacity 0.3s ease;
+  transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
 }
 .map-svg.bkk-exploded .pin-group:not([data-region="bkk"]) {
   opacity: 0.15;
@@ -1813,9 +1852,10 @@ input:focus-visible,
   transition: opacity 0.3s ease;
 }
 .map-svg.bkk-exploded .plate[data-region="bkk"] .plate-face {
-  filter: drop-shadow(0 4px 18px rgba(196, 113, 75, 0.35));
+  fill: #ecd8cc;
+  filter: drop-shadow(0 4px 18px rgba(196, 113, 75, 0.32));
   stroke: var(--terra);
-  stroke-width: 1.5px;
+  stroke-width: 1.6px;
 }
 
 @media (max-width: 600px) {
