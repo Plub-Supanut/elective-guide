@@ -97,6 +97,19 @@ async function main() {
     }
     p.region = best ? best.region : 'central';
   }
+  // ── แก้ไขภาคจังหวัดที่อัลกอริทึมโหวต/สืบทอดให้ผิดอย่างชัดเจน (QA 18 ต.ค. 2026) ──
+  // 6 จังหวัดนี้ผลจากเสียงโหวต/การสืบทอดเดิมย้อมผิดภาค (เช่น สมุทรปราการเสมอ 1:1 แล้วชนะเป็น bkk,
+  // เลยไม่มีหมุดแล้วสืบทอดจากอุตรดิตถ์, เพชรบูรณ์สืบทอดจากชัยภูมิ, สุพรรณบุรีมีหมุด 501 ใส่ภาคผิด,
+  // ชัยนาท/กาญจนบุรีได้ north จาก cascade) จึงกำหนดภาคแบบตายตัวแทน — จังหวัดอื่นยังใช้โหวต+สืบทอดเหมือนเดิม
+  const REGION_FIX = {
+    'Samut Prakan': 'central',   // เดิม bkk (หมุดในจังหวัดเสมอ 1:1 bkk/central)
+    'Loei': 'isan',              // เดิม north (สืบทอดจากอุตรดิตถ์) — เลยคือภาคอีสาน
+    'Phetchabun': 'central',     // เดิม isan (สืบทอดจากชัยภูมิ) — เพชรบูรณ์ไม่ใช่ภาคอีสาน
+    'Suphan Buri': 'central',    // เดิม north (หมุด 501 ถูกใส่ภาคผิด)
+    'Chai Nat': 'central',       // เดิม north (cascade: อุทัยธานี ← นครสวรรค์)
+    'Kanchanaburi': 'central',   // เดิม north (cascade: สุพรรณบุรี)
+  };
+  for (const p of prov) if (REGION_FIX[p.name]) p.region = REGION_FIX[p.name];
   const tally = {};
   prov.forEach(p => { tally[p.region] = (tally[p.region] || 0) + 1; });
   console.log('  จังหวัดต่อภาค:', JSON.stringify(tally));
