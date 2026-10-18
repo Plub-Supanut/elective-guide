@@ -179,7 +179,6 @@ window.ELECTIVE_MAP = {
   paths: '${parts.join(' ')}',
   regionPaths: ${JSON.stringify(Object.fromEntries(Object.entries(regionParts).map(([r, ds]) => [r, ds.join(' ')])))},
   regionLabels: ${JSON.stringify(labels)},
-  chaoPhraya: 'M308.9,663.5 L309.2,665.1 L309.4,666.4 L308.9,667.5 L308.1,668.5 L307.0,669.5 L306.9,670.5 L306.5,671.0 L306.8,671.9 L307.5,672.4 L308.5,673.3 L308.9,674.5 L308.1,675.9 L306.9,677.2 L309.3,678.2 L311.8,679.1 L311.1,680.4 L312.3,681.5 L314.7,683.6 L317.0,687.1',
   pins: ${JSON.stringify(pins)},
   chula: ${JSON.stringify(CAMPUS)},
 };
