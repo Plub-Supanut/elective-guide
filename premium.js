@@ -26,12 +26,19 @@
       const max = doc.scrollHeight - window.innerHeight;
       const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       bar.style.setProperty('--eg-p', p.toFixed(4));
-      if (nav) nav.classList.toggle('eg-scrolled', window.scrollY > 8);
+      // nav ลอยโปร่งใสบน hero → เปลี่ยนเป็นแถบทึบเมื่อพ้น hero (เดิมเปลี่ยนที่ 8px ทำให้แถบทึบ
+      // ไปทับ hero ทันทีที่เลื่อนนิดเดียว)
+      if (nav) {
+        const hero = document.getElementById('hero');
+        const solidAt = Math.max(80, (hero ? hero.offsetHeight : window.innerHeight) - 96);
+        nav.classList.toggle('eg-scrolled', window.scrollY > solidAt);
+      }
       flushPending();
     });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+  onScroll();   // ตั้งสถานะเริ่มต้น (เช่นเปิดมาที่ #anchor ที่เลื่อนอยู่แล้ว)
 
   /* ── 2. ตัวเลขวิ่งเมื่อปรากฏ ──────────────────────────────────── */
   const COUNT_SEL = [

@@ -16,6 +16,10 @@
   --sage-dark:  #4f7047;
   --terra:      #c4714b;
   --terra-light:#e0977a;
+  /* สีเข้มขึ้นสำหรับ "ตัวอักษรขาวบนพื้น terracotta" และ "ตัวอักษร terracotta บนพื้นอ่อน"
+     — สีเดิมผ่าน AA ไม่พอ (3.61:1) จึงแยกโทนสำหรับข้อความออกจากโทนตกแต่ง */
+  --terra-deep: #a85b36;   /* ขาวบนสีนี้ = 4.96:1 */
+  --terra-ink:  #8f4527;   /* สีนี้บนพื้นอ่อน = 6.7:1 */
   --dusk:       #c9849a;
   --dusk-light: #e8b4c6;
   --charcoal:   #2c2824;
@@ -42,6 +46,11 @@ body {
   /* Linen texture */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
+
+/* ฟอร์มคอนโทรล inherits ฟอนต์เสมอ — เดิม <button> ใช้ Arial ทำให้ข้อความไทย
+   ในชิปตัวกรองถูกวาดด้วยฟอนต์ระบบ (Tahoma) ไม่ใช่ Noto Sans Thai */
+button, input, select, textarea { font-family: inherit; }
+::placeholder { color: var(--warm-gray); opacity: 1; }
 
 /* ============================
    HERO
@@ -121,7 +130,7 @@ body {
 .btn-primary {
   display: inline-block;
   padding: 0.85rem 2.2rem;
-  background: var(--terra);
+  background: var(--terra-deep);
   color: #fff;
   border-radius: 50px;
   font-weight: 600;
@@ -268,6 +277,40 @@ body {
 .nav-links .nav-github:hover { opacity: 1; }
 .nav-links .nav-github::after { display: none; }
 
+/* ── เนวิเกชันลอยบน hero ─────────────────────────────────────────
+   เดิม nav อยู่ในลำดับถัดจาก hero (สูง 100vh) ทำให้ "จอแรกไม่มีเมนูเลย"
+   ทั้งคอม/แท็บเล็ต/มือถือ · เปิดใช้เฉพาะเมื่อ JS ทำงาน (html.js)
+   เพื่อให้กรณีไม่มี JS ยังเป็นแถบทีบอ่านได้ตามเดิม */
+html.js .sticky-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.js .sticky-nav .nav-logo { color: var(--sand); }
+html.js .sticky-nav .nav-links a,
+html.js .sticky-nav .nav-github { color: rgba(245, 239, 230, 0.86); }
+html.js .sticky-nav .nav-links a:hover { color: var(--sand); }
+html.js .sticky-nav .nav-links a.active { color: var(--terra-light); }
+html.js .sticky-nav.eg-scrolled {
+  background: rgba(253, 250, 246, 0.94);
+  border-bottom-color: var(--border);
+  box-shadow: 0 10px 30px -16px rgba(44, 40, 36, 0.5);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+html.js .sticky-nav.eg-scrolled .nav-logo { color: var(--charcoal); }
+html.js .sticky-nav.eg-scrolled .nav-links a,
+html.js .sticky-nav.eg-scrolled .nav-github { color: var(--warm-gray); }
+html.js .sticky-nav.eg-scrolled .nav-links a:hover,
+html.js .sticky-nav.eg-scrolled .nav-links a.active { color: var(--terra); }
+
+/* nav เป็น fixed แล้ว → anchor ต้องเว้นที่ให้แถบเมนู */
+section[id], [id="institutions"] { scroll-margin-top: 84px; }
+
 /* ============================
    SEARCH SECTION
    ============================ */
@@ -284,6 +327,8 @@ body {
   font-family: var(--font-head);
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 600;
+  /* เดิมสืบทอด line-height 1.75 จาก body ทำให้หัวข้อทุกภาคกินที่เกินจำเป็น */
+  line-height: 1.22;
   color: var(--charcoal);
   margin-bottom: 0.5rem;
 }
@@ -514,7 +559,7 @@ body {
 /* Code badge */
 .code {
   display: inline-block;
-  background: var(--sage);
+  background: var(--sage-dark);
   color: #fff;
   border-radius: 6px;
   padding: 0.1rem 0.5rem;
@@ -549,7 +594,7 @@ body {
 }
 .badge-loc {
   background: rgba(196,113,75,0.1);
-  color: var(--terra);
+  color: var(--terra-ink);
   border: 1px solid rgba(196,113,75,0.2);
   font-size: 0.65rem;
   /* badge สถานที่บางอันยาว (เช่น «รัตนวิทยาพัฒน์ ชั้น 15B ห้อง 1512»)
@@ -561,10 +606,76 @@ body {
   line-height: 1.35;
 }
 .badge-special {
-  background: var(--terra);
+  background: var(--terra-deep);
   color: #fff;
   box-shadow: 0 2px 10px rgba(196, 113, 75, 0.3);
 }
+
+/* ── ป้าย กทม. ที่กดได้ (ทางเข้าโหมด «เจาะลึก กทม.») ────────── */
+.plate-label-cta { cursor: pointer; }
+.plate-label-cta .plate-label { transition: fill 0.2s ease; }
+.plate-label-cta:hover .plate-label,
+.plate-label-cta:focus-visible .plate-label { fill: var(--terra-ink); }
+.plate-label-cta:focus-visible { outline: none; }
+.plate-label-bg.is-hit { display: block; fill: transparent; pointer-events: all; }
+.map-svg.bkk-exploded .plate-label-cta { pointer-events: none; }
+
+/* ── ไอคอน SVG (แทน emoji) ───────────────────────────────── */
+.eg-icon { width: 1em; height: 1em; display: inline-block; vertical-align: -0.15em; flex: 0 0 auto; }
+/* คอนเทนเนอร์แบบ flex ตัดช่องว่างหัวข้อความทิ้ง → ต้องเว้นระยะด้วย gap ไม่ใช่ spacebar */
+.btn-link { gap: 0.4em; }
+.map-layer-btn, .map-compare-btn { gap: 0.35em; }
+.icon > .eg-icon { width: 1.15em; height: 1.15em; vertical-align: -0.16em; }
+.section-badge > .eg-icon { width: 1em; height: 1em; }
+.map-search-icon > .eg-icon { width: 1.1em; height: 1.1em; vertical-align: -0.18em; }
+.map-layer-btn > .eg-icon,
+.map-bkk-btn > .eg-icon,
+.map-compare-btn > .eg-icon { width: 1.1em; height: 1.1em; vertical-align: -0.2em; }
+.map-home-label > .eg-icon { width: 1.05em; height: 1.05em; vertical-align: -0.18em; }
+.btn-link > .eg-icon { width: 1em; height: 1em; vertical-align: -0.15em; }
+
+/* ── เมนู "เพิ่มเติม" บนมือถือ (แทนการเลื่อนแนวนอนที่ซ่อน 3/7 ลิงก์) ── */
+.nav-more {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 44px; height: 44px; margin-left: 0.2rem;
+  border: 0; background: none; color: inherit; cursor: pointer; border-radius: 10px;
+}
+.nav-more:hover { background: rgba(245, 239, 230, 0.12); }
+.nav-more-menu {
+  position: absolute; top: calc(100% - 4px);
+  right: max(1rem, env(safe-area-inset-right, 0px) + 0.6rem);
+  min-width: 200px; padding: 0.45rem;
+  background: var(--off-white); border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: var(--shadow-lg); z-index: 120;
+}
+.nav-more-menu a {
+  display: block; padding: 0.6rem 0.8rem; border-radius: 10px;
+  color: var(--charcoal); text-decoration: none; font-size: 0.95rem; line-height: 1.35;
+}
+.nav-more-menu a:hover { background: var(--sand); }
+@media (max-width: 760px) {
+  .nav-links { overflow: visible; -webkit-mask-image: none; mask-image: none; gap: 1.15rem; }
+  .nav-links > a:not(.nav-primary) { display: none; }
+  .nav-more { display: inline-flex; }
+  html.js .sticky-nav.eg-scrolled .nav-more:hover { background: rgba(44, 40, 36, 0.06); }
+}
+
+/* ── โครงร่างแผนที่ระหว่างรอสคริปต์ (lazy load) ──────────────── */
+html.js #elective-map { position: relative; min-height: 220px; }
+html.js .map-fallback { display: none; }
+.map-skeleton {
+  width: 100%; aspect-ratio: 807 / 1483; border-radius: 10px;
+  background: linear-gradient(100deg, #f2eade 22%, #fbf7f0 42%, #f2eade 62%);
+  background-size: 240% 100%;
+  animation: egShimmer 1.5s linear infinite;
+}
+@keyframes egShimmer { to { background-position: -140% 0; } }
+.map-error {
+  display: block !important;
+  font-size: 0.9rem; color: var(--warm-gray); padding: 2.5rem 1rem; text-align: center;
+}
+@media (prefers-reduced-motion: reduce) { .map-skeleton { animation: none; } }
 
 .card-body {
   padding: 1rem 1.4rem;
@@ -1352,7 +1463,8 @@ input:focus-visible,
 }
 .filter-sort select {
   font: inherit;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  min-height: 40px;              /* เดิมสูง 30px — เล็กเกินไปสำหรับนิ้ว */
   color: var(--charcoal);
   background: var(--off-white);
   border: 1px solid var(--border);
@@ -1466,6 +1578,10 @@ input:focus-visible,
 /* Layer toggles */
 .map-layers { display: flex; gap: 0.45rem; }
 .map-layer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;             /* เป้าแตะขั้นต่ำบนจอสัมผัส (เดิมสูง 36px) */
   padding: 0.45rem 0.9rem;
   border: 1.5px solid var(--border);
   border-radius: 8px;
@@ -1479,14 +1595,18 @@ input:focus-visible,
 }
 .map-layer-btn:hover { background: var(--sand); border-color: var(--terra); }
 .map-layer-btn[aria-pressed="true"] {
-  background: var(--terra);
-  border-color: var(--terra);
+  background: var(--terra-deep);
+  border-color: var(--terra-deep);
   color: #fff;
   font-weight: 600;
 }
 
 /* Compare toggle button */
 .map-compare-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 0.45rem 0.9rem;
   border: 1.5px solid var(--border);
   border-radius: 8px;
@@ -1527,10 +1647,11 @@ input:focus-visible,
 }
 .map-home-select {
   padding: 0.45rem 0.75rem;
+  min-height: 44px;
   border: 1.5px solid var(--border);
   border-radius: 8px;
   background: var(--off-white);
-  font-size: 0.87rem;
+  font-size: 0.95rem;
   font-family: var(--font-body);
   color: var(--charcoal);
   cursor: pointer;
@@ -1539,7 +1660,7 @@ input:focus-visible,
 }
 .map-home-select:focus { outline: none; border-color: var(--terra); }
 .map-home-clear {
-  width: 28px; height: 28px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--border);
   background: none;
@@ -1649,6 +1770,7 @@ input:focus-visible,
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  min-height: 44px;
   padding: 0.45rem 0.85rem;
   border: 1.5px solid var(--border);
   border-radius: 999px;
@@ -1915,8 +2037,8 @@ input:focus-visible,
   z-index: 20;
 }
 .map-ctrl-btn {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1991,6 +2113,7 @@ input:focus-visible,
 .map-svg.grabbing { cursor: grabbing; }
 .pin-dot, .pin-halo, .map-home { vector-effect: non-scaling-stroke; }
 .chula-label { font-size: 17px; font-weight: 600; fill: var(--charcoal); opacity: 0;
+  pointer-events: none;   /* ป้ายประดับ — ต้องไม่บังการคลิกป้าย กทม./หมุดที่อยู่ใต้ */
   paint-order: stroke; stroke: rgba(250, 246, 238, 0.9); stroke-width: 4px; stroke-linejoin: round;
   transition: opacity 0.26s ease; }
 .map-svg.is-zoomed .chula-label { opacity: 0.85; }   /* ซูมเข้าแล้วค่อยบอกว่าจุดนี้คือ รพ.จุฬาฯ (ตอนซูมออกมีกระจุกบอกจำนวนอยู่แล้ว) */
@@ -2161,9 +2284,22 @@ input:focus-visible,
 
 @media (max-width: 900px) {
   .map-section { padding: 3.5rem 1.25rem; }
-  .map-wrap { grid-template-columns: 1fr; gap: 1.6rem; }
-  .map-paper { max-width: 360px; margin: 0 auto; }
   .map-legend-row { min-height: 44px; }
+}
+/* แผนที่ยังคง 2 คอลัมน์ (แผนที่ + เลเจนด์) จนถึง 760px
+   เดิมยุบที่ 900px ทำให้แท็บเล็ต 834 มีแผ่นแผนที่เล็ก 300px กลางคอลัมน์ 762px */
+@media (max-width: 760px) {
+  .map-wrap { grid-template-columns: 1fr; gap: 1.6rem; }
+  .map-paper { max-width: 420px; margin: 0 auto; }
+}
+/* hero: ลดขนาดหัวข้อลงเล็กน้อยบนจอ ≤900 เพื่อไม่ให้ «จุฬาฯ» ตกไปอยู่บรรทัดเดี่ยว */
+@media (max-width: 900px) {
+  .hero-title { font-size: clamp(2rem, 7.2vw, 3.2rem); }
+  /* iOS จะซูมหน้าเองเมื่อโฟกัส input ที่ฟอนต์ < 16px */
+  .map-search-input,
+  .map-home-select,
+  .filter-sort select { font-size: 16px; }
+  .filter-sort select { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pin-dot { transition: none; opacity: 0.78; transform: none; }
@@ -2240,7 +2376,7 @@ input:focus-visible,
   color: var(--warm-gray);
 }
 .map-near-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.map-near-km { flex: 0 0 auto; color: var(--terra); font-variant-numeric: tabular-nums; }
+.map-near-km { flex: 0 0 auto; color: var(--terra-ink); font-variant-numeric: tabular-nums; }
 .map-near-note { font-size: 0.72rem; color: var(--warm-gray); margin: 0.5rem 0 0; }
 
 /* ── แผนที่: การ์ดข้างแผนที่ (ย่อตอนชี้ / เต็มตอนคลิก) ────────── */
@@ -2320,7 +2456,7 @@ input:focus-visible,
 /* ── มือถือ: การ์ดกลายเป็นแผ่นเลื่อนขึ้นจากขอบจอ (ไม่ดันเนื้อหา) ── */
 @media (max-width: 900px) {
   .map-card {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
     margin: 0; border-radius: 18px 18px 0 0;
     max-height: 64vh; overflow: auto;
     box-shadow: 0 -8px 34px rgba(44, 40, 36, 0.22);

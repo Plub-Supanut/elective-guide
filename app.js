@@ -218,7 +218,7 @@ const filterLabel = {
   chula: 'จุฬา (ภาควิชา)', university: 'มหาวิทยาลัย', hospital: 'โรงพยาบาล/ศูนย์',
   cpird: 'ศพช.', 'regional-plain': 'รพ.จังหวัด', private: 'เอกชน',
   'region:bkk': 'กทม.', 'region:central': 'กลาง', 'region:north': 'เหนือ',
-  'region:isan': 'อีสาน', 'region:south': 'ใต้',
+  'region:isan': 'อีสาน', 'region:south': 'ใต้', 'region:east': 'ตะวันออก',
   dormitory: 'มีที่พัก', 'dorm-free': 'ที่พักฟรี',
 };
 

@@ -437,7 +437,7 @@
 
   const LABEL_NUDGE = {   // คำนวณจากรูปทรงจริง: ทุกป้ายต้องอยู่ในภาคของตัวเอง + ไม่ทับกัน
     north: [0, 0], south: [0, 0], isan: [0, 0],            // ค่าจากตัวสร้างอยู่ในภาคแล้ว
-    central: [-3, -69],   // ขึ้นไปอยู่แถบภาคกลางเหนือกรุงเทพ (อยู่ในภาคจริง ห่างขอบ 9.5 หน่วย)
+    central: [-3, -108],  // ขึ้นไปแถบภาคกลางตอนบน — เว้นระยะจากป้าย กทม. (เดิม -69 แล้วยังเบียด)
     bkk: [7, -4],         // กลางกรุงเทพพอดี (centroid ของภาค กทม.)
     east: [71, 36],       // ลงไปพื้นที่กว้างของภาคตะวันออก
   };
@@ -472,8 +472,24 @@
     label.setAttribute('class', 'plate-label');
     label.setAttribute('x', (lab[0] + nudge[0]).toFixed(1));
     label.setAttribute('y', (lab[1] + nudge[1]).toFixed(1));
-    label.textContent = `${REGION[r].name} · ${list.length}`;
+    label.textContent = r === 'bkk'
+      ? `${REGION[r].name} · ${list.length} ›`
+      : `${REGION[r].name} · ${list.length}`;
     wrap.appendChild(label);
+
+    // ป้าย กทม. เป็นทางเข้าสู่โหมด «เจาะลึก กทม.» — ก้อนหมุด กทม. ทับกันจนแยกไม่ออก
+    // และเดิมไม่มีอะไรบอกว่ากดได้ (ป้ายบอกจำนวน + ลูกศร คือ affordance ที่ไม่เพิ่มที่ว่าง)
+    if (r === 'bkk') {
+      wrap.classList.add('plate-label-cta');
+      wrap.setAttribute('role', 'button');
+      wrap.setAttribute('tabindex', '0');
+      wrap.setAttribute('aria-label', `เปิดรายชื่อสถาบันในกรุงเทพฯ ทั้งหมด ${list.length} แห่ง`);
+      const goBkk = (e) => { e.stopPropagation(); setBkkExploded(true); };
+      wrap.addEventListener('click', goBkk);
+      wrap.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goBkk(e); }
+      });
+    }
 
     const labG = document.createElementNS(NS, 'g');
     labG.setAttribute('class', 'plate-labels');
@@ -505,9 +521,13 @@
       rect.setAttribute('height', (tb.height + padY * 2).toFixed(1));
       rect.setAttribute('rx', '6');
       rect.setAttribute('class', 'plate-label-bg');
+      if (wrap.classList.contains('plate-label-cta')) rect.classList.add('is-hit');
       wrap.insertBefore(rect, label);
     } catch (_) {}
   });
+
+  // ป้าย «กรุงเทพฯ · 50 ›» ต้องอยู่เหนือหมุด กทม. ทั้งหมด ไม่งั้นกดไม่ได้ (หมุดทับตำแหน่งกัน)
+  if (plates.bkk && plates.bkk.labG) gZoom.appendChild(plates.bkk.labG);
 
   // ไม่รวมหมุดเป็นวงแดงใหญ่พร้อมเลข 22 (ผู้ใช้ติว่าไม่สวยและบังหมุดสถาบันใน กทม.)
   // แสดงหมุดสถาบันทุกแห่งอย่างชัดเจน และจุดจุฬาฯ มีวง Chula-ring พิเศษอยู่แล้ว
@@ -642,9 +662,23 @@
   };
   const applyCam = () => {
     gZoom.setAttribute('transform', `translate(${cam.tx.toFixed(2)} ${cam.ty.toFixed(2)}) scale(${cam.k.toFixed(4)})`);
-    // ป้ายชื่อภาคหดตามซูม → ขนาดบนจอคงที่
-    gPlates.style.setProperty('--lk', (1 / cam.k).toFixed(4));
-    svg.style.setProperty('--lk', (1 / cam.k).toFixed(4));   // ป้ายสรุปภาค + ป้ายที่อยู่ในเลเยอร์อื่น
+    // ป้ายชื่อภาค/ป้ายตัวเลข: คงขนาดบนจอ *และ* ไม่เล็กกว่า ~12px จริง
+    // เดิม --lk = 1/k → ขนาดจริง = ฟอนต์(ยูนิต) × สเกล SVG (0.54 ที่ 1440 / 0.36 ที่มือถือ) = 8–10px
+    const svgRect0 = svg.getBoundingClientRect();
+    const pxPerUnit0 = svgRect0.width > 0 ? svgRect0.width / VB[2] : 0.54;
+    const labelBoost = Math.max(1, 14.2 / (16 * pxPerUnit0));   // ≈16px บนจอ · ป้ายสรุปภาค ≈13.3px
+    const lkFixed = ((1 / cam.k) * labelBoost).toFixed(4);
+    gPlates.style.setProperty('--lk', lkFixed);
+    svg.style.setProperty('--lk', lkFixed);   // ป้ายสรุปภาค + ป้ายที่อยู่ในเลเยอร์อื่น
+    // วงแหวนจุฬาฯ = "เครื่องหมายจุด" ไม่ใช่พื้นที่ 15.6 กม. → เล็กลง (โตตามซูมตามจริง)
+    const chulaRingEl = svg.querySelector('.chula-ring');
+    if (chulaRingEl) chulaRingEl.setAttribute('r', '3.2');
+    const chulaLabelEl = svg.querySelector('.chula-label');
+    if (chulaLabelEl) {
+      chulaLabelEl.setAttribute('font-size', (12 / (pxPerUnit0 * cam.k)).toFixed(2));
+      chulaLabelEl.setAttribute('x', (HOME_X + 3.6).toFixed(2));
+      chulaLabelEl.setAttribute('y', (HOME_Y - 2.6).toFixed(2));
+    }
     const f = 1 / Math.pow(cam.k, 0.55);
     const S = bkkExploded ? BKK_SCALE : 1;
     dots.forEach(d => {
@@ -1035,7 +1069,15 @@
     const k = Math.max(cam.kT, target);
     cam.kT = k;
     cam.txT = VB[2] / 2 - px * k;     // transform คือ translate * scale → จุด (px,py) อยู่ที่ px*k+tx
-    cam.tyT = VB[3] / 2 - py * k;
+    // มือถือ: การ์ดเป็นแผ่นเลื่อนขึ้นจากขอบล่าง (~51% ของจอ) → เลื่อนจุดขึ้นให้พ้นแผ่น
+    let lift = 0;
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      const card = document.getElementById('map-card');
+      const cardH = card && !card.hidden ? card.getBoundingClientRect().height : 0;
+      const svgH = svg.getBoundingClientRect().height || 1;
+      lift = (cardH * 0.5) / (svgH / VB[3]);
+    }
+    cam.tyT = VB[3] / 2 - py * k - lift;
     clampCam(); kickCam();
   };
 
@@ -1067,7 +1109,12 @@
     });
     if (!cands.length) return null;
     // กติกา: "ระยะใกล้สุดชนะเสมอ" — คลิกกลางจุดที่เห็นได้ตัวนั้น
-    cands.sort((a, b) => a.d - b.d || (b.rec.cluster ? 1 : 0) - (a.rec.cluster ? 1 : 0));
+    // ยกเว้นจุดจุฬาฯ (cluster): ถ้าระยะไล่เลี่ยกัน (≤1.6px) ให้ cluster ชนะ
+    // เดิม tie-break ทำให้หมุดอื่นที่ทับกันอยู่ชนะเสมอ → คลิกจุด รพ.จุฬาฯ จึงไม่เคยเปิดแผนผังได้
+    cands.sort((a, b) => {
+      if (Math.abs(a.d - b.d) <= 1.6) return (b.rec.cluster ? 1 : 0) - (a.rec.cluster ? 1 : 0);
+      return a.d - b.d;
+    });
     return { rec: cands[0].rec, wx, wy, unit };
   };
 

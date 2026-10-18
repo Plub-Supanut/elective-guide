@@ -11,20 +11,7 @@
   const finePointer = window.matchMedia('(pointer: fine)').matches;
 
   // ── 1) แถบความคืบหน้า ────────────────────────────────────────
-  const bar = document.createElement('div');
-  bar.className = 'scroll-progress';
-  bar.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(bar);
-  let tick = 0;
-  const updateBar = () => {
-    tick = 0;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-    bar.style.transform = `scaleX(${p.toFixed(4)})`;
-  };
-  updateBar();
-  window.addEventListener('scroll', () => { if (!tick) tick = requestAnimationFrame(updateBar); }, { passive: true });
-  window.addEventListener('resize', updateBar, { passive: true });
+  // premium.js สร้าง .eg-progress ไว้แล้ว — เว้นแถบเดียว ไม่ให้มีแถบซ้อนกัน 2 อัน
 
   // ── 2) ตัวเลขการ์ดสรุปวิ่งขึ้น ─────────────────────────────────
   const nums = [...document.querySelectorAll('.stat-num')];
@@ -85,5 +72,23 @@
     window.addEventListener('scroll', () => {
       if (window.scrollY < 120) setActive('');
     }, { passive: true });
+  }
+  // ── 5) เมนู "เพิ่มเติม" บนมือถือ ───────────────────────────────
+  const moreBtn = document.getElementById('navMoreBtn');
+  const moreMenu = document.getElementById('navMoreMenu');
+  if (moreBtn && moreMenu) {
+    const close = () => { moreMenu.hidden = true; moreBtn.setAttribute('aria-expanded', 'false'); };
+    moreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = moreMenu.hidden;
+      moreMenu.hidden = !open;
+      moreBtn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => {
+      // ใช้ contains(): ผู้ใช้มักกดที่ <svg>/<circle> ข้างในปุ่ม ไม่ใช่ตัวปุ่ม
+      if (!moreMenu.hidden && !moreMenu.contains(e.target) && !moreBtn.contains(e.target)) close();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    moreMenu.addEventListener('click', (e) => { if (e.target.closest('a')) close(); });
   }
 })();
