@@ -2317,19 +2317,6 @@ input:focus-visible,
   display: block;
 }
 
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  z-index: 130;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  background: linear-gradient(90deg, var(--sage) 0%, var(--terra) 55%, var(--dusk) 100%);
-  pointer-events: none;
-}
-
 /* เมนูบน: ไฮไลต์ส่วนที่กำลังอ่าน */
 .nav-links a.active { color: var(--terra); }
 .nav-links a.active::after { width: 100%; }
