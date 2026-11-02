@@ -11,6 +11,8 @@
     "sync:inside": "node sync-ssc.mjs --page=inside",
     "sync:outside": "node sync-ssc.mjs --page=outside",
     "shell": "node tools/build-shell.mjs",
+    "audit": "node tools/audit-data.mjs",
+    "audit:check": "node tools/audit-data.mjs --check",
     "shell:check": "node tools/build-shell.mjs --check",
     "map": "node tools/build-map.mjs"
   }

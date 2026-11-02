@@ -2879,3 +2879,40 @@ html[data-year="6"] .ssc-card[data-years~="6"] { box-shadow: 0 0 0 2px rgba(125,
   font-weight: 600;
 }
 .deadline-chip.is-closed { background: rgba(196, 113, 75, 0.16); color: var(--terra-ink); }
+
+/* ============================
+   แผง «ข้อมูลที่เว็บมีตอนนี้» (เขียนโดย tools/audit-data.mjs)
+   ============================ */
+.coverage-section { padding: 2.5rem 2rem 3rem; }
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0 1rem;
+  list-style: none;
+}
+.coverage-grid li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--off-white);
+  box-shadow: var(--shadow);
+}
+.coverage-grid strong {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: var(--terra-ink);
+}
+.coverage-grid span { font-size: 0.82rem; color: var(--warm-gray); }
+.coverage-note { font-size: 0.84rem; color: var(--warm-gray); line-height: 1.7; max-width: 70ch; }
+.coverage-note code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: rgba(125, 155, 118, 0.16);
+}

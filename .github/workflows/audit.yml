@@ -1,0 +1,106 @@
+name: Audit data
+
+# ตรวจความครบ/ความสดของข้อมูลในเว็บทุกสัปดาห์
+# - ตัวเลขที่โชว์ต้องตรงกับของจริง (การ์ด · หมวด · สถิติหน้าแรก)
+# - ลิงก์ภายใน/ไฟล์ที่อ้างถึงต้องมีจริง
+# - การ์ดที่ยังไม่มีวันที่ตรวจ หรือตรวจล่าสุดเกิน 1 ปี → เปิด issue ให้ตามเก็บ
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'        # ทุกวันจันทร์ 09:00 น. เวลาไทย
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: audit-data
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: ตรวจเมนู/เปลือกหน้าให้ตรงกันก่อน
+        run: node tools/build-shell.mjs --check
+
+      - name: ตรวจข้อมูล
+        id: audit
+        run: |
+          set +e
+          node tools/audit-data.mjs
+          code=$?
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "## ผลตรวจข้อมูล" >> "$GITHUB_STEP_SUMMARY"
+          node -e "
+            const fs=require('fs');
+            const r=JSON.parse(fs.readFileSync('data/audit-report.json','utf8'));
+            console.log('การ์ด '+r.total+' ใบ · เบอร์ '+r.coverage.withPhone+' · อีเมล '+r.coverage.withEmail+
+              ' · ที่พัก '+r.coverage.withDorm+' · ชั้นปี '+r.coverage.withYears+' · วันที่ตรวจ '+r.coverage.withVerified);
+            if(r.errors.length){ console.log('','**errors**'); r.errors.forEach(e=>console.log('- '+e)); }
+            if(r.warnings.length){ console.log('','**คำเตือน**'); r.warnings.forEach(w=>console.log('- '+w)); }
+          " >> "$GITHUB_STEP_SUMMARY" || true
+          exit 0
+
+      - name: commit รายงานถ้ามีการเปลี่ยน
+        if: steps.audit.outputs.code == '0'
+        run: |
+          if git diff --quiet; then
+            echo "รายงานตรงกับของจริงอยู่แล้ว"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data-status.md index.html
+          git commit -m "chore(audit): อัปเดตสถานะข้อมูลในเว็บ"
+          git push
+
+      - name: แจ้งเตือนถ้าตรวจไม่ผ่าน
+        if: steps.audit.outputs.code != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const r = JSON.parse(fs.readFileSync('data/audit-report.json', 'utf8'));
+            const title = 'Audit: ข้อมูลไม่ตรง/ไม่ครบ — ต้องแก้';
+            const body = [
+              'ตรวจอัตโนมัติแล้วพบปัญหา:',
+              '',
+              ...r.errors.map(e => `- ❌ ${e}`),
+              ...r.warnings.map(w => `- ⚠️ ${w}`),
+              '',
+              'รัน `npm run audit` ในเครื่องเพื่อดูรายละเอียด (รายงานเต็มอยู่ที่ `docs/data-status.md`)',
+            ].join('\n');
+            const { owner, repo } = context.repo;
+            const { data: open } = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: 'audit', per_page: 20 });
+            const existing = open.find(i => i.title === title);
+            if (existing) await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body });
+            else await github.rest.issues.create({ owner, repo, title, body, labels: ['audit'] });
+
+      - name: เปิด issue เมื่อมีข้อมูลที่ควรตรวจซ้ำ
+        if: steps.audit.outputs.code == '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const r = JSON.parse(fs.readFileSync('data/audit-report.json', 'utf8'));
+            if (!r.stale.length) return;
+            const title = 'Audit: ข้อมูลที่ยังไม่ได้ตรวจเกิน 1 ปี';
+            const body = [
+              `มี ${r.stale.length} รายการที่ควรตรวจซ้ำ:`,
+              '',
+              ...r.stale.map(s => `- ${s.name} — ตรวจล่าสุด ${s.verified || 'ไม่ระบุ'}`),
+              '',
+              'ตรวจกับต้นทางแล้วอัปเดต `data-verified` ของการ์ดนั้น (หรือแก้ข้อมูลให้ตรง)',
+            ].join('\n');
+            const { owner, repo } = context.repo;
+            const { data: open } = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: 'audit', per_page: 20 });
+            const existing = open.find(i => i.title === title);
+            if (existing) await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body });
+            else await github.rest.issues.create({ owner, repo, title, body, labels: ['audit'] });

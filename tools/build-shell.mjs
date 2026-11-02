@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261103a';
+const CSS_VERSION = '20261103b';
 
 // ── หนี้ทุกหน้าของเว็บ (เพิ่มหน้าใหม่ = เพิ่มบรรทัดที่นี่) ───────────────
 const PAGES = [

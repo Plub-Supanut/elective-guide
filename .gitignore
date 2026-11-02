@@ -9,4 +9,5 @@ node_modules/
 
 # รายงานผล sync รอบล่าสุด (สร้างใหม่ทุกครั้ง — ไม่ต้อง commit)
 data/ssc-report.json
+data/audit-report.json
 

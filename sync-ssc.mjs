@@ -91,6 +91,7 @@ const norm = s => String(s == null ? '' : s).replace(/[\s\u00a0\u200b\u2063]+/g,
  */
 const tightThai = s => norm(s).replace(/([\u0E00-\u0E7F])\s+([\u0E00-\u0E7F])/g, '$1$2');
 const TH_MONTH = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const isoToday = new Date().toISOString().slice(0, 10);
 const thaiToday = (d = new Date()) => `${d.getDate()} ${TH_MONTH[d.getMonth()]} ${d.getFullYear() + 543}`;
 const isoToShortThai = iso => {
   const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -242,7 +243,7 @@ function renderOutside(m, stamp) {
   const policyRows = m.policies.map(d => linkRow(d)).join('\n');
   const c = m.contacts;
 
-  return `    <section class="ssc-section" id="ssc">
+  return `    <section class="ssc-section" id="ssc" data-verified="${isoToday}">
       <div class="container">
         <div class="section-header fade-up">
           <span class="section-badge">🎓</span>
@@ -564,7 +565,7 @@ ${m.central.pdf ? `              <li>
 ` : ''}            </ul>
           </article>`;
 
-  return `    <section class="ssc-section" id="ssc-inside">
+  return `    <section class="ssc-section" id="ssc-inside" data-verified="${isoToday}">
       <div class="container">
         <div class="section-header fade-up">
           <span class="section-badge">🎓</span>

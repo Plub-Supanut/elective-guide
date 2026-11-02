@@ -13,7 +13,7 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css?v=20261103a" />
+    <link rel="stylesheet" href="style.css?v=20261103b" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -164,6 +164,31 @@
         </a>
       </div>
     </section>
+
+    <!-- ตัวเลขชุดนี้ถูกเขียนทับโดย tools/audit-data.mjs — ห้ามแก้ด้วยมือ -->
+            <!-- COVERAGE:START -->
+    <section class="coverage-section" aria-labelledby="coverage-title">
+      <div class="container">
+        <h2 id="coverage-title" class="section-title fade-up">ข้อมูลที่เว็บมีตอนนี้</h2>
+        <p class="section-sub fade-up">
+          ตัวเลขชุดนี้คำนวณจากหน้าเว็บจริงทุกครั้งที่รัน <code>npm run audit</code> — ไม่ได้พิมพ์มือ
+        </p>
+        <ul class="coverage-grid fade-up">
+          <li><strong>117</strong><span>สถาบัน / ภาควิชา</span></li>
+          <li><strong>113</strong><span>มีเบอร์โทร</span></li>
+          <li><strong>102</strong><span>มีอีเมล</span></li>
+          <li><strong>24</strong><span>มีที่พัก</span></li>
+          <li><strong>0</strong><span>ระบุชั้นปี</span></li>
+          <li><strong>0</strong><span>มีวันที่ตรวจ</span></li>
+        </ul>
+        <p class="coverage-note fade-up">
+          ข้อมูล «ชั้นปีที่รับ» ของสถาบันยังไม่มีในต้นฉบับ (ฟอร์มไม่ได้เก็บช่องนี้) — ปุ่ม «ชั้นปี» จึงเน้นผลกับหน้า «ในคณะ» และ «นอกคณะ» ก่อน
+          · ตรวจล่าสุด 2 พ.ย. 2569 ·
+          <a href="https://github.com/Plub-Supanut/elective-guide/issues/new">เจอข้อมูลผิด? แจ้งได้</a>
+        </p>
+      </div>
+    </section>
+    <!-- COVERAGE:END -->
 
     <!-- ทางลัด -->
     <section class="home-links-section">

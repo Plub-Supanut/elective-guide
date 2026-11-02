@@ -120,11 +120,14 @@
 | `tools/ssc-source.mjs` | ~250 | ตัวอ่านหน้า Google Sites: ดึง HTML → โทเคน → วันที่ไทย/ไฟล์ Drive |
 | `data/ssc-state.json` | | สถานะข้อมูลรอบล่าสุด (ใช้เทียบว่าอะไรเปลี่ยน) |
 | `docs/ssc-history.md` | | ประวัติการเปลี่ยนข้อมูล — สร้างจาก `npm run sync` |
-| `tools/build-shell.mjs` | ~230 | เติม head / nav / footer ให้ตรงกันทั้ง 6 หน้า (มี `--check`) |
+| `tools/build-shell.mjs` | ~235 | เติม head / nav / footer ให้ตรงกันทั้ง 6 หน้า + ปุ่ม «ชั้นปีของฉัน» (มี `--check`) |
+| `tools/audit-data.mjs` | ~230 | ตรวจความครบ/ความสดของข้อมูล + เขียนแผงหน้าแรกและ `docs/data-status.md` |
+| `docs/data-status.md` | | รายงานสถานะข้อมูล — สร้างจาก `npm run audit` |
 | `tools/build-map.mjs` | ~110 | สร้าง `map-data.js` ใหม่ (ดูหัวข้อ «แผนที่» ด้านล่าง) |
 | `tools/map-geocode.json` | | แคชพิกัดจาก OpenStreetMap กันยิงซ้ำ |
 | `tools/chula-campus.json` | | อาคาร/ชั้นของภาควิชาจุฬาฯ (สกัดจากแบบฟอร์มต้นฉบับ) |
 | `.github/workflows/sync-ssc.yml` | | ให้ GitHub รัน sync วันละ 2 ครั้ง (08:00 / 20:00 เวลาไทย) |
+| `.github/workflows/audit.yml` | | ตรวจข้อมูลทุกวันจันทร์ 09:00 น. + เปิด issue เมื่อเจอปัญหา/ข้อมูลเก่า |
 | `QA-REPORT.md` | ~230 | บันทึกผลตรวจเว็บและข้อมูล 3 รอบ |
 | `package.json` | | คำสั่ง npm (ไม่มี dependency แล้ว) |
 
