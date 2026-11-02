@@ -2821,3 +2821,61 @@ a.stat-card { text-decoration: none; color: inherit; }
     font-size: 0.78rem;
   }
 }
+
+/* ============================
+   «ชั้นปีของฉัน» (เพิ่มเฟส 5)
+   ============================ */
+.year-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  height: 32px;
+  padding: 0 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(253, 250, 246, 0.9);
+}
+html.js .sticky-nav:not(.eg-scrolled) .year-switch { background: rgba(245, 239, 230, 0.16); border-color: rgba(245, 239, 230, 0.28); }
+html.js .sticky-nav:not(.eg-scrolled) .year-switch button { color: rgba(245, 239, 230, 0.85); }
+.year-switch-label { font-size: 0.72rem; color: var(--warm-gray); padding: 0 0.3rem; }
+.year-switch button {
+  min-height: 24px;
+  min-width: 38px;
+  padding: 0.15rem 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--warm-gray);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.year-switch button:hover { color: var(--charcoal); background: rgba(125, 155, 118, 0.14); }
+.year-switch button.is-on { background: var(--terra); color: #fff; }
+@media (max-width: 900px) { .year-switch-label { display: none; } }
+
+/* ข้อมูลของชั้นปีที่ไม่ได้เลือกจะจางลง (ยังอ่านได้ ไม่ได้ซ่อน) */
+html[data-year="4"] [data-years]:not([data-years~="4"]),
+html[data-year="5"] [data-years]:not([data-years~="5"]),
+html[data-year="6"] [data-years]:not([data-years~="6"]) { opacity: 0.45; }
+
+/* ของที่ตรงชั้นปีได้กรอบเน้น */
+html[data-year="4"] .ssc-card[data-years~="4"],
+html[data-year="5"] .ssc-card[data-years~="5"],
+html[data-year="6"] .ssc-card[data-years~="6"] { box-shadow: 0 0 0 2px rgba(125, 155, 118, 0.55); }
+
+/* ป้าย «เหลืออีก X วัน» / «ปิดรับแล้ว» จาก ui.js */
+.deadline-chip {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 0.55rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(125, 155, 118, 0.18);
+  color: var(--sage-dark);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.deadline-chip.is-closed { background: rgba(196, 113, 75, 0.16); color: var(--terra-ink); }

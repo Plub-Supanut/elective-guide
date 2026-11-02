@@ -159,6 +159,7 @@ function parseDocs(tokens) {
       meta: metaBits.join(' · '),
       fileDate,
       label: tk.label,
+      year: Number(((title || '').match(/ชั้นปีที่\s*(\d)/) || [])[1]) || 0,
     });
   });
   return docs;
@@ -186,7 +187,7 @@ function parseOutside(tokens) {
     if (unknown) date = 'ยังไม่ประกาศ';
     const label = round ? `SSCs ${year} · ${round}` : `SSCs ${year}`;
     if (schedule.some(s => s.label === label)) continue;
-    schedule.push({ label, date, muted: unknown });
+    schedule.push({ label, date, muted: unknown, year: Number(year) });
   }
 
   const docTokens = section(tokens, /หลักเกณฑ์การไปศึกษาและปฏิบัติงาน/);
@@ -222,7 +223,7 @@ function validateOutside(m, problems) {
 }
 
 function renderOutside(m, stamp) {
-  const linkRow = (o, icon = '') => `              <li>
+  const linkRow = (o, icon = '') => `              <li${o.year ? ` data-years="${o.year}"` : ''}>
                 <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">
                   <span class="ssc-link-title">${esc(icon)}${esc(o.title)}</span>
                   <span class="ssc-link-meta">${esc(o.meta)}${lockOf(o)}</span>
@@ -230,11 +231,11 @@ function renderOutside(m, stamp) {
               </li>`;
 
   const scheduleRows = m.schedule.map(s =>
-    `              <li><span class="lbl">${esc(s.label)}</span><span class="date${s.muted ? ' is-empty' : ''}">${esc(s.date)}</span></li>`
+    `              <li data-years="${s.year}"><span class="lbl">${esc(s.label)}</span><span class="date${s.muted ? ' is-empty' : ''}">${esc(s.date)}</span></li>`
   ).join('\n');
 
   const statusPills = m.status.map(s =>
-    `            <a class="ssc-status" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">ชั้นปี ${s.year}</a>`
+    `            <a class="ssc-status" data-years="${s.year}" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">ชั้นปี ${s.year}</a>`
   ).join('\n');
 
   const formRows = m.forms.map(d => linkRow(d, '📄 ')).join('\n');
@@ -481,7 +482,7 @@ function renderInside(m, stamp) {
     }
   }
 
-  const statusRows = rows.map(r => `              <tr>
+  const statusRows = rows.map(r => `              <tr data-years="${r.year}">
                 <th scope="row">ชั้นปีที่ ${r.year}${r.round ? ' · ' + esc(r.round) : ''}</th>
                 <td data-label="ช่องทางยื่น">${r.channel}</td>
                 <td data-label="ข้อมูลรายวิชา">${esc(r.sheets)}</td>
@@ -499,7 +500,7 @@ function renderInside(m, stamp) {
     if (g.interested) notes.push('เฉพาะนิสิตที่สนใจ');
     if (g.reason) notes.push(`เหตุผลที่เลื่อน: ${g.reason}`);
     if (grade.kind === 'closed') notes.push('ปิดรับแล้ว — ติดต่อฝ่ายวิชาการหากต้องการแก้ไข');
-    return `          <article class="ssc-card fade-up"${g.deadline ? ` data-deadline="${esc(g.deadline.iso)}"` : ''}>
+    return `          <article class="ssc-card fade-up" data-years="${g.year}"${g.deadline ? ` data-deadline="${esc(g.deadline.iso)}"` : ''}>
             <h3 class="ssc-title">ชั้นปีที่ ${g.year}${g.round ? ' · ' + esc(g.round) : ''}</h3>
             <p class="ssc-desc">${desc}</p>
             <ul class="ssc-links">

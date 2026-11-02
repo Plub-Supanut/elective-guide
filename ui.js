@@ -29,7 +29,7 @@
     fadeEls.forEach(el => io.observe(el));
   }
 
-  // ── 2) เงาใต้แถบเมนูตอนเลื่อน ────────────────────────────────
+  // ── 2) เงาใต้แถบเมนูตอนเลื่อน + วัดความสูงจริงของ nav ─────────
   const nav = document.getElementById('stickyNav');
   if (nav) {
     window.addEventListener('scroll', () => {
@@ -37,6 +37,16 @@
         ? '0 2px 24px rgba(44,40,36,0.14)'
         : '0 1px 12px rgba(44,40,36,0.06)';
     }, { passive: true });
+
+    // ความสูง nav เปลี่ยนตามเนื้อหา (ปุ่มชั้นปี/ฟอนต์/ความกว้างจอ)
+    // หน้าที่ยังไม่มี hero ใช้ค่านี้เว้นที่ให้เนื้อหา และแท็บหมวดใช้เป็น top ของ sticky
+    const syncNavHeight = () => {
+      const h = Math.round(nav.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty('--nav-h', h + 'px');
+    };
+    syncNavHeight();
+    window.addEventListener('resize', syncNavHeight, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncNavHeight);
   }
 
   // ── 3) anchor ภายในหน้า: เลื่อนแบบนุ่ม เว้นที่ให้แถบเมนู ──────
@@ -90,4 +100,84 @@
   tidyCardText();
   if (document.readyState !== 'complete') window.addEventListener('load', tidyCardText, { once: true });
   setTimeout(tidyCardText, 900);
+
+  // ── 6) «ชั้นปีของฉัน» ────────────────────────────────────────
+  // จำค่าไว้ใน localStorage และใส่ ?y= ใน URL เพื่อแชร์ลิงก์ให้เพื่อนชั้นปีเดียวกัน
+  // ตัวเว็บใช้ html[data-year] เป็นสวิตช์ให้ CSS เน้น/หรี่ข้อมูลตามชั้นปี
+  const YEAR_KEY = 'eg:year';
+  const yearSwitch = document.getElementById('yearSwitch');
+  const validYear = y => /^[456]$/.test(String(y || ''));
+
+  const paintYear = (year) => {
+    const root = document.documentElement;
+    if (validYear(year)) root.dataset.year = String(year);
+    else delete root.dataset.year;
+
+    if (yearSwitch) {
+      yearSwitch.querySelectorAll('[data-year]').forEach(btn => {
+        const on = String(year) === btn.dataset.year;
+        btn.classList.toggle('is-on', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+  };
+
+  const setYear = (year, { remember = true, updateUrl = true } = {}) => {
+    paintYear(year);
+    if (remember) {
+      try {
+        if (validYear(year)) localStorage.setItem(YEAR_KEY, String(year));
+        else localStorage.removeItem(YEAR_KEY);
+      } catch { /* โหมดส่วนตัวบางเบราว์เซอร์เขียนไม่ได้ — ไม่เป็นไร */ }
+    }
+    if (updateUrl) {
+      const p = new URLSearchParams(location.search);
+      if (validYear(year)) p.set('y', String(year)); else p.delete('y');
+      const qs = p.toString();
+      history.replaceState(null, '', (qs ? `${location.pathname}?${qs}` : location.pathname) + location.hash);
+    }
+  };
+
+  const urlYear = new URLSearchParams(location.search).get('y');
+  let savedYear = null;
+  try { savedYear = localStorage.getItem(YEAR_KEY); } catch { /* ignore */ }
+  const initialYear = validYear(urlYear) ? urlYear : (validYear(savedYear) ? savedYear : null);
+  paintYear(initialYear);
+
+  if (yearSwitch) {
+    yearSwitch.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-year]');
+      if (!btn) return;
+      const next = btn.dataset.year === document.documentElement.dataset.year ? null : btn.dataset.year;
+      setYear(next);
+    });
+  }
+
+  // ── 7) สถานะวันปิดรับแบบสด (ไม่ต้องรอ sync รอบถัดไป) ────────
+  // ใช้เฉพาะการ์ดที่มี data-deadline — ภายใน 14 วันจะขึ้น «เหลืออีก X วัน», เลยกำหนด = «ปิดรับแล้ว»
+  const deadlines = [...document.querySelectorAll('[data-deadline]')];
+  if (deadlines.length) {
+    const paintDeadlines = () => {
+      const now = Date.now();
+      deadlines.forEach(el => {
+        const t = Date.parse(el.dataset.deadline);
+        if (Number.isNaN(t)) return;
+        const days = Math.ceil((t - now) / 86400000);
+        let text = '';
+        if (days < 0) text = 'ปิดรับแล้ว';
+        else if (days <= 14) text = days === 0 ? 'ปิดรับวันนี้' : `เหลืออีก ${days} วัน`;
+        let chip = el.querySelector('.deadline-chip');
+        if (!text) { if (chip) chip.remove(); return; }
+        if (!chip) {
+          chip = document.createElement('span');
+          chip.className = 'deadline-chip';
+          el.appendChild(chip);
+        }
+        chip.textContent = text;
+        chip.classList.toggle('is-closed', days < 0);
+      });
+    };
+    paintDeadlines();
+    setInterval(paintDeadlines, 6 * 60 * 60 * 1000);   // รีเฟรชทุก 6 ชั่วโมงถ้าเปิดหน้านาน
+  }
 })();

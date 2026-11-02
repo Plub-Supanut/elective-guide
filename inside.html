@@ -13,7 +13,7 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css?v=20261102b" />
+    <link rel="stylesheet" href="style.css?v=20261103a" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -30,6 +30,12 @@
           <a href="inside.html" aria-current="page">ในคณะ</a>
           <a href="outside.html">นอกคณะ</a>
           <a href="tips.html">คำแนะนำ</a>
+          <div class="year-switch" id="yearSwitch" role="group" aria-label="ชั้นปีของฉัน">
+            <span class="year-switch-label">ชั้นปี</span>
+            <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ป.4</button>
+            <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ป.5</button>
+            <button type="button" data-year="6" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 6">ป.6</button>
+          </div>
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer" class="nav-github" aria-label="GitHub Repository">
             <svg height="20" viewBox="0 0 16 16" width="20" aria-hidden="true" fill="currentColor">
               <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.46-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
@@ -90,25 +96,25 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr data-years="4">
                 <th scope="row">ชั้นปีที่ 4</th>
                 <td data-label="ช่องทางยื่น"><span class="ys-none">ยังไม่ประกาศ</span></td>
                 <td data-label="ข้อมูลรายวิชา">2 ชีต (รอบแรก · คงเหลือ)</td>
                 <td data-label="สถานะ"><span class="ys-badge ys-wait">🕓 รอประกาศ</span></td>
               </tr>
-              <tr>
+              <tr data-years="5">
                 <th scope="row">ชั้นปีที่ 5</th>
                 <td data-label="ช่องทางยื่น"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfmsZ8HtTrMCI1x-8nLI4A7VdoQUl5MvzrS2sUpbyx4yyxk3w/viewform" target="_blank" rel="noopener noreferrer">Google Form</a> · 🔒 ต้องล็อกอิน CU account</td>
                 <td data-label="ข้อมูลรายวิชา">2 ชีต (รอบแรก · คงเหลือ)</td>
                 <td data-label="สถานะ"><span class="ys-badge ys-open">🟢 เปิดถึง 6 พ.ย. 2569</span></td>
               </tr>
-              <tr>
+              <tr data-years="6">
                 <th scope="row">ชั้นปีที่ 6 · R0 (รอบ 2)</th>
                 <td data-label="ช่องทางยื่น"><a href="https://portal.md.chula.ac.th/SSCs6R0request2" target="_blank" rel="noopener noreferrer">SSCs Application</a> · 🔒 ต้องล็อกอิน CU account</td>
                 <td data-label="ข้อมูลรายวิชา">2 ชีต (รอบแรก · คงเหลือ)</td>
                 <td data-label="สถานะ"><span class="ys-badge ys-closed">🔴 ปิดแล้ว 4 ก.พ. 2569</span></td>
               </tr>
-              <tr>
+              <tr data-years="6">
                 <th scope="row">ชั้นปีที่ 6 · R4-R6</th>
                 <td data-label="ช่องทางยื่น"><a href="https://portal.md.chula.ac.th/SSCs6request" target="_blank" rel="noopener noreferrer">SSCs Application</a> · 🔒 ต้องล็อกอิน CU account</td>
                 <td data-label="ข้อมูลรายวิชา">2 ชีต (รอบแรก · คงเหลือ)</td>
@@ -123,7 +129,7 @@
         </div>
 
         <div class="ssc-grid">
-          <article class="ssc-card fade-up" data-deadline="2026-11-06T20:00:00+07:00">
+          <article class="ssc-card fade-up" data-years="5" data-deadline="2026-11-06T20:00:00+07:00">
             <h3 class="ssc-title">ชั้นปีที่ 5</h3>
             <p class="ssc-desc">ภายในวันศุกร์ที่ 6 พฤศจิกายน 2569 เวลา 20.00 น.</p>
             <ul class="ssc-links">
@@ -135,7 +141,7 @@
               </li>
             </ul>
           </article>
-          <article class="ssc-card fade-up" data-deadline="2026-02-04T20:00:00+07:00">
+          <article class="ssc-card fade-up" data-years="6" data-deadline="2026-02-04T20:00:00+07:00">
             <h3 class="ssc-title">ชั้นปีที่ 6 · R0 (รอบ 2)</h3>
             <p class="ssc-desc">ภายในวันพุธที่ 4 กุมภาพันธ์ 2569 เวลา 20.00 น.</p>
             <ul class="ssc-links">
@@ -148,7 +154,7 @@
             </ul>
             <p class="ssc-note">เฉพาะนิสิตที่สนใจ · ปิดรับแล้ว — ติดต่อฝ่ายวิชาการหากต้องการแก้ไข</p>
           </article>
-          <article class="ssc-card fade-up" data-deadline="2026-07-27T20:00:00+07:00">
+          <article class="ssc-card fade-up" data-years="6" data-deadline="2026-07-27T20:00:00+07:00">
             <h3 class="ssc-title">ชั้นปีที่ 6 · R4-R6</h3>
             <p class="ssc-desc"><strong>เลื่อน!!</strong> ภายในวันจันทร์ที่ 27 กรกฎาคม 2569 เวลา 20.00 น.</p>
             <ul class="ssc-links">
