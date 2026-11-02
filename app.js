@@ -1,34 +1,11 @@
 /* ============================================================
    ELECTIVE GUIDE — app.js
-   Search, filter, animations, interactions
+   ค้นหา / ตัวกรอง / แท็บหมวด / การกาง-หุบการ์ด
+   (โหลดเฉพาะหน้า institutions.html)
+
+   หมายเหตุ: fade-up, เงาแถบเมนู, anchor นุ่ม, ปุ่มกลับขึ้นบน และ tidy ข้อความ
+   ย้ายไปอยู่ ui.js แล้ว เพราะใช้ร่วมทุกหน้า — ไฟล์นี้เหลือเฉพาะของหน้าสถาบัน
    ============================================================ */
-
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-// ── Intersection Observer: fade-up on scroll ──────────────────
-const fadeEls = document.querySelectorAll('.fade-up');
-if (reduceMotion) {
-  fadeEls.forEach(el => el.classList.add('visible'));
-} else {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        const delay = Math.min(i * 40, 200);
-        setTimeout(() => e.target.classList.add('visible'), delay);
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  fadeEls.forEach(el => io.observe(el));
-}
-
-// ── Sticky nav shadow on scroll ──────────────────────────────
-const nav = document.getElementById('stickyNav');
-window.addEventListener('scroll', () => {
-  nav.style.boxShadow = window.scrollY > 20
-    ? '0 2px 24px rgba(44,40,36,0.14)'
-    : '0 1px 12px rgba(44,40,36,0.06)';
-}, { passive: true });
 
 // ── Build a flat index of all cards for search ───────────────
 // (Built BEFORE the expand hints are appended, so hint text never
@@ -246,6 +223,9 @@ function runSearch() {
   const results = document.getElementById('searchResults');
   const q = searchInput.value.trim().toLowerCase();
 
+  // การ์ดทุกใบต้องหุบไว้เสมอเมื่อผลลัพธ์เปลี่ยน
+  collapseAllCards();
+
   // ไม่มีคำค้นและไม่มีตัวกรอง → กลับไปแสดงรายชื่อเต็มตามปกติ
   if (q === '' && !anyFilter()) {
     results.classList.remove('active');
@@ -332,14 +312,20 @@ function runSearch() {
     clone.classList.remove('fade-up', 'visible');
     clone.classList.remove('expanded');
     clone.setAttribute('aria-expanded', 'false');
-    const hint = clone.querySelector('.expand-hint');
-    if (hint) hint.textContent = '▾ ดูรายละเอียดเพิ่มเติม';
     const det = clone.querySelector('.card-detail');
     if (det) { det.style.maxHeight = '0'; det.style.opacity = '0'; }
     if (q) highlightCard(clone, q);
     if (q) highlightSynonym(clone, q, qNorm);
-    // คำค้นไปตรงกับข้อความที่ซ่อนอยู่ใน «ดูรายละเอียดเพิ่มเติม» → กางให้เห็นเลย
-    if (q && det && det.textContent.toLowerCase().includes(q)) setExpanded(clone, true);
+    // คำค้นไปตรงกับข้อความที่ซ่อนอยู่ใน «ดูรายละเอียดเพิ่มเติม» →
+    // ห้ามกางให้เอง (การ์ดต้องหุบไว้จนผู้ใช้กด) แค่บอกว่าตรงกับส่วนไหน
+    const hiddenLabel = hiddenMatchLabel(clone, q);
+    const hint = clone.querySelector('.expand-hint');
+    if (hint) {
+      hint.textContent = hiddenLabel
+        ? `▾ ตรงใน «${hiddenLabel}» · กดเพื่อดู`
+        : '▾ ดูรายละเอียดเพิ่มเติม';
+      hint.classList.toggle('has-match', !!hiddenLabel);
+    }
     clone.classList.add('result-clone');
     results.appendChild(clone);
   });
@@ -399,6 +385,37 @@ function highlightCard(card, q) {
   });
 }
 
+// ถ้าคำค้นไปตรงกับข้อความที่ซ่อนอยู่ใน «ดูรายละเอียดเพิ่มเติม»
+// ระบบต้อง «ไม่กางการ์ดเอง» (การ์ดหุบไว้จนกว่าผู้ใช้จะกดเอง)
+// หน้าที่ของฟังก์ชันนี้คือบอกว่าตรงกับ «ส่วนไหน» เพื่อเอาไปแสดงบนแถวล่างของการ์ด
+function hiddenMatchLabel(card, q) {
+  if (!q) return '';
+  const det = card.querySelector('.card-detail');
+  if (!det) return '';
+  if (!det.textContent.toLowerCase().includes(q)) return '';
+
+  const holders = Array.from(det.querySelectorAll('li, p, h4, .special-box, .detail-group'));
+  const hit = holders.find(h => h.textContent.toLowerCase().includes(q));
+  const scope = hit ? (hit.closest('.detail-group, .special-box') || det) : det;
+  const heading = scope.querySelector('h4') || det.querySelector('h4');
+  const label = heading ? heading.textContent : 'รายละเอียดเพิ่มเติม';
+
+  // ตัดอีโมจิ/เครื่องหมายนำหน้าออกให้เหลือแต่ชื่อส่วน เช่น «🏠 รายละเอียดที่พัก» → «รายละเอียดที่พัก»
+  return label
+    .replace(/^[^\p{L}\p{N}]+/u, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// หุบการ์ดทุกใบ (เว้นใบที่ระบุ) — เรียกทุกครั้งที่ผลค้นหาเปลี่ยน และตอนกด Esc
+function collapseAllCards(except) {
+  document.querySelectorAll('.card.expanded').forEach(card => {
+    if (except && card === except) return;
+    if (!card.querySelector('.card-detail')) return;
+    setExpanded(card, false);
+  });
+}
+
 // ── Card detail expand/collapse ───────────────────────────────
 function setExpanded(card, open) {
   const detail = card.querySelector('.card-detail');
@@ -409,6 +426,8 @@ function setExpanded(card, open) {
   card.setAttribute('aria-expanded', open ? 'true' : 'false');
 
   if (open) {
+    // เปิดได้ทีละใบ: หุบใบที่เปิดค้างไว้ก่อน (หน้าไม่ยาว และผู้ใช้ไม่หลงว่ากางอะไรไว้)
+    collapseAllCards(card);
     detail.style.overflow = 'hidden';
     detail.style.transition = 'max-height 0.4s ease, opacity 0.4s ease';
     detail.style.maxHeight = '0';
@@ -445,6 +464,11 @@ document.addEventListener('keydown', (e) => {
   if (!card.querySelector('.card-detail')) return;
   e.preventDefault();
   setExpanded(card, !card.classList.contains('expanded'));
+});
+
+// Esc = หุบการ์ดที่เปิดอยู่ทั้งหมด
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') collapseAllCards();
 });
 
 // Initialize: collapse all card-details, add hints + keyboard affordances.
@@ -521,34 +545,54 @@ if (document.fonts && document.fonts.ready) {
 
 equalizeCardRows();
 
-// ── Smooth anchor scrolling with offset for sticky nav ────────
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', (e) => {
-    const sel = link.getAttribute('href');
-    if (!sel || sel === '#') return;
-    const target = document.querySelector(sel);
-    if (!target) return;
-    e.preventDefault();
-    // If a search/filter is hiding the list, clear it first so the
-    // anchor never drops the reader into an empty section.
-    if (mainList.hidden) clearAll();
-    const offset = 78;   // ตรงกับ html { scroll-padding-top: 78px } ให้ลงจอดเท่ากันทุกเส้นทาง
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' });
-  });
-});
+// ── Smooth anchor scrolling / back-to-top ─────────────────────
+// ย้ายไป ui.js แล้ว เพื่อให้ทุกหน้าได้พฤติกรรมเดียวกัน
 
-// ── Back to top ───────────────────────────────────────────────
-const toTop = document.createElement('button');
-toTop.type = 'button';
-toTop.className = 'to-top';
-toTop.setAttribute('aria-label', 'กลับขึ้นด้านบน');
-toTop.textContent = '↑';
-toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
-document.body.appendChild(toTop);
-window.addEventListener('scroll', () => {
-  toTop.classList.toggle('visible', window.scrollY > 800);
-}, { passive: true });
+// ── แท็บหมวดสถาบัน (?c=slug) ─────────────────────────────────
+// หน้าเดียวมีการ์ด 117 ใบ ถ้าปล่อยยาวจะกลายเป็น long-strip
+// แท็บนี้ทำให้ดูทีละหมวดได้ และเก็บสถานะใน URL เพื่อแชร์ลิงก์ได้
+const catBar = document.getElementById('catBar');
+const catSections = Array.from(document.querySelectorAll('main .inst-section[data-cat]'));
+
+function applyCat(slug) {
+  const known = new Set(catSections.map(s => s.dataset.cat));
+  const active = known.has(slug) ? slug : 'all';
+
+  catSections.forEach(s => { s.hidden = active !== 'all' && s.dataset.cat !== active; });
+  if (catBar) {
+    catBar.querySelectorAll('[data-cat-link]').forEach(a => {
+      const on = a.dataset.catLink === active;
+      a.classList.toggle('active', on);
+      a.setAttribute('aria-current', on ? 'true' : 'false');
+    });
+  }
+
+  const p = new URLSearchParams(location.search);
+  if (active === 'all') p.delete('c'); else p.set('c', active);
+  const qs = p.toString();
+  history.replaceState(null, '', (qs ? `${location.pathname}?${qs}` : location.pathname) + location.hash);
+
+  equalizeCardRows();
+  return active;
+}
+
+if (catBar && catSections.length) {
+  catBar.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-cat-link]');
+    if (!link) return;
+    e.preventDefault();
+    const active = applyCat(link.dataset.catLink);
+    // ถ้ามีผลค้นหาค้างอยู่ ให้กลับเป็นรายการเต็มก่อน ไม่งั้นจะเห็นแต่ผลค้นหา
+    if (searchInput.value.trim() || anyFilter()) clearAll();
+    if (active !== 'all') {
+      const sec = catSections.find(s => s.dataset.cat === active);
+      if (sec) {
+        const top = sec.getBoundingClientRect().top + window.scrollY - 150;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    }
+  });
+}
 
 // ── เริ่มต้นจาก URL (ลิงก์ที่แชร์กันมาเปิดแล้วได้ตัวกรองเดิม) ───
 (function initFromURL() {
@@ -578,23 +622,9 @@ window.addEventListener('scroll', () => {
   if (q || anyFilter()) runSearch();
 })();
 
-// ทำความสะอาดข้อความหัวการ์ด: ตัด \n/ช่องว่างหัวท้ายใน "text node" ตรง ๆ ของ element
-// หัวการ์ดมี <span class="code">101</span> ข้างใน จึงห้ามแตะ element ลูก และต้องคงช่องว่างนำหน้า
-// (ไม่งั้นจะกลายเป็น "101ม.ขอนแก่น" ติดกัน) — ช่วย DOM/การคัดลอก/screen reader
-const tidyCardText = () => {
-  document.querySelectorAll('.card-title, .card .card-sub, .inst-name, .map-near-pick, .map-card-name').forEach(el => {
-    el.childNodes.forEach(n => {
-      if (n.nodeType !== 3) return;
-      const raw = n.nodeValue;
-      const hasPrevEl = n.previousSibling && n.previousSibling.nodeType === 1;
-      let t = raw.replace(/[\s\u00a0]+/g, ' ');
-      const leading = hasPrevEl && t.replace(/\u00a0/g, ' ').trim() !== '';
-      const keepNbsp = leading && /^\u00a0/.test(t);
-      t = t.replace(/\u00a0/g, ' ').trim();
-      n.nodeValue = (leading && t !== '' ? (keepNbsp ? '\u00a0' : ' ') : '') + t;
-    });
-  });
-};
-tidyCardText();
-if (document.readyState !== 'complete') window.addEventListener('load', tidyCardText, { once: true });
-setTimeout(tidyCardText, 900);
+// เริ่มจาก ?c= (แท็บหมวดที่แชร์มากัน เช่น institutions.html?c=cpird)
+applyCat(new URLSearchParams(location.search).get('c') || 'all');
+
+// ── ทำความสะอาดข้อความหัวการ์ด ────────────────────────────────
+// ย้ายไป ui.js แล้ว (ใช้ร่วมทุกหน้า)
+

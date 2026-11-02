@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <!-- SHELL:HEAD:START -->
+    <meta charset="UTF-8" />
+    <script>document.documentElement.classList.add('js');</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แผนที่สถาบัน · คู่มือ Elective</title>
+    <meta name="description" content="แผนที่ประเทศไทยแบบกดได้ แสดงที่ตั้งสถาบันที่รับนิสิตแพทย์จุฬาฯ ไป elective แยกตามภาคและจังหวัด" />
+    <!-- ฟอนต์ self-host (Thai + Latin subset) — ไม่พึ่ง Google Fonts แล้ว -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/lora-700-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="fonts/noto-serif-thai-700-thai.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
+    <link rel="stylesheet" href="fonts/fonts.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="style.css?v=20261102b" />
+    <link rel="stylesheet" href="premium.css" />
+    <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
+    <!-- SHELL:HEAD:END -->
+  </head>
+  <body class="no-hero">
+    <!-- SHELL:NAV:START -->
+    <nav class="sticky-nav" id="stickyNav">
+      <div class="nav-inner">
+        <a class="nav-logo" href="index.html">Elective Guide</a>
+        <div class="nav-links">
+          <a href="index.html" class="nav-primary">หน้าแรก</a>
+          <a href="institutions.html" class="nav-primary">สถาบัน</a>
+          <a href="map.html" class="nav-primary" aria-current="page">แผนที่</a>
+          <a href="inside.html">ในคณะ</a>
+          <a href="outside.html">นอกคณะ</a>
+          <a href="tips.html">คำแนะนำ</a>
+          <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer" class="nav-github" aria-label="GitHub Repository">
+            <svg height="20" viewBox="0 0 16 16" width="20" aria-hidden="true" fill="currentColor">
+              <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.46-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+            </svg>
+          </a>
+          <button type="button" class="nav-more" id="navMoreBtn" aria-expanded="false" aria-controls="navMoreMenu" aria-label="เมนูเพิ่มเติม">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+          </button>
+        </div>
+        <div class="nav-more-menu" id="navMoreMenu" hidden>
+          <a href="index.html">หน้าแรก</a>
+          <a href="institutions.html">สถาบัน</a>
+          <a href="map.html">แผนที่</a>
+          <a href="inside.html">ในคณะ</a>
+          <a href="outside.html">นอกคณะ</a>
+          <a href="tips.html">คำแนะนำ</a>
+          <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </nav>
+    <!-- SHELL:NAV:END -->
+
+    <header class="page-head">
+      <div class="container">
+        <p class="page-eyebrow">เลือกที่ไปให้เห็นบนแผนที่</p>
+        <h1 class="page-title">แผนที่สถาบัน</h1>
+        <p class="page-sub">
+          หมุดสีตามภาค · ชี้ที่จุดเพื่อดูข้อมูลย่อ · คลิกเพื่อซูมเข้าหาสถาบันนั้น
+        </p>
+      </div>
+    </header>
+
+    <!-- MAP — แผนที่สถาบัน -->
+    <section class="map-section" id="map" aria-labelledby="map-heading">
+      <div class="container">
+        <h2 class="sr-only" id="map-heading">แผนที่สถาบันทั้งหมด</h2>
+
+        <!-- ── แถบ toolbar ใหม่ ── -->
+        <div class="map-toolbar">
+          <!-- Search-on-map -->
+          <div class="map-search-wrap" role="search" aria-label="ค้นหาสถาบันบนแผนที่">
+            <label for="map-search-input" class="sr-only">ค้นหาสถาบัน</label>
+            <span class="map-search-icon" aria-hidden="true">🔍</span>
+            <input id="map-search-input" type="search" class="map-search-input"
+              placeholder="ค้นหาสถาบัน…" autocomplete="off" spellcheck="false" />
+            <div id="map-search-results" class="map-search-results" role="listbox" hidden></div>
+          </div>
+
+          <!-- Layer toggles -->
+          <div class="map-layers" role="group" aria-label="กรองที่พัก">
+            <button type="button" class="map-layer-btn" data-layer="dorm" aria-pressed="false">
+              🏠 มีที่พัก
+            </button>
+            <button type="button" class="map-layer-btn" data-layer="free" aria-pressed="false">
+              ✨ ที่พักฟรี
+            </button>
+          </div>
+
+          <!-- Bangkok Explode toggle -->
+          <button type="button" id="map-bkk-explode-toggle" class="map-bkk-btn" aria-pressed="false" title="ซูมเข้ากรุงเทพฯ และเปิดรายชื่อสถาบันทั้งหมดอย่างชัดเจน">
+            🏙️ เจาะลึก กทม.
+          </button>
+
+          <!-- Compare toggle -->
+          <button type="button" id="map-compare-toggle" class="map-compare-btn" aria-pressed="false">
+            ⚖️ เปรียบเทียบ
+          </button>
+        </div>
+
+        <!-- ── ใกล้บ้านฉัน ── -->
+        <div class="map-home-row">
+          <label for="map-home-prov" class="map-home-label">🏡 ใกล้บ้านฉัน</label>
+          <div class="map-home-select-wrap">
+            <select id="map-home-prov" class="map-home-select">
+              <option value="">— เลือกจังหวัดบ้านเกิด —</option>
+            </select>
+            <button type="button" id="map-home-clear" class="map-home-clear" aria-label="ล้าง">✕</button>
+          </div>
+        </div>
+
+        <div class="map-wrap">
+          <div class="map-paper">
+            <div id="elective-map">
+              <div class="map-skeleton" aria-hidden="true"></div>
+              <p class="map-fallback">แผนที่ต้องเปิด JavaScript · ดูรายชื่อสถาบันทั้งหมดได้ที่ส่วน «สถาบัน» ด้านล่าง</p>
+            </div>
+            <!-- ปุ่มควบคุมการซูมแผนที่ -->
+            <div class="map-controls" role="group" aria-label="เครื่องมือซูมแผนที่">
+              <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="ซูมเข้า" title="ซูมเข้า">+</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="ซูมออก" title="ซูมออก">−</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-reset" aria-label="รีเซ็ตมุมมอง" title="รีเซ็ต">⟲</button>
+            </div>
+            <!-- แถบแจ้งเตือนเมื่อเลื่อนเมาส์ผ่านแผนที่โดยไม่กด Ctrl -->
+            <div class="map-scroll-hint" id="map-scroll-hint" aria-hidden="true">
+              กด <strong>Ctrl + เลื่อนลูกกลิ้งเมาส์</strong> เพื่อซูม หรือใช้ปุ่ม + / −
+            </div>
+          </div>
+          <div class="map-side">
+            <div class="map-card" id="map-card" hidden></div>
+            <!-- แผงสำรวจสถาบันในกรุงเทพฯ (แสดงเมื่อเลือกกรุงเทพฯ หรือเปิดโหมดเจาะลึก กทม.) -->
+            <div id="map-bkk-explorer" class="map-bkk-explorer" hidden>
+              <div class="bkk-exp-header">
+                <span class="bkk-exp-title">📍 สถาบันในกรุงเทพฯ (51 แห่ง)</span>
+                <button type="button" class="bkk-exp-close" id="map-bkk-exp-close" aria-label="ปิด">✕</button>
+              </div>
+              <div class="bkk-exp-search">
+                <input type="search" id="map-bkk-search" class="bkk-search-input" placeholder="🔍 ค้นหาสถาบันใน กทม. เช่น รามา, ศิริราช..." aria-label="ค้นหาสถาบันในกรุงเทพฯ">
+              </div>
+              <div class="bkk-exp-tabs" role="tablist">
+                <button type="button" class="bkk-tab is-active" data-group="all">ทั้งหมด (51)</button>
+                <button type="button" class="bkk-tab" data-group="chula">จุฬาฯ (25)</button>
+                <button type="button" class="bkk-tab" data-group="uni">มหาลัย (7)</button>
+                <button type="button" class="bkk-tab" data-group="general">รพ.ทั่วไป (11)</button>
+                <button type="button" class="bkk-tab" data-group="special">เฉพาะทาง (8)</button>
+              </div>
+              <div class="bkk-exp-list" id="map-bkk-exp-list"></div>
+            </div>
+            <ul class="map-legend" id="map-legend"></ul>
+            <div class="map-facts" id="map-facts"></div>
+            <div class="map-near" id="map-near"></div>
+          </div>
+        </div>
+
+        <!-- ── Compare panel ── -->
+        <div id="map-compare-panel" class="map-compare-panel" hidden>
+          <div class="cmp-header">
+            <h3 class="cmp-title">⚖️ เปรียบเทียบสถาบัน</h3>
+            <p class="cmp-hint">คลิกหมุดบนแผนที่เพื่อเพิ่มสถาบันเข้าเปรียบ</p>
+          </div>
+          <div class="cmp-cols"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- โหลดข้อมูลแผนที่เมื่อจำเป็น (ประหยัด ~180 KB) -->
+    <script>
+    (() => {
+      let started = false;
+      const load = () => {
+        if (started) return;
+        started = true;
+        const add = (src, onload) => {
+          const s = document.createElement('script');
+          s.src = src;
+          s.async = false;                 // คงลำดับ data → drive → map
+          if (onload) s.addEventListener('load', onload, { once: true });
+          document.body.appendChild(s);
+        };
+        const dropSkeleton = () => document.querySelector('.map-skeleton')?.remove();
+        add('map-data.js');
+        add('map-drive.js');
+        add('map.js', dropSkeleton);
+        setTimeout(() => {
+          const sk = document.querySelector('.map-skeleton');
+          if (sk && !document.querySelector('#elective-map .map-svg')) {
+            document.getElementById('elective-map').innerHTML =
+              '<p class="map-fallback map-error">โหลดแผนที่ไม่สำเร็จ · ดูรายชื่อสถาบันได้ที่ส่วน «สถาบัน» ด้านล่าง</p>';
+          }
+        }, 6000);
+      };
+      const target = document.getElementById('map');
+      if ('IntersectionObserver' in window && target) {
+        const io = new IntersectionObserver((es) => {
+          if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+        }, { rootMargin: '900px 0px' });
+        io.observe(target);
+      } else load();
+      document.querySelectorAll('a[href="#map"]').forEach((a) => a.addEventListener('click', load, { once: true }));
+    })();
+    </script>
+
+    <!-- SHELL:FOOTER:START -->
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-title">
+          คู่มือ Elective · นิสิตแพทย์จุฬาลงกรณ์มหาวิทยาลัย
+        </p>
+        <p class="footer-links">
+          <a href="index.html">หน้าแรก</a>
+          <span aria-hidden="true">·</span>
+          <a href="institutions.html">สถาบัน</a>
+          <span aria-hidden="true">·</span>
+          <a href="map.html">แผนที่</a>
+          <span aria-hidden="true">·</span>
+          <a href="inside.html">ในคณะ</a>
+          <span aria-hidden="true">·</span>
+          <a href="outside.html">นอกคณะ</a>
+          <span aria-hidden="true">·</span>
+          <a href="tips.html">คำแนะนำ</a>
+        </p>
+        <p class="footer-sub">
+          ข้อมูลจากปีการศึกษา 2565–2567 ถ้าจะไปจริง เช็คกับสถาบันอีกครั้งนะ
+        </p>
+        <p class="footer-sub footer-report">
+          เจอข้อมูลผิด หรือมีที่ที่ยังไม่มีในเว็บ?
+          <a href="https://github.com/Plub-Supanut/elective-guide/issues/new">แจ้งได้ที่นี่</a>
+        </p>
+        <p class="footer-sub" style="margin-top: 0.4rem; font-size: 0.85em; opacity: 0.8;">
+          Built with Claude ✨
+        </p>
+      </div>
+    </footer>
+    <!-- SHELL:FOOTER:END -->
+    <!-- SHELL:SCRIPTS:START -->
+    <script src="ui.js"></script>
+    <script src="icons.js"></script>
+    <script src="flair.js"></script>
+    <script src="premium.js"></script>
+    <!-- SHELL:SCRIPTS:END -->
+  </body>
+</html>

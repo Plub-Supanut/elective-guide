@@ -14,6 +14,7 @@
   const overlay = hero.querySelector('.hero-overlay');
   hero.insertBefore(canvas, overlay || hero.firstChild);
   const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) return;        // เบราว์เซอร์ที่ให้ canvas 2D ไม่ได้ → ปล่อยฉากหลังว่าง ไม่ให้สคริปต์อื่นพังตาม
   let running = true;
 
   // สุ่มแบบกำหนด seed ได้ → รูปแบบเดิมทุกครั้งที่เปิด

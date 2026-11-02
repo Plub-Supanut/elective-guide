@@ -10,7 +10,7 @@
   const host = document.getElementById('elective-map');
   const paper = document.querySelector('.map-paper');
   const M = window.ELECTIVE_MAP;
-  if (!host || !M || !M.pins) return;
+  if (!host || !paper || !M || !M.pins) return;
 
   const NS = 'http://www.w3.org/2000/svg';
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -75,7 +75,11 @@
   });
   const jumpToCard = (name) => {
     const el = findCard(name);
-    if (!el) return;
+    if (!el) {
+      // แผนที่อยู่คนละหน้ากับรายการสถาบันแล้ว → พาไปที่หน้าสถาบันพร้อมคำค้นของสถาบันนั้น
+      location.href = 'institutions.html?q=' + encodeURIComponent(name);
+      return;
+    }
     const hidden = el.offsetParent === null;
     if (hidden) document.getElementById('filterClear')?.click();
     const flash = () => {
@@ -874,8 +878,14 @@
 
   function toggleRegion(r) {
     const chip = document.querySelector(`.filter-btn[data-filter="region:${r}"]`);
-    const isCurrentlyActive = chip && chip.getAttribute('aria-pressed') === 'true';
-    if (chip) chip.click();
+    if (!chip) {
+      // หน้านี้ไม่มีตัวกรองของรายการสถาบัน (แผนที่แยกหน้าแล้ว) →
+      // พาไปที่หน้าสถาบันพร้อมตัวกรองภาคนั้นเลย ดีกว่ากดแล้วเงียบ
+      location.href = 'institutions.html?f=' + encodeURIComponent('region:' + r);
+      return;
+    }
+    const isCurrentlyActive = chip.getAttribute('aria-pressed') === 'true';
+    chip.click();
 
     if (!isCurrentlyActive) {
       // เพิ่งเลือกภาคนี้

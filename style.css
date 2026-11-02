@@ -928,6 +928,13 @@ h1, h2, h3, .section-title, .ssc-title, .tip-card h3 { text-wrap: balance; }
 .card:hover .expand-hint { background: rgba(125, 155, 118, 0.14); }
 .card.expanded .expand-hint { background: transparent; border-top-color: transparent; }
 
+/* คำค้นอยู่ในส่วนที่ซ่อนอยู่: บอกให้รู้ว่าตรงกับส่วนไหน — แต่ «ไม่กางการ์ดให้เอง» */
+.expand-hint.has-match {
+  background: rgba(196, 113, 75, 0.12);
+  color: var(--terra-ink);
+  font-weight: 600;
+}
+
 /* รายละเอียดที่ปิดอยู่ต้องไม่เหลือ padding ค้าง (ของเดิมเหลือ 32px ทำให้เกิดช่องว่าง) */
 .card-detail {
   transition: max-height 0.4s ease, opacity 0.4s ease,
@@ -937,6 +944,15 @@ h1, h2, h3, .section-title, .ssc-title, .tip-card h3 { text-wrap: balance; }
   padding-top: 0;
   padding-bottom: 0;
   border-top-color: transparent;
+}
+
+/* การ์ดต้องหุบตั้งแต่เฟรมแรก ก่อนที่ app.js จะได้ทำงาน
+   เดิมการยุบอาศัย inline style จาก JS อย่างเดียว ทำให้ตอนโหลดหน้าครั้งแรก
+   การ์ดทั้ง 117 ใบกางรายละเอียดโผล่มาครู่หนึ่ง (FOUC) แล้วค่อยหุบ */
+html.js .card:not(.expanded) .card-detail {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
 }
 
 /* Search highlight */
@@ -2551,3 +2567,257 @@ html { scroll-padding-top: 78px; }
 .map-legend-row[aria-pressed="true"] .legend-count { color: var(--terra); font-weight: 700; }
 /* เพิ่มคอนทราสต์เลขในฟองนับหมุด (เดิมขาวล้วนบนสีภาค = 2.78–3.47:1) */
 .hub-count { paint-order: stroke; stroke: rgba(28, 20, 12, 0.55); stroke-width: 2.4px; stroke-linejoin: round; }
+
+/* ============================
+   PAGE SHELL — เว็บหลายหน้า (เพิ่ม 2 พ.ย. 2569)
+   หน้าทั้ง 6 ใช้ nav/footer ชุดเดียวกันจาก tools/build-shell.mjs
+   ============================ */
+:root { --nav-h: 62px; }
+
+/* หน้าที่ไม่มี hero: nav ต้องทึบตั้งแต่ต้น และเนื้อหาต้องไม่ลอดใต้ nav */
+html.js body.no-hero { padding-top: var(--nav-h); }
+html.js body.no-hero .sticky-nav {
+  background: rgba(253, 250, 246, 0.95);
+  border-bottom-color: var(--border);
+  box-shadow: 0 10px 30px -16px rgba(44, 40, 36, 0.35);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+html.js body.no-hero .sticky-nav .nav-logo { color: var(--charcoal); }
+html.js body.no-hero .sticky-nav .nav-links a,
+html.js body.no-hero .sticky-nav .nav-github { color: var(--warm-gray); }
+html.js body.no-hero .sticky-nav .nav-links a:hover { color: var(--charcoal); }
+
+/* หน้าปัจจุบันในเมนู (ใช้ aria-current="page" ที่ build-shell ใส่ให้) */
+.nav-links a[aria-current="page"] { color: var(--terra); }
+.nav-links a[aria-current="page"]::after { width: 100%; }
+html.js .sticky-nav .nav-links a[aria-current="page"] { color: var(--terra-light); }
+html.js .sticky-nav.eg-scrolled .nav-links a[aria-current="page"],
+html.js body.no-hero .sticky-nav .nav-links a[aria-current="page"] { color: var(--terra); }
+
+/* หัวหน้าของแต่ละหน้า */
+.page-head { padding: 3.2rem 2rem 1.6rem; }
+.page-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+  font-weight: 600;
+  margin-bottom: 0.55rem;
+}
+.page-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4.4vw, 2.7rem);
+  line-height: 1.22;
+  color: var(--charcoal);
+  margin-bottom: 0.7rem;
+}
+.page-sub { max-width: 64ch; color: var(--warm-gray); line-height: 1.75; }
+.page-meta { margin-top: 0.9rem; font-size: 0.82rem; color: var(--warm-gray); }
+.page-meta a { color: var(--terra-ink); }
+
+/* ── หน้าแรก: ค้นหา + ชิปทางลัด ── */
+.home-search-section { padding: 2.5rem 2rem 2rem; }
+.home-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  max-width: 640px;
+  margin: 1.2rem 0 1.1rem;
+}
+.home-search-form .search-input { flex: 1 1 240px; margin: 0; }
+.home-search-btn {
+  padding: 0.85rem 1.7rem;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  background: var(--terra);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.home-search-btn:hover { background: var(--terra-deep); }
+.home-quick { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.home-quick-label { font-size: 0.8rem; color: var(--warm-gray); }
+.home-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--off-white);
+  color: var(--charcoal);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.home-chip:hover { border-color: var(--sage); color: var(--sage-dark); }
+
+/* การ์ดตัวเลขบนหน้าแรกเป็นลิงก์ (ไม่ใช่ปุ่มกรอง) */
+a.stat-card { text-decoration: none; color: inherit; }
+
+/* ── หน้าแรก: ทางลัดไปแต่ละหน้า ── */
+.home-links-section { padding: 3.2rem 2rem 5rem; }
+.home-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+.home-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1.1rem 1.2rem;
+  background: var(--off-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--charcoal);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.home-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--sage); }
+.home-link-icon { font-size: 1.5rem; line-height: 1; }
+.home-link-body { display: flex; flex-direction: column; gap: 0.25rem; flex: 1; }
+.home-link-title { font-weight: 600; }
+.home-link-sub { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.6; }
+.home-link-arrow { color: var(--terra); font-weight: 700; }
+
+/* ── แท็บหมวดในหน้าสถาบัน ── */
+.cat-bar {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 60;
+  background: rgba(253, 250, 246, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.cat-bar-inner {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.6rem 1rem;
+  scrollbar-width: none;
+}
+.cat-bar-inner::-webkit-scrollbar { display: none; }
+.cat-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 36px;
+  padding: 0.3rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--off-white);
+  color: var(--warm-gray);
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.cat-chip:hover { border-color: var(--sage); color: var(--sage-dark); }
+.cat-chip.active { background: var(--sage); border-color: var(--sage-dark); color: #fff; }
+.cat-chip.active .cat-n { opacity: 0.9; }
+.cat-n { font-size: 0.75rem; opacity: 0.72; }
+
+/* ── หน้า «ในคณะ»: ตารางสถานะรายชั้นปี ── */
+.year-status {
+  margin: 0 0 2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--off-white);
+  overflow-x: auto;
+  box-shadow: var(--shadow);
+}
+.ys-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 620px; }
+.ys-table th, .ys-table td { padding: 0.7rem 0.9rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+.ys-table thead th { background: var(--sand-mid); font-size: 0.8rem; color: var(--warm-gray); font-weight: 600; }
+.ys-table tbody tr:last-child th, .ys-table tbody tr:last-child td { border-bottom: 0; }
+.ys-table tbody th { font-weight: 600; white-space: nowrap; }
+.ys-none { color: var(--warm-gray); }
+.ys-badge { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.78rem; white-space: nowrap; }
+.ys-open { background: rgba(125, 155, 118, 0.18); color: var(--sage-dark); }
+.ys-closed { background: rgba(196, 113, 75, 0.16); color: var(--terra-ink); }
+.ys-wait { background: rgba(107, 97, 87, 0.12); color: var(--warm-gray); }
+.ys-moved { background: rgba(201, 132, 154, 0.2); color: #87465c; }
+.ys-note { padding: 0.7rem 0.9rem; margin: 0; font-size: 0.82rem; color: var(--warm-gray); border-top: 1px solid var(--border); }
+
+/* ── ลิงก์ «ไปหน้าถัดไป» ท้ายหน้า ── */
+.page-next { padding: 2rem 2rem 4rem; }
+.page-next-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 1rem;
+  max-width: 720px;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--off-white);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--charcoal);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.page-next-card:hover { border-color: var(--sage); transform: translateY(-2px); }
+.page-next-kicker { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-dark); }
+.page-next-title { font-family: var(--font-head); font-size: 1.15rem; font-weight: 600; }
+.page-next-sub { font-size: 0.85rem; color: var(--warm-gray); line-height: 1.6; }
+.page-next-arrow { grid-column: 2; grid-row: 1 / span 3; align-self: center; color: var(--terra); font-size: 1.3rem; }
+
+/* ── footer: แถวลิงก์หน้า + ช่องทางแจ้งข้อมูลผิด ── */
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0.8rem 0;
+  font-size: 0.88rem;
+}
+.footer-links a { color: rgba(245, 239, 230, 0.85); text-decoration: none; }
+.footer-links a:hover { color: #fff; text-decoration: underline; }
+.footer-report { margin-top: 0.4rem; }
+.footer-report a { color: var(--terra-light); }
+
+@media (max-width: 768px) {
+  :root { --nav-h: 58px; }
+  .page-head { padding: 2.2rem 1.2rem 1.2rem; }
+  .home-search-section, .home-links-section, .page-next { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .page-next-card { grid-template-columns: 1fr; }
+  .page-next-arrow { display: none; }
+}
+
+/* ลิงก์ในตารางสถานะรายชั้นปี (หน้าในคณะ) */
+.ys-table a {
+  color: var(--terra-ink);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(196, 113, 75, 0.35);
+}
+.ys-table a:hover { border-bottom-color: var(--terra); }
+
+/* ── ลดช่องว่างระหว่างหัวหน้า กับส่วนถัดไป ── */
+.page-head + .search-section { padding-top: 0.5rem; }
+
+/* ── ตารางสถานะรายชั้นปีบนมือถือ: เปลี่ยนเป็นบล็อกเรียงลงมา อ่านได้โดยไม่ต้องเลื่อนแนวนอน ── */
+@media (max-width: 720px) {
+  .ys-table { min-width: 0; }
+  .ys-table thead { display: none; }
+  .ys-table, .ys-table tbody, .ys-table tr, .ys-table th, .ys-table td { display: block; width: 100%; }
+  .ys-table tr { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
+  .ys-table tbody tr:last-child { border-bottom: 0; }
+  .ys-table th, .ys-table td { border: 0; padding: 0.12rem 0; }
+  .ys-table thead { display: none; }
+  .ys-table tbody th { font-size: 0.98rem; margin-bottom: 0.15rem; }
+  .ys-table td::before {
+    content: attr(data-label);
+    display: inline;
+    margin-right: 0.4rem;
+    color: var(--warm-gray);
+    font-size: 0.78rem;
+  }
+}
