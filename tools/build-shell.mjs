@@ -173,6 +173,10 @@ const REGIONS = [
 let problems = 0;
 let changed = 0;
 
+// เทียบเนื้อหาโดยไม่สนใจ EOL: Windows ที่ core.autocrlf=true จะได้ worktree เป็น CRLF
+// ถ้าเทียบดิบ ๆ จะเข้าใจผิดว่าทุกหน้า «ไม่ตรง template» ทั้งที่เนื้อหาเหมือนกัน
+const lf = s => s.replace(/\r\n/g, '\n');
+
 for (const page of PAGES) {
   const file = path.join(ROOT, page.file);
   if (!fs.existsSync(file)) {
@@ -180,7 +184,7 @@ for (const page of PAGES) {
     problems++;
     continue;
   }
-  const before = fs.readFileSync(file, 'utf8');
+  const before = lf(fs.readFileSync(file, 'utf8'));
   let next = before;
 
   for (const region of REGIONS) {

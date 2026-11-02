@@ -1,0 +1,9 @@
+# บังคับให้ไฟล์ข้อความในรีโปเป็น LF เสมอ
+# (Windows ที่เปิด core.autocrlf=true จะได้ worktree เป็น CRLF ทำให้สคริปต์ที่เทียบเนื้อหาไฟล์เข้าใจผิดว่าไฟล์เปลี่ยน)
+* text=auto eol=lf
+
+# ไฟล์ไบนารีไม่ต้องแปลง
+*.png binary
+*.jpg binary
+*.woff2 binary
+*.pdf binary
