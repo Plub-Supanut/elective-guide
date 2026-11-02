@@ -146,6 +146,8 @@ const regionalPlain = cards.filter(c => /regional-plain/.test(c.tags)).length;
 if (!regionalPlain) warnings.push('ตัวกรอง «รพ.จังหวัด» (regional-plain) ไม่มีแท็กนี้ในการ์ดเลย — กดแล้วจะไม่เจออะไร');
 
 // ── 5) เขียนแผงความครบลงหน้าแรก ────────────────────────────────
+// หมายเหตุ: แผงนี้ไม่มี indent นำหน้า เพราะ regex ด้านล่างกิน «ช่องว่างต้นบรรทัด» ไปด้วย
+// (เดิมไม่กิน ทำให้ทุกครั้งที่รัน indent เพิ่มขึ้นเรื่อย ๆ แล้ว bot commit ขยับบรรทัดเปล่า ๆ)
 const coveragePanel = () => `    <!-- COVERAGE:START -->
     <section class="coverage-section" aria-labelledby="coverage-title">
       <div class="container">
@@ -187,7 +189,7 @@ if (!CHECK) {
 
   // แผงบนหน้าแรก
   if (home.includes('<!-- COVERAGE:START -->')) {
-    const next = home.replace(/<!-- COVERAGE:START -->[\s\S]*?<!-- COVERAGE:END -->/, coveragePanel().trimEnd());
+    const next = home.replace(/^[ \t]*<!-- COVERAGE:START -->[\s\S]*?^[ \t]*<!-- COVERAGE:END -->/m, coveragePanel());
     if (next !== home) fs.writeFileSync(path.join(ROOT, 'index.html'), next);
   } else {
     errors.push('index.html ไม่มีกรอบ <!-- COVERAGE:START/END --> สำหรับใส่แผงความครบ');
