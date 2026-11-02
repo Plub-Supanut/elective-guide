@@ -1,16 +1,23 @@
 name: Sync SSC data
 
-# ดึงข้อมูลจากเว็บต้นฉบับ SSCs Guide แล้วอัปเดตส่วน «รายวิชาเลือก นอกคณะ» ใน index.html
-# ถ้ากำหนดการ / เอกสาร / ช่องทางติดต่อ เปลี่ยน เว็บจะอัปเดตตามเองแล้ว commit ให้
+# ดึงข้อมูลจากเว็บต้นฉบับ SSCs Guide แล้วอัปเดตหน้า «นอกคณะ» (outside.html)
+# และ «ในคณะ» (inside.html) — ถ้ามีอะไรเปลี่ยนจะเขียน docs/ssc-history.md
+# และเปิด issue ให้ตรวจ
 
 on:
   schedule:
-    # ทุกวันจันทร์ 08:00 น. เวลาไทย (01:00 UTC)
-    - cron: '0 1 * * 1'
+    # วันละ 2 ครั้ง เวลาไทย 08:00 และ 20:00 (01:00 / 13:00 UTC)
+    - cron: '0 1,13 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'สร้างหน้าใหม่จากเทมเพลตทั้งหมด (ไม่สนว่าข้อมูลเปลี่ยนไหม)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: sync-ssc
@@ -26,25 +33,36 @@ jobs:
         with:
           node-version: '20'
 
-      - name: ติดตั้ง dependency
-        run: npm install --no-audit --no-fund
-
-      - name: เตรียม Chrome สำหรับดึงข้อมูล
-        run: |
-          if [ -x /usr/bin/google-chrome ] || [ -x /usr/bin/chromium-browser ] || [ -x /usr/bin/chromium ]; then
-            echo "ใช้ Chrome ที่มีใน runner"
-          else
-            npx --yes @puppeteer/browsers install chrome@stable --path "$RUNNER_TEMP/chrome"
-            echo "CHROME_PATH=$(find "$RUNNER_TEMP/chrome" -type f -name chrome | head -1)" >> "$GITHUB_ENV"
-          fi
+      # ไม่ต้อง npm install แล้ว: สคริปต์ใช้ fetch ในตัว Node ล้วน ๆ
+      - name: ตรวจความสอดคล้องของเมนู/หัวหน้า (ไม่บล็อกการ sync)
+        continue-on-error: true
+        run: node tools/build-shell.mjs --check
 
       - name: ดึงข้อมูลจากต้นฉบับ
         id: sync
         run: |
           set +e
-          node sync-ssc.mjs
+          if [ "${{ inputs.force }}" = "true" ]; then
+            node sync-ssc.mjs --force
+          else
+            node sync-ssc.mjs
+          fi
           code=$?
           echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "## ผล sync" >> "$GITHUB_STEP_SUMMARY"
+          node -e "
+            const fs=require('fs');
+            const p='data/ssc-report.json';
+            if(!fs.existsSync(p)) return process.exit(0);
+            const r=JSON.parse(fs.readFileSync(p,'utf8'));
+            const lines=[];
+            lines.push('ตรวจเมื่อ '+r.checkedAt);
+            for(const [k,v] of Object.entries(r.pages||{})){
+              lines.push('- **'+k+'**: '+(v.ok?(v.counts||''):'ล้มเหลว'));
+            }
+            if((r.changes||[]).length){ lines.push('','**สิ่งที่เปลี่ยน**'); for(const c of r.changes) lines.push('- '+c); }
+            console.log(lines.join('\n'));
+          " >> "$GITHUB_STEP_SUMMARY" || true
           exit 0
 
       - name: แจ้งเตือนถ้าดึงข้อมูลไม่สำเร็จ
@@ -56,12 +74,44 @@ jobs:
       - name: commit & push ถ้ามีการเปลี่ยนแปลง
         if: steps.sync.outputs.code == '0'
         run: |
-          if git diff --quiet -- index.html; then
+          if git diff --quiet; then
             echo "ข้อมูลตรงกับต้นฉบับอยู่แล้ว — ไม่มีอะไรต้อง commit"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git commit -m "chore(sync): อัปเดตข้อมูลรายวิชาเลือกนอกคณะจากเว็บ SSCs Guide"
+          git add outside.html inside.html data/ssc-state.json docs/ssc-history.md
+          git commit -m "chore(sync): อัปเดตข้อมูล SSCs Guide (นอกคณะ/ในคณะ)"
           git push
+
+      - name: เปิด/อัปเดต issue เมื่อข้อมูลเปลี่ยน (ให้คนตรวจ)
+        if: steps.sync.outputs.code == '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const p = 'data/ssc-report.json';
+            if (!fs.existsSync(p)) return;
+            const r = JSON.parse(fs.readFileSync(p, 'utf8'));
+            if (!r.changes || !r.changes.length) return;
+
+            const title = 'SSCs Guide: มีการเปลี่ยนข้อมูล — รอตรวจว่าเว็บยังถูกต้อง';
+            const body = [
+              `ตรวจล่าสุด: ${r.checkedAt}`,
+              '',
+              '**สิ่งที่เปลี่ยนจากต้นฉบับ**',
+              ...r.changes.map(c => `- ${c}`),
+              '',
+              'ประวัติทั้งหมดอยู่ใน `docs/ssc-history.md` — ถ้าเปลี่ยนแล้วหน้าเว็บยังถูกต้อง ปิด issue นี้ได้เลย',
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner, repo, state: 'open', labels: 'sync', per_page: 20,
+            });
+            const existing = open.find(i => i.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ owner, repo, title, body, labels: ['sync'] });
+            }

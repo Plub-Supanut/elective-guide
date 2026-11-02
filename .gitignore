@@ -6,3 +6,7 @@ node_modules/
 
 # ตั้งค่าเฉพาะเครื่อง (Claude Code)
 .claude/
+
+# รายงานผล sync รอบล่าสุด (สร้างใหม่ทุกครั้ง — ไม่ต้อง commit)
+data/ssc-report.json
+

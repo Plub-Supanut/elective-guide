@@ -1,0 +1,186 @@
+{
+  "pages": {
+    "outside": {
+      "hash": "800aca1c0a89",
+      "snapshot": {
+        "apply": "https://portal.md.chula.ac.th/SSCsapplication",
+        "schedule": [
+          [
+            "SSCs 4",
+            "ยังไม่ประกาศ"
+          ],
+          [
+            "SSCs 5",
+            "30 ตุลาคม 2569"
+          ],
+          [
+            "SSCs 6 · R0",
+            "ยังไม่ประกาศ"
+          ],
+          [
+            "SSCs 6 · R1",
+            "27 กุมภาพันธ์ 2569"
+          ],
+          [
+            "SSCs 6 · R2",
+            "27 มีนาคม 2569"
+          ],
+          [
+            "SSCs 6 · R3",
+            "22 พฤษภาคม 2569"
+          ],
+          [
+            "SSCs 6 · R4",
+            "17 กรกฎาคม 2569"
+          ],
+          [
+            "SSCs 6 · R5",
+            "11 กันยายน 2569"
+          ],
+          [
+            "SSCs 6 · R6",
+            "11 กันยายน 2569"
+          ]
+        ],
+        "status": [
+          [
+            4,
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0Qf2rTPpd7ekjmne06WqyfRS9cXb4RPmwfubMeZq5f651ZnyWaRceOVkMchDdX56ruzatLvC7JADB/pubhtml?gid=850490874&single=true",
+            0
+          ],
+          [
+            5,
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0Qf2rTPpd7ekjmne06WqyfRS9cXb4RPmwfubMeZq5f651ZnyWaRceOVkMchDdX56ruzatLvC7JADB/pubhtml?gid=1141979815&single=true",
+            0
+          ],
+          [
+            6,
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vR0Qf2rTPpd7ekjmne06WqyfRS9cXb4RPmwfubMeZq5f651ZnyWaRceOVkMchDdX56ruzatLvC7JADB/pubhtml?gid=922852250&single=true",
+            0
+          ]
+        ],
+        "docs": [
+          [
+            "1t_glqSeQg9ZhoU7k3I8K8t6RvFKIooZ6",
+            "หลักเกณฑ์ชั้นปีที่ 4",
+            "PDF · ปีการศึกษา 2569 · 1 ตุลาคม 2569",
+            0
+          ],
+          [
+            "11iHWKKQKKyxCTLuobOfDuP2d0iHDZiRj",
+            "หลักเกณฑ์ชั้นปีที่ 5",
+            "PDF · ปีการศึกษา 2569 · 1 ตุลาคม 2569",
+            0
+          ],
+          [
+            "1VsCG0EM-sQgWtnOn3prsKFncDvSkN8MJ",
+            "หลักเกณฑ์ชั้นปีที่ 6 ในประเทศ",
+            "PDF · ปีการศึกษา 2569 · 13 สิงหาคม 2567",
+            0
+          ],
+          [
+            "1ZJiJUjPSITBN7gc-Ce_mJPmhizHunzP9",
+            "หลักเกณฑ์ชั้นปีที่ 6 ต่างประเทศ",
+            "PDF · ปีการศึกษา 2569 · 13 สิงหาคม 2567",
+            0
+          ],
+          [
+            "14hikeMEugf4VZl7oF6S1kXhhMgmt18sW",
+            "แบบแสดงความจำนง elective นอกคณะ",
+            "PDF · 1 ตุลาคม 2568",
+            0
+          ],
+          [
+            "1p9dRLVkIQ3Ne9pba84L15TzvKuTX1dCm",
+            "แนวปฏิบัติกรณีที่สถาบันต้องการหนังสือส่งตัวก่อน",
+            "PDF · 6 ตุลาคม 2567",
+            0
+          ]
+        ],
+        "form": "https://docs.google.com/forms/d/10MmEj9L_zBfZ-vFX4IkEbARIFToITw4I9rcYhMeB-9Y/edit",
+        "mou": [
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vRJcBZLGLVyZHMWRknq1pn9S8Lm4v66KpnN7jXpfttBU92Cl9rh8mB00SolrJSo8SjtiaojzNseh2r2/pubhtml?gid=306621735&single=true",
+          1
+        ]
+      }
+    },
+    "inside": {
+      "hash": "6924a478c9b6",
+      "snapshot": {
+        "groups": [
+          [
+            "5",
+            "https://docs.google.com/forms/d/e/1FAIpQLSfmsZ8HtTrMCI1x-8nLI4A7VdoQUl5MvzrS2sUpbyx4yyxk3w/viewform",
+            "2026-11-06T20:00:00+07:00",
+            false,
+            false,
+            1
+          ],
+          [
+            "6 · R0 (รอบ 2)",
+            "https://portal.md.chula.ac.th/SSCs6R0request2",
+            "2026-02-04T20:00:00+07:00",
+            false,
+            true,
+            1
+          ],
+          [
+            "6 · R4-R6",
+            "https://portal.md.chula.ac.th/SSCs6request",
+            "2026-07-27T20:00:00+07:00",
+            true,
+            true,
+            1
+          ]
+        ],
+        "sheets": [
+          [
+            4,
+            "รอบแรก",
+            "1543545682",
+            1
+          ],
+          [
+            5,
+            "รอบแรก",
+            "865084114",
+            1
+          ],
+          [
+            6,
+            "รอบแรก",
+            "1689356353",
+            1
+          ],
+          [
+            4,
+            "คงเหลือ",
+            "1569809124",
+            1
+          ],
+          [
+            5,
+            "คงเหลือ",
+            "715380756",
+            1
+          ],
+          [
+            6,
+            "คงเหลือ",
+            "2128220891",
+            1
+          ]
+        ],
+        "central": [
+          "https://portal.md.chula.ac.th/SSCsapplication",
+          1,
+          "1npsS-LHibO-I6n4N-oCsjbYEjxVGMTOz"
+        ],
+        "cucis": [
+          "http://cucis.academic.chula.ac.th/search/searchthai.asp",
+          0
+        ]
+      }
+    }
+  }
+}
