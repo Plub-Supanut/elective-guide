@@ -1,0 +1,52 @@
+name: แจ้งข้อมูลผิด / เพิ่มข้อมูลชั้นปี
+description: บอกข้อมูลที่ผิด หรือเพิ่มข้อมูลเฉพาะชั้นปี (เช่น ผู้ประสานงานของ ป.6)
+title: "[ข้อมูล] "
+labels: ["data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ขอบคุณที่ช่วยกันดูครับ — ข้อมูลจะถูกแก้ในหน้าเว็บภายในรอบ sync ถัดไป
+        (ถ้าเป็นข้อมูลจากเว็บ SSCs Guide ระบบจะอัปเดตเองอยู่แล้ว ไม่ต้องแจ้ง)
+  - type: input
+    id: institution
+    attributes:
+      label: สถาบัน / ภาควิชา
+      description: ชื่อที่เห็นบนการ์ด (พิมพ์ให้ตรงหรือใกล้เคียงก็ได้)
+      placeholder: เช่น โรงพยาบาลชลบุรี
+    validations:
+      required: true
+  - type: dropdown
+    id: year
+    attributes:
+      label: เกี่ยวกับชั้นปีไหน
+      options:
+        - ไม่ระบุ / ใช้ได้ทุกชั้นปี
+        - ชั้นปีที่ 4
+        - ชั้นปีที่ 5
+        - ชั้นปีที่ 6
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: ข้อมูลที่ควรเป็น
+      description: บอกว่าตอนนี้เว็บเขียนอะไร และที่ถูกคืออะไร (ผู้ประสานงาน/เบอร์/อีเมล/ที่พัก/ค่าใช้จ่าย ฯลฯ)
+      placeholder: |
+        ตอนนี้เว็บเขียน: คุณแอน (ปี 6) / คุณเอ๋ (ปี 5)
+        ที่ถูกคือ: ...
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: แหล่งอ้างอิง (ถ้ามี)
+      description: ลิงก์ประกาศของคณะ/สถาบัน หรือชื่อผู้ให้ข้อมูล
+      placeholder: https://…
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: ยืนยัน
+      options:
+        - label: ข้อมูลนี้ตรวจจากต้นทางแล้ว (ไม่ใช่การเดา)
+          required: true
