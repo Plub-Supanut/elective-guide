@@ -594,6 +594,80 @@ if (catBar && catSections.length) {
   });
 }
 
+// ── VISUAL SCAN: สีภูมิภาค + ป้าย + กราฟภาพรวม ─────────────────
+// ใช้สีชุดเดียวกับแผนที่ (map.js) เพื่อให้จำได้ว่า «สีนี้ = ภาคนี้» ทุกที่ในเว็บ
+const REGION_TH = {
+  bkk: 'กทม.', central: 'กลาง', north: 'เหนือ',
+  isan: 'อีสาน', south: 'ใต้', east: 'ตะวันออก',
+};
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function paintRegionCues() {
+  allCards.forEach(card => {
+    const region = card.dataset.region;
+    if (!region) return;
+    card.style.setProperty('--r-color', `var(--r-${region}, var(--border))`);
+    card.classList.add('has-region');
+
+    const header = card.querySelector('.card-header');
+    if (!header || header.querySelector('.region-chip')) return;
+    const chip = document.createElement('span');
+    chip.className = 'region-chip';
+    chip.style.setProperty('--r-color', `var(--r-${region}, var(--border))`);
+    chip.textContent = REGION_TH[region] || region;
+    header.appendChild(chip);
+  });
+}
+
+function buildScanChart() {
+  const panel = document.getElementById('scanPanel');
+  if (!panel) return;
+
+  const counts = {};
+  allCards.forEach(card => {
+    const r = card.dataset.region;
+    if (r) counts[r] = (counts[r] || 0) + 1;
+  });
+  const order = ['bkk', 'central', 'north', 'isan', 'south', 'east'].filter(r => counts[r]);
+  if (!order.length) return;
+
+  const max = Math.max(...order.map(r => counts[r]));
+  const total = order.reduce((a, r) => a + counts[r], 0);
+
+  const title = document.createElement('h2');
+  title.className = 'scan-title';
+  title.textContent = `ภาพรวมตามภูมิภาค · ${total} แห่ง`;
+
+  const chart = document.createElement('div');
+  chart.className = 'scan-chart';
+
+  for (const r of order) {
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'scan-row';
+    row.style.setProperty('--r-color', `var(--r-${r})`);
+    row.setAttribute('aria-label', `กรองเฉพาะภาค${REGION_TH[r]} ${counts[r]} แห่ง`);
+    row.innerHTML =
+      `<span class="scan-label">${REGION_TH[r]}</span>` +
+      `<span class="scan-track"><span class="scan-fill" style="width:${Math.round((counts[r] / max) * 100)}%"></span></span>` +
+      `<span class="scan-n">${counts[r]}</span>`;
+    row.addEventListener('click', () => {
+      document.querySelector(`.filter-btn[data-filter="region:${r}"]`)?.click();
+      document.getElementById('institutions')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
+    chart.appendChild(row);
+  }
+
+  const hint = document.createElement('p');
+  hint.className = 'scan-hint';
+  hint.textContent = 'กดที่แถบเพื่อดูเฉพาะภาคนั้น';
+
+  panel.replaceChildren(title, chart, hint);
+}
+
+paintRegionCues();
+buildScanChart();
+
 // ── เริ่มต้นจาก URL (ลิงก์ที่แชร์กันมาเปิดแล้วได้ตัวกรองเดิม) ───
 (function initFromURL() {
   const p = new URLSearchParams(location.search);

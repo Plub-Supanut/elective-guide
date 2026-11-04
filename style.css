@@ -2835,8 +2835,8 @@ a.stat-card { text-decoration: none; color: inherit; }
   border-radius: 999px;
   background: rgba(253, 250, 246, 0.9);
 }
-html.js .sticky-nav:not(.eg-scrolled) .year-switch { background: rgba(245, 239, 230, 0.16); border-color: rgba(245, 239, 230, 0.28); }
-html.js .sticky-nav:not(.eg-scrolled) .year-switch button { color: rgba(245, 239, 230, 0.85); }
+html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch { background: rgba(28, 23, 18, 0.42); border-color: rgba(245, 239, 230, 0.34); }
+html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { color: rgba(245, 239, 230, 0.85); }
 .year-switch-label { font-size: 0.72rem; color: var(--warm-gray); padding: 0 0.3rem; }
 .year-switch button {
   min-height: 24px;
@@ -2881,3 +2881,136 @@ html[data-year="6"] .ssc-card[data-years~="6"] { box-shadow: 0 0 0 2px rgba(125,
 .deadline-chip.is-closed { background: rgba(196, 113, 75, 0.16); color: var(--terra-ink); }
 
 
+
+/* ============================
+   VISUAL SCAN LAYER (เพิ่ม 5 พ.ย. 2569)
+   เป้าหมาย: กวาดตาหาของได้เร็ว ไม่ต้องอ่านทุกบรรทัด
+   - สีภูมิภาคชุดเดียวกับแผนที่ (map.js) → การ์ด/ป้าย/กราฟใช้สีเดียวกันหมด
+   - แถบสีซ้ายการ์ด + ป้ายภูมิภาค + กราฟภาพรวม + เส้นเวลา
+   ============================ */
+:root {
+  --r-bkk: #c4714b;
+  --r-central: #7d9b76;
+  --r-north: #c9849a;
+  --r-isan: #b3893f;
+  --r-south: #6f8c9b;
+  --r-east: #9385b5;
+}
+
+/* ป้าย «ชั้นปี» บนเมนูโปร่งใส (หน้าแรกตอนยังไม่เลื่อน) ต้องอ่านออก */
+html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch-label { color: rgba(245, 239, 230, 0.82); }
+
+/* ── การ์ด: แถบสีภูมิภาคซ้ายมือ + ป้ายชื่อภาค ── */
+.card.has-region { position: relative; }
+.card.has-region::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--r-color, var(--border));
+}
+.region-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.08rem 0.5rem 0.08rem 0.32rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--off-white);
+  color: var(--warm-gray);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.region-chip::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--r-color, var(--border));
+}
+
+/* ── กราฟภาพรวมตามภูมิภาค (หน้าสถาบัน) ── */
+.scan-panel { max-width: 1200px; margin: 0 auto; padding: 1.1rem 1rem 0.4rem; }
+.scan-title {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 0.6rem;
+}
+.scan-chart { display: grid; gap: 0.35rem; margin-bottom: 0.4rem; }
+.scan-row {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr 2.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.15rem 0.2rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--charcoal);
+  text-align: left;
+  cursor: pointer;
+}
+.scan-row:hover { background: rgba(125, 155, 118, 0.1); }
+.scan-label { color: var(--warm-gray); }
+.scan-track { display: block; height: 0.55rem; border-radius: 999px; background: rgba(100, 80, 60, 0.09); overflow: hidden; }
+.scan-fill { display: block; height: 100%; border-radius: inherit; background: var(--r-color, var(--sage)); }
+.scan-n { text-align: right; font-variant-numeric: tabular-nums; color: var(--warm-gray); }
+.scan-hint { font-size: 0.78rem; color: var(--warm-gray); margin-top: 0.2rem; }
+
+/* ── เส้นเวลารอบ SSCs ── */
+.timeline-scroll { overflow-x: auto; padding: 0.2rem 0 0.6rem; scrollbar-width: thin; }
+.round-timeline {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(84px, 1fr);
+  gap: 0.2rem;
+  min-width: 720px;
+  margin: 0;
+  padding: 0 0 0.2rem;
+  list-style: none;
+}
+.round-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.62rem;
+  height: 2px;
+  background: var(--border);
+}
+.round-timeline li { position: relative; padding-top: 1.6rem; text-align: center; font-size: 0.76rem; }
+.round-timeline li::before {
+  content: '';
+  position: absolute;
+  top: 0.28rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--off-white);
+  border: 2px solid var(--sage);
+}
+.round-timeline li.is-past::before { background: var(--warm-gray); border-color: var(--warm-gray); }
+.round-timeline li.is-open::before { background: var(--sage); border-color: var(--sage-dark); box-shadow: 0 0 0 4px rgba(125, 155, 118, 0.18); }
+.round-timeline li.is-moved::before { background: var(--dusk); border-color: #87465c; }
+.round-timeline li.is-unknown::before { background: var(--off-white); border-color: var(--border); }
+.round-timeline .rt-label { display: block; font-weight: 600; color: var(--charcoal); white-space: nowrap; }
+.round-timeline .rt-date { display: block; color: var(--warm-gray); font-size: 0.72rem; margin-top: 0.1rem; }
+
+@media (max-width: 720px) {
+  .scan-row { grid-template-columns: 4.4rem 1fr 2rem; }
+  .card.has-region::before { width: 3px; }
+}
+
+.timeline-block { margin: 0 0 1.6rem; }
+.timeline-block .scan-title { margin-bottom: 0.3rem; }

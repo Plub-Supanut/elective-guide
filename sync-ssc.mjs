@@ -223,7 +223,28 @@ function validateOutside(m, problems) {
   if (!m.mou.url) problems.push('ไม่พบรายชื่อสถาบัน MOU');
 }
 
+function timelineBlock(title, items) {
+  return `        <div class="timeline-block fade-up">
+          <h3 class="scan-title">${esc(title)}</h3>
+          <div class="timeline-scroll">
+            <ol class="round-timeline">
+${items.map(i => `              <li class="${i.kind}"><span class="rt-label">${esc(i.label)}</span><span class="rt-date">${esc(i.date)}</span></li>`).join('\n')}
+            </ol>
+          </div>
+        </div>`;
+}
+
 function renderOutside(m, stamp) {
+  const timeline = timelineBlock('เส้นเวลารอบ SSCs', m.schedule.map(s => {
+    const iso = s.muted ? null : (thaiDateToIso(s.date) || {}).iso;
+    let kind = 'is-unknown';
+    if (iso) {
+      const days = (Date.parse(iso) - Date.now()) / 86400000;
+      kind = days < 0 ? 'is-past' : (days <= 60 ? 'is-open' : '');
+    }
+    return { label: s.label, date: s.date, kind };
+  }));
+
   const linkRow = (o, icon = '') => `              <li${o.year ? ` data-years="${o.year}"` : ''}>
                 <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">
                   <span class="ssc-link-title">${esc(icon)}${esc(o.title)}</span>
@@ -277,6 +298,8 @@ ${statusPills}
             </p>
           </div>
         </div>
+
+${timeline}
 
         <div class="ssc-grid">
           <!-- แบบฟอร์มที่ใช้บ่อย -->
@@ -492,6 +515,19 @@ function renderInside(m, stamp) {
 
   const missingYears = years.filter(y => !groupOfYear(y).length);
 
+  // เส้นเวลารอบการแสดงความจำนง (กวาดตาเห็นว่าอะไรเปิด/ปิด/เลื่อน)
+  const insideTimeline = timelineBlock('เส้นเวลารอบการยื่น « ในคณะ »', m.groups.map(g => {
+    const grade = gradeOf(g);
+    const kind = grade.kind === 'closed' ? 'is-past'
+      : grade.kind === 'open' ? 'is-open'
+        : grade.kind === 'moved' ? 'is-moved' : 'is-unknown';
+    return {
+      label: `ป.${g.year}${g.round ? ' ' + g.round : ''}`,
+      date: g.deadline ? isoToShortThai(g.deadline.iso) : 'ยังไม่ประกาศ',
+      kind,
+    };
+  }));
+
   const groupCards = m.groups.map(g => {
     const grade = gradeOf(g);
     const desc = g.deadlineText
@@ -508,7 +544,7 @@ function renderInside(m, stamp) {
               <li>
                 <a href="${esc(g.link)}" target="_blank" rel="noopener noreferrer">
                   <span class="ssc-link-title">📝 ${esc(g.linkText || 'ช่องทางการแสดงความจำนง')}</span>
-                  <span class="ssc-link-meta">${/docs\.google\.com\/forms/.test(g.link) ? 'Google Form · ไม่ต้องล็อกอิน' : 'ระบบ SSCs Application'}${lockOf(g)}</span>
+                  <span class="ssc-link-meta">${/docs\.google\.com\/forms/.test(g.link) ? (g.locked ? 'Google Form' : 'Google Form · ไม่ต้องล็อกอิน') : 'ระบบ SSCs Application'}${lockOf(g)}</span>
                 </a>
               </li>
             </ul>
@@ -595,6 +631,8 @@ ${missingYears.length ? `          <p class="ys-note">
             (หน้านี้ดึงข้อมูลจากเว็บ SSCs Guide)
           </p>
 ` : ''}        </div>
+
+${insideTimeline}
 
         <div class="ssc-grid">
 ${groupCards}
