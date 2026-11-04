@@ -109,7 +109,7 @@ const nav = active => {
           <a href="outside.html"${cur('outside')}>นอกคณะ</a>
           <a href="tips.html"${cur('tips')}>คำแนะนำ</a>
           <a href="https://plub-supanut.github.io/" target="_blank" rel="noopener noreferrer">รวมลิงก์</a>
-          <div class="year-switch" id="yearSwitch" role="group" aria-label="ชั้นปีของฉัน">
+          <div class="year-switch year-switch--nav" role="group" aria-label="ชั้นปีของฉัน">
             <span class="year-switch-label">ชั้นปี</span>
             <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ป.4</button>
             <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ป.5</button>
@@ -131,6 +131,12 @@ ${GITHUB_SVG}
           <a href="tips.html">คำแนะนำ</a>
           <a href="https://plub-supanut.github.io/" target="_blank" rel="noopener noreferrer">รวมลิงก์</a>
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <div class="year-switch year-switch--menu" role="group" aria-label="ชั้นปีของฉัน (เมนูมือถือ)">
+            <span class="year-switch-label">ชั้นปี</span>
+            <button type="button" data-year="4" aria-pressed="false">ป.4</button>
+            <button type="button" data-year="5" aria-pressed="false">ป.5</button>
+            <button type="button" data-year="6" aria-pressed="false">ป.6</button>
+          </div>
         </div>
       </div>
     </nav>`;

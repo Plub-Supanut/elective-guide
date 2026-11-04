@@ -105,7 +105,7 @@
   // จำค่าไว้ใน localStorage และใส่ ?y= ใน URL เพื่อแชร์ลิงก์ให้เพื่อนชั้นปีเดียวกัน
   // ตัวเว็บใช้ html[data-year] เป็นสวิตช์ให้ CSS เน้น/หรี่ข้อมูลตามชั้นปี
   const YEAR_KEY = 'eg:year';
-  const yearSwitch = document.getElementById('yearSwitch');
+  const yearSwitches = [...document.querySelectorAll('.year-switch')];
   const validYear = y => /^[456]$/.test(String(y || ''));
 
   const paintYear = (year) => {
@@ -113,13 +113,13 @@
     if (validYear(year)) root.dataset.year = String(year);
     else delete root.dataset.year;
 
-    if (yearSwitch) {
-      yearSwitch.querySelectorAll('[data-year]').forEach(btn => {
+    yearSwitches.forEach(box => {
+      box.querySelectorAll('[data-year]').forEach(btn => {
         const on = String(year) === btn.dataset.year;
         btn.classList.toggle('is-on', on);
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-    }
+    });
   };
 
   const setYear = (year, { remember = true, updateUrl = true } = {}) => {
@@ -144,14 +144,14 @@
   const initialYear = validYear(urlYear) ? urlYear : (validYear(savedYear) ? savedYear : null);
   paintYear(initialYear);
 
-  if (yearSwitch) {
-    yearSwitch.addEventListener('click', (e) => {
+  yearSwitches.forEach(box => {
+    box.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-year]');
       if (!btn) return;
       const next = btn.dataset.year === document.documentElement.dataset.year ? null : btn.dataset.year;
       setYear(next);
     });
-  }
+  });
 
   // ── 7) สถานะวันปิดรับแบบสด (ไม่ต้องรอ sync รอบถัดไป) ────────
   // ใช้เฉพาะการ์ดที่มี data-deadline — ภายใน 14 วันจะขึ้น «เหลืออีก X วัน», เลยกำหนด = «ปิดรับแล้ว»

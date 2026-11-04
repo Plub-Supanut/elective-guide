@@ -2856,6 +2856,20 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { c
 .year-switch button.is-on { background: var(--terra); color: #fff; }
 @media (max-width: 900px) { .year-switch-label { display: none; } }
 
+/* มือถือ: ซ่อนตัวเลือกชั้นปีในแถบเมนู (ล้นขอบ) แล้วย้ายไปอยู่ในเมนู «⋯» แทน */
+@media (max-width: 760px) {
+  .nav-links .year-switch--nav { display: none; }
+}
+.year-switch--menu {
+  display: flex;
+  margin: 0.5rem 0 0.2rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--sand);
+}
+.year-switch--menu .year-switch-label { display: inline; }
+
 /* ข้อมูลของชั้นปีที่ไม่ได้เลือกจะจางลง (ยังอ่านได้ ไม่ได้ซ่อน) */
 html[data-year="4"] [data-years]:not([data-years~="4"]),
 html[data-year="5"] [data-years]:not([data-years~="5"]),
