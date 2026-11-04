@@ -141,8 +141,7 @@ async function main() {
   console.log('  จังหวัดต่อภาค:', JSON.stringify(tally));
 
   // ── 2) สร้างเส้นขอบจังหวัด (รวม) + เส้นขอบภาค (แยก) + เส้นขอบจังหวัดรายจังหวัด ──
-  const EPS = 2.6;               // หน่วยบนแผนที่ (~3 กม.)
-  const EPS_PROV = 4.2;          // เส้นจังหวัดรายจังหวัดใช้หยาบกว่า เพื่อไม่ให้ไฟล์ใหญ่
+  const EPS = 1.15;              // หน่วยบนแผนที่ (~1.3 กม.) — ละเอียดขึ้นเพื่อให้เส้นขอบจังหวัดสมจริง
   const parts = [];
   const regionParts = {};
   const regionBox = {};
@@ -159,7 +158,7 @@ async function main() {
       kept += s.length;
       if (s.length < 3) continue;
       out.push('M' + s.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ') + 'Z');
-      const sp = rdp(proj, p.region === 'bkk' ? 0.35 : EPS_PROV);
+      const sp = rdp(proj, p.region === 'bkk' ? 0.3 : EPS);
       if (sp.length >= 3) outProv.push('M' + sp.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ') + 'Z');
       const b = regionBox[p.region] = regionBox[p.region] || { x0: Infinity, x1: -Infinity, y0: Infinity, y1: -Infinity };
       for (const [x, y] of s) {

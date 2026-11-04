@@ -28,14 +28,7 @@
   const colorOf = r => (REGION[r] ? REGION[r].color : '#6b6157');
   const count = r => M.pins.filter(p => p.r === r).length;
 
-  // สีภาคแบบ "ทึบ" ที่ผสมกับสีกระดาษไว้ล่วงหน้า
-  // เหตุผล: ถ้าใช้ fill-opacity ต่ำ ๆ แล้วตีเส้นขอบจังหวัด สีจะซ้อนกันจนเป็น «เส้นเข้ม» เต็มไปหมด
-  // วิธีนี้ทำให้พื้นที่ภาคเป็นสีทึบเรียบเนียน ไม่มีรอยต่อจังหวัดให้ตาลาย
-  const PAPER_RGB = [243, 235, 223];
-  const mixHex = (hex, t) => '#' + [1, 3, 5]
-    .map(i => parseInt(hex.slice(i, i + 2), 16))
-    .map((v, i) => Math.round(v * t + PAPER_RGB[i] * (1 - t)).toString(16).padStart(2, '0'))
-    .join('');
+  // ── สีต่าง ๆ ของแผนที่อยู่ใน style.css (var(--map-*), var(--r-*)) เพื่อให้เปลี่ยนตามธีมได้
 
   // ── ระยะทาง "ขับรถ" จากคณะฯ ───────────────────────────────────
   // สร้างล่วงหน้าด้วย tools/build-drive-distances.mjs (Google Distance Matrix ถ้ามีคีย์ · ไม่มีก็ใช้ OSRM)
@@ -111,8 +104,9 @@
   svg.setAttribute('aria-label', `แผนที่ประเทศไทยแสดงที่ตั้งสถาบัน ${M.pins.length} แห่ง`);
 
   const gLand = document.createElementNS(NS, 'g'); gLand.setAttribute('class', 'map-land');
+  const LAND_D = (M.prov && M.prov.length) ? M.prov.map(p => p.d).join(' ') : (M.paths || '');
   const landPath = document.createElementNS(NS, 'path');
-  landPath.setAttribute('d', M.paths);
+  landPath.setAttribute('d', LAND_D);
   gLand.appendChild(landPath);
   const gArcs = document.createElementNS(NS, 'g'); gArcs.setAttribute('class', 'map-arcs');
   const gPins = document.createElementNS(NS, 'g'); gPins.setAttribute('class', 'map-pins');
@@ -214,7 +208,7 @@
   clip.setAttribute('id', 'eg-land-clip');
   clip.setAttribute('clipPathUnits', 'userSpaceOnUse');
   const clipShape = document.createElementNS(NS, 'path');
-  clipShape.setAttribute('d', M.paths);
+  clipShape.setAttribute('d', LAND_D);
   clip.appendChild(clipShape);
   defs.appendChild(clip);
   svg.insertBefore(defs, svg.firstChild);
@@ -446,7 +440,10 @@
     east: [71, 36],       // ลงไปพื้นที่กว้างของภาคตะวันออก
   };
   const plates = {};
-  Object.entries(M.regionPaths || {}).forEach(([r, d]) => {
+  const provsByRegion = {};
+  (M.prov || []).forEach(p => (provsByRegion[p.r] = provsByRegion[p.r] || []).push(p));
+  Object.entries(provsByRegion).forEach(([r, provs]) => {
+    const d = provs.map(p => p.d).join(' ');
     if (!d || !REGION[r]) return;
     const list = M.pins.filter(p => p.r === r);
     if (!list.length) return;
@@ -457,19 +454,20 @@
     g.setAttribute('class', 'plate');
     g.dataset.region = r;
     g.style.setProperty('--rc', REGION[r].color);
-    g.style.setProperty('--rc-soft', mixHex(REGION[r].color, 0.34));
-    g.style.setProperty('--rc-lift', mixHex(REGION[r].color, 0.58));
 
     const face = document.createElementNS(NS, 'path');
     face.setAttribute('d', d);
     face.setAttribute('class', 'plate-face');
-    const hit = document.createElementNS(NS, 'path');
-    hit.setAttribute('d', d);
-    hit.setAttribute('class', 'plate-hit');
-    hit.setAttribute('tabindex', '0');
-    hit.setAttribute('role', 'button');
-    hit.setAttribute('aria-label', `ภาค${REGION[r].name} — ${list.length} สถาบัน`);
+    const borders = document.createElementNS(NS, 'path');
+    borders.setAttribute('d', d);
+    borders.setAttribute('class', 'province-border');
+    const regBorder = document.createElementNS(NS, 'path');
+    regBorder.setAttribute('d', d);
+    regBorder.setAttribute('class', 'region-border');
+    g.append(face, borders, regBorder);
+    gPlates.appendChild(g);
 
+    // ── ป้ายชื่อภาค (อยู่ชั้นนอก clip เพื่อไม่ให้ป้ายภาคใต้ถูกตัดครึ่ง) ──
     const wrap = document.createElementNS(NS, 'g');
     wrap.setAttribute('class', 'plate-label-wrap');
     const label = document.createElementNS(NS, 'text');
@@ -481,8 +479,7 @@
       : `${REGION[r].name} · ${list.length}`;
     wrap.appendChild(label);
 
-    // ป้าย กทม. เป็นทางเข้าสู่โหมด «เจาะลึก กทม.» — ก้อนหมุด กทม. ทับกันจนแยกไม่ออก
-    // และเดิมไม่มีอะไรบอกว่ากดได้ (ป้ายบอกจำนวน + ลูกศร คือ affordance ที่ไม่เพิ่มที่ว่าง)
+    // ป้าย กทม. เป็นทางเข้าสู่โหมด «เจาะลึก กทม.» — หมุด กทม. ทับกันจนแยกไม่ออก
     if (r === 'bkk') {
       wrap.classList.add('plate-label-cta');
       wrap.setAttribute('role', 'button');
@@ -501,16 +498,13 @@
     labG.appendChild(wrap);
     gLabels.appendChild(labG);
 
-    g.append(face, hit);
-    gPlates.appendChild(g);
-
     // จุดหมุนร่วม: จุดกลางของแผ่น → แผ่นกับหมุดของภาคนี้ยกพร้อมกันเป๊ะ
     const bb = face.getBBox();
     const ox = (bb.x + bb.width / 2).toFixed(1), oy = (bb.y + bb.height / 2).toFixed(1);
     g.style.transformOrigin = `${ox}px ${oy}px`;
     const pg = pinGroupFor(r);
     pg.style.transformOrigin = `${ox}px ${oy}px`;
-    plates[r] = { g, pinG: pg, wrap, label, labG, labX: lab[0] + nudge[0], labY: lab[1] + nudge[1] };
+    plates[r] = { g, face, pinG: pg, wrap, label, labG, labX: lab[0] + nudge[0], labY: lab[1] + nudge[1] };
   });
 
   // แผ่นรองป้ายชื่อ — สร้างหลังวัดข้อความจริงได้
@@ -622,25 +616,7 @@
 
   const preview = (r) => { previewRegion = r || null; paintRegions(); };
 
-  Object.entries(plates).forEach(([r, pl]) => {
-    const enter = () => preview(r);
-    const leave = () => preview(null);
-    if (canHover) {                       // hover/focus มีความหมายเฉพาะจอที่มีเมาส์
-      pl.g.addEventListener('pointerenter', enter);
-      pl.g.addEventListener('pointerleave', leave);
-      pl.g.addEventListener('focusin', enter);
-      pl.g.addEventListener('focusout', leave);
-    }
-    pl.g.addEventListener('click', (e) => {
-      if (moved > 6) return;
-      e.stopPropagation();
-      toggleRegion(r);
-      preview(null);
-    });
-    pl.g.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRegion(r); }
-    });
-  });
+  // ไม่ผูก hover/click กับแผ่นภาคแล้ว — กรองภาคได้จาก legend/ปุ่มด้านข้างแทน
 
   // ══ กล้อง: ซูมออกได้ถึง 3/5 ของกรอบ · แพนให้ภาคไหนก็มาอยู่กลางจอได้ ═════
   const VB = M.viewBox.split(' ').map(Number);
@@ -865,7 +841,7 @@
     if (bkkExploded) setBkkExploded(false);
     const pl = plates[r];
     if (!pl) return;
-    const bb = pl.g.querySelector('.plate-face')?.getBBox?.();
+    const bb = pl.face?.getBBox?.();
     if (bb) {
       const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
       const fit = Math.min(VB[2] / bb.width, VB[3] / bb.height) * 0.72;

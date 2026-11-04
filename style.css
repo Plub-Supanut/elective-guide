@@ -7,6 +7,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* พื้นทึบสำหรับข้อความสีขาว — ค่าเดียวกันทั้งโหมดสว่าง/มืด เพื่อให้คอนทราสต์คงที่ */
+  --solid-sage:  #4f6a49;   /* ขาวบนพื้นนี้ = 5.9:1 */
+  --solid-terra: #a2562f;   /* ขาวบนพื้นนี้ = 5.2:1 */
   --sand:       #f5efe6;
   --sand-mid:   #ede4d7;
   --sand-dark:  #d8cbbf;
@@ -130,7 +133,7 @@ button, input, select, textarea { font-family: inherit; }
 .btn-primary {
   display: inline-block;
   padding: 0.85rem 2.2rem;
-  background: var(--terra-deep);
+  background: var(--solid-terra);
   color: #fff;
   border-radius: 50px;
   font-weight: 600;
@@ -403,7 +406,7 @@ section[id], [id="institutions"] { scroll-margin-top: 84px; }
 }
 .filter-btn:hover,
 .filter-btn.active {
-  background: var(--sage);
+  background: var(--solid-sage);
   border-color: var(--sage);
   color: #fff;
 }
@@ -560,7 +563,7 @@ section[id], [id="institutions"] { scroll-margin-top: 84px; }
 /* Code badge */
 .code {
   display: inline-block;
-  background: var(--sage-dark);
+  background: var(--solid-sage);
   color: #fff;
   border-radius: 6px;
   padding: 0.1rem 0.5rem;
@@ -607,7 +610,7 @@ section[id], [id="institutions"] { scroll-margin-top: 84px; }
   line-height: 1.35;
 }
 .badge-special {
-  background: var(--terra-deep);
+  background: var(--solid-terra);
   color: #fff;
   box-shadow: 0 2px 10px rgba(196, 113, 75, 0.3);
 }
@@ -816,7 +819,7 @@ h1, h2, h3, .section-title, .ssc-title, .tip-card h3 { text-wrap: balance; }
   border: 1px solid var(--border);
 }
 .mini-table th {
-  background: var(--sage);
+  background: var(--solid-sage);
   color: #fff;
   font-weight: 600;
 }
@@ -1076,7 +1079,7 @@ html.js .card:not(.expanded) .card-detail {
   transition: opacity 0.25s, transform 0.25s, visibility 0.25s, background 0.2s;
 }
 .to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-.to-top:hover { background: var(--sage); color: #fff; border-color: var(--sage); }
+.to-top:hover { background: var(--solid-sage); color: #fff; border-color: var(--sage); }
 
 /* ============================
    KEYBOARD FOCUS
@@ -1286,7 +1289,7 @@ input:focus-visible,
   align-items: center;
   gap: 1rem;
   padding: 1.4rem 1.5rem;
-  background: var(--terra);
+  background: var(--solid-terra);
   border-radius: var(--radius);
   color: #fff;
   text-decoration: none;
@@ -1347,7 +1350,7 @@ input:focus-visible,
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
 }
 .ssc-status:hover {
-  background: var(--sage);
+  background: var(--solid-sage);
   border-color: var(--sage);
   color: #fff;
   transform: translateY(-2px);
@@ -1416,7 +1419,7 @@ input:focus-visible,
 }
 .stat-card.is-active {
   border-color: var(--terra);
-  background: #fff;
+  background: var(--off-white);
 }
 /* กะพริบเบา ๆ ที่กล่องค้นหา เมื่อกดการ์ดสถิติ */
 .search-section.flash {
@@ -1612,7 +1615,7 @@ input:focus-visible,
 }
 .map-layer-btn:hover { background: var(--sand); border-color: var(--terra); }
 .map-layer-btn[aria-pressed="true"] {
-  background: var(--terra-deep);
+  background: var(--solid-terra);
   border-color: var(--terra-deep);
   color: #fff;
   font-weight: 600;
@@ -1637,7 +1640,7 @@ input:focus-visible,
 }
 .map-compare-btn:hover { background: var(--sand); border-color: var(--sage-dark); }
 .map-compare-btn.is-active {
-  background: var(--sage-dark);
+  background: var(--solid-sage);
   border-color: var(--sage-dark);
   color: #fff;
   font-weight: 600;
@@ -1696,8 +1699,8 @@ input:focus-visible,
 .map-pin.home-far .pin-halo { opacity: 0; }
 .pin-hub.home-far { opacity: 0.12; }
 .pin-hub.home-near .hub-dot { opacity: 1; }
-.plate.home-lit .plate-face { fill: var(--rc-lift); stroke: var(--rc-lift); }
-.plate.home-dim .plate-face { opacity: 0.25; }
+.plate.home-lit .plate-face { fill-opacity: 0.58; stroke-opacity: 0.7; }
+.plate.home-dim { opacity: 0.4; }
 
 /* Layer dim state */
 .map-pin.layer-dim .pin-dot { opacity: 0.1; }
@@ -1805,7 +1808,7 @@ input:focus-visible,
 }
 .map-bkk-btn[aria-pressed="true"],
 .map-bkk-btn.is-active {
-  background: var(--terra);
+  background: var(--solid-terra);
   border-color: var(--terra);
   color: #fff;
   box-shadow: 0 2px 8px rgba(196, 113, 75, 0.3);
@@ -1872,7 +1875,7 @@ input:focus-visible,
   background: var(--sand-mid);
 }
 .bkk-tab.is-active {
-  background: var(--terra);
+  background: var(--solid-terra);
   border-color: var(--terra);
   color: #fff;
 }
@@ -1891,7 +1894,7 @@ input:focus-visible,
   padding: 0.45rem 0.65rem;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--off-white);
   font-size: 0.8rem;
   color: var(--charcoal);
   text-align: left;
@@ -1931,7 +1934,7 @@ input:focus-visible,
   padding: 0.45rem 0.75rem;
   border: 1.5px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--off-white);
   font-size: 0.8rem;
   font-family: inherit;
   color: var(--charcoal);
@@ -2029,7 +2032,7 @@ input:focus-visible,
 .map-paper {
   position: relative;
   padding: 0.9rem;
-  background: radial-gradient(120% 82% at 50% 0%, #fbf7f0 0%, #f2eade 58%, #eae0cf 100%);
+  background: radial-gradient(120% 82% at 50% 0%, var(--map-paper-top) 0%, var(--map-paper) 58%, var(--map-depth) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -2059,7 +2062,7 @@ input:focus-visible,
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--map-ctrl-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border);
@@ -2074,7 +2077,7 @@ input:focus-visible,
   font-family: inherit;
 }
 .map-ctrl-btn:hover {
-  background: #fff;
+  background: var(--map-ctrl-hover);
   color: var(--terra);
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(44, 40, 36, 0.15);
@@ -2111,8 +2114,8 @@ input:focus-visible,
 }
 .map-svg { position: relative; display: block; width: 100%; height: auto; }
 .map-land path {
-  fill: #fbf6ec;                        /* แผ่นดินสว่างกว่า «ทะเล» ให้อ่านเป็นเกาะได้ทันที */
-  stroke: #fbf6ec;                      /* ★ เส้นสีเดียวกับพื้น = กลบรอยต่อระหว่างจังหวัด
+  fill: var(--map-land);                        /* แผ่นดินสว่างกว่า «ทะเล» ให้อ่านเป็นเกาะได้ทันที */
+  stroke: var(--map-land);                      /* ★ เส้นสีเดียวกับพื้น = กลบรอยต่อระหว่างจังหวัด
                                            (เดิมตีเส้นสีน้ำตาลทุกจังหวัด → ทั้งประเทศเป็นตะแกรงเส้น) */
   stroke-width: 2.4;
   stroke-linejoin: round;
@@ -2121,7 +2124,7 @@ input:focus-visible,
 /* เงา 2 ชั้น: ชั้นแรก 0 เบลอ = เส้นขอบบาง ๆ ตามรูปทรงจริงของประเทศ · ชั้นสอง = เงานุ่ม */
 .map-land { filter: drop-shadow(0 0 1px rgba(124, 102, 74, 0.55)) drop-shadow(0 5px 11px rgba(96, 70, 44, 0.13)); }
 .map-land .map-land-depth {
-  fill: #e7d8bf;
+  fill: var(--map-depth);
   stroke: none;
   transform: translate(3px, 4.5px);     /* ขอบหนาของแผ่นประเทศ */
   opacity: 0.85;
@@ -2138,30 +2141,32 @@ input:focus-visible,
 /* ── แผ่นภาค (plate): พื้นที่ของภาค ไม่ใช่ «แผ่นลอยขึ้น» ─────────────
    สีเดียวกับเส้นขอบ → รอยต่อระหว่างจังหวัดถูกกลบ ไม่เหลือเส้นซ้อนให้ตาลาย */
 .map-plates { pointer-events: none; }
-.plate { pointer-events: auto; cursor: pointer; transform-box: view-box;
+.plate { pointer-events: none; cursor: default; transform-box: view-box;
   transition: opacity 0.26s ease, filter 0.3s ease; }
-.plate-face { fill: var(--rc-soft, var(--rc)); stroke: var(--rc-soft, var(--rc));
-  stroke-width: 2.4; vector-effect: non-scaling-stroke;
-  transition: fill 0.26s ease, stroke 0.26s ease; }
-.plate-hit { fill: transparent; }
+.plate-face { fill: var(--rc); fill-opacity: 0.34; stroke: var(--rc); stroke-opacity: 0.34;
+  stroke-width: 1.1; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  transition: fill-opacity 0.26s ease, stroke-opacity 0.26s ease; pointer-events: none; }
+.province-border { fill: none; stroke: var(--map-prov-line); stroke-width: 0.45;
+  stroke-linejoin: round; vector-effect: non-scaling-stroke; pointer-events: none; }
+.region-border { fill: none; stroke: var(--map-reg-line); stroke-width: 1.15;
+  stroke-linejoin: round; vector-effect: non-scaling-stroke; pointer-events: none; }
 .plate-label-wrap { opacity: 1; transition: opacity 0.26s ease, transform 0.26s ease;
   transform: scale(var(--lk, 1)); transform-box: fill-box; transform-origin: center; }
 .plate-label-bg { display: none; }         /* ใช้เส้นขอบขาวรอบตัวอักษรแทนกล่อง (สะอาดกว่า) */
-.plate-label { font-size: 18px; font-weight: 600; letter-spacing: 0.015em; fill: #453d34;
+.plate-label { font-size: 18px; font-weight: 600; letter-spacing: 0.015em; fill: var(--map-label);
   text-anchor: middle; pointer-events: none;
-  paint-order: stroke; stroke: rgba(253, 250, 246, 0.92); stroke-width: 5px; stroke-linejoin: round; }
+  paint-order: stroke; stroke: var(--map-label-halo); stroke-width: 5px; stroke-linejoin: round; }
 
 /* "เพ่งภาค": สว่างขึ้น + เรืองแสงนุ่ม · ไม่ขยับตำแหน่ง (ตำแหน่งหมุดตรงกับที่กดเสมอ) */
-.plate.lit .plate-face { fill: var(--rc-lift, var(--rc)); stroke: var(--rc-lift, var(--rc)); }
+.plate.lit .plate-face { fill-opacity: 0.58; stroke-opacity: 0.7; }
 .plate.lit { filter: drop-shadow(0 0 9px rgba(160, 120, 80, 0.22)); }
-.plate.sel .plate-face { fill: var(--rc-lift, var(--rc)); stroke: var(--rc-lift, var(--rc)); }
+.plate.sel .plate-face { fill-opacity: 0.58; stroke-opacity: 0.7; }
 /* ป้ายชื่อภาค: แยกชั้นการแสดงผลออกจาก .plate (เพื่อไม่ให้โดน clip ตามรูปประเทศ) */
 .plate-labels.lit .plate-label-wrap, .plate-label-wrap.lit { opacity: 1; transform: scale(calc(var(--lk, 1) * 1.06)); }
 .plate-labels.sel .plate-label-wrap, .plate-label-wrap.sel { opacity: 1; }
 .plate-labels.dim .plate-label-wrap, .plate-label-wrap.dim { opacity: 0.18; }
-.plate.dim { opacity: 0.14; }
-.plate:focus-visible { outline: none; }
-.plate:focus-visible .plate-face { stroke: var(--rc); stroke-width: 2.6; }
+.plate.dim { opacity: 0.4; }
+
 
 /* ป้ายสรุปตัวเลขจริงของภาค — โผล่ตอน «เพ่งดู» ให้การ hover มีความหมาย */
 .plate-stat { opacity: 0; pointer-events: none; transition: opacity 0.24s ease;
@@ -2416,7 +2421,7 @@ input:focus-visible,
 .map-card-go {
   width: 100%; min-height: 42px;
   border: 1px solid var(--sage); border-radius: 10px;
-  background: var(--sage); color: #fff;
+  background: var(--solid-sage); color: #fff;
   font-family: inherit; font-size: 0.9rem; font-weight: 600;
   cursor: pointer; transition: background 0.2s;
 }
@@ -2495,7 +2500,7 @@ input:focus-visible,
 .map-card-near { margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
 .map-card-near p { margin: 0 0 0.45rem; font-size: 0.72rem; color: var(--warm-gray); }
 .map-near-pick { display: block; width: 100%; text-align: left; padding: 0.45rem 0.6rem; margin-bottom: 0.3rem;
-  border: 1px solid var(--border); border-radius: 8px; background: #fff; font: inherit; font-size: 0.8rem;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--off-white); font: inherit; font-size: 0.8rem;
   color: var(--charcoal); cursor: pointer; min-height: 44px; }
 .map-near-pick:hover { border-color: var(--terra); color: var(--terra); }
 .map-near-pick.is-current { background: var(--sand); border-color: var(--terra); font-weight: 600; }
@@ -2631,7 +2636,7 @@ html.js body.no-hero .sticky-nav .nav-links a[aria-current="page"] { color: var(
   padding: 0.85rem 1.7rem;
   border: 2px solid transparent;
   border-radius: 50px;
-  background: var(--terra);
+  background: var(--solid-terra);
   color: #fff;
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -2723,7 +2728,7 @@ a.stat-card { text-decoration: none; color: inherit; }
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .cat-chip:hover { border-color: var(--sage); color: var(--sage-dark); }
-.cat-chip.active { background: var(--sage); border-color: var(--sage-dark); color: #fff; }
+.cat-chip.active { background: var(--solid-sage); border-color: var(--sage-dark); color: #fff; }
 .cat-chip.active .cat-n { opacity: 0.9; }
 .cat-n { font-size: 0.75rem; opacity: 0.72; }
 
@@ -2853,7 +2858,7 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { c
   transition: background 0.2s, color 0.2s;
 }
 .year-switch button:hover { color: var(--charcoal); background: rgba(125, 155, 118, 0.14); }
-.year-switch button.is-on { background: var(--terra); color: #fff; }
+.year-switch button.is-on { background: var(--solid-terra); color: #fff; }
 
 /* มือถือ: ซ่อนตัวเลือกชั้นปีในแถบเมนู (ล้นขอบ) แล้วย้ายไปอยู่ในเมนู «⋯» แทน */
 @media (max-width: 760px) {
@@ -3424,3 +3429,115 @@ html[data-theme="dark"] .tips-section .section-badge { color: var(--dusk-light);
 
 /* dark: แผนที่ยังเป็น «กระดาษ» สีอ่อน (อ่านง่ายกว่าแผนที่ดำ) — ใส่กรอบเงาให้กลมกลืน */
 html[data-theme="dark"] .map-paper { box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border); }
+
+
+/* ============================
+   MAP COLORS (5 พ.ย. 2569) — สีแผนที่ขับด้วย token จึงเปลี่ยนตามธีมได้ทันที
+   ============================ */
+:root {
+  --map-paper-top: #fbf7f0;
+  --map-paper: #f2eade;
+  --map-depth: #e7d8bf;
+  --map-land: #fbf6ec;
+  --map-label: #453d34;
+  --map-label-halo: rgba(253, 250, 246, 0.92);
+  --map-prov-line: rgba(124, 102, 74, 0.34);
+  --map-reg-line: rgba(96, 72, 46, 0.6);
+}
+html[data-theme="dark"] {
+  --map-paper-top: #241d15;
+  --map-paper: #191410;
+  --map-depth: #0b0806;
+  --map-land: #1a1510;
+  --map-label: #efe6d8;
+  --map-label-halo: rgba(18, 14, 10, 0.9);
+  --map-prov-line: rgba(245, 239, 230, 0.2);
+  --map-reg-line: rgba(245, 239, 230, 0.45);
+}
+html[data-theme="dark"] .map-paper::before {
+  background: radial-gradient(92% 58% at 50% 0%, rgba(255, 246, 230, 0.1), rgba(255, 246, 230, 0) 72%);
+}
+html[data-theme="dark"] .map-land { filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.7)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5)); }
+html[data-theme="dark"] .plate-face { fill-opacity: 0.3; stroke-opacity: 0.3; }
+html[data-theme="dark"] .plate.lit .plate-face,
+html[data-theme="dark"] .plate.sel .plate-face,
+html[data-theme="dark"] .plate.home-lit .plate-face { fill-opacity: 0.52; stroke-opacity: 0.62; }
+html[data-theme="dark"] .map-paper { box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--border); }
+
+/* dark: แผ่น กทม. ที่ขยายแล้ว (เดิมฮาร์ดโค้ดสีอ่อน) */
+html[data-theme="dark"] .map-svg.bkk-exploded .plate[data-region="bkk"] .plate-face {
+  fill: rgba(208, 125, 85, 0.34);
+  stroke: var(--terra);
+}
+
+/* ปุ่มควบคุมซูมบนแผนที่ — ใช้ token (เดิมขาวทึบ มองไม่เห็นในโหมดมืด) */
+:root { --map-ctrl-bg: rgba(255, 255, 255, 0.94); }
+html[data-theme="dark"] { --map-ctrl-bg: rgba(36, 29, 21, 0.92); }
+html[data-theme="dark"] .map-ctrl-btn { box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4); color: #f1e9dd; }
+html[data-theme="dark"] .map-ctrl-btn:hover { background: rgba(48, 38, 28, 0.96); }
+
+
+/* ============================
+   DARK MODE — เก็บจุดที่ยังใช้สีอ่อน/คอนทราสต์ต่ำ (5 พ.ย. 2569)
+   ============================ */
+:root { --map-ctrl-hover: #ffffff; }
+html[data-theme="dark"] { --map-ctrl-hover: rgba(56, 44, 32, 0.98); }
+
+/* ตัวอักษรคั่น/คำอธิบายที่จางเกินไป */
+.btn-link-divider { color: rgba(245, 239, 230, 0.55); }
+.footer-sub { color: rgba(245, 239, 230, 0.62); }
+
+/* ลิงก์ในกล่องข้อมูลพิเศษ (เดิมปล่อยเป็นสีลิงก์ของเบราว์เซอร์) */
+.special-box a, .card-detail a { color: var(--terra-ink); }
+.special-box a:hover, .card-detail a:hover { color: var(--terra); }
+
+/* ป้าย/ชิปโทนกลางที่เดิมใช้ rgba ของสีเข้ม (มองไม่เห็นบนพื้นมืด) */
+html[data-theme="dark"] .badge {
+  background: rgba(245, 239, 230, 0.1);
+  border-color: rgba(245, 239, 230, 0.2);
+  color: var(--charcoal);
+}
+html[data-theme="dark"] .badge-cpird { background: rgba(196, 113, 75, 0.22); color: #f0b28c; }
+html[data-theme="dark"] .badge-dorm { background: rgba(125, 155, 118, 0.22); color: #bcd6b2; }
+html[data-theme="dark"] .badge-special { background: var(--solid-terra); color: #fff; }
+html[data-theme="dark"] .badge-regional { background: rgba(179, 137, 63, 0.22); color: #e2c48a; }
+
+/* พื้นกล่องในรายละเอียดการ์ด/ตาราง ให้ยังเห็นเป็นพื้นที่ในการ์ดมืด */
+html[data-theme="dark"] .special-box { background: rgba(208, 125, 85, 0.12); }
+html[data-theme="dark"] .card-detail { background: rgba(125, 155, 118, 0.08); }
+html[data-theme="dark"] .mini-table th { background: var(--solid-sage); }
+html[data-theme="dark"] .mini-table td { border-color: var(--border); }
+html[data-theme="dark"] .ys-table th { background: var(--sand-mid); }
+html[data-theme="dark"] .ys-table tr:hover td { background: rgba(245, 239, 230, 0.05); }
+html[data-theme="dark"] .card-title .code { background: var(--solid-sage); color: #fff; }
+
+/* dark: ไฮไลต์คำค้น (mark ใช้สีดำเริ่มต้นของเบราว์เซอร์) + หัวข้อในกล่องพิเศษ */
+.highlight { color: var(--charcoal); background: rgba(196, 113, 75, 0.22); }
+html[data-theme="dark"] .highlight { background: rgba(231, 166, 129, 0.26); color: #f7ede1; }
+html[data-theme="dark"] .special-box h4 { color: var(--terra-light) !important; }
+
+/* ============================
+   คอนทราสต์โหมดสว่าง: จุดที่ terracotta อ่อนบนพื้นอ่อนอ่านยาก (5 พ.ย. 2569)
+   ============================ */
+.nav-links a.nav-primary { color: var(--terra-ink); }
+.home-link-arrow { color: var(--terra-ink); }
+.card-detail .sub-list .note,
+.card-detail .sub-list .note .nm { color: var(--terra-ink); }
+.card-detail .special-box h4 { color: var(--terra-ink); }
+.footer-links span { color: rgba(245, 239, 230, 0.6); }
+html[data-theme="dark"] .nav-links a.nav-primary { color: var(--terra-light); }
+html[data-theme="dark"] .card-detail .special-box h4 { color: var(--terra-light) !important; }
+
+/* เมนู: ลิงก์หน้าปัจจุบัน — ใช้โทนเข้มพอผ่าน AA ทั้งพื้นอ่อนและพื้นทึบ */
+.nav-links a[aria-current="page"] { color: var(--terra-ink); }
+html.js .sticky-nav.eg-scrolled .nav-links a[aria-current="page"],
+html.js body.no-hero .sticky-nav .nav-links a[aria-current="page"] { color: var(--terra-ink); }
+html.js[data-theme="dark"] .sticky-nav .nav-links a[aria-current="page"] { color: var(--terra-light); }
+.card-detail .special-box h4 { color: var(--terra-ink) !important; }
+html[data-theme="dark"] .card-detail .special-box h4 { color: var(--terra-light) !important; }
+
+/* ลูกศร "หน้าถัดไป" และลิงก์อีเมลในกล่องสถานะ — ใช้โทนเข้มขึ้นให้ผ่าน AA บนพื้นอ่อน */
+.page-next-card .page-next-arrow { color: var(--terra-ink); }
+.ssc-status-note a { color: var(--terra-ink); }
+html[data-theme="dark"] .page-next-card .page-next-arrow { color: var(--terra-light); }
+html[data-theme="dark"] .ssc-status-note a { color: var(--terra-light); }
