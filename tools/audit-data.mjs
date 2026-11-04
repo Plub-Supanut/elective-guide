@@ -7,14 +7,14 @@
  *   2) ตรวจความถูกต้องเชิงโครงสร้าง: id ซ้ำ · ลิงก์ภายในพัง · จำนวนการ์ดไม่ตรงกับตัวเลขที่โชว์
  *   3) ตรวจความครบ: การ์ดที่มีเบอร์/อีเมล/ที่พัก/ชั้นปี/วันที่ตรวจ
  *   4) ตรวจความสด: การ์ดที่ยังไม่มี data-verified หรือตรวจล่าสุดเกิน 12 เดือน
- *   5) เขียนแผง «ข้อมูลที่เว็บมีตอนนี้» ลงหน้าแรก (กรอบ marker) + docs/data-status.md
+ *   5) เขียนรายงาน docs/data-status.md (ตัวเลขความครบ/ความสด)
  *
  * วิธีใช้
  *   node tools/audit-data.mjs            ตรวจ + เขียนรายงาน
  *   node tools/audit-data.mjs --check    ตรวจอย่างเดียว ไม่เขียนไฟล์ (exit 1 = มี error)
  *
  * ไฟล์ที่เขียน
- *   index.html            เฉพาะกรอบ <!-- COVERAGE:START/END -->
+ *   docs/data-status.md   รายงานที่คนอ่านได้
  *   docs/data-status.md   รายงานที่คนอ่านได้ (commit)
  *   data/audit-report.json สรุปสำหรับ CI (ไม่ commit)
  */
@@ -145,34 +145,8 @@ if (!dormFree && dormFreeBadge) warnings.push(`มีป้าย «ที่พ
 const regionalPlain = cards.filter(c => /regional-plain/.test(c.tags)).length;
 if (!regionalPlain) warnings.push('ตัวกรอง «รพ.จังหวัด» (regional-plain) ไม่มีแท็กนี้ในการ์ดเลย — กดแล้วจะไม่เจออะไร');
 
-// ── 5) เขียนแผงความครบลงหน้าแรก ────────────────────────────────
-// หมายเหตุ: แผงนี้ไม่มี indent นำหน้า เพราะ regex ด้านล่างกิน «ช่องว่างต้นบรรทัด» ไปด้วย
-// (เดิมไม่กิน ทำให้ทุกครั้งที่รัน indent เพิ่มขึ้นเรื่อย ๆ แล้ว bot commit ขยับบรรทัดเปล่า ๆ)
-const coveragePanel = () => `    <!-- COVERAGE:START -->
-    <section class="coverage-section" aria-labelledby="coverage-title">
-      <div class="container">
-        <h2 id="coverage-title" class="section-title fade-up">ข้อมูลที่เว็บมีตอนนี้</h2>
-        <p class="section-sub fade-up">
-          ตัวเลขชุดนี้คำนวณจากหน้าเว็บจริงทุกครั้งที่รัน <code>npm run audit</code> — ไม่ได้พิมพ์มือ
-        </p>
-        <ul class="coverage-grid fade-up">
-          <li><strong>${total}</strong><span>สถาบัน / ภาควิชา</span></li>
-          <li><strong>${withPhone}</strong><span>มีเบอร์โทร</span></li>
-          <li><strong>${withEmail}</strong><span>มีอีเมล</span></li>
-          <li><strong>${withDorm}</strong><span>มีที่พัก</span></li>
-          <li><strong>${withYears}</strong><span>ระบุชั้นปี</span></li>
-          <li><strong>${withVerified}</strong><span>มีวันที่ตรวจ</span></li>
-        </ul>
-        <p class="coverage-note fade-up">
-          ${withYears === 0
-    ? 'ข้อมูล «ชั้นปีที่รับ» ของสถาบันยังไม่มีในต้นฉบับ (ฟอร์มไม่ได้เก็บช่องนี้) — ปุ่ม «ชั้นปี» จึงเน้นผลกับหน้า «ในคณะ» และ «นอกคณะ» ก่อน'
-    : `ระบุชั้นปีแล้ว ${withYears} จาก ${total} แห่ง`}
-          · ตรวจล่าสุด ${thaiToday} ·
-          <a href="https://github.com/Plub-Supanut/elective-guide/issues/new">เจอข้อมูลผิด? แจ้งได้</a>
-        </p>
-      </div>
-    </section>
-    <!-- COVERAGE:END -->`;
+// ── 5) เขียนรายงาน ──────────────────────────────────────────────
+// (แผง «ข้อมูลที่เว็บมีตอนนี้» บนหน้าแรกถูกถอดออกตามคำขอ — ตัวเลขยังอยู่ใน docs/data-status.md)
 
 const report = {
   checkedAt: new Date().toISOString(),
@@ -186,14 +160,6 @@ const report = {
 if (!CHECK) {
   fs.mkdirSync(path.join(ROOT, 'data'), { recursive: true });
   fs.writeFileSync(path.join(ROOT, 'data', 'audit-report.json'), JSON.stringify(report, null, 2) + '\n');
-
-  // แผงบนหน้าแรก
-  if (home.includes('<!-- COVERAGE:START -->')) {
-    const next = home.replace(/^[ \t]*<!-- COVERAGE:START -->[\s\S]*?^[ \t]*<!-- COVERAGE:END -->/m, coveragePanel());
-    if (next !== home) fs.writeFileSync(path.join(ROOT, 'index.html'), next);
-  } else {
-    errors.push('index.html ไม่มีกรอบ <!-- COVERAGE:START/END --> สำหรับใส่แผงความครบ');
-  }
 
   // รายงานที่คนอ่านได้
   const md = `# สถานะข้อมูลของเว็บ
@@ -230,7 +196,7 @@ ${warnings.length ? warnings.map(w => `- ⚠️ ${w}`).join('\n') : '- ไม่
   console.log(`✓ ตรวจ ${PAGES.length} หน้า · การ์ด ${total} ใบ · เบอร์ ${withPhone} · อีเมล ${withEmail} · ที่พัก ${withDorm} · ชั้นปี ${withYears} · วันที่ตรวจ ${withVerified}`);
   if (errors.length) console.log(`✗ error ${errors.length}: \n  - ` + errors.join('\n  - '));
   if (warnings.length) console.log(`• คำเตือน ${warnings.length}: \n  - ` + warnings.join('\n  - '));
-  console.log('  → เขียน docs/data-status.md + data/audit-report.json + แผงใน index.html');
+  console.log('  → เขียน docs/data-status.md + data/audit-report.json');
 } else {
   console.log(`ตรวจ ${total} ใบ · error ${errors.length} · คำเตือน ${warnings.length}`);
   if (errors.length) errors.forEach(e => console.log('  ✗ ' + e));

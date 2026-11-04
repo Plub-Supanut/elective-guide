@@ -123,7 +123,7 @@
 | `data/ssc-state.json` | | สถานะข้อมูลรอบล่าสุด (ใช้เทียบว่าอะไรเปลี่ยน) |
 | `docs/ssc-history.md` | | ประวัติการเปลี่ยนข้อมูล — สร้างจาก `npm run sync` |
 | `tools/build-shell.mjs` | ~235 | เติม head / nav / footer ให้ตรงกันทั้ง 6 หน้า + ปุ่ม «ชั้นปีของฉัน» (มี `--check`) |
-| `tools/audit-data.mjs` | ~230 | ตรวจความครบ/ความสดของข้อมูล + เขียนแผงหน้าแรกและ `docs/data-status.md` |
+| `tools/audit-data.mjs` | ~200 | ตรวจความครบ/ความสดของข้อมูล แล้วเขียน `docs/data-status.md` |
 | `docs/data-status.md` | | รายงานสถานะข้อมูล — สร้างจาก `npm run audit` |
 | `tools/build-map.mjs` | ~110 | สร้าง `map-data.js` ใหม่ (ดูหัวข้อ «แผนที่» ด้านล่าง) |
 | `tools/map-geocode.json` | | แคชพิกัดจาก OpenStreetMap กันยิงซ้ำ |
@@ -153,7 +153,7 @@ python -m http.server 8765      # แล้วเปิด http://127.0.0.1:8765
 |---|---|
 | `npm run shell` | เติม head / nav / footer ให้ตรงกันทุกหน้า (หลังแก้เมนู) |
 | `npm run shell:check` | ตรวจว่าเปลือกหน้าตรงกันทุกหน้า (exit 2 = ไม่ตรง) |
-| `npm run audit` | ตรวจความครบ/ความสดของข้อมูล + เขียนแผงหน้าแรกกับ `docs/data-status.md` |
+| `npm run audit` | ตรวจความครบ/ความสดของข้อมูล แล้วเขียน `docs/data-status.md` |
 | `npm run audit:check` | ตรวจข้อมูลอย่างเดียว ไม่เขียนไฟล์ (exit 1 = มี error) |
 | `npm run sync` | ดึงข้อมูลจาก SSCs Guide มาอัปเดตหน้า «นอกคณะ»/«ในคณะ» |
 | `npm run map` | สร้าง `map-data.js` ใหม่ (ใช้พิกัดที่แคชไว้) |
