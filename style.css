@@ -3028,3 +3028,73 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch-label { co
 
 .timeline-block { margin: 0 0 1.6rem; }
 .timeline-block .scan-title { margin-bottom: 0.3rem; }
+
+/* ============================
+   TYPOGRAPHY BREATHING PASS (5 พ.ย. 2569)
+   ภาษาไทยมีสระบน/ล่างและวรรณยุกต์ → หัวข้อและลิงก์ที่ตัดขึ้นบรรทัดใหม่
+   ต้องมีที่หายใจมากกว่าภาษาอังกฤษ กันวรรณยุกต์ชนบรรทัดบน/ล่าง
+   ============================ */
+.page-title,
+.section-title { line-height: 1.32; }
+
+.card-title { line-height: 1.45; }
+
+.ssc-title { line-height: 1.5; }
+.ssc-link-title { line-height: 1.6; }
+.ssc-link-meta { line-height: 1.55; }
+.ssc-desc { line-height: 1.7; }
+
+/* ป้ายวันในเส้นเวลา: เว้นจากชื่อรอบให้อ่านแยกกันชัด */
+.round-timeline .rt-date { margin-top: 4px; line-height: 1.5; }
+.round-timeline .rt-label { line-height: 1.5; }
+
+/* แถวกราฟภาพรวม: ให้มีช่องไฟระหว่างแถวมากขึ้นเล็กน้อย */
+.scan-chart { gap: 0.5rem; }
+.scan-row { padding: 0.22rem 0.2rem; }
+
+/* หัวข้อส่วน + คำอธิบาย: เว้นให้เห็นว่าเป็นคนละก้อน */
+.section-header .section-title { margin-bottom: 10px; }
+.section-header .section-sub { line-height: 1.75; }
+
+/* การ์ด SSC: ชื่อการ์ดกับคำอธิบายไม่ให้ติดกัน */
+.ssc-card .ssc-title { margin-bottom: 6px; }
+.ssc-card .ssc-desc { margin-top: 0; }
+
+/* ลิงก์ในลิสต์: ชื่อกับบรรทัดข้อมูล (meta) ให้มีช่องไฟแนวตั้ง */
+.ssc-links .ssc-link-title { display: block; margin-bottom: 3px; }
+.ssc-links .ssc-link-meta { display: block; }
+
+/* ตารางสถานะรายชั้นปี: เพิ่มช่องไฟแนวนอนในเซลล์เล็กน้อย */
+.ys-table th { line-height: 1.55; }
+.ys-table td { line-height: 1.7; }
+
+/* หน้าสถาบัน: การ์ด header ให้มี row-gap เมื่อป้ายขึ้นบรรทัดใหม่ */
+.card-header { row-gap: 6px; }
+
+/* หมายเหตุใต้รายการในการ์ด (เช่น «ปิดรับแล้ว — ติดต่อฝ่ายวิชาการ», «ยังไม่ประกาศ = …»)
+   เดิมไม่มีสไตล์เลย → ติดกับรายการด้านบนจนดูอึดอัด */
+.ssc-note {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--warm-gray);
+}
+
+/* หัว hero ภาษาไทยมีสระ/วรรณยุกต์บนล่าง — 1.1 ทำให้สองบรรทัดชิดกันเกินไป */
+.hero-title { line-height: 1.18; }
+
+/* กริด «คู่»: การ์ด 2 ใบวางข้างกันเต็มความกว้าง (กันช่องว่างท้ายแถวจาก auto-fit)
+   ใช้กับหน้า นอกคณะ (แบบฟอร์ม + กำหนดการ) และหน้า ในคณะ (ชีต รอบแรก + คงเหลือ) */
+.ssc-grid--pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 720px) {
+  .ssc-grid--pair { grid-template-columns: 1fr; }
+}
+
+/* บนจอเล็ก หัวข้อจะตัดขึ้นบรรทัดใหม่บ่อย → เพิ่มระยะบรรทัดให้วรรณยุกต์ไม่ชนกัน */
+@media (max-width: 720px) {
+  .page-title,
+  .section-title { line-height: 1.4; }
+  .ssc-cta-title,
+  .ssc-title { line-height: 1.45; }
+  .hero-title { line-height: 1.22; }
+}

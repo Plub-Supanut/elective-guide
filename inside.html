@@ -13,7 +13,7 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css?v=20261105b" />
+    <link rel="stylesheet" href="style.css?v=20261105f" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -33,9 +33,9 @@
           <a href="https://plub-supanut.github.io/" target="_blank" rel="noopener noreferrer">รวมลิงก์</a>
           <div class="year-switch year-switch--nav" role="group" aria-label="ชั้นปีของฉัน">
             <span class="year-switch-label">ชั้นปี</span>
-            <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ป.4</button>
-            <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ป.5</button>
-            <button type="button" data-year="6" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 6">ป.6</button>
+            <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ปี 4</button>
+            <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ปี 5</button>
+            <button type="button" data-year="6" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 6">ปี 6</button>
           </div>
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer" class="nav-github" aria-label="GitHub Repository">
             <svg height="20" viewBox="0 0 16 16" width="20" aria-hidden="true" fill="currentColor">
@@ -57,9 +57,9 @@
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
           <div class="year-switch year-switch--menu" role="group" aria-label="ชั้นปีของฉัน (เมนูมือถือ)">
             <span class="year-switch-label">ชั้นปี</span>
-            <button type="button" data-year="4" aria-pressed="false">ป.4</button>
-            <button type="button" data-year="5" aria-pressed="false">ป.5</button>
-            <button type="button" data-year="6" aria-pressed="false">ป.6</button>
+            <button type="button" data-year="4" aria-pressed="false">ปี 4</button>
+            <button type="button" data-year="5" aria-pressed="false">ปี 5</button>
+            <button type="button" data-year="6" aria-pressed="false">ปี 6</button>
           </div>
         </div>
       </div>
@@ -140,9 +140,9 @@
           <h3 class="scan-title">เส้นเวลารอบการยื่น « ในคณะ »</h3>
           <div class="timeline-scroll">
             <ol class="round-timeline">
-              <li class="is-open"><span class="rt-label">ป.5</span><span class="rt-date">6 พ.ย. 2569</span></li>
-              <li class="is-past"><span class="rt-label">ป.6 R0 (รอบ 2)</span><span class="rt-date">4 ก.พ. 2569</span></li>
-              <li class="is-past"><span class="rt-label">ป.6 R4-R6</span><span class="rt-date">27 ก.ค. 2569</span></li>
+              <li class="is-open"><span class="rt-label">ปี 5</span><span class="rt-date">6 พ.ย. 2569</span></li>
+              <li class="is-past"><span class="rt-label">ปี 6 R0 (รอบ 2)</span><span class="rt-date">4 ก.พ. 2569</span></li>
+              <li class="is-past"><span class="rt-label">ปี 6 R4-R6</span><span class="rt-date">27 ก.ค. 2569</span></li>
             </ol>
           </div>
         </div>
@@ -196,8 +196,8 @@
           </p>
         </div>
 
-        <div class="ssc-grid">
-          <article class="ssc-card ssc-card--wide fade-up">
+        <div class="ssc-grid ssc-grid--pair">
+          <article class="ssc-card fade-up ssc-card--sheet">
             <h3 class="ssc-title">ข้อมูลรายวิชา · รอบแรก</h3>
             <p class="ssc-desc">รายวิชาที่เปิดในรอบนี้ แยกตามชั้นปี</p>
             <ul class="ssc-links">
@@ -221,7 +221,7 @@
               </li>
             </ul>
           </article>
-          <article class="ssc-card ssc-card--wide fade-up">
+          <article class="ssc-card fade-up ssc-card--sheet">
             <h3 class="ssc-title">ข้อมูลรายวิชา · คงเหลือ</h3>
             <p class="ssc-desc">รายวิชาที่ที่นั่งยังเหลือ หลังรอบแรก</p>
             <ul class="ssc-links">
@@ -245,7 +245,7 @@
               </li>
             </ul>
           </article>
-          <article class="ssc-card fade-up">
+          <article class="ssc-card ssc-card--wide fade-up">
             <h3 class="ssc-title">เนื้อหารายวิชา</h3>
             <p class="ssc-desc">ดูคำอธิบายรายวิชา หน่วยกิต และเงื่อนไขการลงทะเบียน</p>
             <ul class="ssc-links">

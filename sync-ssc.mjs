@@ -301,7 +301,7 @@ ${statusPills}
 
 ${timeline}
 
-        <div class="ssc-grid">
+        <div class="ssc-grid ssc-grid--pair">
           <!-- แบบฟอร์มที่ใช้บ่อย -->
           <article class="ssc-card fade-up">
             <h3 class="ssc-title">แบบฟอร์มที่ต้องใช้</h3>
@@ -522,7 +522,7 @@ function renderInside(m, stamp) {
       : grade.kind === 'open' ? 'is-open'
         : grade.kind === 'moved' ? 'is-moved' : 'is-unknown';
     return {
-      label: `ป.${g.year}${g.round ? ' ' + g.round : ''}`,
+      label: `ปี ${g.year}${g.round ? ' ' + g.round : ''}`,
       date: g.deadline ? isoToShortThai(g.deadline.iso) : 'ยังไม่ประกาศ',
       kind,
     };
@@ -560,7 +560,7 @@ ${notes.length ? `            <p class="ssc-note">${notes.map(esc).join(' · ')}
                   <span class="ssc-link-meta">Google Sheets${lockOf(m.sheetsLocked)}</span>
                 </a>
               </li>`).join('\n');
-    return `          <article class="ssc-card ssc-card--wide fade-up">
+    return `          <article class="ssc-card fade-up ssc-card--sheet">
             <h3 class="ssc-title">ข้อมูลรายวิชา · ${esc(set)}</h3>
             <p class="ssc-desc">${set === 'คงเหลือ' ? 'รายวิชาที่ที่นั่งยังเหลือ หลังรอบแรก' : 'รายวิชาที่เปิดในรอบนี้ แยกตามชั้นปี'}</p>
             <ul class="ssc-links">
@@ -569,7 +569,7 @@ ${items}
           </article>`;
   }).join('\n');
 
-  const cucisCard = m.cucis ? `          <article class="ssc-card fade-up">
+  const cucisCard = m.cucis ? `          <article class="ssc-card ssc-card--wide fade-up">
             <h3 class="ssc-title">เนื้อหารายวิชา</h3>
             <p class="ssc-desc">ดูคำอธิบายรายวิชา หน่วยกิต และเงื่อนไขการลงทะเบียน</p>
             <ul class="ssc-links">
@@ -646,7 +646,7 @@ ${groupCards}
           </p>
         </div>
 
-        <div class="ssc-grid">
+        <div class="ssc-grid ssc-grid--pair">
 ${sheetCards}
 ${cucisCard}
         </div>
