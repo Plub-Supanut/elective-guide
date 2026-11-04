@@ -248,6 +248,7 @@ button, input, select, textarea { font-family: inherit; }
 }
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 1.8rem;
 }
 .nav-links a {
@@ -2837,7 +2838,6 @@ a.stat-card { text-decoration: none; color: inherit; }
 }
 html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch { background: rgba(28, 23, 18, 0.42); border-color: rgba(245, 239, 230, 0.34); }
 html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { color: rgba(245, 239, 230, 0.85); }
-.year-switch-label { font-size: 0.72rem; color: var(--warm-gray); padding: 0 0.3rem; }
 .year-switch button {
   min-height: 24px;
   min-width: 38px;
@@ -2854,7 +2854,6 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { c
 }
 .year-switch button:hover { color: var(--charcoal); background: rgba(125, 155, 118, 0.14); }
 .year-switch button.is-on { background: var(--terra); color: #fff; }
-@media (max-width: 900px) { .year-switch-label { display: none; } }
 
 /* มือถือ: ซ่อนตัวเลือกชั้นปีในแถบเมนู (ล้นขอบ) แล้วย้ายไปอยู่ในเมนู «⋯» แทน */
 @media (max-width: 760px) {
@@ -2868,7 +2867,6 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch button { c
   border-radius: 999px;
   background: var(--sand);
 }
-.year-switch--menu .year-switch-label { display: inline; }
 
 /* ข้อมูลของชั้นปีที่ไม่ได้เลือกจะจางลง (ยังอ่านได้ ไม่ได้ซ่อน) */
 html[data-year="4"] [data-years]:not([data-years~="4"]),
@@ -2912,7 +2910,6 @@ html[data-year="6"] .ssc-card[data-years~="6"] { box-shadow: 0 0 0 2px rgba(125,
 }
 
 /* ป้าย «ชั้นปี» บนเมนูโปร่งใส (หน้าแรกตอนยังไม่เลื่อน) ต้องอ่านออก */
-html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .year-switch-label { color: rgba(245, 239, 230, 0.82); }
 
 /* ── การ์ด: แถบสีภูมิภาคซ้ายมือ + ป้ายชื่อภาค ── */
 .card.has-region { position: relative; }

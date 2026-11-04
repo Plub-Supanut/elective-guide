@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261105f';
+const CSS_VERSION = '20261105g';
 
 // ── หนี้ทุกหน้าของเว็บ (เพิ่มหน้าใหม่ = เพิ่มบรรทัดที่นี่) ───────────────
 const PAGES = [
@@ -110,7 +110,6 @@ const nav = active => {
           <a href="tips.html"${cur('tips')}>คำแนะนำ</a>
           
           <div class="year-switch year-switch--nav" role="group" aria-label="ชั้นปีของฉัน">
-            <span class="year-switch-label">ชั้นปี</span>
             <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ปี 4</button>
             <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ปี 5</button>
             <button type="button" data-year="6" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 6">ปี 6</button>
@@ -132,7 +131,6 @@ ${GITHUB_SVG}
           
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
           <div class="year-switch year-switch--menu" role="group" aria-label="ชั้นปีของฉัน (เมนูมือถือ)">
-            <span class="year-switch-label">ชั้นปี</span>
             <button type="button" data-year="4" aria-pressed="false">ปี 4</button>
             <button type="button" data-year="5" aria-pressed="false">ปี 5</button>
             <button type="button" data-year="6" aria-pressed="false">ปี 6</button>
@@ -168,7 +166,7 @@ const footer = `    <footer class="footer">
           <a href="https://github.com/Plub-Supanut/elective-guide/issues/new">แจ้งได้ที่นี่</a>
         </p>
         <p class="footer-sub" style="margin-top: 0.4rem; font-size: 0.85em; opacity: 0.8;">
-          Built with Claude ✨
+          Built with DeepSeek ✨
         </p>
       </div>
     </footer>`;
