@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261105m';
+const CSS_VERSION = '20261105q';
 
 // ── หนี้ทุกหน้าของเว็บ (เพิ่มหน้าใหม่ = เพิ่มบรรทัดที่นี่) ───────────────
 const PAGES = [
@@ -84,6 +84,15 @@ const GITHUB_SVG = `            <svg height="20" viewBox="0 0 16 16" width="20" 
 const head = p => `    <meta charset="UTF-8" />
     <script>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // ตั้งธีมก่อนวาดหน้า (กันจอกระพริบ): เลือกที่บันทึกไว้ ถ้าไม่เคยเลือกใช้ค่าของระบบ
+      try {
+        var themePref = localStorage.getItem('eg:theme');
+        var sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme =
+          (themePref === 'dark' || themePref === 'light') ? themePref : (sysDark ? 'dark' : 'light');
+      } catch (e) {}
+    </script>
     <title>${p.title}</title>
     <meta name="description" content="${p.desc}" />
     <!-- ฟอนต์ self-host (Thai + Latin subset) — ไม่พึ่ง Google Fonts แล้ว -->
@@ -109,6 +118,9 @@ const nav = active => {
           <a href="outside.html"${cur('outside')}>นอกคณะ</a>
           <a href="tips.html"${cur('tips')}>คำแนะนำ</a>
           
+          <button type="button" class="theme-toggle" data-theme-toggle aria-label="ธีม: ตามระบบ (กดเพื่อเปลี่ยน)" title="ธีม: ตามระบบ">
+            <span class="theme-ico" aria-hidden="true">🌗</span>
+          </button>
           <div class="year-switch year-switch--nav" role="group" aria-label="ชั้นปีของฉัน">
             <button type="button" data-year="4" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 4">ปี 4</button>
             <button type="button" data-year="5" aria-pressed="false" title="เน้นข้อมูลของชั้นปีที่ 5">ปี 5</button>
@@ -130,6 +142,9 @@ ${GITHUB_SVG}
           <a href="tips.html">คำแนะนำ</a>
           
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <button type="button" class="theme-toggle" data-theme-toggle>
+            <span class="theme-ico" aria-hidden="true">🌗</span><span class="theme-label">ธีม: ตามระบบ</span>
+          </button>
           <div class="year-switch year-switch--menu" role="group" aria-label="ชั้นปีของฉัน (เมนูมือถือ)">
             <button type="button" data-year="4" aria-pressed="false">ปี 4</button>
             <button type="button" data-year="5" aria-pressed="false">ปี 5</button>

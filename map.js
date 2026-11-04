@@ -1387,6 +1387,21 @@
     document.querySelectorAll('.map-layer-btn').forEach(b => {
       b.setAttribute('aria-pressed', b.dataset.layer === activeLayer ? 'true' : 'false');
     });
+    // บอกให้ชัดว่ากำลังเน้นอะไร (เดิมกดแล้วเหมือนไม่มีอะไรเกิดขึ้น)
+    const note = document.getElementById('mapLayerNote');
+    if (note) {
+      const dormN = M.pins.filter(p => p.d).length;
+      const freeN = M.pins.filter(p => p.f).length;
+      if (!activeLayer) {
+        note.hidden = true;
+        note.textContent = '';
+      } else {
+        note.hidden = false;
+        note.textContent = activeLayer === 'dorm'
+          ? `เน้นเฉพาะสถาบันที่มีที่พัก · ${dormN} แห่ง`
+          : `เน้นเฉพาะสถาบันที่มีที่พักฟรี · ${freeN} แห่ง`;
+      }
+    }
   };
   document.querySelectorAll('.map-layer-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1395,95 +1410,145 @@
     });
   });
 
-  // ══ FEATURE: ใกล้บ้านฉัน (Province proximity) ════════════════
-  // เลือกจังหวัดบ้านเกิด → highlight สถาบันที่อยู่ในภาคนั้น (พร้อมซูมไปที่ภาค)
-  const PROV_REGION = {
-    // ภาคเหนือ
-    'เชียงใหม่':'north','เชียงราย':'north','ลำพูน':'north','ลำปาง':'north','แม่ฮ่องสอน':'north',
-    'พะเยา':'north','แพร่':'north','น่าน':'north','อุตรดิตถ์':'north','ตาก':'north',
-    'สุโขทัย':'north','พิษณุโลก':'north','พิจิตร':'north','กำแพงเพชร':'north','เพชรบูรณ์':'north',
-    // ภาคกลาง
-    'กรุงเทพมหานคร':'bkk','นนทบุรี':'bkk','ปทุมธานี':'bkk','สมุทรปราการ':'bkk',
-    'อยุธยา':'central','สระบุรี':'central','ลพบุรี':'central','สิงห์บุรี':'central',
-    'อ่างทอง':'central','ชัยนาท':'central','นครสวรรค์':'central','อุทัยธานี':'central',
-    'สุพรรณบุรี':'central','นครปฐม':'central','สมุทรสาคร':'central','สมุทรสงคราม':'central',
-    'ราชบุรี':'central','กาญจนบุรี':'central','เพชรบุรี':'central','ประจวบคีรีขันธ์':'central',
-    // ภาคตะวันออก
-    'ชลบุรี':'east','ระยอง':'east','จันทบุรี':'east','ตราด':'east','ฉะเชิงเทรา':'east',
-    'ปราจีนบุรี':'east','สระแก้ว':'east','นครนายก':'east',
-    // ภาคอีสาน
-    'นครราชสีมา':'isan','ขอนแก่น':'isan','อุดรธานี':'isan','อุบลราชธานี':'isan',
-    'สกลนคร':'isan','บึงกาฬ':'isan','หนองคาย':'isan','หนองบัวลำภู':'isan',
-    'เลย':'isan','ชัยภูมิ':'isan','บุรีรัมย์':'isan','สุรินทร์':'isan',
-    'ศรีสะเกษ':'isan','ร้อยเอ็ด':'isan','มหาสารคาม':'isan','กาฬสินธุ์':'isan',
-    'มุกดาหาร':'isan','ยโสธร':'isan','อำนาจเจริญ':'isan','นครพนม':'isan',
-    // ภาคใต้
-    'สงขลา':'south','ภูเก็ต':'south','สุราษฎร์ธานี':'south','นครศรีธรรมราช':'south',
-    'กระบี่':'south','ตรัง':'south','พัทลุง':'south','สตูล':'south',
-    'ปัตตานี':'south','ยะลา':'south','นราธิวาส':'south','ชุมพร':'south',
-    'ระนอง':'south','พังงา':'south',
-  };
-  const PROVINCES_BY_REGION = {};
-  Object.entries(PROV_REGION).forEach(([p, r]) => { (PROVINCES_BY_REGION[r] = PROVINCES_BY_REGION[r] || []).push(p); });
+  // ══ FEATURE: เลือกจังหวัด → เน้นขอบจังหวัด + ซูม + รายชื่อสถาบัน ══
+// ข้อมูลจังหวัด (เส้นขอบ + bbox + ชื่อไทย) มาจาก map-data.js ที่ build จาก thailand.json
+const provList = (M && Array.isArray(M.prov)) ? M.prov : [];
+const PROV_BY_NAME = new Map(provList.map(p => [p.n, p]));
 
-  let homeRegion = null;
-  const homeSelect = document.getElementById('map-home-prov');
-  if (homeSelect) {
-    Object.entries(REGION).forEach(([key, meta]) => {
-      const group = document.createElement('optgroup');
-      group.label = meta.name;
-      (PROVINCES_BY_REGION[key] || []).sort().forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = key + ':' + p;
-        opt.textContent = p;
-        group.appendChild(opt);
-      });
-      if (group.children.length) homeSelect.appendChild(group);
+// ชั้นไฮไลต์เส้นขอบจังหวัด (เหนือแผ่นภาค ใต้หมุด)
+const gProv = document.createElementNS(NS, 'g');
+gProv.setAttribute('class', 'map-prov-focus');
+gProv.style.display = 'none';
+gProv.style.pointerEvents = 'none';
+const provShape = document.createElementNS(NS, 'path');
+provShape.setAttribute('class', 'province-shape');
+gProv.appendChild(provShape);
+gZoom.insertBefore(gProv, gPins);
+
+const homeSelect = document.getElementById('map-home-prov');
+const provInfo = document.getElementById('map-prov-info');
+const provClear = document.getElementById('map-home-clear');
+
+if (homeSelect && provList.length) {
+  const byRegion = {};
+  provList.forEach(p => (byRegion[p.r] = byRegion[p.r] || []).push(p.n));
+  Object.entries(REGION).forEach(([key, meta]) => {
+    const names = (byRegion[key] || []).slice().sort((x, y) => x.localeCompare(y, 'th'));
+    if (!names.length) return;
+    const group = document.createElement('optgroup');
+    group.label = meta.name;
+    names.forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n;
+      opt.textContent = n;
+      group.appendChild(opt);
     });
-    const applyHome = () => {
-      dots.forEach(rec => {
-        rec.g.classList.toggle('home-near', !!homeRegion && rec.p.r === homeRegion);
-        rec.g.classList.toggle('home-far', !!homeRegion && rec.p.r !== homeRegion && !rec.cluster);
+    homeSelect.appendChild(group);
+  });
+}
+
+let provFocus = null;
+const provPins = name => M.pins.filter(p => p.pv === name);
+const provDotMatching = (rec, name) =>
+  (rec.p && rec.p.pv === name) || (rec.cluster && Array.isArray(rec.list) && rec.list.some(r => r.p.pv === name));
+
+const clearProvince = () => {
+  provFocus = null;
+  gProv.style.display = 'none';
+  dots.forEach(rec => rec.g.classList.remove('home-near', 'home-far'));
+  hubList.forEach(h => h.g.classList.remove('home-near', 'home-far'));
+  Object.values(plates).forEach(pl => pl.g.classList.remove('home-lit', 'home-dim'));
+  if (homeSelect) homeSelect.value = '';
+  if (provInfo) { provInfo.hidden = true; provInfo.replaceChildren(); }
+  resetCam();
+};
+
+const applyProvince = (name) => {
+  const p = PROV_BY_NAME.get(name);
+  if (!p) { clearProvince(); return; }
+  provFocus = p;
+
+  // 1) ไฮไลต์เส้นขอบจังหวัดที่เลือก
+  provShape.setAttribute('d', p.d);
+  gProv.style.display = '';
+  Object.entries(plates).forEach(([r, pl]) => {
+    pl.g.classList.toggle('home-lit', r === p.r);
+    pl.g.classList.toggle('home-dim', r !== p.r);
+  });
+
+  // 2) หมุดในจังหวัดนี้นำ ที่เหลือจาง
+  dots.forEach(rec => {
+    const on = provDotMatching(rec, name);
+    rec.g.classList.toggle('home-near', on);
+    rec.g.classList.toggle('home-far', !on && !rec.cluster);
+  });
+  hubList.forEach(h => {
+    const on = Array.isArray(h.list) && h.list.some(r => r.p.pv === name);
+    h.g.classList.toggle('home-near', on);
+    h.g.classList.toggle('home-far', !on);
+  });
+
+  // 3) ซูมไปที่จังหวัด
+  const [x0, y0, x1, y1] = p.bb;
+  const w = Math.max(10, x1 - x0), h = Math.max(10, y1 - y0);
+  const fit = Math.min(VB[2] / w, VB[3] / h) * 0.7;
+  cam.kT = Math.max(1.2, Math.min(6, fit));
+  cam.txT = VB[2] / 2 - ((x0 + x1) / 2) * cam.kT;
+  cam.tyT = VB[3] / 2 - ((y0 + y1) / 2) * cam.kT;
+  clampCam(); kickCam();
+
+  // 4) รายชื่อสถาบันในจังหวัด (กดแล้วเปิดการ์ดหมุดนั้นบนแผนที่)
+  if (provInfo) {
+    const list = provPins(name);
+    provInfo.replaceChildren();
+    const head = document.createElement('p');
+    head.className = 'map-prov-head';
+    head.textContent = list.length
+      ? `📍 ${name} · ${list.length} สถาบัน`
+      : `📍 ${name} · ยังไม่มีสถาบันในรายการ`;
+    provInfo.appendChild(head);
+    if (list.length) {
+      const ul = document.createElement('ul');
+      ul.className = 'map-prov-list';
+      list.slice(0, 8).forEach(pin => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = pin.n;
+        btn.addEventListener('click', () => {
+          const rec = dots.find(d => d.p === pin);
+          if (rec) openPin(rec);
+          else showCard(pin);
+        });
+        li.appendChild(btn);
+        ul.appendChild(li);
       });
-      hubList.forEach(h => {
-        h.g.classList.toggle('home-near', !!homeRegion && h.g.dataset.region === homeRegion);
-        h.g.classList.toggle('home-far', !!homeRegion && h.g.dataset.region !== homeRegion);
-      });
-      Object.entries(plates).forEach(([r, pl]) => {
-        pl.g.classList.toggle('home-lit', !!homeRegion && r === homeRegion);
-        pl.g.classList.toggle('home-dim', !!homeRegion && r !== homeRegion);
-      });
-      // ซูมไปที่ภาคบ้านเกิด
-      if (homeRegion && plates[homeRegion]) {
-        const bb = plates[homeRegion].g.querySelector('.plate-face')?.getBBox?.();
-        if (bb) {
-          const cx = bb.x + bb.width / 2, cy = bb.y + bb.height / 2;
-          const fit = Math.min(VB[2] / bb.width, VB[3] / bb.height) * 0.65;
-          cam.kT = Math.max(1.2, Math.min(3.5, fit));
-          cam.txT = VB[2] / 2 - cx * cam.kT;
-          cam.tyT = VB[3] / 2 - cy * cam.kT;
-          clampCam(); kickCam();
-        }
-      } else if (!homeRegion) {
-        resetCam();
+      provInfo.appendChild(ul);
+      if (list.length > 8) {
+        const more = document.createElement('p');
+        more.className = 'map-prov-more';
+        more.textContent = `และอีก ${list.length - 8} แห่ง`;
+        provInfo.appendChild(more);
       }
-    };
-    homeSelect.addEventListener('change', () => {
-      const v = homeSelect.value;
-      homeRegion = v ? v.split(':')[0] : null;
-      applyHome();
-    });
-    const clearHomeBtn = document.getElementById('map-home-clear');
-    if (clearHomeBtn) {
-      clearHomeBtn.addEventListener('click', () => {
-        homeSelect.value = '';
-        homeRegion = null;
-        applyHome();
-      });
     }
+    provInfo.hidden = false;
   }
+};
 
-  // ══ FEATURE: Compare Mode ═════════════════════════════════════
+if (homeSelect) {
+  homeSelect.addEventListener('change', () => {
+    if (homeSelect.value) applyProvince(homeSelect.value);
+    else clearProvince();
+  });
+}
+if (provClear) {
+  provClear.addEventListener('click', () => {
+    if (homeSelect) homeSelect.value = '';
+    clearProvince();
+  });
+}
+
+// ══ FEATURE: Compare Mode ═════════════════════════════════════
   // กดปุ่ม Compare แล้วเลือก 2 สถาบัน → แสดง side-by-side ใน panel
   let compareMode = false;
   let compareList = [];   // max 2 pins

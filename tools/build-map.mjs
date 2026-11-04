@@ -20,6 +20,32 @@ const CACHE = path.join(ROOT, 'tools', 'map-geocode.json');
 const OUT = path.join(ROOT, 'map-data.js');
 const SRC_URL = 'https://raw.githubusercontent.com/apisit/thailand.json/master/thailand.json';
 
+// ชื่อจังหวัดในข้อมูลต้นทางเป็นอังกฤษ → แปลงเป็นไทย (ใช้แสดงในตัวเลือกจังหวัด)
+const TH_NAME = {
+  'Amnat Charoen': 'อำนาจเจริญ', 'Ang Thong': 'อ่างทอง', 'Bangkok Metropolis': 'กรุงเทพมหานคร',
+  'Bueng Kan': 'บึงกาฬ', 'Buri Ram': 'บุรีรัมย์', 'Chachoengsao': 'ฉะเชิงเทรา', 'Chai Nat': 'ชัยนาท',
+  'Chaiyaphum': 'ชัยภูมิ', 'Chanthaburi': 'จันทบุรี', 'Chiang Mai': 'เชียงใหม่', 'Chiang Rai': 'เชียงราย',
+  'Chon Buri': 'ชลบุรี', 'Chumphon': 'ชุมพร', 'Kalasin': 'กาฬสินธุ์', 'Kamphaeng Phet': 'กำแพงเพชร',
+  'Kanchanaburi': 'กาญจนบุรี', 'Khon Kaen': 'ขอนแก่น', 'Krabi': 'กระบี่', 'Lampang': 'ลำปาง',
+  'Lamphun': 'ลำพูน', 'Loei': 'เลย', 'Lop Buri': 'ลพบุรี', 'Mae Hong Son': 'แม่ฮ่องสอน',
+  'Maha Sarakham': 'มหาสารคาม', 'Mukdahan': 'มุกดาหาร', 'Nakhon Nayok': 'นครนายก',
+  'Nakhon Pathom': 'นครปฐม', 'Nakhon Phanom': 'นครพนม', 'Nakhon Ratchasima': 'นครราชสีมา',
+  'Nakhon Sawan': 'นครสวรรค์', 'Nakhon Si Thammarat': 'นครศรีธรรมราช', 'Nan': 'น่าน',
+  'Narathiwat': 'นราธิวาส', 'Nong Bua Lam Phu': 'หนองบัวลำภู', 'Nong Khai': 'หนองคาย',
+  'Nonthaburi': 'นนทบุรี', 'Pathum Thani': 'ปทุมธานี', 'Pattani': 'ปัตตานี', 'Phangnga': 'พังงา',
+  'Phatthalung': 'พัทลุง', 'Phayao': 'พะเยา', 'Phetchabun': 'เพชรบูรณ์', 'Phetchaburi': 'เพชรบุรี',
+  'Phichit': 'พิจิตร', 'Phitsanulok': 'พิษณุโลก', 'Phra Nakhon Si Ayutthaya': 'พระนครศรีอยุธยา',
+  'Phrae': 'แพร่', 'Phuket': 'ภูเก็ต', 'Prachin Buri': 'ปราจีนบุรี',
+  'Prachuap Khiri Khan': 'ประจวบคีรีขันธ์', 'Ranong': 'ระนอง', 'Ratchaburi': 'ราชบุรี',
+  'Rayong': 'ระยอง', 'Roi Et': 'ร้อยเอ็ด', 'Sa Kaeo': 'สระแก้ว', 'Sakon Nakhon': 'สกลนคร',
+  'Samut Prakan': 'สมุทรปราการ', 'Samut Sakhon': 'สมุทรสาคร', 'Samut Songkhram': 'สมุทรสงคราม',
+  'Saraburi': 'สระบุรี', 'Satun': 'สตูล', 'Si Sa Ket': 'ศรีสะเกษ', 'Sing Buri': 'สิงห์บุรี',
+  'Songkhla': 'สงขลา', 'Sukhothai': 'สุโขทัย', 'Suphan Buri': 'สุพรรณบุรี',
+  'Surat Thani': 'สุราษฎร์ธานี', 'Surin': 'สุรินทร์', 'Tak': 'ตาก', 'Trang': 'ตรัง', 'Trat': 'ตราด',
+  'Ubon Ratchathani': 'อุบลราชธานี', 'Udon Thani': 'อุดรธานี', 'Uthai Thani': 'อุทัยธานี',
+  'Uttaradit': 'อุตรดิตถ์', 'Yala': 'ยะลา', 'Yasothon': 'ยโสธร',
+};
+
 // ── การฉายแผนที่ (เหมือนกับฝั่ง Python ที่ใช้ทดลอง) ──────────────────────────
 const LON0 = 97.343, LAT0 = 20.464;
 const COS = Math.cos((13 * Math.PI) / 180);
@@ -114,30 +140,48 @@ async function main() {
   prov.forEach(p => { tally[p.region] = (tally[p.region] || 0) + 1; });
   console.log('  จังหวัดต่อภาค:', JSON.stringify(tally));
 
-  // ── 2) สร้างเส้นขอบจังหวัด (รวม) + เส้นขอบภาค (แยก) ─────────────────────────
+  // ── 2) สร้างเส้นขอบจังหวัด (รวม) + เส้นขอบภาค (แยก) + เส้นขอบจังหวัดรายจังหวัด ──
   const EPS = 2.6;               // หน่วยบนแผนที่ (~3 กม.)
+  const EPS_PROV = 4.2;          // เส้นจังหวัดรายจังหวัดใช้หยาบกว่า เพื่อไม่ให้ไฟล์ใหญ่
   const parts = [];
   const regionParts = {};
   const regionBox = {};
+  const provList = [];           // { n: ไทย, r, d: path, bb: [x0,y0,x1,y1] }
   let raw = 0, kept = 0;
   for (const p of prov) {
     const out = [];
+    const outProv = [];
+    const bb = { x0: Infinity, x1: -Infinity, y0: Infinity, y1: -Infinity };
     for (const ring of p.rings) {
       raw += ring.length;
-      const s = rdp(ring.map(c => project(c[0], c[1])), p.region === 'bkk' ? 0.35 : EPS);
+      const proj = ring.map(c => project(c[0], c[1]));
+      const s = rdp(proj, p.region === 'bkk' ? 0.35 : EPS);
       kept += s.length;
       if (s.length < 3) continue;
       out.push('M' + s.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ') + 'Z');
+      const sp = rdp(proj, p.region === 'bkk' ? 0.35 : EPS_PROV);
+      if (sp.length >= 3) outProv.push('M' + sp.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ') + 'Z');
       const b = regionBox[p.region] = regionBox[p.region] || { x0: Infinity, x1: -Infinity, y0: Infinity, y1: -Infinity };
       for (const [x, y] of s) {
         b.x0 = Math.min(b.x0, x); b.x1 = Math.max(b.x1, x);
         b.y0 = Math.min(b.y0, y); b.y1 = Math.max(b.y1, y);
+        bb.x0 = Math.min(bb.x0, x); bb.x1 = Math.max(bb.x1, x);
+        bb.y0 = Math.min(bb.y0, y); bb.y1 = Math.max(bb.y1, y);
       }
     }
     const d = out.join(' ');
     parts.push(d);
     (regionParts[p.region] = regionParts[p.region] || []).push(d);
+    if (outProv.length) {
+      provList.push({
+        n: TH_NAME[p.name] || p.name,
+        r: p.region,
+        d: outProv.join(' '),
+        bb: [+bb.x0.toFixed(1), +bb.y0.toFixed(1), +bb.x1.toFixed(1), +bb.y1.toFixed(1)],
+      });
+    }
   }
+  provList.sort((a, b) => a.n.localeCompare(b.n, 'th'));
   console.log(`  จุด ${raw} → ${kept} (${(kept / raw * 100).toFixed(1)}%)`);
 
   // ── 3) พิกัดสถาบัน (พิกัดจริงตาม ละติจูด/ลองจิจูด ไม่เลื่อนตำแหน่ง) ───────────
@@ -157,6 +201,8 @@ async function main() {
       a: ['province-centroid', 'approximate'].includes(v.src) ? 0 : 1,
       // ที่พักฟรีนับเป็นมีที่พักด้วย (ให้ตรงกับตัวกรอง «มีที่พัก» = 24)
       d: (v.dorm || v.free) ? 1 : 0, f: v.free ? 1 : 0,
+      // จังหวัดที่หมุดตกอยู่ (ชื่อไทย) — ใช้กับตัวเลือก «อยู่จังหวัดไหน»
+      pv: hit ? (TH_NAME[hit.name] || hit.name) : '',
     });
   }
   pins.sort((a, b) => a.r.localeCompare(b.r) || a.n.localeCompare(b.n, 'th'));
@@ -178,6 +224,7 @@ window.ELECTIVE_MAP = {
   viewBox: '${vb}',
   paths: '${parts.join(' ')}',
   regionPaths: ${JSON.stringify(Object.fromEntries(Object.entries(regionParts).map(([r, ds]) => [r, ds.join(' ')])))},
+  prov: ${JSON.stringify(provList)},
   regionLabels: ${JSON.stringify(labels)},
   pins: ${JSON.stringify(pins)},
   chula: ${JSON.stringify(CAMPUS)},

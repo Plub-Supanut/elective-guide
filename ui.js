@@ -180,4 +180,50 @@
     paintDeadlines();
     setInterval(paintDeadlines, 6 * 60 * 60 * 1000);   // รีเฟรชทุก 6 ชั่วโมงถ้าเปิดหน้านาน
   }
+
+  // ── 8) ธีม: ตามระบบ / สว่าง / มืด ────────────────────────────
+  // ค่าใน localStorage: 'system' (ค่าเริ่มต้น) | 'light' | 'dark'
+  // head script ตั้ง data-theme ไว้ก่อนแล้ว ที่นี่แค่ทำให้ปุ่มตรงกับค่าและรับการเปลี่ยน
+  const THEME_KEY = 'eg:theme';
+  const mqlDark = window.matchMedia('(prefers-color-scheme: dark)');
+  const themeButtons = [...document.querySelectorAll('[data-theme-toggle]')];
+
+  const themePref = () => {
+    try { return localStorage.getItem(THEME_KEY) || 'system'; } catch { return 'system'; }
+  };
+  const effectiveTheme = pref =>
+    pref === 'system' ? (mqlDark.matches ? 'dark' : 'light') : pref;
+
+  const paintTheme = () => {
+    const pref = themePref();
+    const eff = effectiveTheme(pref);
+    document.documentElement.dataset.theme = eff;
+    const label = pref === 'system' ? 'ธีม: ตามระบบ' : pref === 'dark' ? 'ธีม: มืด' : 'ธีม: สว่าง';
+    const icon = pref === 'system' ? '🌗' : eff === 'dark' ? '🌙' : '☀️';
+    themeButtons.forEach(btn => {
+      btn.setAttribute('aria-label', `${label} (กดเพื่อเปลี่ยน)`);
+      btn.title = `${label} (กดเพื่อเปลี่ยน)`;
+      btn.dataset.themePref = pref;
+      const ico = btn.querySelector('.theme-ico');
+      if (ico) ico.textContent = icon;
+      const txt = btn.querySelector('.theme-label');
+      if (txt) txt.textContent = label;
+    });
+  };
+
+  themeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cur = themePref();
+      const next = cur === 'system' ? 'light' : cur === 'light' ? 'dark' : 'system';
+      try { localStorage.setItem(THEME_KEY, next); } catch { /* โหมดส่วนตัว */ }
+      paintTheme();
+    });
+  });
+
+  // เปลี่ยนธีมของเครื่องระหว่างเปิดหน้า → ตามระบบให้อัปเดตทันที
+  mqlDark.addEventListener?.('change', () => {
+    if (themePref() === 'system') paintTheme();
+  });
+
+  paintTheme();
 })();
