@@ -11,7 +11,7 @@
 
 **[เปิดเว็บไซต์ →](https://plub-supanut.github.io/elective-guide/)**
 
-**[ผลิตภัณฑ์อื่น ๆ →](https://plub-supanut.github.io/)** — รวมทุกโปรเจกต์ไว้ที่ hub เดียว
+**[ลิงก์อื่น ๆ →](https://plub-supanut.github.io/)** — รวมทุกโปรเจกต์ไว้ที่ hub เดียว
 
 ![หน้าแรกของเว็บ](docs/preview.jpg)
 
