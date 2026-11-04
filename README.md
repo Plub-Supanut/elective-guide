@@ -11,6 +11,8 @@
 
 **[เปิดเว็บไซต์ →](https://plub-supanut.github.io/elective-guide/)**
 
+**[ผลิตภัณฑ์อื่น ๆ →](https://plub-supanut.github.io/)** — รวมทุกโปรเจกต์ไว้ที่ hub เดียว
+
 ![หน้าแรกของเว็บ](docs/preview.jpg)
 
 ## ทำไมถึงทำเว็บนี้
@@ -144,6 +146,17 @@ python -m http.server 8765      # แล้วเปิด http://127.0.0.1:8765
 
 สคริปต์ sync ใช้ Node 20 ขึ้นไป — **ไม่ต้อง `npm install`** เพราะใช้ `fetch` ในตัว Node
 ไม่ใช้ Chrome/puppeteer แล้ว (หน้า Google Sites ส่งเนื้อหามาใน HTML ตั้งแต่แรก)
+
+คำสั่งที่ใช้บ่อย (รันจากรากโปรเจกต์):
+
+| คำสั่ง | ทำอะไร |
+|---|---|
+| `npm run shell` | เติม head / nav / footer ให้ตรงกันทุกหน้า (หลังแก้เมนู) |
+| `npm run shell:check` | ตรวจว่าเปลือกหน้าตรงกันทุกหน้า (exit 2 = ไม่ตรง) |
+| `npm run audit` | ตรวจความครบ/ความสดของข้อมูล + เขียนแผงหน้าแรกกับ `docs/data-status.md` |
+| `npm run audit:check` | ตรวจข้อมูลอย่างเดียว ไม่เขียนไฟล์ (exit 1 = มี error) |
+| `npm run sync` | ดึงข้อมูลจาก SSCs Guide มาอัปเดตหน้า «นอกคณะ»/«ในคณะ» |
+| `npm run map` | สร้าง `map-data.js` ใหม่ (ใช้พิกัดที่แคชไว้) |
 
 ## แก้เมนู / เพิ่มหน้าใหม่ ทำยังไง
 
