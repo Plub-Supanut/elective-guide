@@ -30,7 +30,7 @@
       // (เดิมรอพ้น hero ทั้งหน้าจอ ทำให้แถบขาวขึ้นช้าเกินไป)
       if (nav) {
         const hero = document.getElementById('hero');
-        const solidAt = Math.max(80, hero ? hero.offsetHeight * 0.5 : window.innerHeight - 96);
+        const solidAt = Math.max(80, hero ? hero.offsetHeight * 0.3 : window.innerHeight - 96);
         nav.classList.toggle('eg-scrolled', window.scrollY > solidAt);
       }
       flushPending();
