@@ -13,7 +13,7 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css?v=20261105g" />
+    <link rel="stylesheet" href="style.css?v=20261105m" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -64,116 +64,94 @@
     </nav>
     <!-- SHELL:NAV:END -->
 
-    <header class="page-head">
-      <div class="container">
-        <p class="page-eyebrow">สถาบันที่รับนิสิตแพทย์จุฬาฯ</p>
-        <h1 class="page-title">สถาบันและภาควิชา</h1>
-        <p class="page-sub">
-          117 การ์ด · ผู้ประสานงาน เบอร์โทร อีเมล ที่พัก ค่าใช้จ่าย ·
-          แตะการ์ดเพื่อเปิดรายละเอียด (เปิดได้ทีละใบ)
-        </p>
-      </div>
-    </header>
+<header class="page-head page-head--compact">
+  <div class="container">
+    <h1 class="page-title">สถาบันและภาควิชา</h1>
+    <p class="page-sub">
+      ที่รับนิสิตแพทย์จุฬาฯ · เบอร์ · อีเมล · ที่พัก · ค่าใช้จ่าย · แตะการ์ดเพื่อเปิดรายละเอียด (เปิดได้ทีละใบ)
+    </p>
+  </div>
+</header>
 
-    <!-- SEARCH BAR -->
-    <section class="search-section" id="search">
-      <div class="container">
-        <h2 class="section-title fade-up">ค้นหาสถาบัน / ภาควิชา</h2>
-        <p class="section-sub fade-up">
-          พิมพ์ชื่อโรงพยาบาล ภาควิชา ชื่อคน เบอร์โทร หรือตัวย่อก็ได้
-          (ศิริราช · Siriraj · KKU · มข)
-        </p>
-        <div class="search-wrapper fade-up">
+<section class="search-section search-section--toolbar" id="search">
+  <div class="container">
+    <div class="toolbar fade-up">
+      <div class="toolbar-row">
+        <div class="search-wrapper">
           <input
             type="text"
             id="searchInput"
             class="search-input"
-            placeholder="เช่น ศิริราช, อายุรศาสตร์, เชียงใหม่…"
+            placeholder="ค้นหา รพ. · ภาควิชา · เบอร์"
             autocomplete="off"
           />
-          <button class="search-clear" id="searchClear" aria-label="Clear">
-            ✕
-          </button>
+          <button class="search-clear" id="searchClear" aria-label="ล้างคำค้น">✕</button>
         </div>
-        <div class="filter-panel fade-up">
-          <div class="filter-group">
-            <span class="filter-group-label">ประเภท</span>
-            <button class="filter-btn" data-filter="chula" aria-pressed="false">จุฬา (ภาควิชา)</button>
-            <button class="filter-btn" data-filter="university" aria-pressed="false">มหาวิทยาลัย</button>
-            <button class="filter-btn" data-filter="hospital" aria-pressed="false">โรงพยาบาล/ศูนย์</button>
-            <button class="filter-btn" data-filter="cpird" aria-pressed="false">ศพช.</button>
-            <button class="filter-btn" data-filter="regional-plain" aria-pressed="false">รพ.จังหวัด</button>
-            <button class="filter-btn" data-filter="private" aria-pressed="false">เอกชน</button>
-          </div>
-          <div class="filter-group">
-            <span class="filter-group-label">ภูมิภาค</span>
-            <button class="filter-btn" data-filter="region:bkk" aria-pressed="false">กทม.</button>
-            <button class="filter-btn" data-filter="region:central" aria-pressed="false">กลาง</button>
-            <button class="filter-btn" data-filter="region:east" aria-pressed="false">ตะวันออก</button>
-            <button class="filter-btn" data-filter="region:north" aria-pressed="false">เหนือ</button>
-            <button class="filter-btn" data-filter="region:isan" aria-pressed="false">อีสาน</button>
-            <button class="filter-btn" data-filter="region:south" aria-pressed="false">ใต้</button>
-          </div>
-          <div class="filter-group">
-            <span class="filter-group-label">อื่น ๆ</span>
-            <button class="filter-btn" data-filter="dormitory" aria-pressed="false">มีที่พัก</button>
-            <button class="filter-btn" data-filter="dorm-free" aria-pressed="false">ที่พักฟรี</button>
-          </div>
-          <div class="filter-tail">
-            <button type="button" class="filter-clear" id="filterClear" hidden>✕ ล้างตัวกรอง</button>
-            <label class="filter-sort">
-              <span>เรียงตาม</span>
-              <select id="sortSelect">
-                <option value="default">ลำดับเดิม</option>
-                <option value="code">รหัส</option>
-                <option value="name">ชื่อ ก-ฮ</option>
-                <option value="dorm">มีที่พักก่อน</option>
-              </select>
-            </label>
-          </div>
-        </div>
-        <div id="searchResults" class="search-results"></div>
+        <label class="toolbar-sort">
+          <span>เรียงตาม</span>
+          <select id="sortSelect">
+            <option value="default">ลำดับเดิม</option>
+            <option value="code">รหัส</option>
+            <option value="name">ชื่อ ก-ฮ</option>
+            <option value="dorm">มีที่พักก่อน</option>
+          </select>
+        </label>
+        <button type="button" class="filter-clear" id="filterClear" hidden>✕ ล้างตัวกรอง</button>
       </div>
-    </section>
 
-    <!-- QUICK STATS -->
-    <section class="stats-section fade-up">
-      <div class="container stats-grid">
+      <div class="filter-panel filter-panel--inline">
+        <div class="filter-group" role="group" aria-label="กรองตามภูมิภาค">
+          <span class="filter-group-label">ภูมิภาค</span>
+          <button class="filter-btn" data-filter="region:bkk" aria-pressed="false">กทม.</button>
+          <button class="filter-btn" data-filter="region:central" aria-pressed="false">กลาง</button>
+          <button class="filter-btn" data-filter="region:east" aria-pressed="false">ตะวันออก</button>
+          <button class="filter-btn" data-filter="region:north" aria-pressed="false">เหนือ</button>
+          <button class="filter-btn" data-filter="region:isan" aria-pressed="false">อีสาน</button>
+          <button class="filter-btn" data-filter="region:south" aria-pressed="false">ใต้</button>
+        </div>
+        <div class="filter-group" role="group" aria-label="ตัวกรองอื่น ๆ">
+          <span class="filter-group-label">อื่น ๆ</span>
+          <button class="filter-btn" data-filter="dormitory" aria-pressed="false">มีที่พัก</button>
+          <button class="filter-btn" data-filter="dorm-free" aria-pressed="false">ที่พักฟรี</button>
+        </div>
+      </div>
+
+      <div class="summary-strip">
         <button type="button" class="stat-card" data-stat="all" aria-label="แสดงสถาบันทั้งหมด 117 แห่ง">
-          <span class="stat-num">117</span>
-          <span class="stat-label"><span class="nm">สถาบัน</span> / <span class="nm">ภาควิชา</span></span>
+          <span class="stat-num">117</span><span class="stat-label">สถาบัน</span>
         </button>
-        <button type="button" class="stat-card" data-stat="cpird" aria-label="กรองเฉพาะสถาบันที่เป็นศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก (ศพช.) 29 แห่ง">
-          <span class="stat-num">29</span>
-          <span class="stat-label">สถาบันที่เป็น ศพช.</span>
+        <button type="button" class="stat-card" data-stat="cpird" aria-label="กรองเฉพาะศูนย์แพทยศาสตร์ศึกษาชั้นคลินิก 29 แห่ง">
+          <span class="stat-num">29</span><span class="stat-label">ศพช.</span>
         </button>
         <button type="button" class="stat-card" data-stat="dormitory" aria-label="กรองเฉพาะสถาบันที่มีที่พัก 24 แห่ง">
-          <span class="stat-num">24</span>
-          <span class="stat-label">สถาบันที่มีที่พัก</span>
+          <span class="stat-num">24</span><span class="stat-label">มีที่พัก</span>
         </button>
         <button type="button" class="stat-card" data-stat="chula" aria-label="กรองเฉพาะภาควิชาและหน่วยงานจุฬาฯ 25 แห่ง">
-          <span class="stat-num">25</span>
-          <span class="stat-label"><span class="nm">ภาควิชา</span> / <span class="nm">หน่วยงานจุฬาฯ</span></span>
+          <span class="stat-num">25</span><span class="stat-label">ภาควิชาจุฬาฯ</span>
         </button>
-      </div>
-    </section>
 
-    <nav class="cat-bar" id="catBar" aria-label="หมวดสถาบัน">
-      <div class="container cat-bar-inner">
-        <a href="#" data-cat-link="all" class="cat-chip active">ทั้งหมด <span class="cat-n">117</span></a>
-        <a href="#" data-cat-link="chula" class="cat-chip">ภาควิชาจุฬาฯ <span class="cat-n">25</span></a>
-        <a href="#" data-cat-link="universities" class="cat-chip">มหาวิทยาลัยแพทย์ <span class="cat-n">20</span></a>
-        <a href="#" data-cat-link="partner" class="cat-chip">โรงพยาบาลพันธมิตร <span class="cat-n">2</span></a>
-        <a href="#" data-cat-link="specialty" class="cat-chip">โรงพยาบาลเฉพาะทาง <span class="cat-n">20</span></a>
-        <a href="#" data-cat-link="cpird" class="cat-chip">ศพช. <span class="cat-n">23</span></a>
-        <a href="#" data-cat-link="provincial" class="cat-chip">รพ.จังหวัด <span class="cat-n">13</span></a>
-        <a href="#" data-cat-link="other" class="cat-chip">อื่น ๆ <span class="cat-n">13</span></a>
-        <a href="#" data-cat-link="private" class="cat-chip">เอกชน <span class="cat-n">1</span></a>
+        <!-- กราฟภาพรวมตามภูมิภาค (วาดด้วย app.js จาก data-region ของการ์ดจริง) -->
+        <div class="scan-inline" id="scanPanel"></div>
       </div>
-    </nav>
+    </div>
 
-    <!-- กราฟภาพรวมตามภูมิภาค (วาดด้วย app.js จาก data-region ของการ์ดจริง) -->
-    <div class="scan-panel fade-up" id="scanPanel"></div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</section>
+
+<nav class="cat-bar" id="catBar" aria-label="หมวดสถาบัน">
+  <div class="container cat-bar-inner">
+    <a href="#" data-cat-link="all" class="cat-chip active">ทั้งหมด <span class="cat-n">117</span></a>
+    <a href="#" data-cat-link="chula" class="cat-chip">ภาควิชาจุฬาฯ <span class="cat-n">25</span></a>
+    <a href="#" data-cat-link="universities" class="cat-chip">มหาวิทยาลัยแพทย์ <span class="cat-n">20</span></a>
+    <a href="#" data-cat-link="partner" class="cat-chip">โรงพยาบาลพันธมิตร <span class="cat-n">2</span></a>
+    <a href="#" data-cat-link="specialty" class="cat-chip">โรงพยาบาลเฉพาะทาง <span class="cat-n">20</span></a>
+    <a href="#" data-cat-link="cpird" class="cat-chip">ศพช. <span class="cat-n">23</span></a>
+    <a href="#" data-cat-link="provincial" class="cat-chip">รพ.จังหวัด <span class="cat-n">13</span></a>
+    <a href="#" data-cat-link="other" class="cat-chip">อื่น ๆ <span class="cat-n">13</span></a>
+    <a href="#" data-cat-link="private" class="cat-chip">เอกชน <span class="cat-n">1</span></a>
+  </div>
+</nav>
 
     <!-- MAIN INSTITUTIONS -->
     <main id="institutions">

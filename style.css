@@ -3095,3 +3095,182 @@ html[data-year="6"] .ssc-card[data-years~="6"] { box-shadow: 0 0 0 2px rgba(125,
   .ssc-title { line-height: 1.45; }
   .hero-title { line-height: 1.22; }
 }
+
+/* ============================
+   หน้าสถาบัน: layout ใหม่ (5 พ.ย. 2569)
+   เดิม: หัวหน้า + หัวข้อค้นหา + ตัวกรอง 3 แถว + การ์ดสถิติใหญ่ 4 ใบ + แท็บหมวด + กราฟ 6 แถว
+   → การ์ดแรกอยู่ต่ำกว่าจอ ~900px และมีตัวกรองซ้ำกัน 2 ชุด
+   ใหม่: หัวหน้าเตี้ย + toolbar ใบเดียว (ค้นหา/เรียง/ตัวกรอง/สรุป) + แท็บหมวด + การ์ด
+   ============================ */
+.page-head--compact { padding: 2.2rem 2rem 0.4rem; }
+.page-head--compact .page-title { margin-bottom: 0.45rem; }
+.page-head--compact .page-sub strong { color: var(--terra-ink); }
+
+.search-section--toolbar { padding: 0.6rem 2rem 1.4rem; }
+.search-section--toolbar .container { max-width: 1200px; }
+
+.toolbar {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--off-white);
+  box-shadow: var(--shadow);
+}
+.toolbar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.7rem;
+}
+.toolbar-row .search-wrapper { margin: 0; max-width: none; }
+.toolbar-row .search-input { padding: 0.8rem 3rem 0.8rem 1.2rem; font-size: 0.95rem; }
+.toolbar-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--warm-gray);
+  white-space: nowrap;
+}
+.toolbar-sort select {
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--charcoal);
+  padding: 0.42rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--sand);
+}
+.toolbar .filter-clear {
+  justify-self: start;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(196, 113, 75, 0.45);
+  border-radius: 999px;
+  background: rgba(196, 113, 75, 0.1);
+  color: var(--terra-ink);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.filter-panel--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 1.1rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.7rem;
+}
+.filter-panel--inline .filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  grid-template-columns: none;
+}
+.filter-panel--inline .filter-group-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-right: 0.15rem;
+}
+.filter-panel--inline .filter-btn { min-height: 44px; padding: 0.4rem 0.8rem; font-size: 0.82rem; }
+
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.8rem;
+}
+.summary-strip .stat-card {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  gap: 0.3rem;
+  width: auto;
+  min-width: 0;
+  padding: 0.28rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--sand);
+  box-shadow: none;
+  text-align: left;
+  transition: background 0.2s, border-color 0.2s;
+}
+.summary-strip .stat-card:hover { border-color: var(--sage); background: rgba(125, 155, 118, 0.12); }
+.summary-strip .stat-card.is-active { border-color: var(--sage-dark); background: rgba(125, 155, 118, 0.18); }
+.summary-strip .stat-num {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--terra-ink);
+}
+.summary-strip .stat-label { font-size: 0.78rem; line-height: 1.2; color: var(--warm-gray); }
+
+.scan-inline { display: flex; flex-direction: column; gap: 0.35rem; flex: 1 1 320px; min-width: 240px; margin-left: auto; }
+.scan-mini-bar {
+  display: flex;
+  height: 9px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(100, 80, 60, 0.08);
+}
+.scan-mini-seg { height: 100%; background: var(--r-color); }
+.scan-mini-legend { display: flex; flex-wrap: wrap; gap: 0.15rem 0.5rem; }
+.scan-mini-chip {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.05rem 0.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--warm-gray);
+  cursor: pointer;
+}
+.scan-mini-chip:hover { background: rgba(125, 155, 118, 0.12); color: var(--charcoal); }
+.scan-mini-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--r-color); }
+.scan-mini-chip b { font-weight: 600; color: var(--charcoal); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 900px) {
+  .toolbar-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .toolbar-row .filter-clear { grid-column: 1 / -1; }
+  .scan-inline { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .toolbar-row { grid-template-columns: 1fr; }
+  .toolbar-sort { justify-self: start; }
+}
+
+/* รายการสถาบันอยู่ใต้แถบหมวดแล้ว → ลดช่องว่างบนของแต่ละ section */
+main#institutions .inst-section { padding-top: 2.4rem; }
+@media (max-width: 720px) {
+  main#institutions .inst-section { padding-top: 1.6rem; }
+}
+
+/* มือถือ: ตัวกรองเป็นแถวเลื่อนแนวนอนแถวเดียว (เดิมตัดขึ้น 3 แถว กินพื้นที่ ~200px) */
+@media (max-width: 640px) {
+  .filter-panel--inline {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-panel--inline::-webkit-scrollbar { display: none; }
+  .filter-panel--inline .filter-group { flex-wrap: nowrap; flex: 0 0 auto; }
+  .filter-panel--inline .filter-group-label { white-space: nowrap; }
+  .filter-panel--inline .filter-btn { white-space: nowrap; }
+  .summary-strip { gap: 0.35rem; }
+  .scan-inline { min-width: 0; }
+}

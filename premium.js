@@ -26,11 +26,11 @@
       const max = doc.scrollHeight - window.innerHeight;
       const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
       bar.style.setProperty('--eg-p', p.toFixed(4));
-      // nav ลอยโปร่งใสบน hero → เปลี่ยนเป็นแถบทึบเมื่อพ้น hero (เดิมเปลี่ยนที่ 8px ทำให้แถบทึบ
-      // ไปทับ hero ทันทีที่เลื่อนนิดเดียว)
+      // nav ลอยโปร่งใสบน hero → เปลี่ยนเป็นแถบทึบเมื่อเลื่อนผ่าน «3 ใน 4 ของ hero»
+      // (เดิมรอพ้น hero ทั้งหน้าจอ ทำให้แถบขาวขึ้นช้าเกินไป)
       if (nav) {
         const hero = document.getElementById('hero');
-        const solidAt = Math.max(80, (hero ? hero.offsetHeight : window.innerHeight) - 96);
+        const solidAt = Math.max(80, hero ? hero.offsetHeight * 0.75 : window.innerHeight - 96);
         nav.classList.toggle('eg-scrolled', window.scrollY > solidAt);
       }
       flushPending();
