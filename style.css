@@ -29,9 +29,10 @@
    22. VISUAL SCAN — แถบสีภูมิภาค · กราฟ · เส้นเวลา
    23. TYPOGRAPHY — ระยะบรรทัดสำหรับภาษาไทย
    24. INSTITUTIONS PAGE — toolbar + แท็บหมวด
-   25. THEME SWITCH — ปุ่มสลับธีม (ตามระบบ / สว่าง / มืด)
-   26. THEME — DARK
-   27. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
+   25. AFFORDANCE — ทำให้ «กดได้» ดูออก โดยไม่ทำให้รก
+   26. THEME SWITCH — ปุ่มสลับธีม (ตามระบบ / สว่าง / มืด)
+   27. THEME — DARK
+   28. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
    ───────────────────────────────────────────────────────────── */
 
 
@@ -219,7 +220,7 @@ button, input, select, textarea{ font-family: inherit; }
   text-decoration: none;
   letter-spacing: 0.01em;
   transition: color 0.2s;
-  /* เป้าแตะขั้นต่ำ: เดิมสูงแค่ 23px กดบนมือถือยาก */
+/* เป้าแตะขั้นต่ำ: เดิมสูงแค่ 23px กดบนมือถือยาก */
   min-height: 34px;
   padding: 0.35rem 0.15rem;
 }
@@ -1899,7 +1900,7 @@ html[data-year="4"] .ssc-card[data-years~="4"], html[data-year="5"] .ssc-card[da
 /* ═════════════════════════════════════════════════════════════
    22. VISUAL SCAN — แถบสีภูมิภาค · กราฟ · เส้นเวลา
    ═════════════════════════════════════════════════════════════ */
-   เป้าหมาย: กวาดตาหาของได้เร็ว ไม่ต้องอ่านทุกบรรทัด
+/* เป้าหมาย: กวาดตาหาของได้เร็ว ไม่ต้องอ่านทุกบรรทัด */
 /* - แถบสีซ้ายการ์ด + ป้ายภูมิภาค + กราฟภาพรวม + เส้นเวลา */
 
 :root{
@@ -2062,9 +2063,9 @@ html[data-year="4"] .ssc-card[data-years~="4"], html[data-year="5"] .ssc-card[da
 /* ═════════════════════════════════════════════════════════════
    24. INSTITUTIONS PAGE — toolbar + แท็บหมวด
    ═════════════════════════════════════════════════════════════ */
-   เดิม: หัวหน้า + หัวข้อค้นหา + ตัวกรอง 3 แถว + การ์ดสถิติใหญ่ 4 ใบ + แท็บหมวด + กราฟ 6 แถว
+/* เดิม: หัวหน้า + หัวข้อค้นหา + ตัวกรอง 3 แถว + การ์ดสถิติใหญ่ 4 ใบ + แท็บหมวด + กราฟ 6 แถว */
 /* → การ์ดแรกอยู่ต่ำกว่าจอ ~900px และมีตัวกรองซ้ำกัน 2 ชุด */
-   ใหม่: หัวหน้าเตี้ย + toolbar ใบเดียว (ค้นหา/เรียง/ตัวกรอง/สรุป) + แท็บหมวด + การ์ด
+/* ใหม่: หัวหน้าเตี้ย + toolbar ใบเดียว (ค้นหา/เรียง/ตัวกรอง/สรุป) + แท็บหมวด + การ์ด */
 
 .page-head--compact{ padding: 2.2rem 2rem 0.4rem; }
 .page-head--compact .page-title{ margin-bottom: 0.45rem; }
@@ -2240,7 +2241,78 @@ main#institutions .inst-section{ padding-top: 2.4rem; }
 }
 
 /* ═════════════════════════════════════════════════════════════
-   25. THEME SWITCH — ปุ่มสลับธีม (ตามระบบ / สว่าง / มืด)
+   25. AFFORDANCE — ทำให้ «กดได้» ดูออก โดยไม่ทำให้รก
+   หลักการ: ใช้แค่ 3 สัญญาณ — ขอบชัดขึ้น · พื้นอ่อนลงนิด · เปลี่ยนสีตอน hover
+   ครอบคลุม: ปุ่มรอง · ชิปตัวกรอง · แท็บหมวด · ปุ่มชั้นปี · ปุ่มล้าง · การ์ดที่กดได้
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── ปุ่มรอง (ghost) บน hero: ให้เห็นเป็นปุ่ม ไม่ใช่ข้อความลอย ── */
+.btn-ghost{
+  border-color: rgba(245, 239, 230, 0.62);
+  background: rgba(245, 239, 230, 0.08);
+}
+.btn-ghost:hover{
+  background: rgba(245, 239, 230, 0.18);
+  border-color: rgba(245, 239, 230, 0.9);
+}
+
+/* ── ชิปตัวกรอง: พื้นอ่อน + ขอบชัด (เดิมโปร่งใสจนเหมือนป้ายข้อความ) ── */
+.filter-btn{
+  background: var(--off-white);
+  border-color: rgba(100, 80, 60, 0.24);
+  color: var(--charcoal);
+}
+.filter-btn:hover{
+  background: rgba(125, 155, 118, 0.14);
+  border-color: var(--sage);
+  color: var(--charcoal);
+}
+.filter-btn.active{ background: var(--solid-sage); border-color: var(--sage); color: #fff; }
+
+/* ── แท็บหมวด: เหมือนชิปだがน้ำหนักเบากว่า ── */
+.cat-chip{
+  background: var(--off-white);
+  border-color: rgba(100, 80, 60, 0.2);
+}
+.cat-chip:hover{ background: rgba(125, 155, 118, 0.14); border-color: var(--sage); }
+
+/* ── ปุ่มชั้นปีในแคปซูล: hover ให้เห็นว่าเป็นปุ่มย่อย ── */
+.year-switch button{ cursor: pointer; }
+.year-switch button:hover{ background: rgba(125, 155, 118, 0.2); }
+
+/* ── ปุ่มล้างคำค้น (✕) และล้างตัวกรอง ── */
+.search-clear{ border-radius: 999px; background: rgba(100, 80, 60, 0.08); }
+.search-clear:hover{ background: rgba(100, 80, 60, 0.16); }
+.filter-clear{
+  border-style: solid;
+  border-color: rgba(196, 113, 75, 0.55);
+  background: rgba(196, 113, 75, 0.06);
+}
+
+/* ── การ์ดที่กดกางรายละเอียดได้: ชี้เมาส์ + ขอบ hover + โฟกัสชัด ── */
+.card[role="button"]{ cursor: pointer; }
+.card[role="button"]:hover{ border-color: var(--sage); }
+.card[role="button"]:focus-visible{
+  outline: 2px solid var(--terra);
+  outline-offset: 2px;
+}
+
+/* ── แถว «ดูรายละเอียดเพิ่มเติม»: ทำให้เป็นปุ่มจริง ๆ ── */
+.expand-hint{
+  font-weight: 600;
+  color: var(--terra-ink);
+  background: rgba(196, 113, 75, 0.08);
+  border-top-color: rgba(196, 113, 75, 0.2);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.expand-hint:hover{ background: rgba(196, 113, 75, 0.16); color: var(--terra-ink); }
+.card.expanded .expand-hint{ color: var(--warm-gray); background: transparent; }
+
+/* ── ปุ่มกลับขึ้นบนสุด: เงาชัดขึ้นเล็กน้อย ── */
+.to-top{ box-shadow: var(--shadow-lg); }
+
+/* ═════════════════════════════════════════════════════════════
+   26. THEME SWITCH — ปุ่มสลับธีม (ตามระบบ / สว่าง / มืด)
    ═════════════════════════════════════════════════════════════ */
 
 .theme-toggle{
@@ -2276,7 +2348,7 @@ html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .theme-toggle{
 }
 
 /* ═════════════════════════════════════════════════════════════
-   26. THEME — DARK
+   27. THEME — DARK
    ═════════════════════════════════════════════════════════════ */
 /* ค่า data-theme="dark" บน <html> ถูกตั้งจาก head script ก่อนวาดหน้า */
 /* (โหมด «ตามระบบ» เขียน data-theme เป็นค่าจริงตั้งแต่ต้น — ไม่มีจอกระพริบ) */
@@ -2364,7 +2436,7 @@ html[data-theme="dark"] .ssc-status-note a{ color: var(--terra-light); }
 html.js[data-theme="dark"] .sticky-nav .nav-links a[aria-current="page"]{ color: var(--terra-light); }
 
 /* ═════════════════════════════════════════════════════════════
-   27. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
+   28. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
    ═════════════════════════════════════════════════════════════ */
 /* ใช้ --terra-ink (โหมดสว่าง) และ --terra-light (โหมดมืด) */
 
