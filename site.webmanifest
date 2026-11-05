@@ -1,0 +1,15 @@
+{
+  "name": "Elective Guide — คู่มือ elective นิสิตแพทย์จุฬาฯ",
+  "short_name": "Elective Guide",
+  "description": "รวมข้อมูลการติดต่อ ที่พัก ค่าใช้จ่าย ของสถาบันและภาควิชาที่รับนิสิตแพทย์จุฬาฯ ไป elective",
+  "lang": "th",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#f5efe6",
+  "theme_color": "#b86239",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

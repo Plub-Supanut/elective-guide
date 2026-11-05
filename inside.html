@@ -21,8 +21,26 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-serif-thai-700-thai.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c4714b'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='40' font-weight='700' fill='%23fdfaf6' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="style.css?v=20261106c" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261106d" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <meta name="theme-color" content="#f5efe6" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#15110d" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Elective Guide" />
+    <meta property="og:title" content="รายวิชาเลือก « ใน » คณะ · คู่มือ Elective" />
+    <meta property="og:description" content="ช่องทางแสดงความจำนงรายวิชาเลือกในคณะแพทยศาสตร์ จุฬาฯ กำหนดการ ข้อมูลรายวิชาแยกชั้นปี และช่องทางติดต่อ" />
+    <meta property="og:url" content="https://plub-supanut.github.io/elective-guide/inside.html" />
+    <meta property="og:image" content="https://plub-supanut.github.io/elective-guide/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Elective Guide — คู่มือ elective นิสิตแพทย์จุฬาฯ" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="รายวิชาเลือก « ใน » คณะ · คู่มือ Elective" />
+    <meta name="twitter:description" content="ช่องทางแสดงความจำนงรายวิชาเลือกในคณะแพทยศาสตร์ จุฬาฯ กำหนดการ ข้อมูลรายวิชาแยกชั้นปี และช่องทางติดต่อ" />
+    <meta name="twitter:image" content="https://plub-supanut.github.io/elective-guide/assets/og-image.png" />
+    <link rel="stylesheet" href="style.css?v=20261106d" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -31,7 +49,17 @@
     <!-- SHELL:NAV:START -->
     <nav class="sticky-nav" id="stickyNav">
       <div class="nav-inner">
-        <a class="nav-logo" href="index.html">Elective Guide</a>
+        <a class="nav-logo" href="index.html" aria-label="Elective Guide — หน้าแรก">
+          <svg class="nav-logo-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <defs><linearGradient id="egTileNav" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#c4714b"/><stop offset="1" stop-color="#a8542e"/>
+              </linearGradient></defs>
+              <rect width="64" height="64" rx="15" fill="url(#egTileNav)"/>
+              <path d="M47 16 L37.2 36.5 L17 48 L26.8 27.5 Z" fill="#fdfaf6"/>
+              <path d="M47 16 L26.8 27.5 L17 48 Z" fill="#e7d2ba"/>
+              <circle cx="32" cy="32" r="3.5" fill="#7d9b76" stroke="#fdfaf6" stroke-width="1.7"/>
+            </svg><span class="nav-logo-text">Elective Guide</span>
+        </a>
         <div class="nav-links">
           <a href="index.html" class="nav-primary">หน้าแรก</a>
           <a href="institutions.html" class="nav-primary">สถาบัน</a>
@@ -352,7 +380,16 @@
     <footer class="footer">
       <div class="container">
         <p class="footer-title">
-          คู่มือ Elective · นิสิตแพทย์จุฬาลงกรณ์มหาวิทยาลัย
+          <svg class="footer-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+              <defs><linearGradient id="egTileFoot" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#c4714b"/><stop offset="1" stop-color="#a8542e"/>
+              </linearGradient></defs>
+              <rect width="64" height="64" rx="15" fill="url(#egTileFoot)"/>
+              <path d="M47 16 L37.2 36.5 L17 48 L26.8 27.5 Z" fill="#fdfaf6"/>
+              <path d="M47 16 L26.8 27.5 L17 48 Z" fill="#e7d2ba"/>
+              <circle cx="32" cy="32" r="3.5" fill="#7d9b76" stroke="#fdfaf6" stroke-width="1.7"/>
+            </svg>
+          <span>คู่มือ Elective · นิสิตแพทย์จุฬาลงกรณ์มหาวิทยาลัย</span>
         </p>
         <p class="footer-links">
           <a href="index.html">หน้าแรก</a>

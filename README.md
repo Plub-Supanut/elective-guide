@@ -1,7 +1,8 @@
 <div align="center">
-  <img src="docs/preview.jpg" alt="หน้าแรก Elective Guide" width="100%" />
+  <img src="assets/logo-mark.svg" alt="Elective Guide logo" width="88" />
   <h1>Elective Guide</h1>
   <p><strong>คู่มือ elective สำหรับนิสิตแพทย์จุฬาฯ</strong> — เบอร์โทร ผู้ประสานงาน ที่พัก ค่าใช้จ่าย ของ 117 สถาบัน/ภาควิชา ในที่เดียว</p>
+  <img src="docs/preview.jpg" alt="หน้าแรก Elective Guide" width="100%" />
   <p>
     <a href="https://plub-supanut.github.io/elective-guide/"><img src="https://img.shields.io/badge/live-online-2f5d8a?style=flat-square" alt="Live site"></a>
     <a href="https://github.com/Plub-Supanut/elective-guide/actions/workflows/sync-ssc.yml"><img src="https://github.com/Plub-Supanut/elective-guide/actions/workflows/sync-ssc.yml/badge.svg" alt="Sync SSC data"></a>
@@ -49,6 +50,8 @@ git clone https://github.com/Plub-Supanut/elective-guide.git
 cd elective-guide
 python -m http.server 8765
 # เปิด http://127.0.0.1:8765
+
+
 ```
 
 ## Project structure

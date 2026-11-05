@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 88" role="img" aria-label="Elective Guide">
+  <rect width="72" height="72" x="4" y="8" rx="17" fill="#b86239"/>
+  <path d="M58 21 L46.5 44 L21 59 L32.5 36 Z" fill="#fdfaf6"/>
+  <path d="M58 21 L32.5 36 L21 59 Z" fill="#e7d2ba"/>
+  <circle cx="40" cy="40" r="3.8" fill="#7d9b76" stroke="#fdfaf6" stroke-width="1.9"/>
+  <text x="96" y="55" font-family="Lora, Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" letter-spacing="0.2">
+    <tspan fill="#2c2824">Elective</tspan><tspan fill="#b86239" dx="9">Guide</tspan>
+  </text>
+</svg>

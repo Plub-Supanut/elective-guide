@@ -33,6 +33,7 @@
    26. THEME SWITCH — ปุ่มสลับธีม (ตามระบบ / สว่าง / มืด)
    27. THEME — DARK
    28. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
+   29. BRAND — โลโก้ (เข็มทิศ) · favicon · หน้า 404
    ───────────────────────────────────────────────────────────── */
 
 
@@ -2461,3 +2462,48 @@ html.js body.no-hero .sticky-nav .nav-links a[aria-current="page"]{ color: var(-
 .btn-link-divider{ color: rgba(245, 239, 230, 0.55); }
 .footer-sub{ color: rgba(245, 239, 230, 0.62); }
 .footer-links span{ color: rgba(245, 239, 230, 0.6); }
+
+/* ═════════════════════════════════════════════════════════════
+   29. BRAND — โลโก้ (เข็มทิศ) · favicon · หน้า 404
+   โลโก้ไฟล์จริง: assets/logo-mark.svg · favicon.svg · logo-lockup.svg · og-image.png
+   ═════════════════════════════════════════════════════════════ */
+
+/* โลโก้บนเมนู: เครื่องหมาย + ชื่อ */
+.nav-logo{ display: inline-flex; align-items: center; gap: 0.55rem; text-decoration: none; border-radius: 8px; }
+.nav-logo-mark{
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  flex: 0 0 auto;
+  display: block;
+  box-shadow: 0 2px 8px rgba(120, 70, 40, 0.22);
+}
+.nav-logo-text{ line-height: 1.1; }\n.nav-logo:hover .nav-logo-mark{ transform: translateY(-1px); }\n.nav-logo-mark{ transition: transform 0.2s ease; }
+@media (max-width: 460px) {
+  .nav-logo-text{ display: none; }
+  .nav-logo-mark{ width: 28px; height: 28px; }
+}
+
+/* โลโก้เล็กในฟุตเตอร์ */
+.footer-title{ display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.footer-mark{ width: 22px; height: 22px; border-radius: 6px; display: block; flex: 0 0 auto; }
+
+/* ── หน้า 404 (GitHub Pages เสิร์ฟ 404.html อัตโนมัติ) ── */
+.error-page{ padding: 5.5rem 2rem 6rem; min-height: 62vh; display: flex; align-items: center; }
+.error-inner{ text-align: center; display: flex; flex-direction: column; align-items: center; }
+.error-mark{ width: 84px; height: 84px; border-radius: 20px; box-shadow: 0 18px 40px -18px rgba(120, 70, 40, 0.5); }
+.error-code{
+  margin: 1.1rem 0 0;
+  font-family: var(--font-head);
+  font-size: clamp(3.2rem, 9vw, 5rem);
+  line-height: 1;
+  color: var(--terra-ink);
+  letter-spacing: 0.02em;
+}
+.error-title{ margin: 0.2rem 0 0.6rem; font-family: var(--font-head); font-size: clamp(1.5rem, 4vw, 2.2rem); color: var(--charcoal); }
+.error-text{ max-width: 46ch; margin: 0 0 1.6rem; color: var(--warm-gray); line-height: 1.75; }
+.error-actions{ display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+.error-ghost{ color: var(--charcoal); border-color: rgba(100, 80, 60, 0.35); background: var(--off-white); }
+.error-ghost:hover{ color: var(--charcoal); border-color: var(--sage); background: rgba(125, 155, 118, 0.14); }
+html[data-theme="dark"] .error-ghost{ color: var(--charcoal); border-color: var(--border); background: rgba(245, 239, 230, 0.06); }
+html[data-theme="dark"] .error-ghost:hover{ background: rgba(125, 155, 118, 0.18); }
