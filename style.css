@@ -508,10 +508,16 @@ section[id], [id="institutions"]{ scroll-margin-top: 84px; }
 .section-header{
   margin-bottom: 2.5rem;
 }
+/* หัวข้อที่ขึ้น «กลางหน้า» (ตามหลังการ์ด/ตาราง) ต้องเว้นจากของข้างบนมากพอ
+   เดิมชนกับการ์ดก่อนหน้า (22px) ทำให้ไอคอน 💬 ดูติดบรรทัดบน */
+.ssc-grid + .section-header{
+  margin-top: 3.2rem;
+}
 .section-badge{
   font-size: 2rem;
   display: block;
-  margin-bottom: 0.6rem;
+  line-height: 1;            /* line box ไม่สูง 1.75em → ไอคอนไม่ลอยห่างผิดจังหวะ */
+  margin-bottom: 0.9rem;     /* ระยะ «ไอคอน ↔ หัวข้อ» ให้หายใจพอดี */
 }
 
 /* ═════════════════════════════════════════════════════════════
