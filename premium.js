@@ -1,146 +1,52 @@
 /* =======================================================================
-   PREMIUM LAYER (JS) — ของเพิ่มทับ ไม่แก้ไฟล์เดิม
-   1) แถบความคืบหน้าการเลื่อน + สถานะเนวิเกชัน
-   2) ตัวเลขวิ่งเมื่อปรากฏ (uiarc · "numbers that move")
-   3) ไฟส่องตามเคอร์เซอร์บนแผ่นแผนที่
-   ปิดการเคลื่อนไหวทั้งหมดเมื่อ prefers-reduced-motion: reduce
+   PREMIUM LAYER (JS)
+   แถบความคืบหน้าการอ่าน (hairline) + สถานะเนวิเกชัน
+
+   • หน้าแรกมี hero เต็มจอ: เนวิเกชันลอยโปร่งใส แล้วเปลี่ยนเป็นแถบทึบ
+     เมื่อเลื่อนผ่าน 30% ของ hero (ไม่รอให้พ้น hero ทั้งจอ)
+   • หน้าอื่นไม่มี hero → CSS จัดการแถบทึบไว้แล้ว ที่นี่จึงไม่ต้องทำอะไร
+   • เคารพ prefers-reduced-motion: ไม่มีแอนิเมชันเพิ่ม เฉพาะการเปลี่ยนสถานะ
    ======================================================================= */
 (() => {
   'use strict';
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── 1. progress hairline + nav state ─────────────────────────── */
-  const bar = document.createElement('div');
-  bar.className = 'eg-progress';
-  bar.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(bar);
+  const NAV_SOLID_RATIO = 0.3;    // 30% แรกของ hero = ยังโปร่งใส
+  const NAV_MIN_SOLID_AT = 80;    // กัน hero เตี้ย: อย่างน้อย 80px
 
   const nav = document.getElementById('stickyNav');
-  let queueScroll = false;
-  const onScroll = () => {
-    if (queueScroll) return;
-    queueScroll = true;
-    requestAnimationFrame(() => {
-      queueScroll = false;
-      const doc = document.documentElement;
-      const max = doc.scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      bar.style.setProperty('--eg-p', p.toFixed(4));
-      // nav ลอยโปร่งใสบน hero → เปลี่ยนเป็นแถบทึบเมื่อเลื่อนผ่าน «3 ใน 4 ของ hero»
-      // (เดิมรอพ้น hero ทั้งหน้าจอ ทำให้แถบขาวขึ้นช้าเกินไป)
-      if (nav) {
-        const hero = document.getElementById('hero');
-        const solidAt = Math.max(80, hero ? hero.offsetHeight * 0.3 : window.innerHeight - 96);
-        nav.classList.toggle('eg-scrolled', window.scrollY > solidAt);
-      }
-      flushPending();
-    });
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  onScroll();   // ตั้งสถานะเริ่มต้น (เช่นเปิดมาที่ #anchor ที่เลื่อนอยู่แล้ว)
+  const hero = document.getElementById('hero');
 
-  /* ── 2. ตัวเลขวิ่งเมื่อปรากฏ ──────────────────────────────────── */
-  const COUNT_SEL = [
-    '#map-facts .map-fact',
-    '#map-legend .legend-count',
-    '#map-near .map-near-km',
-    '#map-card .map-card-facts dd',
-  ].join(', ');
-  const NUM_RX = /\d[\d,]*/g;
-  const pending = new Set();
-  const seen = new WeakSet();
+  /* ── แถบความคืบหน้า ────────────────────────────────────────────── */
+  const progress = document.createElement('div');
+  progress.className = 'eg-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(progress);
 
-  const inView = (el) => {
-    const r = el.getBoundingClientRect();
-    return r.width > 0 && r.bottom > -60 && r.top < (window.innerHeight || 0) + 60;
-  };
+  let queued = false;
 
-  function animateNumber(el) {
-    if (el.dataset.egBusy === '1') return;
-    const orig = el.textContent;
-    if (el.dataset.egText === orig) { pending.delete(el); return; }
-    const matches = [...orig.matchAll(NUM_RX)];
-    if (!matches.length) { el.dataset.egText = orig; pending.delete(el); return; }
-    el.classList.add('eg-num');
-    if (reduced) { el.dataset.egText = orig; pending.delete(el); return; }
+  const paint = () => {
+    queued = false;
 
-    let tpl = '';
-    let idx = 0;
-    for (const m of matches) { tpl += orig.slice(idx, m.index) + '\u0000'; idx = m.index + m[0].length; }
-    tpl += orig.slice(idx);
-    const targets = matches.map((m) => parseInt(m[0].replace(/,/g, ''), 10));
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    progress.style.setProperty('--eg-p', ratio.toFixed(4));
 
-    el.dataset.egBusy = '1';
-    const D = 520;
-    const t0 = performance.now();
-    const step = () => {
-      if (!el.isConnected) return;               // การ์ดถูกวาดใหม่ระหว่างวิ่ง → หยุดเงียบ ๆ
-      const t = Math.min(1, Math.max(0, (performance.now() - t0) / D));
-      const e = 1 - Math.pow(1 - t, 3);
-      let k = 0;
-      el.textContent = tpl.replace(/\u0000/g, () => String(Math.round(targets[k++] * e)));
-      if (t < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.textContent = orig;          // จบที่ค่าเดิมเป๊ะ ๆ (ทดสอบวัดซ้ำได้)
-        el.dataset.egText = orig;
-        el.dataset.egBusy = '0';
-        pending.delete(el);
-      }
-    };
-    requestAnimationFrame(step);
-  }
-
-  function flushPending() {
-    if (!pending.size) return;
-    for (const el of [...pending]) {
-      if (!el.isConnected) { pending.delete(el); continue; }
-      if (inView(el)) animateNumber(el);
+    if (nav) {
+      const solidAt = Math.max(
+        NAV_MIN_SOLID_AT,
+        hero ? hero.offsetHeight * NAV_SOLID_RATIO : window.innerHeight
+      );
+      nav.classList.toggle('eg-scrolled', window.scrollY > solidAt);
     }
-  }
+  };
 
-  function scan(root) {
-    const scope = root && root.querySelectorAll ? root : document;
-    scope.querySelectorAll(COUNT_SEL).forEach((el) => {
-      if (seen.has(el)) return;
-      seen.add(el);
-      pending.add(el);
-    });
-    flushPending();
-  }
+  const requestPaint = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(paint);
+  };
 
-  scan(document);
-
-  if ('MutationObserver' in window) {
-    let timer = 0;
-    const mo = new MutationObserver(() => {
-      if (timer) return;
-      timer = window.setTimeout(() => { timer = 0; scan(document); }, 80);
-    });
-    mo.observe(document.body, { childList: true, subtree: true });
-  }
-
-  /* ── 3. ไฟส่องตามเคอร์เซอร์บนแผ่นแผนที่ ──────────────────────── */
-  const section = document.querySelector('.map-section');
-  const paper = document.querySelector('.map-paper');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (section && paper && finePointer && !reduced) {
-    let raf = 0;
-    let mx = 0;
-    let my = 0;
-    const apply = () => {
-      raf = 0;
-      paper.style.setProperty('--eg-mx', mx + 'px');
-      paper.style.setProperty('--eg-my', my + 'px');
-    };
-    section.addEventListener('pointermove', (e) => {
-      const r = paper.getBoundingClientRect();
-      mx = e.clientX - r.left;
-      my = e.clientY - r.top;
-      section.classList.add('eg-glint');
-      if (!raf) raf = requestAnimationFrame(apply);
-    }, { passive: true });
-    section.addEventListener('pointerleave', () => section.classList.remove('eg-glint'));
-  }
+  window.addEventListener('scroll', requestPaint, { passive: true });
+  window.addEventListener('resize', requestPaint, { passive: true });
+  paint();   // เปิดมาที่ anchor ที่เลื่อนอยู่แล้วก็ให้สถานะถูกตั้งแต่แรก
 })();

@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const PAGES = ['index.html', 'institutions.html', 'map.html', 'inside.html', 'outside.html', 'tips.html'];
+const PAGES = ['index.html', 'institutions.html', 'inside.html', 'outside.html', 'tips.html'];
 const TH_MONTH = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 const today = new Date();
 const thaiToday = `${today.getDate()} ${TH_MONTH[today.getMonth()]} ${today.getFullYear() + 543}`;
@@ -53,7 +53,7 @@ for (const file of PAGES) {
   }
   const navLinks = [...html.matchAll(/<a href="([a-z]+\.html)"[^>]*>/g)].map(m => m[1]);
   const uniqNav = [...new Set(navLinks)];
-  if (uniqNav.length < 6) warnings.push(`${file}: เมนูมีลิงก์ไม่ครบ 6 หน้า (${uniqNav.length})`);
+  if (uniqNav.length < PAGES.length) warnings.push(`${file}: เมนูมีลิงก์ไม่ครบ ${PAGES.length} หน้า (${uniqNav.length})`);
   if (!/aria-current="page"/.test(html)) warnings.push(`${file}: ไม่ได้ระบุหน้าปัจจุบันในเมนู`);
 
   // id ซ้ำ

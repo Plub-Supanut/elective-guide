@@ -2,7 +2,7 @@
   "name": "elective-guide",
   "private": true,
   "version": "1.0.0",
-  "description": "คู่มือ Elective สำหรับนิสิตแพทย์จุฬาฯ — เว็บ static 6 หน้า + สคริปต์ sync ข้อมูลจากเว็บ SSCs Guide",
+  "description": "คู่มือ Elective สำหรับนิสิตแพทย์จุฬาฯ — เว็บ static 5 หน้า + สคริปต์ sync ข้อมูลจากเว็บ SSCs Guide",
   "type": "module",
   "scripts": {
     "sync": "node sync-ssc.mjs",
@@ -13,7 +13,6 @@
     "shell": "node tools/build-shell.mjs",
     "audit": "node tools/audit-data.mjs",
     "audit:check": "node tools/audit-data.mjs --check",
-    "shell:check": "node tools/build-shell.mjs --check",
-    "map": "node tools/build-map.mjs"
+    "shell:check": "node tools/build-shell.mjs --check"
   }
 }

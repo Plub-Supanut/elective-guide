@@ -6,7 +6,7 @@
    - เลื่อนแบบนุ่มเมื่อกดลิงก์ #anchor ภายในหน้า
    - ปุ่มกลับขึ้นด้านบน
    - ทำความสะอาดข้อความหัวการ์ด (ตัดช่องว่าง/บรรทัดเกิน)
-   เนื้อหาที่เป็นของหน้าใดหน้าหนึ่ง (ค้นหา/การ์ด/แผนที่) อยู่ในไฟล์ของหน้านั้น
+   เนื้อหาที่เป็นของหน้าใดหน้าหนึ่ง (ค้นหา/การ์ด) อยู่ในไฟล์ของหน้านั้น
    ============================================================ */
 (() => {
   'use strict';
@@ -84,7 +84,7 @@
   // ตัด \n/ช่องว่างหัวท้ายใน text node ตรง ๆ หัวการ์ดมี <span class="code">101</span>
   // ข้างใน จึงห้ามแตะ element ลูก และต้องคงช่องว่างนำหน้า (ไม่งั้น "101ม.ขอนแก่น")
   const tidyCardText = () => {
-    document.querySelectorAll('.card-title, .card .card-sub, .inst-name, .map-near-pick, .map-card-name').forEach(el => {
+    document.querySelectorAll('.card-title, .card .card-sub, .inst-name').forEach(el => {
       el.childNodes.forEach(n => {
         if (n.nodeType !== 3) return;
         const raw = n.nodeValue;

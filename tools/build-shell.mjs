@@ -4,7 +4,7 @@
  * ให้ตรงกันทั้งเว็บจากที่เดียว
  *
  * ทำไมต้องมี
- *   เว็บนี้แยกเป็นหลายหน้า (หน้าแรก / สถาบัน / แผนที่ / ในคณะ / นอกคณะ / คำแนะนำ)
+ *   เว็บนี้แยกเป็นหลายหน้า (หน้าแรก / สถาบัน / ในคณะ / นอกคณะ / คำแนะนำ)
  *   ถ้าปล่อยให้เขียนเมนูซ้ำ 6 ที่ วันหนึ่งจะลืมแก้ที่หนึ่งแล้วเมนูเพี้ยน
  *   สคริปต์นี้เขียนทับเฉพาะ «กรอบ marker» ที่กำหนด ไม่แตะเนื้อหาหน้า
  *
@@ -26,13 +26,15 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261105u';
+const CSS_VERSION = '20261106b';
 
-// ── หนี้ทุกหน้าของเว็บ (เพิ่มหน้าใหม่ = เพิ่มบรรทัดที่นี่) ───────────────
+// ── ทุกหน้าของเว็บ (แหล่งความจริงเดียว: nav · เมนูมือถือ · ฟุตเตอร์ · shell) ──
 const PAGES = [
   {
     file: 'index.html',
     key: 'index',
+    nav: 'หน้าแรก',
+    navPrimary: true,
     title: 'คู่มือ Elective · นิสิตแพทย์จุฬาฯ',
     desc: 'รวมข้อมูลการติดต่อ ที่พัก ค่าใช้จ่าย ของสถาบันและภาควิชาที่รับนิสิตแพทย์จุฬาฯ ไป elective พร้อมช่องทางยื่นความจำนงวิชาเลือกในและนอกคณะ',
     scripts: ['ui.js', 'hero-bg.js', 'icons.js', 'flair.js', 'premium.js'],
@@ -40,20 +42,16 @@ const PAGES = [
   {
     file: 'institutions.html',
     key: 'institutions',
+    nav: 'สถาบัน',
+    navPrimary: true,
     title: 'สถาบันและภาควิชา · คู่มือ Elective',
     desc: 'ค้นหาและกรองสถาบัน 117 แห่งที่รับนิสิตแพทย์จุฬาฯ ไป elective — ผู้ประสานงาน เบอร์โทร อีเมล ที่พัก ค่าใช้จ่าย',
     scripts: ['ui.js', 'aliases.js', 'app.js', 'icons.js', 'flair.js', 'premium.js'],
   },
   {
-    file: 'map.html',
-    key: 'map',
-    title: 'แผนที่สถาบัน · คู่มือ Elective',
-    desc: 'แผนที่ประเทศไทยแบบกดได้ แสดงที่ตั้งสถาบันที่รับนิสิตแพทย์จุฬาฯ ไป elective แยกตามภาคและจังหวัด',
-    scripts: ['ui.js', 'icons.js', 'flair.js', 'premium.js'],
-  },
-  {
     file: 'inside.html',
     key: 'inside',
+    nav: 'ในคณะ',
     title: 'รายวิชาเลือก « ใน » คณะ · คู่มือ Elective',
     desc: 'ช่องทางแสดงความจำนงรายวิชาเลือกในคณะแพทยศาสตร์ จุฬาฯ กำหนดการ ข้อมูลรายวิชาแยกชั้นปี และช่องทางติดต่อ',
     scripts: ['ui.js', 'icons.js', 'flair.js', 'premium.js'],
@@ -61,6 +59,7 @@ const PAGES = [
   {
     file: 'outside.html',
     key: 'outside',
+    nav: 'นอกคณะ',
     title: 'รายวิชาเลือก « นอกคณะ » · คู่มือ Elective',
     desc: 'ช่องทางยื่นความจำนง elective นอกคณะ กำหนดการรายชั้นปี หลักเกณฑ์และเอกสารจากฝ่ายวิชาการ คณะแพทยศาสตร์ จุฬาฯ',
     scripts: ['ui.js', 'icons.js', 'flair.js', 'premium.js'],
@@ -68,6 +67,7 @@ const PAGES = [
   {
     file: 'tips.html',
     key: 'tips',
+    nav: 'คำแนะนำ',
     title: 'ก่อนไป elective · คู่มือ Elective',
     desc: 'สิ่งที่ต้องเตรียมก่อนไป elective — เอกสาร วัคซีน ที่พัก การเดินทาง และข้อควรระวัง',
     scripts: ['ui.js', 'icons.js', 'flair.js', 'premium.js'],
@@ -105,18 +105,19 @@ const head = p => `    <meta charset="UTF-8" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>`;
 
+// เมนูทั้งสามที่ (แถบหลัก · เมนูมือถือ · ฟุตเตอร์) สร้างจาก PAGES ชุดเดียว
+// เพิ่มหน้าใหม่ = เพิ่มใน PAGES ที่เดียว (เดิมต้องแก้ 3 ที่และลืมได้ง่าย)
+const linkTo = (p, active, cls = '') =>
+  `<a href="${p.file}"${cls}${p.key === active ? ' aria-current="page"' : ''}>${p.nav}</a>`;
+const NAV_PRIMARY = PAGES.filter(p => p.navPrimary);
+
 const nav = active => {
   const cur = key => (key === active ? ' aria-current="page"' : '');
   return `    <nav class="sticky-nav" id="stickyNav">
       <div class="nav-inner">
         <a class="nav-logo" href="index.html">Elective Guide</a>
         <div class="nav-links">
-          <a href="index.html" class="nav-primary"${cur('index')}>หน้าแรก</a>
-          <a href="institutions.html" class="nav-primary"${cur('institutions')}>สถาบัน</a>
-          <a href="map.html" class="nav-primary"${cur('map')}>แผนที่</a>
-          <a href="inside.html"${cur('inside')}>ในคณะ</a>
-          <a href="outside.html"${cur('outside')}>นอกคณะ</a>
-          <a href="tips.html"${cur('tips')}>คำแนะนำ</a>
+          ${PAGES.map(p => linkTo(p, active, p.navPrimary ? ' class="nav-primary"' : '')).join('\n          ')}
           
           <button type="button" class="theme-toggle" data-theme-toggle aria-label="ธีม: ตามระบบ (กดเพื่อเปลี่ยน)" title="ธีม: ตามระบบ">
             <span class="theme-ico" aria-hidden="true">🌗</span>
@@ -134,12 +135,7 @@ ${GITHUB_SVG}
           </button>
         </div>
         <div class="nav-more-menu" id="navMoreMenu" hidden>
-          <a href="index.html">หน้าแรก</a>
-          <a href="institutions.html">สถาบัน</a>
-          <a href="map.html">แผนที่</a>
-          <a href="inside.html">ในคณะ</a>
-          <a href="outside.html">นอกคณะ</a>
-          <a href="tips.html">คำแนะนำ</a>
+          ${PAGES.map(p => linkTo(p, active)).join('\n          ')}
           
           <a href="https://github.com/Plub-Supanut/elective-guide" target="_blank" rel="noopener noreferrer">GitHub</a>
           <button type="button" class="theme-toggle" data-theme-toggle>
@@ -161,17 +157,7 @@ const footer = `    <footer class="footer">
           คู่มือ Elective · นิสิตแพทย์จุฬาลงกรณ์มหาวิทยาลัย
         </p>
         <p class="footer-links">
-          <a href="index.html">หน้าแรก</a>
-          <span aria-hidden="true">·</span>
-          <a href="institutions.html">สถาบัน</a>
-          <span aria-hidden="true">·</span>
-          <a href="map.html">แผนที่</a>
-          <span aria-hidden="true">·</span>
-          <a href="inside.html">ในคณะ</a>
-          <span aria-hidden="true">·</span>
-          <a href="outside.html">นอกคณะ</a>
-          <span aria-hidden="true">·</span>
-          <a href="tips.html">คำแนะนำ</a>
+          ${PAGES.map(p => linkTo(p, null)).join('\n          <span aria-hidden="true">·</span>\n          ')}
         </p>
         <p class="footer-sub">
           ข้อมูลจากปีการศึกษา 2565–2567 ถ้าจะไปจริง เช็คกับสถาบันอีกครั้งนะ

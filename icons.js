@@ -104,7 +104,7 @@
 
   const run = () => {
     walk(document.body);
-    // พื้นที่ที่สร้างภายหลัง (ผลค้นหา, การ์ดแผนที่) — แทนให้ด้วยเมื่อมีของใหม่
+    // พื้นที่ที่สร้างภายหลัง (ผลค้นหา, รายละเอียดการ์ด) — แทนให้ด้วยเมื่อมีของใหม่
     if ('MutationObserver' in window) {
       const mo = new MutationObserver((muts) => {
         for (const mu of muts) {

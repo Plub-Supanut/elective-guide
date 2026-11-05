@@ -21,5 +21,4 @@
 - แถบความคืบหน้าการเลื่อน (hairline gradient) · เนวิเกชันแบบกระจก + ขีดเส้นใต้ไล่สี
 - ตัวเลขวิ่งเมื่อปรากฏ (ปิดเมื่อ `prefers-reduced-motion: reduce`)
 - พื้นผิวการ์ด: gradient hairline border + glass + เงาซ้อน + entry animation + stagger
-- หมุดจุฬาฯ หายใจ · วงแหวนหมุดที่เลือก · glow ตอน hover · ไฟส่องตามเคอร์เซอร์บนแผ่นแผนที่
 - micro-interaction ยก/กดทุกชิ้น + แสงกวาดผ่านปุ่มหลัก
