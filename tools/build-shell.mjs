@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261108f';
+const CSS_VERSION = '20261108i';
 
 // ── ทุกหน้าของเว็บ (แหล่งความจริงเดียว: nav · เมนูมือถือ · ฟุตเตอร์ · shell) ──
 const PAGES = [

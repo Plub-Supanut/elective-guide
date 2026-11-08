@@ -2551,9 +2551,13 @@ html[data-theme="dark"] .error-ghost:hover{ background: rgba(125, 155, 118, 0.18
   justify-content: center;
   line-height: 1.2;
 }
-.summary-strip .stat-card,
-.summary-strip .stat-num,
-.summary-strip .stat-label{ line-height: 1; }
+/* ตัวเลขในชิป/การ์ดสรุป: จัดกลุ่มให้อยู่กลางแนวตั้ง + ขยับ optically ให้เส้นฐานดูตรงกัน
+   (Lora digits มีสัดส่วน ascent สูงกว่า Inter/Thai เล็กน้อย) */
+.summary-strip .stat-card{ align-items: center; line-height: 1; }
+.summary-strip .stat-num{ line-height: 1; }
+.summary-strip .stat-label{ line-height: 1.1; }
+.cat-chip{ align-items: center; }
+.cat-chip .cat-n{ line-height: 1; transform: translateY(-1.2px); }
 
 /* ชื่อหน้าบนแถบหัว: ซ่อนบนเดสก์ท็อป */
 .nav-page-title{ display: none; }
