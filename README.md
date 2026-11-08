@@ -54,6 +54,10 @@ python -m http.server 8765
 
 ```
 
+## Design system
+
+โทเคนสี/ไทป์/คอมโพเนนต์/กฎ motion และ accessibility อยู่ใน [docs/DESIGN.md](docs/DESIGN.md)
+
 ## Project structure
 
 ```text
