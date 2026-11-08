@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const CHECK = process.argv.includes('--check');
 
-const CSS_VERSION = '20261106e';
+const CSS_VERSION = '20261108f';
 
 // ── ทุกหน้าของเว็บ (แหล่งความจริงเดียว: nav · เมนูมือถือ · ฟุตเตอร์ · shell) ──
 const PAGES = [
@@ -158,6 +158,7 @@ const nav = active => {
         <a class="nav-logo" href="index.html" aria-label="Elective Guide — หน้าแรก">
           ${LOGO_SVG('egTileNav', 'nav-logo-mark')}<span class="nav-logo-text">Elective Guide</span>
         </a>
+        <span class="nav-page-title" id="navPageTitle" aria-hidden="true"></span>
         <div class="nav-links">
           ${NAV_PAGES.map(p => linkTo(p, active, p.navPrimary ? ' class="nav-primary"' : '')).join('\n          ')}
           

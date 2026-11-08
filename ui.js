@@ -181,6 +181,13 @@
     setInterval(paintDeadlines, 6 * 60 * 60 * 1000);   // รีเฟรชทุก 6 ชั่วโมงถ้าเปิดหน้านาน
   }
 
+  // ── 7.5) ชื่อหน้าปัจจุบันบนแถบมือถือ ──────────────────────────
+  const navPageTitle = document.getElementById('navPageTitle');
+  if (navPageTitle) {
+    const current = document.querySelector('.nav-links a[aria-current="page"]');
+    navPageTitle.textContent = (current?.textContent || document.title.split('·')[0] || '').trim();
+  }
+
   // ── 8) ธีม: ตามระบบ / สว่าง / มืด ────────────────────────────
   // ค่าใน localStorage: 'system' (ค่าเริ่มต้น) | 'light' | 'dark'
   // head script ตั้ง data-theme ไว้ก่อนแล้ว ที่นี่แค่ทำให้ปุ่มตรงกับค่าและรับการเปลี่ยน

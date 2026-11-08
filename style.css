@@ -34,6 +34,7 @@
    27. THEME — DARK
    28. CONTRAST FIXES — จุดที่ terracotta/ตัวอักษรอ่อนเกินไป (ทั้งสองโหมด)
    29. BRAND — โลโก้ (เข็มทิศ) · favicon · หน้า 404
+   30. MOBILE — native app shell (≤720px)
    ───────────────────────────────────────────────────────────── */
 
 
@@ -2513,3 +2514,438 @@ html.js body.no-hero .sticky-nav .nav-links a[aria-current="page"]{ color: var(-
 .error-ghost:hover{ color: var(--charcoal); border-color: var(--sage); background: rgba(125, 155, 118, 0.14); }
 html[data-theme="dark"] .error-ghost{ color: var(--charcoal); border-color: var(--border); background: rgba(245, 239, 230, 0.06); }
 html[data-theme="dark"] .error-ghost:hover{ background: rgba(125, 155, 118, 0.18); }
+/* ── ตัวกรองมือถือ: ค่าเริ่มต้นสำหรับเดสก์ท็อป (ซ่อนปุ่ม/ใช้ layout เดิม) ── */
+.mobile-tools{ display: contents; }
+.mobile-filter-btn{ display: none; }
+/* ═════════════════════════════════════════════════════════════
+   30. MOBILE — native app shell (≤720px)
+   หลักการ: แถบหัวแบบแอป (โลโก้ + ชื่อหน้า + เมนู) · ตัวกรองเป็น bottom sheet ·
+   การ์ด/ตาราง/เส้นเวลาอ่านในแนวตั้ง · ข้อความไม่ตัดกลางคำ · เป้าสัมผัส ≥44px
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── ไอคอน UI ใหม่ (ชุด 16-unit จากไลบรารีไอคอน) ─────────────── */
+.ui-icon{
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ── ปุ่ม/ชิป: ให้ข้อความอยู่กลางแนวตั้งจริง (ทุกขนาดจอ) ──────── */
+.btn-primary,
+.btn-ghost{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.25;
+  text-align: center;
+}
+.filter-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+}
+.summary-strip .stat-card,
+.summary-strip .stat-num,
+.summary-strip .stat-label{ line-height: 1; }
+
+/* ชื่อหน้าบนแถบหัว: ซ่อนบนเดสก์ท็อป */
+.nav-page-title{ display: none; }
+
+@media (max-width: 720px){
+  :root{ --nav-h: 56px; }
+  html{ scroll-padding-top: 66px; }
+
+  /* ── 1. แถบหัวแบบแอป ─────────────────────────────────────── */
+  .nav-inner{
+    height: 56px;
+    padding-inline: 0.9rem;
+    gap: 0.55rem;
+  }
+  .nav-logo{ gap: 0.5rem; }
+  .nav-logo-mark{ width: 30px; height: 30px; border-radius: 8px; }
+  .nav-logo-text{ display: none; }
+  .nav-page-title{
+    display: block;
+    min-width: 0;
+    margin-right: auto;
+    font-family: var(--font-head);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  html.js body:not(.no-hero) .sticky-nav:not(.eg-scrolled) .nav-page-title{ color: #f5efe6; }
+  .nav-links{ gap: 0.15rem; margin-left: auto; }
+  .nav-links > a,
+  .nav-links .theme-toggle,
+  .nav-links .nav-github,
+  .nav-links .year-switch{ display: none !important; }
+  .nav-more{ display: inline-flex; width: 44px; height: 44px; }
+  .nav-more-menu{ right: 0.6rem; left: auto; width: min(280px, calc(100vw - 1.2rem)); }
+  .nav-more-menu .year-switch{ width: 100%; height: 42px; }
+  .nav-more-menu .year-switch button{ flex: 1 1 0; min-width: 0; }
+
+  /* ── 2. หัวหน้า/ฮีโร่: ชิดขึ้น อยู่ในจอเดียว ───────────────── */
+  .page-head{ padding: 1.4rem 1.1rem 0.2rem; }
+  .page-eyebrow{ font-size: 0.68rem; margin-bottom: 0.35rem; }
+  .page-title{
+    font-size: clamp(1.6rem, 7.6vw, 2.05rem);
+    line-height: 1.26;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .page-sub{
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 42ch;
+    text-wrap: pretty;
+  }
+
+  .hero{ min-height: 100svh; }
+  .hero-content{ padding: 1.2rem 1.1rem; max-width: 100%; }
+  .hero-eyebrow{ font-size: 0.68rem; letter-spacing: 0.12em; }
+  .hero-title{
+    font-size: clamp(2rem, 9.8vw, 2.55rem);
+    line-height: 1.16;
+    text-wrap: balance;
+    margin-bottom: 0.9rem;
+  }
+  .hero-cta-row{
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    gap: 0.5rem;
+  }
+  .hero-cta-row .btn-primary,
+  .hero-cta-row .btn-ghost{
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.92rem;
+  }
+  .hero-cta-links{ display: grid; gap: 0.3rem; margin-top: 1rem; font-size: 0.78rem; }
+  .hero-scroll-hint{ display: none; }
+
+  /* ── 3. หน้าแรก: สถิติ/ทางลัด ─────────────────────────────── */
+  .stats-section{ padding: 2rem 1.1rem; }
+  .stats-grid{ grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .stat-card{ padding: 0.9rem 0.6rem; }
+  .stat-num{ font-size: 1.8rem; }
+  .stat-label{ font-size: 0.74rem; line-height: 1.4; }
+  .home-links-section{ padding: 2rem 1.1rem 2.6rem; }
+  .home-links{ grid-template-columns: 1fr; gap: 0.6rem; }
+  .home-link{ padding: 0.9rem 1rem; }
+  .home-link-title{ font-size: 0.95rem; }
+
+  /* ── 4. หน้าสถาบัน: ค้นหา + ตัวกรองแบบ sheet ─────────────── */
+  .search-section--toolbar{ padding: 0.4rem 1.1rem 0.9rem; }
+  .toolbar{ padding: 0.7rem; gap: 0.6rem; border-radius: 16px; }
+  .toolbar-row{ grid-template-columns: 1fr; gap: 0.5rem; }
+  .toolbar-row .search-wrapper{ margin: 0; max-width: none; }
+  .toolbar-row .search-input{ padding: 0.8rem 0.95rem; font-size: 16px; } /* กัน iOS ซูม */
+  .mobile-tools{ display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
+  .mobile-filter-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--sand);
+    color: var(--charcoal);
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  .mobile-filter-btn[aria-expanded="true"]{ border-color: var(--sage); background: rgba(125, 155, 118, 0.16); }
+  .mobile-filter-count{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 99px;
+    background: var(--solid-sage);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+  .mobile-tools .toolbar-sort{ flex: 1 1 auto; min-width: 0; font-size: 0.78rem; gap: 0.3rem; }
+  .mobile-tools .toolbar-sort select{ flex: 1 1 auto; min-width: 0; height: 44px; font-size: 16px; }
+  .toolbar .filter-clear{ display: none !important; }
+
+  /* bottom sheet */
+  .filter-sheet{
+    position: fixed;
+    inset: auto 0 0 0;
+    margin: 0 auto;
+    width: min(560px, 100%);
+    max-width: 100%;
+    max-height: 86svh;
+    padding: 0;
+    border: 0;
+    border-radius: 22px 22px 0 0;
+    background: var(--off-white);
+    color: var(--charcoal);
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.42);
+    overflow: hidden;
+  }
+  .filter-sheet[open]{ display: flex; flex-direction: column; }
+  .filter-sheet::backdrop{
+    background: rgba(20, 16, 12, 0.5);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .filter-sheet::before{
+    content: '';
+    width: 40px;
+    height: 4px;
+    margin: 0.6rem auto 0.1rem;
+    border-radius: 99px;
+    background: rgba(100, 80, 60, 0.25);
+  }
+  .filter-sheet-head{ display: flex; align-items: center; gap: 0.6rem; padding: 0.35rem 1rem 0.4rem; }
+  .filter-sheet-title{ flex: 1; margin: 0; font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; }
+  .filter-sheet-close{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    background: var(--sand);
+    color: var(--charcoal);
+    cursor: pointer;
+  }
+  .filter-sheet-body{
+    display: grid;
+    gap: 1rem;
+    padding: 0.4rem 1rem 1rem;
+    overflow: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-sheet-body .filter-panel--inline{ display: grid; gap: 0.7rem; padding-top: 0; border-top: 0; }
+  .filter-sheet-body .filter-group{ display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .filter-sheet-body .filter-group-label{ grid-column: 1 / -1; width: 100%; margin: 0; font-size: 0.68rem; }
+  .filter-sheet-body .filter-btn{ flex: 1 0 auto; justify-content: center; }
+  .filter-sheet-body .summary-strip{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; padding-top: 0.9rem; }
+  .filter-sheet-body .scan-inline{ grid-column: 1 / -1; margin: 0; }
+  .filter-sheet-foot{
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--border);
+    background: var(--off-white);
+  }
+  .filter-sheet-clear,
+  .filter-sheet-apply{
+    min-height: 46px;
+    border-radius: 12px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .filter-sheet-clear{ flex: 1; border: 1px solid var(--border); background: transparent; color: var(--charcoal); }
+  .filter-sheet-apply{
+    flex: 1.4;
+    border: 0;
+    background: var(--solid-terra);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .filter-sheet[open]{ animation: sheetUp 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes sheetUp{ from{ transform: translateY(16%); opacity: 0.5; } to{ transform: none; opacity: 1; } }
+  }
+
+  /* แท็บหมวด: แถบเลื่อนแนวนอนแบบ segmented control */
+  .cat-bar{ padding: 0.45rem 0; }
+  .cat-bar .container{ padding-inline: 0.9rem; }
+  .cat-chip{ min-height: 38px; padding: 0.3rem 0.8rem; font-size: 0.8rem; }
+
+  /* ── 5. การ์ด/ตาราง: แนวตั้ง อ่านสบาย ─────────────────────── */
+  .cards-grid{ gap: 0.65rem; }
+  .card{ border-radius: 12px; }
+  .card-header{ padding: 0.85rem 0.95rem 0.65rem; row-gap: 0.3rem; }
+  .card-title{ font-size: 0.96rem; line-height: 1.38; }
+  .card-body{ padding: 0.7rem 0.95rem; }
+  .contact-row{ font-size: 0.8rem; }
+  .card-detail{ padding: 0.8rem 0.95rem; }
+  .expand-hint{ min-height: 44px; font-size: 0.8rem; padding: 0.5rem 0.9rem; }
+  .badge{ font-size: 0.64rem; padding: 0.18rem 0.5rem; }
+  .region-chip{ font-size: 0.66rem; }
+  .mini-table,
+  .mini-table tbody,
+  .mini-table tr,
+  .mini-table th,
+  .mini-table td{ display: block; width: 100%; }
+  .mini-table tr{
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .mini-table tr:last-child{ border-bottom: 0; }
+  .mini-table th{ padding: 0; border: 0; background: none; font-size: 0.76rem; color: var(--warm-gray); }
+  .mini-table td{ padding: 0; border: 0; font-size: 0.8rem; }
+  .mini-table tr:nth-child(even) td{ background: none; }
+
+  .ys-table tr{
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 0.55rem;
+    background: var(--off-white);
+  }
+  .ys-table tr:last-child{ margin-bottom: 0; }
+  .ys-table th,
+  .ys-table td{ padding: 0.14rem 0; }
+  .ys-table td::before{ font-size: 0.72rem; }
+
+  /* เส้นเวลา SSCs: เรียงแนวตั้งแบบ timeline แอป */
+  .round-timeline{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+    padding: 0;
+  }
+  .round-timeline::before{
+    left: 0.45rem;
+    right: auto;
+    top: 0.8rem;
+    bottom: 0.8rem;
+    width: 2px;
+    height: auto;
+  }
+  .round-timeline li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.52rem 0 0.52rem 1.6rem;
+    text-align: left;
+    font-size: 0.8rem;
+  }
+  .round-timeline li::before{
+    left: 0.14rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.55rem;
+    height: 0.55rem;
+  }
+  .rt-label{ font-weight: 600; color: var(--charcoal); }
+  .rt-date{ font-size: 0.74rem; color: var(--warm-gray); text-align: right; }
+
+  /* ── 6. หน้า ในคณะ/นอกคณะ/คำแนะนำ ───────────────────────── */
+  .ssc-section{ padding: 1.6rem 0 1.2rem; }
+  .ssc-section .container,
+  .tips-section .container{ padding-inline: 1.1rem; }
+  .timeline-block{ margin-bottom: 1.2rem; }
+  .ssc-grid{ grid-template-columns: 1fr; gap: 0.7rem; }
+  .ssc-card{ padding: 0.95rem 1rem; border-radius: 12px; }
+  .ssc-title{ font-size: 1rem; }
+  .ssc-desc{ font-size: 0.8rem; }
+  .ssc-links{ gap: 0; }
+  .ssc-links li{ padding: 0.55rem 0; }
+  .ssc-link-title{ font-size: 0.84rem; line-height: 1.5; }
+  .ssc-link-meta{ font-size: 0.72rem; line-height: 1.5; }
+  .ssc-note{ font-size: 0.74rem; }
+  .ssc-contact{ grid-template-columns: 1fr; gap: 0.9rem; font-size: 0.82rem; }
+  .ssc-cta{ align-items: flex-start; gap: 0.7rem; padding: 1rem 1.1rem; border-radius: 14px; }
+  .ssc-cta-text{ text-align: left; }
+  .ssc-cta-icon{ font-size: 1.45rem; line-height: 1.2; }
+  .ssc-cta-title{ font-size: 1rem; }
+  .ssc-cta-meta{ font-size: 0.72rem; }
+  .ssc-status-block{ padding: 1rem 1.05rem; border-radius: 14px; }
+  .ssc-status-row{ gap: 0.5rem; }
+  .ssc-status-row button,
+  .ssc-status-row .ssc-status-btn{ min-height: 46px; font-size: 0.9rem; }
+  .ssc-note,
+  .ssc-status-note{ text-wrap: pretty; }
+  .ssc-contact a,
+  .ssc-status-note a,
+  .card a[href^="mailto:"],
+  .contact-row a{ overflow-wrap: anywhere; }
+
+  /* ตารางปี/กำหนดการในหน้า SSC: การ์ดแถวแทนตารางแคบ */
+  .ssc-sched li{ font-size: 0.8rem; }
+
+  /* ── 7. หน้าถัดไป + ฟุตเตอร์ ─────────────────────────────── */
+  .page-next{ padding: 1.4rem 1.1rem 2.2rem; }
+  .page-next-card{ padding: 0.95rem 1.05rem; border-radius: 14px; }
+  .page-next-title{ font-size: 0.98rem; }
+  .page-next-sub{ font-size: 0.78rem; line-height: 1.6; }
+  .footer{ padding: 1.8rem 1.1rem; }
+  .footer-title{ font-size: 0.92rem; }
+  .footer-links{ font-size: 0.8rem; gap: 0.35rem; }
+  .footer-sub{ font-size: 0.74rem; line-height: 1.65; }
+  .to-top{ right: 0.9rem; bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px)); }
+
+  /* ── 8. กฎข้อความ/การแตะระดับหน้า ───────────────────────── */
+  body{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  a, button, [role="button"], .card, .cat-chip, .filter-btn{
+    -webkit-tap-highlight-color: transparent;
+  }
+  .page-sub, .section-sub, .ssc-desc, .tip-card p, .card-detail, .error-text, .page-next-sub{
+    text-wrap: pretty;
+  }
+  .page-title, .section-title, .card-title, .error-title{ text-wrap: balance; }
+  .section-title{ font-size: clamp(1.35rem, 6vw, 1.7rem); line-height: 1.3; }
+  .section-badge{ font-size: 1.7rem; }
+  .error-page{ padding: 3rem 1.1rem 4rem; }
+  .error-mark{ width: 72px; height: 72px; border-radius: 17px; }
+  .error-actions{ width: 100%; max-width: 320px; }
+  .error-actions > *{ flex: 1; }
+
+  /* ── 8b. ปรับจากการทดสอบบนจอจริง ── */
+  .filter-sheet-body .filter-group{ display: grid; grid-template-columns: repeat(3, 1fr); }
+  .filter-sheet-body .filter-group[aria-label="ตัวกรองที่พัก"]{ grid-template-columns: repeat(2, 1fr); }
+  .filter-sheet-body .filter-btn{ width: 100%; }
+  .card-header .card-title{ flex: 1 0 100%; }
+  .hero-title{ font-size: clamp(1.85rem, 8.8vw, 2.3rem); }
+  .btn-link-divider{ display: none; }
+  .hero-cta-links{ gap: 0.1rem; }
+  .hero-cta-links .btn-link{ min-height: 44px; justify-content: center; }
+  .ssc-status-note a[href^="tel:"],
+  .ssc-contact a[href^="tel:"]{ white-space: nowrap; }
+
+  /* ค้นหาหน้าแรก: ช่อง + ปุ่มอยู่บรรทัดเดียวกัน · ชิปทางลัดเลื่อนแนวนอน */
+  .home-search-form{ display: flex; flex-direction: row; flex-wrap: nowrap; gap: 0.5rem; align-items: stretch; }
+  .home-search-form .search-input{ flex: 1 1 0; width: auto; min-width: 0; }
+  .home-search-form .home-search-btn{ flex: 0 0 auto; padding-inline: 1.1rem; }
+  .home-quick{
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.2rem;
+  }
+  .home-quick::-webkit-scrollbar{ display: none; }
+  .home-quick{ -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 18px), transparent); }
+  .home-quick-label,
+  .home-chip{ flex: 0 0 auto; white-space: nowrap; }
+}

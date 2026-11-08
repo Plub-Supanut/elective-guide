@@ -21,7 +21,7 @@
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-serif-thai-700-thai.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="fonts/noto-sans-thai-400-thai.woff2" crossorigin />
     <link rel="stylesheet" href="fonts/fonts.css" />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261106e" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261108f" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
@@ -40,7 +40,7 @@
     <meta name="twitter:title" content="สถาบันและภาควิชา · คู่มือ Elective" />
     <meta name="twitter:description" content="ค้นหาและกรองสถาบัน 117 แห่งที่รับนิสิตแพทย์จุฬาฯ ไป elective — ผู้ประสานงาน เบอร์โทร อีเมล ที่พัก ค่าใช้จ่าย" />
     <meta name="twitter:image" content="https://plub-supanut.github.io/elective-guide/assets/og-image.png" />
-    <link rel="stylesheet" href="style.css?v=20261106e" />
+    <link rel="stylesheet" href="style.css?v=20261108f" />
     <link rel="stylesheet" href="premium.css" />
     <noscript><style>.fade-up{opacity:1;transform:none}</style></noscript>
     <!-- SHELL:HEAD:END -->
@@ -60,6 +60,7 @@
               <circle cx="32" cy="32" r="3.5" fill="#7d9b76" stroke="#fdfaf6" stroke-width="1.7"/>
             </svg><span class="nav-logo-text">Elective Guide</span>
         </a>
+        <span class="nav-page-title" id="navPageTitle" aria-hidden="true"></span>
         <div class="nav-links">
           <a href="index.html" class="nav-primary">หน้าแรก</a>
           <a href="institutions.html" class="nav-primary" aria-current="page">สถาบัน</a>
@@ -128,16 +129,31 @@
           />
           <button class="search-clear" id="searchClear" aria-label="ล้างคำค้น">✕</button>
         </div>
-        <label class="toolbar-sort">
-          <span>เรียงตาม</span>
-          <select id="sortSelect">
-            <option value="default">ลำดับเดิม</option>
-            <option value="code">รหัส</option>
-            <option value="name">ชื่อ ก-ฮ</option>
-            <option value="dorm">มีที่พักก่อน</option>
-          </select>
-        </label>
-        <button type="button" class="filter-clear" id="filterClear" hidden>✕ ล้างตัวกรอง</button>
+        <div class="mobile-tools">
+          <button type="button" class="mobile-filter-btn" id="mobileFilterBtn"
+                  aria-haspopup="dialog" aria-controls="filterSheet" aria-expanded="false">
+            <svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <line x1="2.25" y1="4.75" x2="7.75" y2="4.75" />
+              <circle cx="9.75" cy="4.75" r="2" />
+              <line x1="11.75" y1="4.75" x2="13.75" y2="4.75" />
+              <line x1="2.25" y1="11.25" x2="4.25" y2="11.25" />
+              <circle cx="6.25" cy="11.25" r="2" />
+              <line x1="8.25" y1="11.25" x2="13.75" y2="11.25" />
+            </svg>
+            <span>ตัวกรอง</span>
+            <span class="mobile-filter-count" id="mobileFilterCount" hidden>0</span>
+          </button>
+          <label class="toolbar-sort">
+            <span>เรียงตาม</span>
+            <select id="sortSelect">
+              <option value="default">ลำดับเดิม</option>
+              <option value="code">รหัส</option>
+              <option value="name">ชื่อ ก-ฮ</option>
+              <option value="dorm">มีที่พักก่อน</option>
+            </select>
+          </label>
+          <button type="button" class="filter-clear" id="filterClear" hidden>✕ ล้างตัวกรอง</button>
+        </div>
       </div>
 
       <div class="filter-panel filter-panel--inline">
@@ -155,6 +171,29 @@
           <button class="filter-btn" data-filter="dorm-free" aria-pressed="false">ที่พักฟรี</button>
         </div>
       </div>
+
+      <!-- ตัวกรองแบบ bottom sheet (มือถือ): JS ย้ายกลุ่มตัวกรอง+สรุปเข้ามาเมื่อจอ ≤720px -->
+      <dialog class="filter-sheet" id="filterSheet" aria-labelledby="filterSheetTitle">
+        <div class="filter-sheet-head">
+          <h2 class="filter-sheet-title" id="filterSheetTitle">ตัวกรอง</h2>
+          <button type="button" class="filter-sheet-close" id="filterSheetClose" aria-label="ปิดตัวกรอง">
+            <svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <line x1="3.75" y1="3.75" x2="12.25" y2="12.25" />
+              <line x1="12.25" y1="3.75" x2="3.75" y2="12.25" />
+            </svg>
+          </button>
+        </div>
+        <div class="filter-sheet-body" id="filterSheetBody"></div>
+        <div class="filter-sheet-foot">
+          <button type="button" class="filter-sheet-clear" id="filterSheetClear">ล้างทั้งหมด</button>
+          <button type="button" class="filter-sheet-apply" id="filterSheetApply">
+            <svg class="ui-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M2.75 8.5 L6.25 12 L13.25 4.5" />
+            </svg>
+            ดูผลลัพธ์
+          </button>
+        </div>
+      </dialog>
 
       <div class="summary-strip">
         <button type="button" class="stat-card" data-stat="all" aria-label="แสดงสถาบันทั้งหมด 117 แห่ง">

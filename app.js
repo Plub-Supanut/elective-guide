@@ -114,6 +114,14 @@ function syncFilterUI() {
     filterClearBtn.hidden = n === 0;
     filterClearBtn.textContent = n > 1 ? `✕ ล้างตัวกรอง (${n})` : '✕ ล้างตัวกรอง';
   }
+  // ปุ่ม «ตัวกรอง» บนมือถือ: แสดงจำนวนที่เลือกอยู่
+  const mobCount = document.getElementById('mobileFilterCount');
+  if (mobCount) {
+    const n = activeCount();
+    mobCount.textContent = String(n);
+    mobCount.hidden = n === 0;
+  }
+
   // การ์ดสถิติ = ทางลัด: ติดสว่างเมื่อเลือกตัวกรองนั้นอันเดียว
   statCards.forEach(c => {
     const f = c.dataset.stat;
@@ -153,6 +161,11 @@ statCards.forEach(card => {
       clearAll();
       // «แสดงรายชื่อทั้งหมด» = กลับไปดูรายชื่อเต็มที่อยู่ถัดลงไป
       document.getElementById('institutions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    // กดอันที่เลือกอยู่ซ้ำ = ยกเลิก (ไม่ค้างกรอง)
+    if (card.getAttribute('aria-pressed') === 'true') {
+      clearAll();
       return;
     }
     groups.type.clear(); groups.region.clear(); groups.extra.clear();
@@ -564,6 +577,7 @@ function applyCat(slug) {
       const on = a.dataset.catLink === active;
       a.classList.toggle('active', on);
       a.setAttribute('aria-current', on ? 'true' : 'false');
+      a.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
   }
 
@@ -581,7 +595,9 @@ if (catBar && catSections.length) {
     const link = e.target.closest('[data-cat-link]');
     if (!link) return;
     e.preventDefault();
-    const active = applyCat(link.dataset.catLink);
+    // แตะแท็บที่กำลังเลือกอยู่ซ้ำ = ยกเลิก (กลับไป «ทั้งหมด»)
+    const next = link.classList.contains('active') ? 'all' : link.dataset.catLink;
+    const active = applyCat(next);
     // ถ้ามีผลค้นหาค้างอยู่ ให้กลับเป็นรายการเต็มก่อน ไม่งั้นจะเห็นแต่ผลค้นหา
     if (searchInput.value.trim() || anyFilter()) clearAll();
     if (active !== 'all') {
@@ -593,6 +609,46 @@ if (catBar && catSections.length) {
     }
   });
 }
+
+// ── ตัวกรองแบบ bottom sheet (มือถือ) ───────────────────────────
+// ใช้ <dialog> ของเบราว์เซอร์ → backdrop/focus trap/Esc ได้ฟรีแบบ native
+const filterSheet = document.getElementById('filterSheet');
+const filterSheetBody = document.getElementById('filterSheetBody');
+const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+const filterSheetClose = document.getElementById('filterSheetClose');
+const filterSheetApply = document.getElementById('filterSheetApply');
+const filterSheetClear = document.getElementById('filterSheetClear');
+const MOBILE_MQ = window.matchMedia('(max-width: 720px)');
+
+const moveFiltersForViewport = () => {
+  const panel = document.querySelector('.filter-panel--inline');
+  const summary = document.querySelector('.summary-strip');
+  if (!filterSheet || !filterSheetBody || !panel || !summary) return;
+
+  if (MOBILE_MQ.matches) {
+    if (panel.parentElement !== filterSheetBody) filterSheetBody.append(panel, summary);
+  } else {
+    if (panel.parentElement === filterSheetBody) {
+      const toolbar = document.querySelector('.toolbar');
+      toolbar.append(panel, summary);
+    }
+    if (filterSheet.open) filterSheet.close();
+  }
+};
+moveFiltersForViewport();
+MOBILE_MQ.addEventListener('change', moveFiltersForViewport);
+
+mobileFilterBtn?.addEventListener('click', () => {
+  if (!filterSheet) return;
+  filterSheet.showModal();
+  mobileFilterBtn.setAttribute('aria-expanded', 'true');
+});
+filterSheetClose?.addEventListener('click', () => filterSheet.close());
+filterSheetApply?.addEventListener('click', () => filterSheet.close());
+filterSheetClear?.addEventListener('click', () => clearAll());
+filterSheet?.addEventListener('close', () => mobileFilterBtn?.setAttribute('aria-expanded', 'false'));
+// แตะ backdrop = ปิด
+filterSheet?.addEventListener('click', (e) => { if (e.target === filterSheet) filterSheet.close(); });
 
 // ── VISUAL SCAN: สีภูมิภาค + ป้าย + กราฟภาพรวม ─────────────────
 // สีประจำภาค (ใช้ร่วมกับป้ายภูมิภาคบนการ์ดในหน้า «สถาบัน»)
