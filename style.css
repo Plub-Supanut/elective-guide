@@ -2100,6 +2100,7 @@ html[data-year="4"] .ssc-card[data-years~="4"], html[data-year="5"] .ssc-card[da
 .toolbar-row .search-wrapper{ margin: 0; max-width: none; }
 .toolbar-row .search-input{ padding: 0.8rem 3rem 0.8rem 1.2rem; font-size: 0.95rem; }
 .toolbar-sort{
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -2107,12 +2108,29 @@ html[data-year="4"] .ssc-card[data-years~="4"], html[data-year="5"] .ssc-card[da
   color: var(--warm-gray);
   white-space: nowrap;
 }
+/* ลูกศร dropdown: วาดเองเพื่อคุมระยะขอบขวา (native arrow ชิดขอบเกินไป) */
+.toolbar-sort::after{
+  content: '';
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  transform: translateY(-50%);
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.75 L8 10.5 L12 6.75'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.75 L8 10.5 L12 6.75'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+  opacity: 0.75;
+}
 .toolbar-sort select{
   min-height: 44px;
   font-family: var(--font-body);
   font-size: 0.85rem;
   color: var(--charcoal);
-  padding: 0.42rem 0.6rem;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0.42rem 2.3rem 0.42rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--sand);
